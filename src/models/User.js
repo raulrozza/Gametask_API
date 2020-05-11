@@ -6,6 +6,28 @@ const UserSchema = new Schema({
         required: true,
     },
     lastname: String,
+    experience: {
+        type: Number,
+        required: true,
+    },
+    level: {
+        type: Object,
+        required: true,
+    },
+    titles: {
+        type: [Schema.Types.ObjectId],
+        ref: 'Title',
+        default: [],
+    },
+    currentTitle: {
+        type: Schema.Types.ObjectId,
+        ref: 'Title',
+    },
+    achievements: {
+        type: [Schema.Types.ObjectId],
+        ref: 'Achievement',
+        default: [],
+    },
     email: {
         type: String,
         required: true,
