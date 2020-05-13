@@ -13,8 +13,7 @@ const server = express();
 
 mongoose.connect(MONGO_URL, {
 	useUnifiedTopology: true,
-	useNewUrlParser: true,
-	useFindAndModify: false
+	useNewUrlParser: true
 })
 .catch(error => console.error("MongoDB error:", error));
 

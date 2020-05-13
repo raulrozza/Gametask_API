@@ -9,10 +9,12 @@ const UserSchema = new Schema({
     experience: {
         type: Number,
         required: true,
+        default: 0,
     },
     level: {
         type: Object,
         required: true,
+        default: 0,
     },
     titles: {
         type: [Schema.Types.ObjectId],
