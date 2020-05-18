@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 
-var BCRYPT_SALT_ROUNDS = 12 //salt rounds used in password crypto
+const BCRYPT_SALT_ROUNDS = 12 //salt rounds used in password crypto
 
 // This controller manages the users in the application, creating and updating their data
 module.exports = {

@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path');
 const cors = require('cors');
 
 // Server's functions
@@ -35,6 +36,7 @@ else
 	server.use(cors());
 	
 server.use(express.json());
+server.use('/files', express.static(path.resolve(__dirname, '..', 'uploads')));
 server.use(routes);
 
 server.listen(PORT, () => console.log(`Server and Updater started on port ${PORT}`));
