@@ -11,7 +11,7 @@ const ActivitySchema = new Schema({
         type: String,
         required: true,
     },
-    experient: {
+    experience: {
         type: Number,
         required: true,
     },
