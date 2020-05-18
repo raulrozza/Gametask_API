@@ -8,6 +8,7 @@ const ActivityController = require('./controllers/ActivityController');
 const AuthenticationController = require('./controllers/AuthenticationController');
 const GameController = require('./controllers/GameController');
 const UserController = require('./controllers/UserController');
+const TitleController = require('./controllers/TitleController');
 
 const routes = express.Router();
 const upload = multer(uploadConfig);
@@ -28,5 +29,11 @@ routes.post('/game', verify, upload.single('image'), GameController.store);
 routes.get('/users', verify, UserController.index);
 routes.get('/user/:id', verify, UserController.show);
 routes.post('/signup', UserController.store);
+
+// Title
+routes.delete('/title/:id', verify, TitleController.delete);
+routes.get('/titles', verify, TitleController.index);
+routes.post('/title', verify, TitleController.store);
+routes.put('/title/:id', verify, TitleController.update);
 
 module.exports = routes;
