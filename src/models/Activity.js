@@ -7,10 +7,7 @@ const ActivitySchema = new Schema({
         type: String,
         required: true,
     },
-    description: {
-        type: String,
-        required: true,
-    },
+    description: String,
     experience: {
         type: Number,
         required: true,

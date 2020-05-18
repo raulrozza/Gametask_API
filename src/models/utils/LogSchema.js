@@ -12,6 +12,11 @@ const LogSchema = new mongoose.Schema({
     changes: {
         type: Object,
         required: true,
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
 }, {
 });

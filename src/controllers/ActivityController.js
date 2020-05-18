@@ -30,5 +30,53 @@ module.exports = {
         catch(error){
             return res.status(400).json({ error: String(error) });
         }
+    },
+    // This method updates an activity
+    async update(req, res){
+        const { name, description, experience, dmRules } = req.body;
+        const { id } = req.params;
+
+        try{
+            const activity = await Activity.findById(id).catch(error => {throw error});
+
+            const changelog = {
+                version: activity.changelog[0] ? activity.changelog[0].version + 1 : 1,
+                log: new Date(),
+                changes: {
+                    name: activity.name,
+                    description: activity.description,
+                    experience: activity.experience,
+                    dmRules: activity.dmRules,
+                },
+                userId: res.auth.id,
+            }
+
+            let updateDocument = {}
+            if(name)
+                updateDocument.name = name;
+            if(description)
+                updateDocument.description = description;
+            if(experience)
+                updateDocument.experience = experience;
+            if(dmRules)
+                updateDocument.dmRules = dmRules;
+
+            const updatedActivity = await Activity.updateOne({
+                _id: id
+            }, {
+                $set: updateDocument,
+                $push: {
+                    changelog: {
+                       $each: [ changelog ],
+                       $position: 0
+                    }
+                 }
+            }).catch(error => {throw error});
+
+            return res.json(updatedActivity);
+        }
+        catch(error){
+            return res.status(400).json({ error: String(error) });
+        }
     }
 };

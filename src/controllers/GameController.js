@@ -5,7 +5,7 @@ const Game = require('../models/Game');
 */
 module.exports = {
     // Retrieve the game's info
-    async index(req, res){
+    async show(req, res){
         const { id } = req.params;
         try{
             const game = await Game.findById(id);
