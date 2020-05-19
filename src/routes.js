@@ -7,6 +7,7 @@ const uploadConfig = require('./config/upload');
 const ActivityController = require('./controllers/ActivityController');
 const AuthenticationController = require('./controllers/AuthenticationController');
 const GameController = require('./controllers/GameController');
+const RankController = require('./controllers/RankController');
 const UserController = require('./controllers/UserController');
 const TitleController = require('./controllers/TitleController');
 
@@ -24,6 +25,12 @@ routes.post('/login', AuthenticationController.store);
 // Game
 routes.get('/game/:id', verify, GameController.show);
 routes.post('/game', verify, upload.single('image'), GameController.store);
+
+// Rank
+routes.delete('/rank/:id', verify, RankController.delete);
+routes.get('/ranks', verify, RankController.index);
+routes.post('/rank', verify, RankController.store);
+routes.put('/rank/:id', verify, RankController.update);
 
 // User options
 routes.get('/users', verify, UserController.index);

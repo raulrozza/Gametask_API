@@ -7,7 +7,7 @@ module.exports = {
         const { id } = req.params;
 
         try{
-            const deleted = await Title.remove({
+            const deleted = await Title.deleteOne({
                 _id: id
             }).catch(error => {throw error});
 

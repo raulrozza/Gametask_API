@@ -11,7 +11,7 @@ const RankSchema = new Schema({
     },
     level: {
         type: Number,
-        required: true,
+        default: 0,
     },
 }, {
 });
