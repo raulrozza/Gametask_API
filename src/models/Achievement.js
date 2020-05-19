@@ -1,4 +1,7 @@
 const { Schema, model} = require('mongoose');
+const ADDRESS = require('ip').address();
+const { PORT } = require('../../config');
+
 
 const AchievementSchema = new Schema({
     name: {
@@ -14,7 +17,14 @@ const AchievementSchema = new Schema({
         ref: 'Title'
     },
     image: String,
-}, {
+},{
+    toJSON: {
+      virtuals: true,
+    }
 });
+
+AchievementSchema.virtual('image_url').get(function() {
+    return `http://${ADDRESS}:${PORT}/files/achievement/${this.image}`
+})
 
 module.exports = model('Achievement', AchievementSchema);

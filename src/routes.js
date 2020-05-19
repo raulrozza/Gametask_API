@@ -4,6 +4,7 @@ const verify = require('./services/jwt/verify');
 const uploadConfig = require('./config/upload');
 
 // Controllers
+const AchievementController = require('./controllers/AchievementController');
 const ActivityController = require('./controllers/ActivityController');
 const AuthenticationController = require('./controllers/AuthenticationController');
 const GameController = require('./controllers/GameController');
@@ -13,6 +14,12 @@ const TitleController = require('./controllers/TitleController');
 
 const routes = express.Router();
 const upload = multer(uploadConfig);
+
+// Achievements
+routes.delete('/achievement/:id', verify, AchievementController.delete);
+routes.get('/achievements', verify, AchievementController.index);
+routes.post('/achievement', verify, upload.single('image'), AchievementController.store);
+routes.put('/achievement/:id', verify, upload.single('image'), AchievementController.update);
 
 // Activity
 routes.get('/activities', verify, ActivityController.index);
