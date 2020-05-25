@@ -21,7 +21,7 @@ mongoose.connect(MONGO_URL, {
 if(CORS_CONFIG){
 	const whitelist = [CORS_CONFIG]
 	const corsOptionsDelegate = (req, callback) => {
-	let corsOptions;
+		let corsOptions;
 		if (whitelist.indexOf(req.header('Origin')) !== -1)
 			corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
 		else
@@ -30,8 +30,7 @@ if(CORS_CONFIG){
 		callback(null, corsOptions) // callback expects two parameters: error and options
 	}
 	server.use(cors(corsOptionsDelegate))
-}
-	
+}	
 else
 	server.use(cors());
 	

@@ -4,6 +4,7 @@
   "description": "The API from the Gamification system",
   "main": "src/index.js",
   "scripts": {
+    "start": "node src/index.js",
     "test": "nodemon src/index.js"
   },
   "engines": {
