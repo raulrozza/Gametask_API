@@ -24,6 +24,10 @@ const GameSchema = new Schema({
     levelInfo: {
         type: [Object],
         default: [],
+    },
+    weeklyRanking: {
+        type: [Object],
+        default: [],
     }
 },{
     toJSON: {

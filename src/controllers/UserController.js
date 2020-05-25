@@ -48,7 +48,9 @@ module.exports = {
             if(!hashedPassword)
                 throw "Could not generate password";
 
-            const users = await User.find({})
+            const users = await User.find({}, {
+                password: 0
+            })
             .catch(error => {throw error});
             if(users.length <= 0)
                 access = 1;
