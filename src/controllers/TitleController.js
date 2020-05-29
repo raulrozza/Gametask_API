@@ -19,8 +19,13 @@ module.exports = {
     },
     // This method lists all titles
     async index(req, res){
+        const { name } = req.query;
         try{
-            const titles = await Title.find({}).catch(error => {throw error});
+            const queryDocument = {};
+            if(name)
+                queryDocument.name = { $regex: `^${name}`, $options:'i'}
+
+            const titles = await Title.find(queryDocument).catch(error => {throw error});
 
             return res.json(titles);
         }
