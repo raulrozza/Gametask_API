@@ -28,6 +28,19 @@ module.exports = {
             return res.status(400).json({ error: String(error) });
         }
     },
+    // This method lists a single achievement
+    async show(req, res){
+        try{
+            const { id } = req.params;
+
+            const achievement = await Achievement.findById(id).populate('title').catch(error => {throw error});
+
+            return res.json(achievement);
+        }
+        catch(error){
+            return res.status(400).json({ error: String(error) });
+        }
+    },
     // The store methods creates a new achievement
     async store(req, res){
         const { name, description, title } = req.body;
@@ -53,21 +66,24 @@ module.exports = {
         const { id } = req.params;
 
         try{
-            let updateDocument = {};
+            let updateDocument = {
+                $set: {}
+            };
             if(name)
-                updateDocument.name = name;
+                updateDocument.$set.name = name;
             if(description)
-                updateDocument.description = description;
-            if(title)
-                updateDocument.title = title;
+                updateDocument.$set.description = description;
+            if(title && title !== "null" && title !== "undefined")
+                updateDocument.$set.title = title;
+            else
+                updateDocument.$unset = { title: "" };
             if(req.file)
-                updateDocument.image = req.file.filename;
+                updateDocument.$set.image = req.file.filename;
 
             const achievement = await Achievement.updateOne({
                 _id: id
-            }, {
-                $set: updateDocument
-            }).catch(error => {throw error});
+            }, updateDocument
+            ).catch(error => {throw error});
 
             return res.json(achievement);
         }
