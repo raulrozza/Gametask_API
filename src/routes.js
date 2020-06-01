@@ -18,6 +18,7 @@ const upload = multer(uploadConfig);
 // Achievements
 routes.delete('/achievement/:id', verify, AchievementController.delete);
 routes.get('/achievements', verify, AchievementController.index);
+routes.get('/achievement/:id', verify, AchievementController.show);
 routes.post('/achievement', verify, upload.single('image'), AchievementController.store);
 routes.put('/achievement/:id', verify, upload.single('image'), AchievementController.update);
 
