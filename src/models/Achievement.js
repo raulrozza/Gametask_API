@@ -1,30 +1,29 @@
 const { Schema, model} = require('mongoose');
-const ADDRESS = require('ip').address();
-const { PORT, LOCAL } = require('../../config');
+const { PORT, ADDRESS } = require('../../config');
 
 
 const AchievementSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    description: {
-        type: String,
-        required: true,
-    },
-    title: {
-        type: Schema.Types.ObjectId,
-        ref: 'Title'
-    },
-    image: String,
+  name: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  title: {
+    type: Schema.Types.ObjectId,
+    ref: 'Title'
+  },
+  image: String,
 },{
-    toJSON: {
-      virtuals: true,
-    }
+  toJSON: {
+    virtuals: true,
+  }
 });
 
 AchievementSchema.virtual('image_url').get(function() {
-    return `${LOCAL ? 'http' : 'https'}://${ADDRESS}:${PORT}/files/achievement/${this.image}`
+  return `${ADDRESS}:${PORT}/files/achievement/${this.image}`
 })
 
 module.exports = model('Achievement', AchievementSchema);
