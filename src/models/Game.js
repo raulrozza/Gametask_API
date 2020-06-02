@@ -1,6 +1,5 @@
 const { Schema, model} = require('mongoose');
-const ADDRESS = require('ip').address();
-const { PORT } = require('../../config');
+const { PORT, ADDRESS } = require('../../config');
 
 const GameSchema = new Schema({
     name: {
@@ -36,7 +35,7 @@ const GameSchema = new Schema({
 });
 
 GameSchema.virtual('image_url').get(function() {
-    return `http://${ADDRESS}:${PORT}/files/game/${this.image}`
+    return `${ADDRESS}:${PORT}/files/game/${this.image}`
 })
 
 module.exports = model('Game', GameSchema);
