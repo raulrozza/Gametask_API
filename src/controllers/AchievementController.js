@@ -44,7 +44,7 @@ module.exports = {
   // The store methods creates a new achievement
   async store(req, res){
     const { name, description, title } = req.body;
-    const { filename } = req.file;
+    const filename = req.file ? req.file.filename : undefined;
 
     try{
       const achievement = await Achievement.create({
