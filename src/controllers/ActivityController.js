@@ -2,12 +2,39 @@ const Activity = require('../models/Activity');
 
 // This controller manages the activities in the application, creating and updating their data
 module.exports = {
+  // This method removes an activity
+  async delete(req, res){
+    const { id } = req.params;
+
+    try{
+      const deleted = await Activity.deleteOne({
+        _id: id
+      }).catch(error => {throw error});
+
+      return res.json(deleted);
+    }
+    catch(error){
+      return res.status(400).json({ error: String(error) });
+    }
+  },
   // This method lists all activities
   async index(req, res){
     try{
       const activities = await Activity.find({}).catch(error => {throw error});
 
       return res.json(activities);
+    }
+    catch(error){
+      return res.status(400).json({ error: String(error) });
+    }
+  },
+  // This method returns one activities info
+  async show(req, res){
+    const { id } = req.params;
+    try{
+      const activity = await Activity.findById(id).catch(error => {throw error});
+
+      return res.json(activity);
     }
     catch(error){
       return res.status(400).json({ error: String(error) });
@@ -51,15 +78,12 @@ module.exports = {
         userId: res.auth.id,
       }
 
-      let updateDocument = {}
-      if(name)
-        updateDocument.name = name;
-      if(description)
-        updateDocument.description = description;
-      if(experience)
-        updateDocument.experience = experience;
-      if(dmRules)
-        updateDocument.dmRules = dmRules;
+      const updateDocument = {
+        name,
+        description,
+        experience,
+        dmRules
+      }
 
       const updatedActivity = await Activity.updateOne({
         _id: id

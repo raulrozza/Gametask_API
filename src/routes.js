@@ -23,7 +23,9 @@ routes.post('/achievement', verify, upload.single('image'), AchievementControlle
 routes.put('/achievement/:id', verify, upload.single('image'), AchievementController.update);
 
 // Activity
+routes.delete('/activity/:id', verify, ActivityController.delete);
 routes.get('/activities', verify, ActivityController.index);
+routes.get('/activity/:id', verify, ActivityController.show);
 routes.post('/activity', verify, ActivityController.store);
 routes.put('/activity/:id', verify, ActivityController.update);
 

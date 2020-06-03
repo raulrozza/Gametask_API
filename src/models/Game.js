@@ -35,7 +35,7 @@ const GameSchema = new Schema({
 });
 
 GameSchema.virtual('image_url').get(function() {
-  return `${ADDRESS}:${PORT}/files/game/${this.image}`
+  return `${ADDRESS}/files/game/${this.image}`
 })
 
 module.exports = model('Game', GameSchema);
