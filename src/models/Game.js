@@ -1,5 +1,6 @@
 const { Schema, model} = require('mongoose');
-const { PORT, ADDRESS } = require('../../config');
+const { ADDRESS } = require('../../config');
+const ThemeSchema  = require('./utils/ThemeSchema')
 
 const GameSchema = new Schema({
   name: {
@@ -11,8 +12,11 @@ const GameSchema = new Schema({
     required: true,
   },
   theme: {
-    type: Object,
-    default: {},
+    type: ThemeSchema,
+    default: {
+      primary: '#FFFFFF',
+      secondary: '#852c80',
+    },
   },
   image: String,
   administrators: {
