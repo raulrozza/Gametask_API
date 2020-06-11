@@ -42,5 +42,33 @@ module.exports = {
     catch(error){
       return res.status(400).json({ error: String(error) });
     }
+  },
+  // Update a game's setting
+  async update(req, res){
+    const { name, description, theme } = req.body;
+    const { id } = req.params;
+
+    try{
+      let updateDocument = {};
+      if(name)
+        updateDocument.name = name;
+      if(description)
+        updateDocument.description = description;
+      if(theme)
+        updateDocument.theme = JSON.parse(theme);
+      if(req.file)
+        updateDocument.image = req.file.filename;
+
+      const updateResponse = await Game.updateOne({
+        _id: id
+      }, {
+        $set: updateDocument,
+      }).catch(error => {throw error});
+
+      return res.json(updateResponse);
+    }
+    catch(error){
+      return res.status(400).json({ error: String(error) });
+    }
   }
 }

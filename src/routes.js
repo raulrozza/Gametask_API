@@ -34,6 +34,7 @@ routes.post('/login', AuthenticationController.store);
 
 // Game
 routes.get('/game/:id', verify, GameController.show);
+routes.put('/game/:id', verify, upload.single('image'), GameController.update);
 routes.post('/game', verify, upload.single('image'), GameController.store);
 
 // Rank
