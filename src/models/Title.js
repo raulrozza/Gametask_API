@@ -1,11 +1,13 @@
-const { Schema, model} = require('mongoose');
+const { Schema, model } = require('mongoose');
 
-const TitleSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
+const TitleSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
   },
-}, {
-});
+  {},
+);
 
 module.exports = model('Title', TitleSchema);
