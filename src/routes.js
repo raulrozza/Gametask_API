@@ -8,6 +8,7 @@ const AchievementController = require('./controllers/AchievementController');
 const ActivityController = require('./controllers/ActivityController');
 const AuthenticationController = require('./controllers/AuthenticationController');
 const GameController = require('./controllers/GameController');
+const LevelController = require('./controllers/LevelController');
 const RankController = require('./controllers/RankController');
 const UserController = require('./controllers/UserController');
 const TitleController = require('./controllers/TitleController');
@@ -42,10 +43,11 @@ routes.put('/activity/:id', verify, ActivityController.update);
 // Auth
 routes.post('/login', AuthenticationController.store);
 
-// Game
+// Game Routes
 routes.get('/game/:id', verify, GameController.show);
 routes.put('/game/:id', verify, upload.single('image'), GameController.update);
 routes.post('/game', verify, upload.single('image'), GameController.store);
+routes.put('/level/:id', verify, LevelController.update);
 
 // Rank
 routes.delete('/rank/:id', verify, RankController.delete);
