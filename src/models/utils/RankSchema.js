@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema } = require('mongoose');
 
 const RankSchema = new Schema(
   {
@@ -14,8 +14,14 @@ const RankSchema = new Schema(
       type: Number,
       default: 0,
     },
+    color: {
+      type: String,
+      default: 'transparent',
+    },
   },
-  {},
+  {
+    _id: false,
+  },
 );
 
-module.exports = model('Rank', RankSchema);
+module.exports = RankSchema;

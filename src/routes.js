@@ -48,11 +48,6 @@ routes.get('/game/:id', verify, GameController.show);
 routes.put('/game/:id', verify, upload.single('image'), GameController.update);
 routes.post('/game', verify, upload.single('image'), GameController.store);
 routes.put('/level/:id', verify, LevelController.update);
-
-// Rank
-routes.delete('/rank/:id', verify, RankController.delete);
-routes.get('/ranks', verify, RankController.index);
-routes.post('/rank', verify, RankController.store);
 routes.put('/rank/:id', verify, RankController.update);
 
 // User options

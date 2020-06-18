@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose');
 const { ADDRESS } = require('../../config');
 const LevelInfoSchema = require('./utils/LevelInfoSchema');
 const ThemeSchema = require('./utils/ThemeSchema');
+const RankSchema = require('./utils/RankSchema');
 
 const GameSchema = new Schema(
   {
@@ -34,6 +35,10 @@ const GameSchema = new Schema(
           requiredExperience: 0,
         },
       ],
+    },
+    ranks: {
+      type: [RankSchema],
+      default: [],
     },
     weeklyRanking: {
       type: [Object],
