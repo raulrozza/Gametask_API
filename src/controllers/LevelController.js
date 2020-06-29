@@ -1,10 +1,11 @@
 const Game = require('../models/Game');
 
-// This controller manages the ranks in the application, updating their data
+/* 
+  This controller manages the game level info configuration
+*/
 module.exports = {
-  // This method updates a rank
   async update(req, res) {
-    const { ranks } = req.body;
+    const { levelInfo } = req.body;
     const { id } = req.params;
 
     try {
@@ -13,7 +14,7 @@ module.exports = {
           _id: id,
         },
         {
-          $set: { ranks },
+          $set: { levelInfo },
         },
       ).catch(error => {
         throw error;

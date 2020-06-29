@@ -3,69 +3,75 @@ const Title = require('../models/Title');
 // This controller manages the titles in the application, creating and updating their data
 module.exports = {
   // This method removes a title
-  async delete(req, res){
+  async delete(req, res) {
     const { id } = req.params;
 
-    try{
+    try {
       const deleted = await Title.deleteOne({
-        _id: id
-      }).catch(error => {throw error});
+        _id: id,
+      }).catch(error => {
+        throw error;
+      });
 
       return res.json(deleted);
-    }
-    catch(error){
+    } catch (error) {
       return res.status(400).json({ error: String(error) });
     }
   },
   // This method lists all titles
-  async index(req, res){
+  async index(req, res) {
     const { name } = req.query;
-    try{
+    try {
       const queryDocument = {};
-      if(name)
-        queryDocument.name = { $regex: `^${name}`, $options:'i'}
+      if (name) queryDocument.name = { $regex: `^${name}`, $options: 'i' };
 
-      const titles = await Title.find(queryDocument).catch(error => {throw error});
+      const titles = await Title.find(queryDocument).catch(error => {
+        throw error;
+      });
 
       return res.json(titles);
-    }
-    catch(error){
+    } catch (error) {
       return res.status(400).json({ error: String(error) });
     }
   },
   // The store methods creates a new title
-  async store(req, res){
+  async store(req, res) {
     const { name } = req.body;
 
-    try{
+    try {
       const title = await Title.create({
-        name
-      }).catch(error => {throw error});
+        name,
+      }).catch(error => {
+        throw error;
+      });
 
       return res.json(title);
-    }
-    catch(error){
+    } catch (error) {
       return res.status(400).json({ error: String(error) });
     }
   },
   // This method updates a title
-  async update(req, res){
+  async update(req, res) {
     const { name } = req.body;
     const { id } = req.params;
 
-    try{
-      const title = await Title.updateOne({
-        _id: id
-      }, {
-        $set: {
-          name
-        }
-      }).catch(error => {throw error});
+    try {
+      const title = await Title.updateOne(
+        {
+          _id: id,
+        },
+        {
+          $set: {
+            name,
+          },
+        },
+      ).catch(error => {
+        throw error;
+      });
 
       return res.json(title);
-    }
-    catch(error){
+    } catch (error) {
       return res.status(400).json({ error: String(error) });
-  }
-  }
+    }
+  },
 };

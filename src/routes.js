@@ -8,6 +8,7 @@ const AchievementController = require('./controllers/AchievementController');
 const ActivityController = require('./controllers/ActivityController');
 const AuthenticationController = require('./controllers/AuthenticationController');
 const GameController = require('./controllers/GameController');
+const LevelController = require('./controllers/LevelController');
 const RankController = require('./controllers/RankController');
 const UserController = require('./controllers/UserController');
 const TitleController = require('./controllers/TitleController');
@@ -19,8 +20,18 @@ const upload = multer(uploadConfig);
 routes.delete('/achievement/:id', verify, AchievementController.delete);
 routes.get('/achievements', verify, AchievementController.index);
 routes.get('/achievement/:id', verify, AchievementController.show);
-routes.post('/achievement', verify, upload.single('image'), AchievementController.store);
-routes.put('/achievement/:id', verify, upload.single('image'), AchievementController.update);
+routes.post(
+  '/achievement',
+  verify,
+  upload.single('image'),
+  AchievementController.store,
+);
+routes.put(
+  '/achievement/:id',
+  verify,
+  upload.single('image'),
+  AchievementController.update,
+);
 
 // Activity
 routes.delete('/activity/:id', verify, ActivityController.delete);
@@ -32,15 +43,11 @@ routes.put('/activity/:id', verify, ActivityController.update);
 // Auth
 routes.post('/login', AuthenticationController.store);
 
-// Game
+// Game Routes
 routes.get('/game/:id', verify, GameController.show);
 routes.put('/game/:id', verify, upload.single('image'), GameController.update);
 routes.post('/game', verify, upload.single('image'), GameController.store);
-
-// Rank
-routes.delete('/rank/:id', verify, RankController.delete);
-routes.get('/ranks', verify, RankController.index);
-routes.post('/rank', verify, RankController.store);
+routes.put('/level/:id', verify, LevelController.update);
 routes.put('/rank/:id', verify, RankController.update);
 
 // User options
