@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const { ADDRESS } = require('../../config');
 
 const UserSchema = new Schema(
   {
@@ -41,8 +42,17 @@ const UserSchema = new Schema(
     },
     access: Boolean,
     token: String,
+    image: String,
   },
-  {},
+  {
+    toJSON: {
+      virtuals: true,
+    },
+  },
 );
+
+UserSchema.virtual('profile_url').get(function () {
+  return `${ADDRESS}/files/user/${this.image}`;
+});
 
 module.exports = model('User', UserSchema);
