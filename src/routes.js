@@ -6,6 +6,7 @@ const uploadConfig = require('./config/upload');
 // Controllers
 const AchievementController = require('./controllers/AchievementController');
 const ActivityController = require('./controllers/ActivityController');
+const ActivityRegisterController = require('./controllers/ActivityRegisterController');
 const AuthenticationController = require('./controllers/AuthenticationController');
 const GameController = require('./controllers/GameController');
 const LevelController = require('./controllers/LevelController');
@@ -39,6 +40,10 @@ routes.get('/activities', verify, ActivityController.index);
 routes.get('/activity/:id', verify, ActivityController.show);
 routes.post('/activity', verify, ActivityController.store);
 routes.put('/activity/:id', verify, ActivityController.update);
+
+// Activity Register
+routes.get('/activityRegisters', verify, ActivityRegisterController.index);
+routes.post('/activityRegister', verify, ActivityRegisterController.store);
 
 // Auth
 routes.post('/login', AuthenticationController.store);

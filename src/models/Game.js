@@ -36,6 +36,10 @@ const GameSchema = new Schema(
         },
       ],
     },
+    newRegisters: {
+      type: Number,
+      default: 0,
+    },
     ranks: {
       type: [RankSchema],
       default: [],
