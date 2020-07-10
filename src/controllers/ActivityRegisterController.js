@@ -39,11 +39,14 @@ module.exports = {
       });
 
       // Update registers on Game
-      await Game.updateOne(gameId, {
-        $inc: {
-          newRegisters: 1,
+      await Game.updateOne(
+        { _id: gameId },
+        {
+          $inc: {
+            newRegisters: 1,
+          },
         },
-      });
+      );
 
       return res.json(activityRegister);
     } catch (error) {
