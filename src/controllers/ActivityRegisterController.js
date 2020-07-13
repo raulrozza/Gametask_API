@@ -6,9 +6,13 @@ module.exports = {
   // This method lists all activity registers
   async index(_, res) {
     try {
-      const activities = await ActivityRegister.find({}).catch(error => {
-        throw error;
-      });
+      const activities = await ActivityRegister.find({})
+        .populate('activity')
+        .populate('requester')
+        .sort({ requestDate: -1 })
+        .catch(error => {
+          throw error;
+        });
 
       return res.json(activities);
     } catch (error) {
