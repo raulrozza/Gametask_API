@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const checkGame = require('./services/game');
 const verify = require('./services/jwt/verify');
 const uploadConfig = require('./config/upload');
 
@@ -18,32 +19,55 @@ const routes = express.Router();
 const upload = multer(uploadConfig);
 
 // Achievements
-routes.delete('/achievement/:id', verify, AchievementController.delete);
-routes.get('/achievements', verify, AchievementController.index);
-routes.get('/achievement/:id', verify, AchievementController.show);
+routes.delete(
+  '/achievement/:id',
+  verify,
+  checkGame,
+  AchievementController.delete,
+);
+routes.get('/achievements', verify, checkGame, AchievementController.index);
+routes.get('/achievement/:id', verify, checkGame, AchievementController.show);
 routes.post(
   '/achievement',
   verify,
+  checkGame,
   upload.single('image'),
   AchievementController.store,
 );
 routes.put(
   '/achievement/:id',
   verify,
+  checkGame,
   upload.single('image'),
   AchievementController.update,
 );
 
 // Activity
-routes.delete('/activity/:id', verify, ActivityController.delete);
-routes.get('/activities', verify, ActivityController.index);
-routes.get('/activity/:id', verify, ActivityController.show);
-routes.post('/activity', verify, ActivityController.store);
-routes.put('/activity/:id', verify, ActivityController.update);
+routes.delete('/activity/:id', verify, checkGame, ActivityController.delete);
+routes.get('/activities', verify, checkGame, ActivityController.index);
+routes.get('/activity/:id', verify, checkGame, ActivityController.show);
+routes.post('/activity', verify, checkGame, ActivityController.store);
+routes.put('/activity/:id', verify, checkGame, ActivityController.update);
 
 // Activity Register
-routes.get('/activityRegisters', verify, ActivityRegisterController.index);
-routes.post('/activityRegister', verify, ActivityRegisterController.store);
+routes.get(
+  '/activityRegisters',
+  verify,
+  checkGame,
+  ActivityRegisterController.index,
+);
+routes.post(
+  '/activityRegister',
+  verify,
+  checkGame,
+  ActivityRegisterController.store,
+);
+routes.delete(
+  '/activityRegister/:id',
+  verify,
+  checkGame,
+  ActivityRegisterController.delete,
+);
 
 // Auth
 routes.post('/login', AuthenticationController.store);
@@ -61,9 +85,9 @@ routes.get('/user/:id', verify, UserController.show);
 routes.post('/signup', UserController.store);
 
 // Title
-routes.delete('/title/:id', verify, TitleController.delete);
-routes.get('/titles', verify, TitleController.index);
-routes.post('/title', verify, TitleController.store);
-routes.put('/title/:id', verify, TitleController.update);
+routes.delete('/title/:id', verify, checkGame, TitleController.delete);
+routes.get('/titles', verify, checkGame, TitleController.index);
+routes.post('/title', verify, checkGame, TitleController.store);
+routes.put('/title/:id', verify, checkGame, TitleController.update);
 
 module.exports = routes;

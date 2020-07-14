@@ -21,6 +21,11 @@ const ActivityRegisterSchema = new Schema(
       required: true,
     },
     information: String,
+    game: {
+      type: Schema.Types.ObjectId,
+      ref: 'Game',
+      required: true,
+    },
   },
   {},
 );
