@@ -37,6 +37,4 @@ server.use(express.json());
 server.use('/files', express.static(path.resolve(__dirname, '..', 'uploads')));
 server.use(routes);
 
-server.listen(PORT, () =>
-  console.log(`Server and Updater started on port ${PORT}`),
-);
+server.listen(PORT, () => console.log(`Server started on port ${PORT}`));

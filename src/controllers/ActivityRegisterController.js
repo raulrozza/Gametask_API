@@ -1,5 +1,6 @@
 const Game = require('../models/Game');
 const ActivityRegister = require('../models/ActivityRegister');
+const handleRemoveActivityRegister = require('../actions/handleRemoveActivityRegister');
 
 // This controller manages the activities in the application, creating and updating their data
 module.exports = {
@@ -24,16 +25,7 @@ module.exports = {
     const game = req.game;
 
     try {
-      await ActivityRegister.deleteOne({ _id: id });
-      // Update registers on Game
-      await Game.updateOne(
-        { _id: game },
-        {
-          $inc: {
-            newRegisters: -1,
-          },
-        },
-      );
+      await handleRemoveActivityRegister(id, game);
     } catch (error) {
       return res.status(400).json({ error: String(error) });
     }
