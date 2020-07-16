@@ -8,7 +8,7 @@ module.exports = {
   async show(req, res) {
     const { id } = req.params;
     try {
-      const game = await Game.findById(id);
+      const game = await Game.findById(id).populate('weeklyRanking.user');
 
       return res.json(game);
     } catch (error) {

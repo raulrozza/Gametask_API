@@ -1,22 +1,21 @@
 const ActivityRegister = require('../models/ActivityRegister');
 const Game = require('../models/Game');
 
-module.exports = async (activityId, gameId, options = {}) => {
+module.exports = async (registerId, gameId, options = {}) => {
   return new Promise((resolve, reject) => {
-    ActivityRegister.deleteOne({ _id: activityId }, options)
+    ActivityRegister.deleteOne({ _id: registerId }, options)
       .then(() =>
         Game.updateOne(
           { _id: gameId },
           {
             $inc: {
-              newRegisters: 3,
+              newRegisters: -1,
             },
           },
           options,
         ),
       )
+      .then(resolve)
       .catch(reject);
-
-    resolve();
   });
 };

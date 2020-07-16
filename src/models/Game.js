@@ -3,6 +3,7 @@ const { ADDRESS } = require('../../config');
 const LevelInfoSchema = require('./utils/LevelInfoSchema');
 const ThemeSchema = require('./utils/ThemeSchema');
 const RankSchema = require('./utils/RankSchema');
+const WeeklyRanking = require('./utils/WeeklyRanking');
 
 const GameSchema = new Schema(
   {
@@ -45,7 +46,7 @@ const GameSchema = new Schema(
       default: [],
     },
     weeklyRanking: {
-      type: [Object],
+      type: [WeeklyRanking],
       default: [],
     },
   },
