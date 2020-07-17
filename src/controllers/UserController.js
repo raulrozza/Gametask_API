@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+const { JsonWebTokenError } = require('jsonwebtoken');
 
 const BCRYPT_SALT_ROUNDS = 12; // salt rounds used in password crypto
 
@@ -52,7 +53,8 @@ module.exports = {
         .catch(error => {
           throw error;
         });
-      if (!hashedPassword) throw 'Could not generate password';
+      if (!hashedPassword)
+        throw JsonWebTokenError('Could not generate password');
 
       const users = await User.find(
         {},
