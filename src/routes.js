@@ -10,6 +10,7 @@ const ActivityController = require('./controllers/ActivityController');
 const ActivityRegisterController = require('./controllers/ActivityRegisterController');
 const AuthenticationController = require('./controllers/AuthenticationController');
 const ExperienceController = require('./controllers/ExperienceController');
+const FeedController = require('./controllers/FeedController');
 const GameController = require('./controllers/GameController');
 const LevelController = require('./controllers/LevelController');
 const RankController = require('./controllers/RankController');
@@ -75,6 +76,9 @@ routes.post('/login', AuthenticationController.store);
 
 // Experience
 routes.post('/experience', verify, checkGame, ExperienceController.store);
+
+// Feed Register
+routes.get('/feed', verify, checkGame, FeedController.index);
 
 // Game Routes
 routes.get('/game/:id', verify, GameController.show);
