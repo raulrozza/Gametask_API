@@ -21,6 +21,9 @@ module.exports = {
         .populate('achievement', {
           name: 1,
           title: 1,
+        })
+        .sort({
+          date: -1,
         });
 
       return res.json(feed);
