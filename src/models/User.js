@@ -40,7 +40,6 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
-    access: Boolean,
     token: String,
     image: String,
   },
