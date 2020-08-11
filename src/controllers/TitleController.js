@@ -9,6 +9,7 @@ module.exports = {
     try {
       const deleted = await Title.deleteOne({
         _id: id,
+        game: req.game,
       }).catch(error => {
         throw error;
       });
@@ -22,7 +23,7 @@ module.exports = {
   async index(req, res) {
     const { name } = req.query;
     try {
-      const queryDocument = {};
+      const queryDocument = { game: req.game };
       if (name) queryDocument.name = { $regex: `^${name}`, $options: 'i' };
 
       const titles = await Title.find(queryDocument).catch(error => {
@@ -41,6 +42,7 @@ module.exports = {
     try {
       const title = await Title.create({
         name,
+        game: req.game,
       }).catch(error => {
         throw error;
       });
@@ -59,6 +61,7 @@ module.exports = {
       const title = await Title.updateOne(
         {
           _id: id,
+          game: req.game,
         },
         {
           $set: {

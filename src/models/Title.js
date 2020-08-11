@@ -6,6 +6,11 @@ const TitleSchema = new Schema(
       type: String,
       required: true,
     },
+    game: {
+      type: Schema.Types.ObjectId,
+      ref: 'Game',
+      required: true,
+    },
   },
   {},
 );

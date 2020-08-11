@@ -6,11 +6,13 @@ module.exports = {
   async update(req, res) {
     const { ranks } = req.body;
     const { id } = req.params;
+    const { id: userId } = req.auth;
 
     try {
       const updateResponse = await Game.updateOne(
         {
           _id: id,
+          administrators: userId,
         },
         {
           $set: { ranks },

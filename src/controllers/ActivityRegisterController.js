@@ -5,9 +5,9 @@ const handleRemoveActivityRegister = require('../actions/handleRemoveActivityReg
 // This controller manages the activities in the application, creating and updating their data
 module.exports = {
   // This method lists all activity registers
-  async index(_, res) {
+  async index(req, res) {
     try {
-      const activities = await ActivityRegister.find({})
+      const activities = await ActivityRegister.find({ game: req.game })
         .populate('activity')
         .populate('requester')
         .sort({ requestDate: -1 })

@@ -9,6 +9,7 @@ module.exports = {
     try {
       const deleted = await Achievement.deleteOne({
         _id: id,
+        game: req.game,
       }).catch(error => {
         throw error;
       });
@@ -19,9 +20,9 @@ module.exports = {
     }
   },
   // This method lists all achievements
-  async index(_, res) {
+  async index(req, res) {
     try {
-      const achievements = await Achievement.find({})
+      const achievements = await Achievement.find({ game: req.game })
         .populate('title')
         .catch(error => {
           throw error;
@@ -58,6 +59,7 @@ module.exports = {
         name,
         description,
         title,
+        game: req.game,
         image: filename,
       }).catch(error => {
         throw error;
@@ -87,6 +89,7 @@ module.exports = {
       const achievement = await Achievement.updateOne(
         {
           _id: id,
+          game: req.game,
         },
         updateDocument,
       ).catch(error => {

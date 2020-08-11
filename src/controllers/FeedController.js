@@ -3,14 +3,17 @@ const FeedItem = require('../models/FeedItem');
 // This controller manages the feeds in the application
 module.exports = {
   // The index method returns all instances of feed registers
-  async index(_, res) {
+  async index(req, res) {
     try {
-      const feed = await FeedItem.find({})
-        .populate('user', {
-          firstname: 1,
-          lastname: 1,
+      const feed = await FeedItem.find({ game: req.game })
+        .populate('player', {
           level: 1,
           currentTitle: 1,
+          rank: 1,
+        })
+        .populate('player.user', {
+          firstname: 1,
+          lastname: 1,
           image: 1,
           profile_url: 1,
         })

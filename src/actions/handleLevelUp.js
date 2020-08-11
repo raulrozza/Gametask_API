@@ -1,16 +1,16 @@
-const User = require('../models/User');
+const Player = require('../models/Player');
 const Game = require('../models/Game');
 const FeedItem = require('../models/FeedItem');
 
-module.exports = async (userId, gameId, session) => {
+module.exports = async (playerId, gameId, session) => {
   return new Promise((resolve, reject) => {
-    let user, game;
+    let player, game;
 
     Promise.all([
-      User.findById(userId)
+      Player.findById(playerId)
         .session(session)
         .then(response => {
-          user = response;
+          player = response;
         }),
       Game.findById(gameId)
         .session(session)
@@ -21,27 +21,32 @@ module.exports = async (userId, gameId, session) => {
       .then(async () => {
         const higherLevel = game.levelInfo
           .sort((a, b) => b.requiredExperience - a.requiredExperience)
-          .find(level => level.requiredExperience <= user.experience);
+          .find(level => level.requiredExperience <= player.experience);
 
-        if (higherLevel.level > user.level) {
+        if (higherLevel.level > player.level) {
           // LEVEL UP!
           const newLevel = higherLevel.level;
 
-          // Did the user rank up?
+          // Did the player rank up?
           const [newRank] = game.ranks
             .filter(
               rank =>
-                rank.level <= higherLevel.level && rank.level > user.level,
+                rank.level <= higherLevel.level && rank.level > player.level,
             )
             .sort((a, b) => b.level - a.level);
 
-          // Update the user's level
-          await User.updateOne(
-            { _id: userId },
+          // The update document
+          const playerSetDoc = {
+            level: newLevel,
+          };
+          // If the player ranked up, set the new rank
+          if (newRank) playerSetDoc.rank = newRank;
+
+          // Update the player's level and rank
+          await Player.updateOne(
+            { _id: playerId },
             {
-              $set: {
-                level: newLevel,
-              },
+              $set: playerSetDoc,
             },
             { session },
           );
@@ -50,7 +55,7 @@ module.exports = async (userId, gameId, session) => {
           await FeedItem.create(
             [
               {
-                user: userId,
+                player: playerId,
                 type: 'level',
                 level: higherLevel,
                 date: new Date(),
@@ -60,11 +65,11 @@ module.exports = async (userId, gameId, session) => {
           );
 
           if (newRank) {
-            // User got a new rank. Let's notify it
+            // player got a new rank. Let's notify it
             await FeedItem.create(
               [
                 {
-                  user: userId,
+                  player: playerId,
                   type: 'rank',
                   rank: newRank,
                   date: new Date(),

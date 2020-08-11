@@ -9,6 +9,7 @@ module.exports = {
     try {
       const deleted = await Activity.deleteOne({
         _id: id,
+        game: req.game,
       }).catch(error => {
         throw error;
       });
@@ -21,9 +22,11 @@ module.exports = {
   // This method lists all activities
   async index(req, res) {
     try {
-      const activities = await Activity.find({}).catch(error => {
-        throw error;
-      });
+      const activities = await Activity.find({ game: req.game }).catch(
+        error => {
+          throw error;
+        },
+      );
 
       return res.json(activities);
     } catch (error) {
@@ -53,6 +56,7 @@ module.exports = {
         description,
         experience,
         dmRules,
+        game: req.game,
       }).catch(error => {
         throw error;
       });
@@ -94,6 +98,7 @@ module.exports = {
       const updatedActivity = await Activity.updateOne(
         {
           _id: id,
+          game: req.game,
         },
         {
           $set: updateDocument,
