@@ -31,9 +31,11 @@ mongoose
   })
   .catch(error => console.error('MongoDB error:', error));
 
-if (CORS_CONFIG) {
-  const whitelist = [CORS_CONFIG];
-  const corsOptionsDelegate = (req, callback) => {
+const whitelist = [CORS_CONFIG];
+
+const corsOptionsDelegate =
+  CORS_CONFIG &&
+  ((req, callback) => {
     let corsOptions;
     if (whitelist.indexOf(req.header('Origin')) !== -1)
       corsOptions = { origin: true };
@@ -41,9 +43,9 @@ if (CORS_CONFIG) {
     else corsOptions = { origin: false }; // disable CORS for this request
 
     callback(null, corsOptions); // callback expects two parameters: error and options
-  };
-  app.use(cors(corsOptionsDelegate));
-} else app.use(cors());
+  });
+
+app.use(cors(corsOptionsDelegate));
 
 app.use(express.json());
 

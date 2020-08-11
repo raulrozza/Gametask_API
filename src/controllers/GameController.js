@@ -6,6 +6,19 @@ const Player = require('../models/Player');
   This controller manages the game configurations
 */
 module.exports = {
+  // Retrieve all games that belong to a certain user
+  async index(req, res) {
+    const { id } = req.auth;
+    try {
+      const games = await Game.find({
+        administrators: id,
+      });
+
+      return res.json(games);
+    } catch (error) {
+      return res.status(400).json({ error: String(error) });
+    }
+  },
   // Retrieve the game's info
   async show(req, res) {
     const { id } = req.params;
