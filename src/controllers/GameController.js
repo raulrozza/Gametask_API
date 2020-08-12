@@ -53,9 +53,9 @@ module.exports = {
       });
 
       await session.startTransaction();
-      let game;
+
       try {
-        game = await Game.create(
+        const [game] = await Game.create(
           [
             {
               name,
@@ -82,8 +82,9 @@ module.exports = {
         session.endSession();
       }
 
-      return res.json(game);
+      return res.status(201).send();
     } catch (error) {
+      console.error(error);
       return res.status(400).json({ error: String(error) });
     }
   },

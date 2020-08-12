@@ -7,7 +7,7 @@ const uploadConfig = require('../config/upload');
 const AchievementController = require('../controllers/AchievementController');
 
 const achievementRoutes = express.Router();
-const upload = multer(uploadConfig);
+const upload = multer(uploadConfig('achievement'));
 
 achievementRoutes.delete(
   '/:id',

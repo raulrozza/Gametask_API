@@ -6,7 +6,7 @@ const uploadConfig = require('../config/upload');
 const GameController = require('../controllers/GameController');
 
 const gameRoutes = express.Router();
-const upload = multer(uploadConfig);
+const upload = multer(uploadConfig('game'));
 
 gameRoutes.get('/', verifyJwt, GameController.index);
 gameRoutes.get('/:id', verifyJwt, GameController.show);
