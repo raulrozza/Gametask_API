@@ -10,7 +10,7 @@ module.exports = {
     const { id: userId } = req.auth;
 
     try {
-      const updateResponse = await Game.updateOne(
+      await Game.updateOne(
         {
           _id: id,
           administrators: userId,
@@ -22,7 +22,7 @@ module.exports = {
         throw error;
       });
 
-      return res.json(updateResponse);
+      return res.status(201).send();
     } catch (error) {
       return res.status(400).json({ error: String(error) });
     }
