@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Activity = require('../models/Activity');
-const User = require('../models/User');
+const Player = require('../models/Player');
 const handleLevelUp = require('../actions/handleLevelUp');
 const handleRemoveActivityRegister = require('../actions/handleRemoveActivityRegister');
 const FeedItem = require('../models/FeedItem');
@@ -13,6 +13,7 @@ module.exports = {
   async store(req, res) {
     const {
       userId,
+      playerId,
       activityId,
       registerId,
       experience,
@@ -35,8 +36,8 @@ module.exports = {
         };
 
         // Give the player experience
-        await User.updateOne(
-          { _id: userId },
+        await Player.updateOne(
+          { _id: playerId, user: userId, game },
           {
             $inc: {
               experience,
@@ -47,7 +48,7 @@ module.exports = {
           },
         ).then(() => {
           // Level up the player properly, getting the new level info
-          handleLevelUp(userId, game, session);
+          handleLevelUp(playerId, game, session);
         });
 
         // Register in activity history
@@ -73,7 +74,7 @@ module.exports = {
         await FeedItem.create(
           [
             {
-              user: userId,
+              player: playerId,
               type: 'activity',
               activity: activityId,
               date: new Date(),
@@ -86,16 +87,16 @@ module.exports = {
         await Game.findById(game)
           .session(session)
           .then(({ weeklyRanking }) => {
-            // Searches for an entry of the user on the ranking
+            // Searches for an entry of the player on the ranking
             const index = weeklyRanking.findIndex(
-              ranking => ranking.user === userId,
+              ranking => ranking.player === playerId,
             );
 
-            // If the user is not in the ranking, we push it into
+            // If the player is not in the ranking, we push it into
             if (index < 0)
               weeklyRanking = [
                 ...weeklyRanking,
-                { user: userId, currentExperience: experience },
+                { player: playerId, currentExperience: experience },
               ];
             // Otherwise, we increase its experience in the ranking
             else
@@ -124,7 +125,7 @@ module.exports = {
         session.endSession();
       }
 
-      return res.json('opa');
+      return res.status(201);
     } catch (error) {
       return res.status(400).json({ error: String(error) });
     }

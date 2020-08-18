@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const { ADDRESS } = require('../../config');
+const { ADDRESS } = require('../config/environment');
 const LevelInfoSchema = require('./utils/LevelInfoSchema');
 const ThemeSchema = require('./utils/ThemeSchema');
 const RankSchema = require('./utils/RankSchema');

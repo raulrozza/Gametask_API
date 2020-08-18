@@ -4,9 +4,9 @@ const RankSchema = require('./utils/RankSchema');
 
 const FeedItem = new Schema(
   {
-    user: {
+    player: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'Player',
       required: true,
     },
     type: {
@@ -23,6 +23,11 @@ const FeedItem = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Achievement',
       default: undefined,
+    },
+    game: {
+      type: Schema.Types.ObjectId,
+      ref: 'Game',
+      required: true,
     },
     level: {
       type: LevelInfoSchema,

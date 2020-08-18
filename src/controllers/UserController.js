@@ -45,8 +45,6 @@ module.exports = {
   async store(req, res) {
     const { firstname, lastname, email, password } = req.body;
 
-    let access = 0;
-
     try {
       const hashedPassword = await bcrypt
         .hash(password, BCRYPT_SALT_ROUNDS)
@@ -56,22 +54,23 @@ module.exports = {
       if (!hashedPassword)
         throw JsonWebTokenError('Could not generate password');
 
-      const users = await User.find(
-        {},
+      const foundUser = await User.findOne(
+        {
+          email,
+        },
         {
           password: 0,
         },
       ).catch(error => {
         throw error;
       });
-      if (users.length <= 0) access = 1;
+      if (foundUser) throw new Error('User already exists.');
 
       const user = await User.create({
         firstname,
         lastname,
         email,
         password: hashedPassword,
-        access,
       }).catch(error => {
         throw error;
       });

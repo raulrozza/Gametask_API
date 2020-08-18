@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { SECRET_KEY } = require('../../config');
+const { SECRET_KEY } = require('../config/environment');
 
 const VALID_DAYS = 7;
 
@@ -29,11 +29,9 @@ module.exports = {
           });
         if (passwordMatch) {
           // Token expires in {VALID_DAYS} days. ExpiresIn takes on a number of seconds, so 60*60*24*VALID_DAYS
-          const token = jwt.sign(
-            { id: user._id, access: user.access },
-            SECRET_KEY,
-            { expiresIn: VALID_DAYS * 86400 },
-          );
+          const token = jwt.sign({ id: user._id, email }, SECRET_KEY, {
+            expiresIn: VALID_DAYS * 86400,
+          });
           if (!token)
             return res
               .status(400)

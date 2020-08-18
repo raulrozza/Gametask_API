@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const { ADDRESS } = require('../../config');
+const { ADDRESS } = require('../config/environment');
 
 const AchievementSchema = new Schema(
   {
@@ -16,6 +16,11 @@ const AchievementSchema = new Schema(
       ref: 'Title',
     },
     image: String,
+    game: {
+      type: Schema.Types.ObjectId,
+      ref: 'Game',
+      required: true,
+    },
   },
   {
     toJSON: {

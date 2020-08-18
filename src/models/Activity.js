@@ -22,6 +22,11 @@ const ActivitySchema = new Schema(
       type: [LogSchema],
       default: [],
     },
+    game: {
+      type: Schema.Types.ObjectId,
+      ref: 'Game',
+      required: true,
+    },
   },
   {},
 );

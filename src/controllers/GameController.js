@@ -1,14 +1,40 @@
+const mongoose = require('mongoose');
 const Game = require('../models/Game');
+const Player = require('../models/Player');
 
 /* 
   This controller manages the game configurations
 */
 module.exports = {
+  // Retrieve all games that belong to a certain user
+  async index(req, res) {
+    const { id } = req.auth;
+    try {
+      const games = await Game.find({
+        administrators: id,
+      });
+
+      return res.json(games);
+    } catch (error) {
+      return res.status(400).json({ error: String(error) });
+    }
+  },
   // Retrieve the game's info
   async show(req, res) {
     const { id } = req.params;
     try {
-      const game = await Game.findById(id).populate('weeklyRanking.user');
+      const game = await Game.findById(id)
+        .populate('weeklyRanking.player', {
+          experience: 0,
+          achievements: 0,
+          titles: 0,
+        })
+        .populate('weeklyRanking.player.user', {
+          email: 0,
+          auth: 0,
+          password: 0,
+          token: 0,
+        });
 
       return res.json(game);
     } catch (error) {
@@ -17,28 +43,48 @@ module.exports = {
   },
   // Create a game's initial config
   async store(req, res) {
-    const { name, description, theme, administrators, levelInfo } = req.body;
+    const { name, description, theme, levelInfo } = req.body;
     const { filename } = req.file;
+    const { id } = req.auth;
 
     try {
-      // Only one game may exist. So, before creating a new one, we make sure there is no other already created.
-      const games = await Game.find({});
-
-      if (games.length > 0) return res.json(games[0]);
-
-      const game = await Game.create({
-        name,
-        description,
-        theme,
-        image: filename,
-        administrators,
-        levelInfo,
-      }).catch(error => {
+      const session = await mongoose.startSession().catch(error => {
         throw error;
       });
 
-      return res.json(game);
+      await session.startTransaction();
+
+      try {
+        const [game] = await Game.create(
+          [
+            {
+              name,
+              description,
+              theme,
+              image: filename,
+              administrators: [id],
+              levelInfo,
+            },
+          ],
+          { session },
+        );
+
+        await Player.create({
+          user: id,
+          game: game._id,
+        });
+
+        await session.commitTransaction();
+      } catch (error) {
+        await session.abortTransaction();
+        throw error;
+      } finally {
+        session.endSession();
+      }
+
+      return res.status(201).send();
     } catch (error) {
+      console.error(error);
       return res.status(400).json({ error: String(error) });
     }
   },
@@ -46,6 +92,7 @@ module.exports = {
   async update(req, res) {
     const { name, description, theme } = req.body;
     const { id } = req.params;
+    const { id: userId } = req.auth;
 
     try {
       const updateDocument = {};
@@ -54,9 +101,10 @@ module.exports = {
       if (theme) updateDocument.theme = JSON.parse(theme);
       if (req.file) updateDocument.image = req.file.filename;
 
-      const updateResponse = await Game.updateOne(
+      await Game.updateOne(
         {
           _id: id,
+          administrators: userId,
         },
         {
           $set: updateDocument,
@@ -65,7 +113,7 @@ module.exports = {
         throw error;
       });
 
-      return res.json(updateResponse);
+      return res.status(201).send();
     } catch (error) {
       return res.status(400).json({ error: String(error) });
     }
