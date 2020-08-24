@@ -85,7 +85,7 @@ module.exports = {
           experience: activity.experience,
           dmRules: activity.dmRules,
         },
-        userId: res.auth.id,
+        userId: req.auth.id,
       };
 
       const updateDocument = {
@@ -95,7 +95,7 @@ module.exports = {
         dmRules,
       };
 
-      const updatedActivity = await Activity.updateOne(
+      await Activity.updateOne(
         {
           _id: id,
           game: req.game,
@@ -113,7 +113,7 @@ module.exports = {
         throw error;
       });
 
-      return res.json(updatedActivity);
+      return res.status(201).send();
     } catch (error) {
       return res.status(400).json({ error: String(error) });
     }
