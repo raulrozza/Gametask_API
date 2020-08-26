@@ -127,7 +127,7 @@ module.exports = {
 
       return res.status(201);
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
 };

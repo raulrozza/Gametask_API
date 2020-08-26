@@ -1,4 +1,5 @@
 const Player = require('../models/Player');
+const { errorCodes, MissingParametersError } = require('../utils/Errors');
 
 // This controller manages the players in the application, managing their data
 module.exports = {
@@ -16,7 +17,7 @@ module.exports = {
 
       return res.json(players);
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
   // The show method returns the data of a single player
@@ -26,6 +27,9 @@ module.exports = {
     const game = req.game;
 
     try {
+      if (!id)
+        throw new MissingParametersError('Missing player id on parameters.');
+
       const player = await Player.findOne({
         _id: id,
         user,
@@ -39,7 +43,12 @@ module.exports = {
 
       return res.json(player);
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      if (error instanceof MissingParametersError)
+        return res
+          .status(400)
+          .json({ error: error.message, code: errorCodes.MISSING_PARAMETERS });
+
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
 };

@@ -1,4 +1,5 @@
 const Game = require('../models/Game');
+const { MissingParametersError, errorCodes } = require('../utils/Errors');
 
 // This controller manages the ranks in the application, updating their data
 module.exports = {
@@ -9,6 +10,9 @@ module.exports = {
     const { id: userId } = req.auth;
 
     try {
+      if (!id)
+        throw new MissingParametersError('Missing game id on parameters.');
+
       await Game.updateOne(
         {
           _id: id,
@@ -23,7 +27,12 @@ module.exports = {
 
       return res.status(201).send();
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      if (error instanceof MissingParametersError)
+        return res
+          .status(400)
+          .json({ error: error.message, code: errorCodes.MISSING_PARAMETERS });
+
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
 };

@@ -1,8 +1,11 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const { JsonWebTokenError } = require('jsonwebtoken');
-const { Error } = require('mongoose');
-const { UserExistsError, errorCodes } = require('../utils/Errors');
+const {
+  UserExistsError,
+  errorCodes,
+  MissingParametersError,
+} = require('../utils/Errors');
 
 const BCRYPT_SALT_ROUNDS = 12; // salt rounds used in password crypto
 
@@ -23,7 +26,7 @@ module.exports = {
 
       return res.json(users);
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
   // The show method returns the data of a single user
@@ -31,6 +34,9 @@ module.exports = {
     const { id } = req.params;
 
     try {
+      if (!id)
+        throw new MissingParametersError('Missing user id on parameters.');
+
       const user = await User.findById(id, {
         token: 0,
         password: 0,
@@ -40,7 +46,12 @@ module.exports = {
 
       return res.json(user);
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      if (error instanceof MissingParametersError)
+        return res
+          .status(400)
+          .json({ error: error.message, code: errorCodes.MISSING_PARAMETERS });
+
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
   // The store methods creates a new user
@@ -66,6 +77,7 @@ module.exports = {
       ).catch(error => {
         throw error;
       });
+
       if (foundUser) throw new UserExistsError('User already exists.');
 
       const user = await User.create({
@@ -79,7 +91,7 @@ module.exports = {
 
       return res.json(user);
     } catch (error) {
-      if (error instanceof JsonWebTokenError || error instanceof Error)
+      if (error instanceof JsonWebTokenError)
         return res.status(500).json({ error: error.message });
 
       if (error instanceof UserExistsError)
@@ -87,7 +99,7 @@ module.exports = {
           .status(400)
           .json({ error: error.message, code: errorCodes.USER_ALREADY_EXISTS });
 
-      return res.status(500).json({ error: 'Unknown error' });
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
 };

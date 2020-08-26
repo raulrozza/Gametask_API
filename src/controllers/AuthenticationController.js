@@ -61,7 +61,7 @@ module.exports = {
           code: errorCodes.USER_PASSWORD_DONT_MATCH,
         });
 
-      return res.status(500).json({ error: 'Unknown error.' });
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
 };

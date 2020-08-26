@@ -1,4 +1,5 @@
 const Activity = require('../models/Activity');
+const { MissingParametersError, errorCodes } = require('../utils/Errors');
 
 // This controller manages the activities in the application, creating and updating their data
 module.exports = {
@@ -16,7 +17,7 @@ module.exports = {
 
       return res.json(deleted);
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
   // This method lists all activities
@@ -30,20 +31,29 @@ module.exports = {
 
       return res.json(activities);
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
   // This method returns one activities info
   async show(req, res) {
     const { id } = req.params;
+
     try {
+      if (!id)
+        throw new MissingParametersError('Missing activity id on parameters.');
+
       const activity = await Activity.findById(id).catch(error => {
         throw error;
       });
 
       return res.json(activity);
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      if (error instanceof MissingParametersError)
+        return res
+          .status(400)
+          .json({ error: error.message, code: errorCodes.MISSING_PARAMETERS });
+
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
   // The store methods creates a new activity
@@ -63,7 +73,7 @@ module.exports = {
 
       return res.json(activity);
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
   // This method updates an activity
@@ -72,6 +82,9 @@ module.exports = {
     const { id } = req.params;
 
     try {
+      if (!id)
+        throw new MissingParametersError('Missing activity id on parameters.');
+
       const activity = await Activity.findById(id).catch(error => {
         throw error;
       });
@@ -115,7 +128,12 @@ module.exports = {
 
       return res.status(201).send();
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      if (error instanceof MissingParametersError)
+        return res
+          .status(400)
+          .json({ error: error.message, code: errorCodes.MISSING_PARAMETERS });
+
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
 };
