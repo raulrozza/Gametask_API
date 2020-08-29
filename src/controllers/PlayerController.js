@@ -51,4 +51,20 @@ module.exports = {
       return res.status(500).json({ error: 'Internal server error.' });
     }
   },
+  // This method creates a new player, assigning a user to a game
+  async store(req, res) {
+    const { game } = req.body;
+    const { id } = req.auth;
+
+    try {
+      const player = await Player.create({
+        user: id,
+        game,
+      });
+
+      res.status(201).json(player._id);
+    } catch (error) {
+      return res.status(500).json({ error: 'Internal server error.' });
+    }
+  },
 };
