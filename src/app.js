@@ -20,6 +20,7 @@ const levelRoutes = require('./routes/levels.routes');
 const userRoutes = require('./routes/users.routes');
 const titleRoutes = require('./routes/titles.routes');
 const playerRoutes = require('./routes/players.routes');
+const inviteRoutes = require('./routes/invite.routes');
 
 // Initial server configuration
 const app = express();
@@ -61,6 +62,7 @@ app.use('/experience', experienceRoutes);
 app.use('/feed', feedRoutes);
 app.use('/game', gameRoutes);
 app.use('/gameplay', gameplayRoutes);
+app.use('/invite', inviteRoutes);
 app.use('/login', authenticationRoutes);
 app.use('/rank', rankRoutes);
 app.use('/level', levelRoutes);

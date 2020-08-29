@@ -1,4 +1,5 @@
 const Achievement = require('../models/Achievement');
+const { MissingParametersError, errorCodes } = require('../utils/Errors');
 
 // This controller manages the achievements in the application, creating and updating their data
 module.exports = {
@@ -7,6 +8,11 @@ module.exports = {
     const { id } = req.params;
 
     try {
+      if (!id)
+        throw new MissingParametersError(
+          'Missing achievement id on parameters.',
+        );
+
       const deleted = await Achievement.deleteOne({
         _id: id,
         game: req.game,
@@ -16,7 +22,12 @@ module.exports = {
 
       return res.json(deleted);
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      if (error instanceof MissingParametersError)
+        return res
+          .status(400)
+          .json({ error: error.message, code: errorCodes.MISSING_PARAMETERS });
+
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
   // This method lists all achievements
@@ -30,13 +41,18 @@ module.exports = {
 
       return res.json(achievements);
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
   // This method lists a single achievement
   async show(req, res) {
+    const { id } = req.params;
+
     try {
-      const { id } = req.params;
+      if (!id)
+        throw new MissingParametersError(
+          'Missing achievement id on parameters.',
+        );
 
       const achievement = await Achievement.findById(id)
         .populate('title')
@@ -46,7 +62,12 @@ module.exports = {
 
       return res.json(achievement);
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      if (error instanceof MissingParametersError)
+        return res
+          .status(400)
+          .json({ error: error.message, code: errorCodes.MISSING_PARAMETERS });
+
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
   // The store methods creates a new achievement
@@ -67,7 +88,7 @@ module.exports = {
 
       return res.json(achievement);
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
   // This method updates a achievement
@@ -76,6 +97,11 @@ module.exports = {
     const { id } = req.params;
 
     try {
+      if (!id)
+        throw new MissingParametersError(
+          'Missing achievement id on parameters.',
+        );
+
       const updateDocument = {
         $set: {},
       };
@@ -98,7 +124,12 @@ module.exports = {
 
       return res.json(achievement);
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      if (error instanceof MissingParametersError)
+        return res
+          .status(400)
+          .json({ error: error.message, code: errorCodes.MISSING_PARAMETERS });
+
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
 };

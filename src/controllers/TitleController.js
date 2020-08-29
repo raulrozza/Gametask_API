@@ -1,4 +1,5 @@
 const Title = require('../models/Title');
+const { MissingParametersError, errorCodes } = require('../utils/Errors');
 
 // This controller manages the titles in the application, creating and updating their data
 module.exports = {
@@ -7,21 +8,30 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      const deleted = await Title.deleteOne({
+      if (!id)
+        throw new MissingParametersError('Missing title id in parameters.');
+
+      await Title.deleteOne({
         _id: id,
         game: req.game,
       }).catch(error => {
         throw error;
       });
 
-      return res.json(deleted);
+      return res.status(201).send();
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      if (error instanceof MissingParametersError)
+        return res
+          .status(400)
+          .json({ error: error.message, code: errorCodes.MISSING_PARAMETERS });
+
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
   // This method lists all titles
   async index(req, res) {
     const { name } = req.query;
+
     try {
       const queryDocument = { game: req.game };
       if (name) queryDocument.name = { $regex: `^${name}`, $options: 'i' };
@@ -49,7 +59,7 @@ module.exports = {
 
       return res.json(title);
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
   // This method updates a title
@@ -58,7 +68,10 @@ module.exports = {
     const { id } = req.params;
 
     try {
-      const title = await Title.updateOne(
+      if (!id)
+        throw new MissingParametersError('Title id is missing in parameters.');
+
+      await Title.updateOne(
         {
           _id: id,
           game: req.game,
@@ -72,9 +85,14 @@ module.exports = {
         throw error;
       });
 
-      return res.json(title);
+      return res.status(201).send();
     } catch (error) {
-      return res.status(400).json({ error: String(error) });
+      if (error instanceof MissingParametersError)
+        return res
+          .status(400)
+          .json({ error: error.message, code: errorCodes.MISSING_PARAMETERS });
+
+      return res.status(500).json({ error: 'Internal server error.' });
     }
   },
 };

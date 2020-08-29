@@ -19,7 +19,8 @@ module.exports = async (req, res, next) => {
 
     return next();
   } catch (error) {
-    // Access Forbidden
-    return res.status(403).json({ error: String(error) });
+    if (error instanceof jwt.JsonWebTokenError)
+      return res.status(403).json({ error: 'Unauthorized access.' });
+    else return res.status(500).json({ error: 'Unknown error' });
   }
 };
