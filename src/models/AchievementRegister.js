@@ -4,7 +4,7 @@ const AchievementRegisterSchema = new Schema(
   {
     requester: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'Player',
       required: true,
     },
     achievement: {

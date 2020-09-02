@@ -4,7 +4,7 @@ const ActivityRegisterSchema = new Schema(
   {
     requester: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'Player',
       required: true,
     },
     activity: {

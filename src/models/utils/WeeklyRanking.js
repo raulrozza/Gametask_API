@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 
 const WeeklyRanking = new mongoose.Schema(
   {
-    user: {
+    player: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'Player',
       required: true,
     },
     currentExperience: {

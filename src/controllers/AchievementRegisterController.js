@@ -14,8 +14,18 @@ module.exports = {
       const achievementRegisters = await AchievementRegister.find({
         game: req.game,
       })
-        .populate('achievement')
-        .populate('requester')
+        .populate({
+          path: 'achievement',
+          populate: {
+            path: 'title',
+          },
+        })
+        .populate({
+          path: 'requester',
+          populate: {
+            path: 'user',
+          },
+        })
         .sort({ requestDate: -1 })
         .catch(error => {
           throw error;

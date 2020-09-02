@@ -48,7 +48,7 @@ module.exports = {
           },
         ).then(() => {
           // Level up the player properly, getting the new level info
-          handleLevelUp(playerId, game, session);
+          return handleLevelUp(playerId, game, session);
         });
 
         // Register in activity history
@@ -77,6 +77,7 @@ module.exports = {
               player: playerId,
               type: 'activity',
               activity: activityId,
+              game,
               date: new Date(),
             },
           ],
@@ -84,38 +85,37 @@ module.exports = {
         );
 
         // add xp in the weekly ranking
-        await Game.findById(game)
-          .session(session)
-          .then(({ weeklyRanking }) => {
-            // Searches for an entry of the player on the ranking
-            const index = weeklyRanking.findIndex(
-              ranking => ranking.player === playerId,
-            );
+        const { weeklyRanking: oldRanking } = await Game.findById(game);
+        // Searches for an entry of the player on the ranking
+        const index = oldRanking.findIndex(
+          ranking => ranking.player === playerId,
+        );
 
-            // If the player is not in the ranking, we push it into
-            if (index < 0)
-              weeklyRanking = [
-                ...weeklyRanking,
-                { player: playerId, currentExperience: experience },
-              ];
-            // Otherwise, we increase its experience in the ranking
-            else
-              weeklyRanking[index] = {
-                ...weeklyRanking[index],
-                currentExperience:
-                  weeklyRanking[index].currentExperience + experience,
-              };
-
-            return Game.updateOne(
-              { _id: game },
-              {
-                $set: {
-                  weeklyRanking,
+        // If the player is not in the ranking, we push it into
+        if (index < 0)
+          await Game.updateOne(
+            { _id: game },
+            {
+              $push: {
+                weeklyRanking: {
+                  player: playerId,
+                  currentExperience: experience,
                 },
               },
-              { session },
-            );
-          });
+            },
+            { session },
+          );
+        // Otherwise, we increase its experience in the ranking
+        else
+          await Game.updateOne(
+            { _id: game, 'weeklyRanking.player': playerId },
+            {
+              $inc: {
+                'weeklyRanking.$.currentExperience': experience,
+              },
+            },
+            { session },
+          );
 
         await session.commitTransaction();
       } catch (error) {
@@ -127,6 +127,7 @@ module.exports = {
 
       return res.status(201);
     } catch (error) {
+      console.log(error);
       return res.status(500).json({ error: 'Internal server error.' });
     }
   },

@@ -6,16 +6,13 @@ module.exports = {
   async index(req, res) {
     try {
       const feed = await FeedItem.find({ game: req.game })
-        .populate('player', {
-          level: 1,
-          currentTitle: 1,
-          rank: 1,
-        })
-        .populate('player.user', {
-          firstname: 1,
-          lastname: 1,
-          image: 1,
-          profile_url: 1,
+        .populate({
+          path: 'player',
+          select: '_id level currentTitle rank',
+          populate: {
+            path: 'user',
+            select: 'firstname lastname image profile_url',
+          },
         })
         .populate('activity', {
           name: 1,

@@ -10,7 +10,12 @@ module.exports = {
     try {
       const activities = await ActivityRegister.find({ game: req.game })
         .populate('activity')
-        .populate('requester')
+        .populate({
+          path: 'requester',
+          populate: {
+            path: 'user',
+          },
+        })
         .sort({ requestDate: -1 })
         .catch(error => {
           throw error;
