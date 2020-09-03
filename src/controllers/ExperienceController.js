@@ -85,10 +85,10 @@ module.exports = {
         );
 
         // add xp in the weekly ranking
-        const { weeklyRanking: oldRanking } = await Game.findById(game);
+        const { weeklyRanking } = await Game.findById(game);
         // Searches for an entry of the player on the ranking
-        const index = oldRanking.findIndex(
-          ranking => ranking.player === playerId,
+        const index = weeklyRanking.findIndex(
+          ranking => String(ranking.player) === String(playerId),
         );
 
         // If the player is not in the ranking, we push it into
@@ -125,9 +125,8 @@ module.exports = {
         session.endSession();
       }
 
-      return res.status(201);
+      return res.status(201).send();
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ error: 'Internal server error.' });
     }
   },
