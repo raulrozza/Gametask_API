@@ -11,6 +11,7 @@ const achievementRoutes = require('./routes/achievements.routes.js');
 const achievementRegisterRoutes = require('./routes/achievementRegister.routes');
 const activityRoutes = require('./routes/activities.routes.js');
 const activityRegisterRoutes = require('./routes/activityRegister.routes.js');
+const achievementUnlockerRoutes = require('./routes/achievementUnlocker.routes');
 const authenticationRoutes = require('./routes/authentication.routes.js');
 const experienceRoutes = require('./routes/experience.routes.js');
 const feedRoutes = require('./routes/feed.routes.js');
@@ -58,6 +59,7 @@ app.use('/files', express.static(path.resolve(__dirname, '..', 'uploads')));
 // Routes
 app.use('/achievement', achievementRoutes);
 app.use('/achievementRegister', achievementRegisterRoutes);
+app.use('/unlockAchievement', achievementUnlockerRoutes);
 app.use('/activity', activityRoutes);
 app.use('/activityRegister', activityRegisterRoutes);
 app.use('/experience', experienceRoutes);

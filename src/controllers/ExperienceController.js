@@ -1,10 +1,14 @@
 const mongoose = require('mongoose');
-const Activity = require('../models/Activity');
-const Player = require('../models/Player');
+
+// Actions
 const handleLevelUp = require('../actions/handleLevelUp');
 const handleRemoveActivityRegister = require('../actions/handleRemoveActivityRegister');
+
+// Models
+const Activity = require('../models/Activity');
 const FeedItem = require('../models/FeedItem');
 const Game = require('../models/Game');
+const Player = require('../models/Player');
 
 /* 
   This controller manages the game level info configuration
