@@ -13,6 +13,12 @@ module.exports = {
     try {
       const games = await Game.find({
         administrators: id,
+      }).populate({
+        path: 'weeklyRanking',
+        populate: {
+          path: 'player',
+          select: 'level rank currentTitle user _id',
+        },
       });
 
       return res.json(games);
