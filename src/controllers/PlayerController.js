@@ -1,5 +1,7 @@
+const mongoose = require('mongoose');
 const Player = require('../models/Player');
 const { errorCodes, MissingParametersError } = require('../utils/Errors');
+const handleLevelUp = require('../actions/handleLevelUp');
 
 // This controller manages the players in the application, managing their data
 module.exports = {
@@ -61,6 +63,22 @@ module.exports = {
         user: id,
         game,
       });
+
+      const session = await mongoose.startSession().catch(error => {
+        throw error;
+      });
+
+      await session.startTransaction();
+
+      try {
+        await handleLevelUp(player._id, game, session);
+        await session.commitTransaction();
+      } catch (error) {
+        await session.abortTransaction();
+        throw error;
+      } finally {
+        session.endSession();
+      }
 
       res.status(201).json(player._id);
     } catch (error) {

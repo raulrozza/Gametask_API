@@ -1,5 +1,6 @@
 const Game = require('../models/Game');
 const { MissingParametersError, errorCodes } = require('../utils/Errors');
+const checkPlayersLevels = require('../actions/checkPlayersLevel');
 
 // This controller manages the ranks in the application, updating their data
 module.exports = {
@@ -24,6 +25,8 @@ module.exports = {
       ).catch(error => {
         throw error;
       });
+
+      checkPlayersLevels(id);
 
       return res.status(201).send();
     } catch (error) {
