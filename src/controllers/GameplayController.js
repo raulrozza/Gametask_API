@@ -11,7 +11,24 @@ module.exports = {
     try {
       const games = await Player.find({
         user: id,
-      }).populate('game');
+      })
+        .populate({
+          path: 'game',
+          populate: {
+            path: 'weeklyRanking',
+            populate: {
+              path: 'player',
+              select: 'level rank currentTitle user _id',
+              populate: {
+                path: 'user',
+                select: 'firstname lastname image profile_url',
+              },
+            },
+          },
+        })
+        .populate({
+          path: 'user',
+        });
 
       return res.json(games);
     } catch (error) {
@@ -32,7 +49,20 @@ module.exports = {
         _id: id,
         user,
         game,
-      }).populate('game');
+      }).populate({
+        path: 'game',
+        populate: {
+          path: 'weeklyRanking',
+          populate: {
+            path: 'player',
+            select: 'level rank currentTitle user _id',
+            populate: {
+              path: 'user',
+              select: 'firstname lastname image profile_url',
+            },
+          },
+        },
+      });
 
       return res.json(player);
     } catch (error) {
