@@ -3,6 +3,7 @@ const errorCodes = {
   PLAYER_ALREADY_EXISTS: 101,
   ACHIEVEMENT_REGISTER_ALREADY_EXISTS: 102,
   USER_PASSWORD_DONT_MATCH: 200,
+  TITLE_BELONGS_TO_PLAYER: 201,
   MISSING_PARAMETERS: 300,
 };
 
@@ -18,6 +19,8 @@ class PlayerExistsError extends Error {}
 
 class AchievementRegisterExistsError extends Error {}
 
+class TitleBelongsToPlayerError extends Error {}
+
 module.exports = {
   errorCodes,
   AchievementRegisterExistsError,
@@ -26,4 +29,5 @@ module.exports = {
   MissingParametersError,
   PlayerExistsError,
   UserExistsError,
+  TitleBelongsToPlayerError,
 };
