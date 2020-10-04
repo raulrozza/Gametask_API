@@ -29,7 +29,8 @@ module.exports = {
         .populate({
           path: 'user',
         })
-        .populate('titles');
+        .populate('titles')
+        .populate('currentTitle');
 
       return res.json(games);
     } catch (error) {
@@ -65,7 +66,8 @@ module.exports = {
             },
           },
         })
-        .populate('titles');
+        .populate('titles')
+        .populate('currentTitle');
 
       return res.json(player);
     } catch (error) {
