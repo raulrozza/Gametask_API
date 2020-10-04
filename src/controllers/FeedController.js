@@ -9,10 +9,15 @@ module.exports = {
         .populate({
           path: 'player',
           select: '_id level currentTitle rank',
-          populate: {
-            path: 'user',
-            select: 'firstname lastname image profile_url',
-          },
+          populate: [
+            {
+              path: 'user',
+              select: 'firstname lastname image profile_url',
+            },
+            {
+              path: 'currentTitle',
+            },
+          ],
         })
         .populate('activity', {
           name: 1,

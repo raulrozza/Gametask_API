@@ -18,6 +18,9 @@ module.exports = {
         populate: {
           path: 'player',
           select: 'level rank currentTitle user _id',
+          populate: {
+            path: 'currentTitle',
+          },
         },
       });
 
@@ -39,10 +42,15 @@ module.exports = {
         populate: {
           path: 'player',
           select: 'level rank currentTitle user _id',
-          populate: {
-            path: 'user',
-            select: '_id firstname lastname image profile_url',
-          },
+          populate: [
+            {
+              path: 'user',
+              select: '_id firstname lastname image profile_url',
+            },
+            {
+              path: 'currentTitle',
+            },
+          ],
         },
       });
 
