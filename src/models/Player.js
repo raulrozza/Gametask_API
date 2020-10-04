@@ -14,8 +14,12 @@ const PlayerSchema = new Schema(
       default: 0,
     },
     titles: {
-      type: [Schema.Types.ObjectId],
-      ref: 'Title',
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Title',
+        },
+      ],
       default: [],
     },
     currentTitle: {
@@ -27,8 +31,12 @@ const PlayerSchema = new Schema(
       default: null,
     },
     achievements: {
-      type: [Schema.Types.ObjectId],
-      ref: 'Achievement',
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Achievement',
+        },
+      ],
       default: [],
     },
     user: {

@@ -28,7 +28,8 @@ module.exports = {
         })
         .populate({
           path: 'user',
-        });
+        })
+        .populate('titles');
 
       return res.json(games);
     } catch (error) {
@@ -49,20 +50,22 @@ module.exports = {
         _id: id,
         user,
         game,
-      }).populate({
-        path: 'game',
-        populate: {
-          path: 'weeklyRanking',
+      })
+        .populate({
+          path: 'game',
           populate: {
-            path: 'player',
-            select: 'level rank currentTitle user _id',
+            path: 'weeklyRanking',
             populate: {
-              path: 'user',
-              select: 'firstname lastname image profile_url',
+              path: 'player',
+              select: 'level rank currentTitle user _id',
+              populate: {
+                path: 'user',
+                select: 'firstname lastname image profile_url',
+              },
             },
           },
-        },
-      });
+        })
+        .populate('titles');
 
       return res.json(player);
     } catch (error) {

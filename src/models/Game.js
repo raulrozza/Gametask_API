@@ -24,8 +24,12 @@ const GameSchema = new Schema(
     },
     image: String,
     administrators: {
-      type: [Schema.Types.ObjectId],
-      ref: 'User',
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+        },
+      ],
       default: [],
     },
     levelInfo: {
