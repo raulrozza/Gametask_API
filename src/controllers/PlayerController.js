@@ -85,4 +85,39 @@ module.exports = {
       return res.status(500).json({ error: 'Internal server error.' });
     }
   },
+  async update(req, res) {
+    const { currentTitle } = req.body;
+    const { id } = req.params;
+    const { id: user } = req.auth;
+    const game = req.game;
+
+    try {
+      if (!id)
+        throw new MissingParametersError('Missing player id on parameters.');
+
+      const updateDocument = {
+        currentTitle,
+      };
+
+      await Player.updateOne(
+        {
+          _id: id,
+          user,
+          game,
+        },
+        {
+          $set: updateDocument,
+        },
+      );
+
+      return res.status(201).send();
+    } catch (error) {
+      if (error instanceof MissingParametersError)
+        return res
+          .status(400)
+          .json({ error: error.message, code: errorCodes.MISSING_PARAMETERS });
+
+      return res.status(500).json({ error: 'Internal server error.' });
+    }
+  },
 };
