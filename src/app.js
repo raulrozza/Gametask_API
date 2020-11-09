@@ -42,7 +42,7 @@ const corsOptionsDelegate =
   ((req, callback) => {
     let corsOptions;
 
-    console.log(req.header('Origin'));
+    console.log('Origin:', req.header('Origin'));
 
     if (whitelist.indexOf(req.header('Origin')) !== -1)
       corsOptions = { origin: true };
