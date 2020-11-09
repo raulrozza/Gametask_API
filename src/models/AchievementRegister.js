@@ -1,22 +1,18 @@
 const { Schema, model } = require('mongoose');
 
-const ActivityRegisterSchema = new Schema(
+const AchievementRegisterSchema = new Schema(
   {
     requester: {
       type: Schema.Types.ObjectId,
       ref: 'Player',
       required: true,
     },
-    activity: {
+    achievement: {
       type: Schema.Types.ObjectId,
-      ref: 'Activity',
+      ref: 'Achievement',
       required: true,
     },
     requestDate: {
-      type: Date,
-      required: true,
-    },
-    completionDate: {
       type: Date,
       required: true,
     },
@@ -30,4 +26,4 @@ const ActivityRegisterSchema = new Schema(
   {},
 );
 
-module.exports = model('ActivityRegister', ActivityRegisterSchema);
+module.exports = model('AchievementRegister', AchievementRegisterSchema);

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const WeeklyRanking = new mongoose.Schema(
+const PlayerRanking = new mongoose.Schema(
   {
     player: {
       type: mongoose.Schema.Types.ObjectId,
@@ -12,9 +12,7 @@ const WeeklyRanking = new mongoose.Schema(
       required: true,
     },
   },
-  {
-    _id: false,
-  },
+  {},
 );
 
-module.exports = WeeklyRanking;
+module.exports = PlayerRanking;

@@ -8,6 +8,7 @@ const playerRoutes = express.Router();
 
 playerRoutes.get('/', verifyJwt, verifyGame, PlayerController.index);
 playerRoutes.get('/:id', verifyJwt, verifyGame, PlayerController.show);
+playerRoutes.put('/:id', verifyJwt, verifyGame, PlayerController.update);
 playerRoutes.post('/', verifyJwt, PlayerController.store);
 
 module.exports = playerRoutes;

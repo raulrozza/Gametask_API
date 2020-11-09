@@ -1,15 +1,25 @@
 const Game = require('../models/Game');
-const ActivityRegister = require('../models/ActivityRegister');
-const handleRemoveActivityRegister = require('../actions/handleRemoveActivityRegister');
-const { MissingParametersError, errorCodes } = require('../utils/Errors');
+const AchievementRegister = require('../models/AchievementRegister');
+const {
+  MissingParametersError,
+  errorCodes,
+  AchievementRegisterExistsError,
+} = require('../utils/Errors');
 
 // This controller manages the activities in the application, creating and updating their data
 module.exports = {
   // This method lists all activity registers
   async index(req, res) {
     try {
-      const activities = await ActivityRegister.find({ game: req.game })
-        .populate('activity')
+      const achievementRegisters = await AchievementRegister.find({
+        game: req.game,
+      })
+        .populate({
+          path: 'achievement',
+          populate: {
+            path: 'title',
+          },
+        })
         .populate({
           path: 'requester',
           populate: {
@@ -21,7 +31,7 @@ module.exports = {
           throw error;
         });
 
-      return res.json(activities);
+      return res.json(achievementRegisters);
     } catch (error) {
       return res.status(500).json({ error: 'Internal server error.' });
     }
@@ -32,9 +42,20 @@ module.exports = {
 
     try {
       if (!id)
-        throw new MissingParametersError('Missing activity id on parameters.');
+        throw new MissingParametersError(
+          'Missing achievement id on parameters.',
+        );
 
-      await handleRemoveActivityRegister(id, game);
+      await AchievementRegister.deleteOne({ _id: id });
+
+      await Game.updateOne(
+        { _id: game },
+        {
+          $inc: {
+            newRegisters: -1,
+          },
+        },
+      );
     } catch (error) {
       if (error instanceof MissingParametersError)
         return res
@@ -46,23 +67,29 @@ module.exports = {
   },
   // The store methods creates a new activity
   async store(req, res) {
-    const {
-      requester,
-      activity,
-      requestDate,
-      completionDate,
-      information,
-    } = req.body;
+    const { requester, achievement, requestDate, information } = req.body;
 
     const game = req.game;
 
     try {
-      // Create register
-      const activityRegister = await ActivityRegister.create({
+      // Check if register already exists
+
+      const register = await AchievementRegister.findOne({
         requester,
-        activity,
+        achievement,
+        game,
+      });
+
+      if (register)
+        throw new AchievementRegisterExistsError(
+          'Already requested this achievement.',
+        );
+
+      // Create register
+      const achievementRegister = await AchievementRegister.create({
+        requester,
+        achievement,
         requestDate,
-        completionDate,
         information,
         game,
       }).catch(error => {
@@ -79,8 +106,13 @@ module.exports = {
         },
       );
 
-      return res.json(activityRegister);
+      return res.json(achievementRegister);
     } catch (error) {
+      if (error instanceof AchievementRegisterExistsError)
+        return res.status(400).json({
+          error: error.message,
+          code: errorCodes.ACHIEVEMENT_REGISTER_ALREADY_EXISTS,
+        });
       return res.status(500).json({ error: 'Internal server error.' });
     }
   },

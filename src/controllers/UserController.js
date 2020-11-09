@@ -102,4 +102,32 @@ module.exports = {
       return res.status(500).json({ error: 'Internal server error.' });
     }
   },
+  async update(req, res) {
+    const { firstname, lastname } = req.body;
+    const { id } = req.auth;
+
+    try {
+      const updateDocument = {
+        firstname,
+        lastname,
+      };
+
+      if (req.file) updateDocument.image = req.file.filename;
+
+      await User.updateOne(
+        {
+          _id: id,
+        },
+        {
+          $set: updateDocument,
+        },
+      ).catch(error => {
+        throw error;
+      });
+
+      return res.status(201).send();
+    } catch (error) {
+      return res.status(500).json({ error: 'Internal server error.' });
+    }
+  },
 };

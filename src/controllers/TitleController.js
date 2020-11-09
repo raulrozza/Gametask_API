@@ -1,5 +1,10 @@
+const Player = require('../models/Player');
 const Title = require('../models/Title');
-const { MissingParametersError, errorCodes } = require('../utils/Errors');
+const {
+  MissingParametersError,
+  errorCodes,
+  TitleBelongsToPlayerError,
+} = require('../utils/Errors');
 
 // This controller manages the titles in the application, creating and updating their data
 module.exports = {
@@ -10,6 +15,15 @@ module.exports = {
     try {
       if (!id)
         throw new MissingParametersError('Missing title id in parameters.');
+
+      const playersWithTitle = await Player.find({
+        titles: id,
+      });
+
+      if (playersWithTitle.length > 0)
+        throw new TitleBelongsToPlayerError(
+          'This title was already obtained by someone.',
+        );
 
       await Title.deleteOne({
         _id: id,
@@ -24,6 +38,12 @@ module.exports = {
         return res
           .status(400)
           .json({ error: error.message, code: errorCodes.MISSING_PARAMETERS });
+
+      if (error instanceof TitleBelongsToPlayerError)
+        return res.status(400).json({
+          error: error.message,
+          code: errorCodes.TITLE_BELONGS_TO_PLAYER,
+        });
 
       return res.status(500).json({ error: 'Internal server error.' });
     }

@@ -13,6 +13,15 @@ module.exports = {
     try {
       const games = await Game.find({
         administrators: id,
+      }).populate({
+        path: 'weeklyRanking',
+        populate: {
+          path: 'player',
+          select: 'level rank currentTitle user _id',
+          populate: {
+            path: 'currentTitle',
+          },
+        },
       });
 
       return res.json(games);
@@ -28,18 +37,22 @@ module.exports = {
       if (!id)
         throw new MissingParametersError('Missing game id on parameters.');
 
-      const game = await Game.findById(id)
-        .populate('weeklyRanking.player', {
-          experience: 0,
-          achievements: 0,
-          titles: 0,
-        })
-        .populate('weeklyRanking.player.user', {
-          email: 0,
-          auth: 0,
-          password: 0,
-          token: 0,
-        });
+      const game = await Game.findById(id).populate({
+        path: 'weeklyRanking',
+        populate: {
+          path: 'player',
+          select: 'level rank currentTitle user _id',
+          populate: [
+            {
+              path: 'user',
+              select: '_id firstname lastname image profile_url',
+            },
+            {
+              path: 'currentTitle',
+            },
+          ],
+        },
+      });
 
       return res.json(game);
     } catch (error) {

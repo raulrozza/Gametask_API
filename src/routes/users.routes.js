@@ -9,9 +9,7 @@ const userRoutes = express.Router();
 const upload = multer(uploadConfig('user'));
 
 userRoutes.get('/:id', verifyJwt, UserController.show);
-userRoutes.put('/', verifyJwt, upload.single('avatar'), (_, res) =>
-  res.status(500).json({ error: 'Not implemented.' }),
-);
+userRoutes.put('/', verifyJwt, upload.single('avatar'), UserController.update);
 userRoutes.post('/signup', UserController.store);
 
 module.exports = userRoutes;
