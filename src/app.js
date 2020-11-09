@@ -49,8 +49,6 @@ const corsOptionsDelegate =
     callback(null, corsOptions); // callback expects two parameters: error and options
   });
 
-console.log(CORS_CONFIG, corsOptionsDelegate);
-
 app.use(cors(corsOptionsDelegate));
 
 app.use(express.json());
