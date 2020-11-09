@@ -33,6 +33,8 @@ module.exports = {
 
       return res.json(achievementRegisters);
     } catch (error) {
+      console.error(error);
+
       return res.status(500).json({ error: 'Internal server error.' });
     }
   },
@@ -57,6 +59,8 @@ module.exports = {
         },
       );
     } catch (error) {
+      console.error(error);
+
       if (error instanceof MissingParametersError)
         return res
           .status(400)
@@ -108,6 +112,8 @@ module.exports = {
 
       return res.json(achievementRegister);
     } catch (error) {
+      console.error(error);
+
       if (error instanceof AchievementRegisterExistsError)
         return res.status(400).json({
           error: error.message,

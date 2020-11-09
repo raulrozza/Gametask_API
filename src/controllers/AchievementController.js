@@ -22,6 +22,8 @@ module.exports = {
 
       return res.json(deleted);
     } catch (error) {
+      console.error(error);
+
       if (error instanceof MissingParametersError)
         return res
           .status(400)
@@ -41,6 +43,8 @@ module.exports = {
 
       return res.json(achievements);
     } catch (error) {
+      console.error(error);
+
       return res.status(500).json({ error: 'Internal server error.' });
     }
   },
@@ -62,6 +66,8 @@ module.exports = {
 
       return res.json(achievement);
     } catch (error) {
+      console.error(error);
+
       if (error instanceof MissingParametersError)
         return res
           .status(400)
@@ -88,6 +94,8 @@ module.exports = {
 
       return res.json(achievement);
     } catch (error) {
+      console.error(error);
+
       return res.status(500).json({ error: 'Internal server error.' });
     }
   },
@@ -124,6 +132,8 @@ module.exports = {
 
       return res.json(achievement);
     } catch (error) {
+      console.error(error);
+
       if (error instanceof MissingParametersError)
         return res
           .status(400)

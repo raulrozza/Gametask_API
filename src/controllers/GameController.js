@@ -26,6 +26,8 @@ module.exports = {
 
       return res.json(games);
     } catch (error) {
+      console.error(error);
+
       return res.status(500).json({ error: 'Internal server error.' });
     }
   },
@@ -56,6 +58,8 @@ module.exports = {
 
       return res.json(game);
     } catch (error) {
+      console.error(error);
+
       if (error instanceof MissingParametersError)
         return res
           .status(400)
@@ -107,6 +111,8 @@ module.exports = {
 
       return res.status(201).send();
     } catch (error) {
+      console.error(error);
+
       return res.status(500).json({ error: 'Internal server error.' });
     }
   },
@@ -140,6 +146,8 @@ module.exports = {
 
       return res.status(201).send();
     } catch (error) {
+      console.error(error);
+
       if (error instanceof MissingParametersError)
         return res
           .status(400)
