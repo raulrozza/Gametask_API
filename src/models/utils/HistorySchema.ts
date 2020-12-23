@@ -1,7 +1,8 @@
-import mongoose from 'mongoose';
+import { IUserDocument } from 'models/User';
+import mongoose, { Types } from 'mongoose';
 
 export interface IHistory {
-  user: string;
+  user: Types.ObjectId | IUserDocument;
   log: Date;
 }
 

@@ -1,8 +1,17 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
+import { IGameDocument, IGamePopulatedDocument } from './Game';
 
-export interface ITitle extends Document {
+export interface ITitle {
   name: string;
-  game: string;
+  game: Types.ObjectId | IGameDocument;
+}
+
+export interface ITitleDocument extends ITitle, Document {
+  game: IGameDocument['_id'];
+}
+
+export interface ITitlePopulatedDocument extends ITitleDocument {
+  game: IGamePopulatedDocument;
 }
 
 const TitleSchema = new Schema(
@@ -20,4 +29,4 @@ const TitleSchema = new Schema(
   {},
 );
 
-export default model<ITitle>('Title', TitleSchema);
+export default model<ITitleDocument>('Title', TitleSchema);

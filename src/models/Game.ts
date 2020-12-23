@@ -1,16 +1,17 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
 import config from 'config/environment';
 import LevelInfoSchema, { ILevelInfo } from 'models/utils/LevelInfoSchema';
 import ThemeSchema, { ITheme } from 'models/utils/ThemeSchema';
 import RankSchema, { IRank } from 'models/utils/RankSchema';
 import WeeklyRanking, { IWeeklyRanking } from 'models/utils/WeeklyRanking';
+import { IUserDocument } from './User';
 
-export interface IGame extends Document {
+export interface IGame {
   name: string;
   description: string;
   theme: ITheme;
   image?: string;
-  administrators: string[];
+  administrators: Types.ObjectId[] | IUserDocument[];
   levelInfo: ILevelInfo;
   newRegisters: number;
   ranks: IRank[];
@@ -73,8 +74,20 @@ const GameSchema = new Schema(
   },
 );
 
+interface IGameBaseDocument extends IGame, Document {
+  image_url: string;
+}
+
+export interface IGameDocument extends IGameBaseDocument {
+  administrators: IUserDocument['_id'][];
+}
+
+export interface IGamePopulatedDocument extends IGameBaseDocument {
+  administrators: IUserDocument[];
+}
+
 GameSchema.virtual('image_url').get(function (this: IGame) {
   return `${config.ADDRESS}/files/game/${this.image}`;
 });
 
-export default model<IGame>('Game', GameSchema);
+export default model<IGameDocument>('Game', GameSchema);

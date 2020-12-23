@@ -1,7 +1,7 @@
 import { Document, Schema, model } from 'mongoose';
 import config from 'config/environment';
 
-export interface IUser extends Document {
+export interface IUser {
   firstname: string;
   lastname: string;
   email: string;
@@ -10,7 +10,7 @@ export interface IUser extends Document {
   image?: string;
 }
 
-export interface IVirtualizedUser extends IUser {
+export interface IUserDocument extends IUser, Document {
   profile_url: string;
 }
 
@@ -45,4 +45,4 @@ UserSchema.virtual('profile_url').get(function (this: IUser) {
   return `${config.ADDRESS}/files/user/${this.image}`;
 });
 
-export default model<IUser>('User', UserSchema);
+export default model<IUserDocument>('User', UserSchema);

@@ -1,7 +1,8 @@
-import mongoose from 'mongoose';
+import { IPlayerDocument } from 'models/Player';
+import mongoose, { Types } from 'mongoose';
 
 export interface IWeeklyRanking {
-  player: string;
+  player: Types.ObjectId | IPlayerDocument;
   currentExperience: number;
 }
 

@@ -1,12 +1,15 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
+import { IActivityDocument } from './Activity';
+import { IGameDocument } from './Game';
+import { IUserDocument } from './User';
 
-export interface IActivityRegister extends Document {
-  requester: string;
-  activity: string;
+export interface IActivityRegister {
+  requester: Types.ObjectId | IUserDocument;
+  activity: Types.ObjectId | IActivityDocument;
   requestDate: Date;
   completionDate: Date;
   information: string;
-  game: string;
+  game: Types.ObjectId | IGameDocument;
 }
 
 const ActivityRegisterSchema = new Schema(
@@ -39,7 +42,21 @@ const ActivityRegisterSchema = new Schema(
   {},
 );
 
-export default model<IActivityRegister>(
+export interface IActivityRegisterDocument extends IActivityRegister, Document {
+  requester: IUserDocument['_id'];
+  activity: IActivityDocument['_id'];
+  game: IGameDocument['_id'];
+}
+
+export interface IActivityRegisterPopulatedDocument
+  extends IActivityRegister,
+    Document {
+  requester: IUserDocument;
+  activity: IActivityDocument;
+  game: IGameDocument;
+}
+
+export default model<IActivityRegisterDocument>(
   'ActivityRegister',
   ActivityRegisterSchema,
 );

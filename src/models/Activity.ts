@@ -1,15 +1,16 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
 import HistorySchema, { IHistory } from 'models/utils/HistorySchema';
 import LogSchema, { ILog } from 'models/utils/LogSchema';
+import { IGameDocument } from './Game';
 
-export interface IActivity extends Document {
+export interface IActivity {
   name: string;
   description?: string;
   experience: number;
   dmRules?: string;
   history: IHistory[];
   changelog: ILog[];
-  game: string;
+  game: Types.ObjectId | IGameDocument;
 }
 
 const ActivitySchema = new Schema(
@@ -41,4 +42,12 @@ const ActivitySchema = new Schema(
   {},
 );
 
-export default model<IActivity>('Activity', ActivitySchema);
+export interface IActivityDocument extends IActivity, Document {
+  game: IGameDocument['_id'];
+}
+
+export interface IActivityPopulatedDocument extends IActivity, Document {
+  game: IGameDocument;
+}
+
+export default model<IActivityDocument>('Activity', ActivitySchema);

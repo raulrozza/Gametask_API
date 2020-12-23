@@ -1,11 +1,13 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
+import { IAchievementDocument } from './Achievement';
+import { IGameDocument } from './Game';
 
-export interface IAchievementRegister extends Document {
+export interface IAchievementRegister {
   requester: string;
-  achievement: string;
+  achievement: Types.ObjectId | IAchievementDocument;
   requestDate: Date;
   information?: string;
-  game: string;
+  game: Types.ObjectId | IGameDocument;
 }
 
 const AchievementRegisterSchema = new Schema(
@@ -34,7 +36,21 @@ const AchievementRegisterSchema = new Schema(
   {},
 );
 
-export default model<IAchievementRegister>(
+export interface IAchievementRegisterDocument
+  extends IAchievementRegister,
+    Document {
+  achievement: IAchievementDocument['_id'];
+  game: IGameDocument['_id'];
+}
+
+export interface IAchievementRegisterPopulatedDocument
+  extends IAchievementRegister,
+    Document {
+  achievement: IAchievementDocument;
+  game: IGameDocument;
+}
+
+export default model<IAchievementRegisterDocument>(
   'AchievementRegister',
   AchievementRegisterSchema,
 );

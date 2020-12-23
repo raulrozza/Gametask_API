@@ -1,10 +1,11 @@
-import mongoose from 'mongoose';
+import { IUserDocument } from 'models/User';
+import mongoose, { Types } from 'mongoose';
 
 export interface ILog {
   version: number;
   log: Date;
   changes: unknown;
-  userId: string;
+  userId: Types.ObjectId | IUserDocument;
 }
 
 const LogSchema = new mongoose.Schema<ILog>(

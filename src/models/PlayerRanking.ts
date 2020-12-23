@@ -1,7 +1,8 @@
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
+import { IPlayerDocument } from './Player';
 
 export interface IPlayerRanking {
-  player: string;
+  player: Types.ObjectId | IPlayerDocument;
   currentExperience: number;
 }
 
