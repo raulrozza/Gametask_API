@@ -35,6 +35,8 @@ module.exports = {
         .populate('titles')
         .populate('currentTitle');
 
+      console.log(games);
+
       return res.json(games);
     } catch (error) {
       return res.status(500).json({ error: 'Internal server error.' });
@@ -74,6 +76,8 @@ module.exports = {
         })
         .populate('titles')
         .populate('currentTitle');
+
+      console.log(player, id, user);
 
       return res.json(player);
     } catch (error) {
