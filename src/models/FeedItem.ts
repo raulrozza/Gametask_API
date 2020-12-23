@@ -1,6 +1,19 @@
-const { Schema, model } = require('mongoose');
-const LevelInfoSchema = require('./utils/LevelInfoSchema');
-const RankSchema = require('./utils/RankSchema');
+import { Schema, model, Document } from 'mongoose';
+import LevelInfoSchema, { ILevelInfo } from 'models/utils/LevelInfoSchema';
+import RankSchema, { IRank } from 'models/utils/RankSchema';
+
+const typeEnum = ['achievement', 'activity', 'level', 'rank'] as const;
+
+export interface IFeedItem extends Document {
+  player: string;
+  type: typeof typeEnum[number];
+  activity: string | undefined;
+  achievement: string | undefined;
+  game: string;
+  level: ILevelInfo;
+  rank: IRank;
+  date: Date;
+}
 
 const FeedItem = new Schema(
   {
@@ -11,7 +24,7 @@ const FeedItem = new Schema(
     },
     type: {
       type: String,
-      enum: ['achievement', 'activity', 'level', 'rank'],
+      enum: typeEnum,
       required: true,
     },
     activity: {
@@ -51,4 +64,4 @@ const FeedItem = new Schema(
   {},
 );
 
-module.exports = model('FeedItem', FeedItem);
+export default model<IFeedItem>('FeedItem', FeedItem);

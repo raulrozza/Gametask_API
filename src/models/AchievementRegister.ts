@@ -1,4 +1,12 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model, Document } from 'mongoose';
+
+export interface IAchievementRegister extends Document {
+  requester: string;
+  achievement: string;
+  requestDate: Date;
+  information?: string;
+  game: string;
+}
 
 const AchievementRegisterSchema = new Schema(
   {
@@ -26,4 +34,7 @@ const AchievementRegisterSchema = new Schema(
   {},
 );
 
-module.exports = model('AchievementRegister', AchievementRegisterSchema);
+export default model<IAchievementRegister>(
+  'AchievementRegister',
+  AchievementRegisterSchema,
+);

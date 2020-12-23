@@ -1,4 +1,13 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model, Document } from 'mongoose';
+
+export interface IActivityRegister extends Document {
+  requester: string;
+  activity: string;
+  requestDate: Date;
+  completionDate: Date;
+  information: string;
+  game: string;
+}
 
 const ActivityRegisterSchema = new Schema(
   {
@@ -30,4 +39,7 @@ const ActivityRegisterSchema = new Schema(
   {},
 );
 
-module.exports = model('ActivityRegister', ActivityRegisterSchema);
+export default model<IActivityRegister>(
+  'ActivityRegister',
+  ActivityRegisterSchema,
+);

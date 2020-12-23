@@ -1,5 +1,15 @@
-const { Schema, model } = require('mongoose');
-const RankSchema = require('./utils/RankSchema');
+import { Schema, model, Document } from 'mongoose';
+import RankSchema, { IRank } from 'models/utils/RankSchema';
+
+export interface IPlayer extends Document {
+  experience: number;
+  level: number;
+  titles: string[];
+  currentTitle?: string;
+  rank: IRank;
+  user: string;
+  game: string;
+}
 
 const PlayerSchema = new Schema(
   {
@@ -53,4 +63,4 @@ const PlayerSchema = new Schema(
   {},
 );
 
-module.exports = model('Player', PlayerSchema);
+export default model<IPlayer>('Player', PlayerSchema);

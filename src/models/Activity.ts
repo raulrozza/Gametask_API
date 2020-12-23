@@ -1,6 +1,16 @@
-const { Schema, model } = require('mongoose');
-const HistorySchema = require('./utils/HistorySchema');
-const LogSchema = require('./utils/LogSchema');
+import { Schema, model, Document } from 'mongoose';
+import HistorySchema, { IHistory } from 'models/utils/HistorySchema';
+import LogSchema, { ILog } from 'models/utils/LogSchema';
+
+export interface IActivity extends Document {
+  name: string;
+  description?: string;
+  experience: number;
+  dmRules?: string;
+  history: IHistory[];
+  changelog: ILog[];
+  game: string;
+}
 
 const ActivitySchema = new Schema(
   {
@@ -31,4 +41,4 @@ const ActivitySchema = new Schema(
   {},
 );
 
-module.exports = model('Activity', ActivitySchema);
+export default model<IActivity>('Activity', ActivitySchema);

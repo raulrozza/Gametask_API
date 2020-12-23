@@ -1,9 +1,21 @@
-const { Schema, model } = require('mongoose');
-const { ADDRESS } = require('../config/environment');
-const LevelInfoSchema = require('./utils/LevelInfoSchema');
-const ThemeSchema = require('./utils/ThemeSchema');
-const RankSchema = require('./utils/RankSchema');
-const WeeklyRanking = require('./utils/WeeklyRanking');
+import { Schema, model, Document } from 'mongoose';
+import config from 'config/environment';
+import LevelInfoSchema, { ILevelInfo } from 'models/utils/LevelInfoSchema';
+import ThemeSchema, { ITheme } from 'models/utils/ThemeSchema';
+import RankSchema, { IRank } from 'models/utils/RankSchema';
+import WeeklyRanking, { IWeeklyRanking } from 'models/utils/WeeklyRanking';
+
+export interface IGame extends Document {
+  name: string;
+  description: string;
+  theme: ITheme;
+  image?: string;
+  administrators: string[];
+  levelInfo: ILevelInfo;
+  newRegisters: number;
+  ranks: IRank[];
+  weeklyRanking: IWeeklyRanking[];
+}
 
 const GameSchema = new Schema(
   {
@@ -61,8 +73,8 @@ const GameSchema = new Schema(
   },
 );
 
-GameSchema.virtual('image_url').get(function () {
-  return `${ADDRESS}/files/game/${this.image}`;
+GameSchema.virtual('image_url').get(function (this: IGame) {
+  return `${config.ADDRESS}/files/game/${this.image}`;
 });
 
-module.exports = model('Game', GameSchema);
+export default model<IGame>('Game', GameSchema);
