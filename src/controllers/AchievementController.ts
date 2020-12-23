@@ -1,10 +1,15 @@
-const Achievement = require('../models/Achievement');
-const { MissingParametersError, errorCodes } = require('../utils/Errors');
+import { Request, Response } from 'express';
+import Achievement, {
+  IAchievement,
+  IAchievementDocument,
+} from 'models/Achievement';
+import { MongooseUpdateQuery } from 'mongoose';
+import { MissingParametersError, errorCodes } from 'utils/Errors';
 
 // This controller manages the achievements in the application, creating and updating their data
-module.exports = {
+export default {
   // This method removes a achievement
-  async delete(req, res) {
+  async delete(req: Request, res: Response) {
     const { id } = req.params;
 
     try {
@@ -33,7 +38,7 @@ module.exports = {
     }
   },
   // This method lists all achievements
-  async index(req, res) {
+  async index(req: Request, res: Response) {
     try {
       const achievements = await Achievement.find({ game: req.game })
         .populate('title')
@@ -49,7 +54,7 @@ module.exports = {
     }
   },
   // This method lists a single achievement
-  async show(req, res) {
+  async show(req: Request, res: Response) {
     const { id } = req.params;
 
     try {
@@ -77,12 +82,14 @@ module.exports = {
     }
   },
   // The store methods creates a new achievement
-  async store(req, res) {
+  async store(req: Request, res: Response) {
     const { name, description, title } = req.body;
     const filename = req.file ? req.file.filename : undefined;
 
     try {
-      const achievement = await Achievement.create({
+      const achievement = await Achievement.create<
+        Omit<IAchievementDocument, 'image_url'>
+      >({
         name,
         description,
         title,
@@ -100,7 +107,7 @@ module.exports = {
     }
   },
   // This method updates a achievement
-  async update(req, res) {
+  async update(req: Request, res: Response) {
     const { name, description, title } = req.body;
     const { id } = req.params;
 
@@ -110,15 +117,18 @@ module.exports = {
           'Missing achievement id on parameters.',
         );
 
-      const updateDocument = {
-        $set: {},
+      const hasTitle = title && title !== 'null' && title !== 'undefined';
+
+      const set: Partial<IAchievement> = {};
+      if (name) set.name = name;
+      if (description) set.description = description;
+      if (hasTitle) set.title = title;
+      if (req.file) set.image = req.file.filename;
+
+      const updateDocument: MongooseUpdateQuery<IAchievement> = {
+        $set: set,
+        $unset: hasTitle ? undefined : { title: '' },
       };
-      if (name) updateDocument.$set.name = name;
-      if (description) updateDocument.$set.description = description;
-      if (title && title !== 'null' && title !== 'undefined')
-        updateDocument.$set.title = title;
-      else updateDocument.$unset = { title: '' };
-      if (req.file) updateDocument.$set.image = req.file.filename;
 
       const achievement = await Achievement.updateOne(
         {

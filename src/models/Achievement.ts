@@ -1,4 +1,4 @@
-import { Schema, model, Document, Types } from 'mongoose';
+import { Schema, model, Document, Types, Model } from 'mongoose';
 import config from 'config/environment';
 import { IGameDocument } from './Game';
 
