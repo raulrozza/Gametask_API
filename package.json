@@ -2,10 +2,10 @@
   "name": "@gametask/api",
   "version": "1.0.0",
   "description": "The API from GameTask",
-  "main": "src/server.js",
+  "main": "src/server.ts",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "tsnd -r tsconfig-paths/register --respawn --ignore-watch node_modules --no-notify src/server.js"
+    "start": "tsnd src/server.ts",
+    "dev": "tsnd -r tsconfig-paths/register --respawn --ignore-watch node_modules --no-notify src/server.ts"
   },
   "engines": {
     "node": ">=12.14.0",

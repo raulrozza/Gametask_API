@@ -1,10 +1,10 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const path = require('path');
-const cors = require('cors');
+import express from 'express'
+import mongoose from 'mongoose'
+import path from 'path'
+import cors, { CorsOptionsDelegate } from 'cors'
 
 // Environment variables
-const { MONGO_URL, CORS_CONFIG } = require('./config/environment');
+import config from 'config/environment'
 
 // Routes
 const achievementRoutes = require('./routes/achievements.routes.js');
@@ -28,31 +28,33 @@ const inviteRoutes = require('./routes/invite.routes');
 const app = express();
 
 mongoose
-  .connect(MONGO_URL, {
+  .connect(String(config.MONGO_URL), {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,
   })
   .catch(error => console.error('MongoDB error:', error));
 
-const whitelist = [CORS_CONFIG];
+const whitelist = [config.CORS_CONFIG];
 
-const corsOptionsDelegate =
-  CORS_CONFIG &&
-  ((req, callback) => {
-    let corsOptions;
+const corsOptionsDelegate: CorsOptionsDelegate = (req, callback) => {
+  let corsOptions;
 
-    console.log('Origin:', req.header('Origin'));
+  console.log('Origin:', req.headers.origin);
 
-    if (whitelist.indexOf(req.header('Origin')) !== -1)
-      corsOptions = { origin: true };
-    // reflect (enable) the requested origin in the CORS response
-    else corsOptions = { origin: false }; // disable CORS for this request
+  if (whitelist.indexOf(req.headers.origin) !== -1)
+    corsOptions = { origin: true };
+  // reflect (enable) the requested origin in the CORS response
+  else corsOptions = { origin: false }; // disable CORS for this request
 
-    callback(null, corsOptions); // callback expects two parameters: error and options
-  });
+  callback(null, corsOptions); // callback expects two parameters: error and options
+}
 
-app.use(cors(corsOptionsDelegate));
+const corsOptions =
+config.CORS_CONFIG ?
+corsOptionsDelegate : undefined;
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
@@ -77,4 +79,4 @@ app.use('/player', playerRoutes);
 app.use('/user', userRoutes);
 app.use('/title', titleRoutes);
 
-module.exports = app;
+export default app
