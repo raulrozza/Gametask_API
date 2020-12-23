@@ -1,6 +1,11 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const WeeklyRanking = new mongoose.Schema(
+export interface IWeeklyRanking {
+  player: string;
+  currentExperience: number;
+}
+
+const WeeklyRanking = new mongoose.Schema<IWeeklyRanking>(
   {
     player: {
       type: mongoose.Schema.Types.ObjectId,
@@ -17,4 +22,4 @@ const WeeklyRanking = new mongoose.Schema(
   },
 );
 
-module.exports = WeeklyRanking;
+export default WeeklyRanking;

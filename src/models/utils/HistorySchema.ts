@@ -1,6 +1,11 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const HistorySchema = new mongoose.Schema(
+export interface IHistory {
+  user: string;
+  log: Date;
+}
+
+const HistorySchema = new mongoose.Schema<IHistory>(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -17,4 +22,4 @@ const HistorySchema = new mongoose.Schema(
   },
 );
 
-module.exports = HistorySchema;
+export default HistorySchema;

@@ -1,4 +1,9 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model, Document } from 'mongoose';
+
+export interface ITitle extends Document {
+  name: string;
+  game: string;
+}
 
 const TitleSchema = new Schema(
   {
@@ -15,4 +20,4 @@ const TitleSchema = new Schema(
   {},
 );
 
-module.exports = model('Title', TitleSchema);
+export default model<ITitle>('Title', TitleSchema);

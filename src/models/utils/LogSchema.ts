@@ -1,6 +1,13 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const LogSchema = new mongoose.Schema(
+export interface ILog {
+  version: number;
+  log: Date;
+  changes: unknown;
+  userId: string;
+}
+
+const LogSchema = new mongoose.Schema<ILog>(
   {
     version: {
       type: Number,
@@ -25,4 +32,4 @@ const LogSchema = new mongoose.Schema(
   },
 );
 
-module.exports = LogSchema;
+export default LogSchema;

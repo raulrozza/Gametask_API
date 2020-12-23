@@ -1,6 +1,13 @@
-const { Schema } = require('mongoose');
+import { Schema } from 'mongoose';
 
-const RankSchema = new Schema(
+export interface IRank {
+  name: string;
+  tag: string;
+  level: number;
+  color: string;
+}
+
+const RankSchema = new Schema<IRank>(
   {
     name: {
       type: String,
@@ -24,4 +31,4 @@ const RankSchema = new Schema(
   },
 );
 
-module.exports = RankSchema;
+export default RankSchema;
