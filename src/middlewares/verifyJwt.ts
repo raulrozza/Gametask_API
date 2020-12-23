@@ -1,10 +1,11 @@
-const jwt = require('jsonwebtoken');
-const { SECRET_KEY } = require('../config/environment');
+import jwt from 'jsonwebtoken';
+import config from 'config/environment';
+import { IAuth, NextFunction, Request, Response } from 'express';
 
 // TOKEN FORMAT
 // Authorization: Bearer <access_token>
 
-module.exports = async (req, res, next) => {
+export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const header = req.headers.authorization;
 
@@ -13,9 +14,9 @@ module.exports = async (req, res, next) => {
     // Splits token on space due to its format
     const [, token] = header.split(' ');
 
-    const auth = await jwt.verify(token, SECRET_KEY);
+    const auth = await jwt.verify(token, String(config.SECRET_KEY));
 
-    req.auth = auth;
+    req.auth = auth as IAuth;
 
     return next();
   } catch (error) {

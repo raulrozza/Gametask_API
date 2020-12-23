@@ -1,10 +1,10 @@
-const express = require('express');
-const multer = require('multer');
-const verifyGame = require('../middlewares/verifyGame');
-const verifyJwt = require('../middlewares/verifyJwt');
-const uploadConfig = require('../config/upload');
+import express from 'express';
+import multer from 'multer';
+import verifyGame from 'middlewares/verifyGame';
+import verifyJwt from 'middlewares/verifyJwt';
+import uploadConfig from 'config/upload';
 
-const AchievementController = require('../controllers/AchievementController');
+import AchievementController from 'controllers/AchievementController';
 
 const achievementRoutes = express.Router();
 const upload = multer(uploadConfig('achievement'));
@@ -37,4 +37,4 @@ achievementRoutes.put(
   AchievementController.update,
 );
 
-module.exports = achievementRoutes;
+export default achievementRoutes;

@@ -1,12 +1,13 @@
-const { GameNotFoundError } = require('../utils/Errors');
+import { NextFunction, Request, Response } from 'express';
+import { GameNotFoundError } from 'utils/Errors';
 
-module.exports = async (req, res, next) => {
+export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const gameId = req.headers['x-game-id'];
 
     if (!gameId) throw new GameNotFoundError('Unindentified game');
 
-    req.game = gameId;
+    req.game = String(gameId);
 
     return next();
   } catch (error) {

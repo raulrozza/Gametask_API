@@ -1,17 +1,17 @@
-import { Document, Schema, model } from "mongoose";
+import { Document, Schema, model } from 'mongoose';
 import config from 'config/environment';
 
 export interface IUser extends Document {
-  firstname: string
-  lastname: string
-  email: string
-  password: string
-  token?: string
-  image?: string
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+  token?: string;
+  image?: string;
 }
 
 export interface IVirtualizedUser extends IUser {
-  profile_url: string
+  profile_url: string;
 }
 
 const UserSchema = new Schema<IUser>(

@@ -1,28 +1,28 @@
-import express from 'express'
-import mongoose from 'mongoose'
-import path from 'path'
-import cors, { CorsOptionsDelegate } from 'cors'
+import express from 'express';
+import mongoose from 'mongoose';
+import path from 'path';
+import cors, { CorsOptionsDelegate } from 'cors';
 
 // Environment variables
-import config from 'config/environment'
+import config from 'config/environment';
 
 // Routes
-const achievementRoutes = require('./routes/achievements.routes.js');
-const achievementRegisterRoutes = require('./routes/achievementRegister.routes');
-const activityRoutes = require('./routes/activities.routes.js');
-const activityRegisterRoutes = require('./routes/activityRegister.routes.js');
-const achievementUnlockerRoutes = require('./routes/achievementUnlocker.routes');
-const authenticationRoutes = require('./routes/authentication.routes.js');
-const experienceRoutes = require('./routes/experience.routes.js');
-const feedRoutes = require('./routes/feed.routes.js');
-const gameRoutes = require('./routes/games.routes');
-const gameplayRoutes = require('./routes/gameplay.routes');
-const rankRoutes = require('./routes/ranks.routes');
-const levelRoutes = require('./routes/levels.routes');
-const userRoutes = require('./routes/users.routes');
-const titleRoutes = require('./routes/titles.routes');
-const playerRoutes = require('./routes/players.routes');
-const inviteRoutes = require('./routes/invite.routes');
+import achievementRoutes from 'routes/achievements.routes.js';
+import achievementRegisterRoutes from 'routes/achievementRegister.routes';
+import activityRoutes from 'routes/activities.routes.js';
+import activityRegisterRoutes from 'routes/activityRegister.routes.js';
+import achievementUnlockerRoutes from 'routes/achievementUnlocker.routes';
+import authenticationRoutes from 'routes/authentication.routes.js';
+import experienceRoutes from 'routes/experience.routes.js';
+import feedRoutes from 'routes/feed.routes.js';
+import gameRoutes from 'routes/games.routes';
+import gameplayRoutes from 'routes/gameplay.routes';
+import rankRoutes from 'routes/ranks.routes';
+import levelRoutes from 'routes/levels.routes';
+import userRoutes from 'routes/users.routes';
+import titleRoutes from 'routes/titles.routes';
+import playerRoutes from 'routes/players.routes';
+import inviteRoutes from 'routes/invite.routes';
 
 // Initial server configuration
 const app = express();
@@ -48,11 +48,9 @@ const corsOptionsDelegate: CorsOptionsDelegate = (req, callback) => {
   else corsOptions = { origin: false }; // disable CORS for this request
 
   callback(null, corsOptions); // callback expects two parameters: error and options
-}
+};
 
-const corsOptions =
-config.CORS_CONFIG ?
-corsOptionsDelegate : undefined;
+const corsOptions = config.CORS_CONFIG ? corsOptionsDelegate : undefined;
 
 app.use(cors(corsOptions));
 
@@ -79,4 +77,4 @@ app.use('/player', playerRoutes);
 app.use('/user', userRoutes);
 app.use('/title', titleRoutes);
 
-export default app
+export default app;

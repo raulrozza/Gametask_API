@@ -12,8 +12,10 @@
     "@typescript-eslint",
     "prettier"
   ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 11
+    "ecmaVersion": 12,
+    "sourceType": "module"
   },
   "rules": {
     "prettier/prettier":[
@@ -24,6 +26,7 @@
         "trailingComma": "all",
         "arrowParens": "avoid"
       }
-    ]
+    ],
+    "camelcase": 0
   }
 }
