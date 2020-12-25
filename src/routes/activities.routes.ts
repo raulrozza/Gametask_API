@@ -1,8 +1,8 @@
-const express = require('express');
-const verifyGame = require('../middlewares/verifyGame');
-const verifyJwt = require('../middlewares/verifyJwt');
+import express from 'express';
+import verifyGame from 'middlewares/verifyGame';
+import verifyJwt from 'middlewares/verifyJwt';
 
-const ActivityController = require('../controllers/ActivityController');
+import ActivityController from 'controllers/ActivityController';
 
 const activityRoutes = express.Router();
 
@@ -12,4 +12,4 @@ activityRoutes.get('/:id', verifyJwt, verifyGame, ActivityController.show);
 activityRoutes.post('/', verifyJwt, verifyGame, ActivityController.store);
 activityRoutes.put('/:id', verifyJwt, verifyGame, ActivityController.update);
 
-module.exports = activityRoutes;
+export default activityRoutes;

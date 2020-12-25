@@ -1,8 +1,8 @@
-const express = require('express');
-const verifyGame = require('../middlewares/verifyGame');
-const verifyJwt = require('../middlewares/verifyJwt');
+import express from 'express';
+import verifyGame from 'middlewares/verifyGame';
+import verifyJwt from 'middlewares/verifyJwt';
 
-const AchievementRegisterController = require('../controllers/AchievementRegisterController');
+import AchievementRegisterController from 'controllers/AchievementRegisterController';
 
 const achievementRegisterRoutes = express.Router();
 
@@ -25,4 +25,4 @@ achievementRegisterRoutes.delete(
   AchievementRegisterController.delete,
 );
 
-module.exports = achievementRegisterRoutes;
+export default achievementRegisterRoutes;

@@ -1,8 +1,8 @@
-const express = require('express');
-const verifyGame = require('../middlewares/verifyGame');
-const verifyJwt = require('../middlewares/verifyJwt');
+import express from 'express';
+import verifyGame from 'middlewares/verifyGame';
+import verifyJwt from 'middlewares/verifyJwt';
 
-const PlayerController = require('../controllers/PlayerController');
+import PlayerController from 'controllers/PlayerController';
 
 const playerRoutes = express.Router();
 
@@ -11,4 +11,4 @@ playerRoutes.get('/:id', verifyJwt, verifyGame, PlayerController.show);
 playerRoutes.put('/:id', verifyJwt, verifyGame, PlayerController.update);
 playerRoutes.post('/', verifyJwt, PlayerController.store);
 
-module.exports = playerRoutes;
+export default playerRoutes;

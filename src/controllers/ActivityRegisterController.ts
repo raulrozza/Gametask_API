@@ -25,8 +25,8 @@ export default {
       return res.status(500).json({ error: 'Internal server error.' });
     }
   },
-  async delete(req: Request<{ id: Types.ObjectId }>, res: Response) {
-    const { id } = req.params;
+  async delete(req: Request, res: Response) {
+    const { id } = req.params as { id?: Types.ObjectId };
     const game = req.game;
 
     try {

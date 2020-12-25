@@ -1,9 +1,9 @@
-const express = require('express');
-const multer = require('multer');
-const verifyJwt = require('../middlewares/verifyJwt');
-const uploadConfig = require('../config/upload');
+import express from 'express';
+import multer from 'multer';
+import verifyJwt from 'middlewares/verifyJwt';
+import uploadConfig from 'config/upload';
 
-const UserController = require('../controllers/UserController');
+import UserController from 'controllers/UserController';
 
 const userRoutes = express.Router();
 const upload = multer(uploadConfig('user'));
@@ -12,4 +12,4 @@ userRoutes.get('/:id', verifyJwt, UserController.show);
 userRoutes.put('/', verifyJwt, upload.single('avatar'), UserController.update);
 userRoutes.post('/signup', UserController.store);
 
-module.exports = userRoutes;
+export default userRoutes;

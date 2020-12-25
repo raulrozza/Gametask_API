@@ -1,8 +1,8 @@
-const express = require('express');
-const verifyGame = require('../middlewares/verifyGame');
-const verifyJwt = require('../middlewares/verifyJwt');
+import express from 'express';
+import verifyGame from 'middlewares/verifyGame';
+import verifyJwt from 'middlewares/verifyJwt';
 
-const ActivityRegisterController = require('../controllers/ActivityRegisterController');
+import ActivityRegisterController from 'controllers/ActivityRegisterController';
 
 const activityRegisterRoutes = express.Router();
 
@@ -25,4 +25,4 @@ activityRegisterRoutes.delete(
   ActivityRegisterController.delete,
 );
 
-module.exports = activityRegisterRoutes;
+export default activityRegisterRoutes;
