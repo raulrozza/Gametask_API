@@ -7,14 +7,14 @@ import cors, { CorsOptionsDelegate } from 'cors';
 import config from 'config/environment';
 
 // Routes
-import achievementRoutes from 'routes/achievements.routes.js';
+import achievementRoutes from 'routes/achievements.routes';
 import achievementRegisterRoutes from 'routes/achievementRegister.routes';
-import activityRoutes from 'routes/activities.routes.js';
-import activityRegisterRoutes from 'routes/activityRegister.routes.js';
+import activityRoutes from 'routes/activities.routes';
+import activityRegisterRoutes from 'routes/activityRegister.routes';
 import achievementUnlockerRoutes from 'routes/achievementUnlocker.routes';
-import authenticationRoutes from 'routes/authentication.routes.js';
-import experienceRoutes from 'routes/experience.routes.js';
-import feedRoutes from 'routes/feed.routes.js';
+import authenticationRoutes from 'routes/authentication.routes';
+import experienceRoutes from 'routes/experience.routes';
+import feedRoutes from 'routes/feed.routes';
 import gameRoutes from 'routes/games.routes';
 import gameplayRoutes from 'routes/gameplay.routes';
 import rankRoutes from 'routes/ranks.routes';
