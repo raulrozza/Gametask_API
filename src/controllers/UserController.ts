@@ -1,18 +1,19 @@
-const User = require('../models/User');
-const bcrypt = require('bcryptjs');
-const { JsonWebTokenError } = require('jsonwebtoken');
-const {
+import User, { IUser } from 'models/User';
+import bcrypt from 'bcryptjs';
+import { JsonWebTokenError } from 'jsonwebtoken';
+import {
   UserExistsError,
   errorCodes,
   MissingParametersError,
-} = require('../utils/Errors');
+} from 'utils/Errors';
+import { Request, Response } from 'express';
 
 const BCRYPT_SALT_ROUNDS = 12; // salt rounds used in password crypto
 
 // This controller manages the users in the application, creating and updating their data
-module.exports = {
+export default {
   // The index method returns all instances of users
-  async index(_, res) {
+  async index(_: Request, res: Response) {
     try {
       const users = await User.find(
         {},
@@ -20,9 +21,7 @@ module.exports = {
           token: 0,
           password: 0,
         },
-      ).catch(error => {
-        throw error;
-      });
+      );
 
       return res.json(users);
     } catch (error) {
@@ -30,7 +29,7 @@ module.exports = {
     }
   },
   // The show method returns the data of a single user
-  async show(req, res) {
+  async show(req: Request, res: Response) {
     const { id } = req.params;
 
     try {
@@ -40,8 +39,6 @@ module.exports = {
       const user = await User.findById(id, {
         token: 0,
         password: 0,
-      }).catch(error => {
-        throw error;
       });
 
       return res.json(user);
@@ -55,7 +52,7 @@ module.exports = {
     }
   },
   // The store methods creates a new user
-  async store(req, res) {
+  async store(req: Request, res: Response) {
     const { firstname, lastname, email, password } = req.body;
 
     try {
@@ -65,7 +62,7 @@ module.exports = {
           throw error;
         });
       if (!hashedPassword)
-        throw JsonWebTokenError('Could not generate password');
+        throw new JsonWebTokenError('Could not generate password');
 
       const foundUser = await User.findOne(
         {
@@ -80,7 +77,7 @@ module.exports = {
 
       if (foundUser) throw new UserExistsError('User already exists.');
 
-      const user = await User.create({
+      const user = await User.create<IUser>({
         firstname,
         lastname,
         email,
@@ -102,12 +99,18 @@ module.exports = {
       return res.status(500).json({ error: 'Internal server error.' });
     }
   },
-  async update(req, res) {
+  async update(req: Request, res: Response) {
     const { firstname, lastname } = req.body;
     const { id } = req.auth;
 
     try {
-      const updateDocument = {
+      interface UpdateDocument {
+        firstname: string;
+        lastname: string;
+        image?: string;
+      }
+
+      const updateDocument: UpdateDocument = {
         firstname,
         lastname,
       };

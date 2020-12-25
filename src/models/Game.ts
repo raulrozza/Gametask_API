@@ -13,7 +13,7 @@ export interface IGame {
   image?: string;
   administrators: Types.ObjectId[] | IUserDocument[];
   levelInfo: ILevelInfo[];
-  newRegisters: number;
+  newRegisters?: number;
   ranks?: IRank[];
   weeklyRanking?: IWeeklyRanking[];
 }
@@ -78,6 +78,7 @@ interface IGameBaseDocument extends IGame, Document {
   image_url: string;
   ranks: IRank[];
   weeklyRanking: IWeeklyRanking[];
+  newRegisters: number;
 }
 
 export interface IGameDocument extends IGameBaseDocument {

@@ -6,12 +6,12 @@ import { IUserDocument } from './User';
 import { IGameDocument } from './Game';
 
 export interface IPlayer {
-  experience: number;
-  level: number;
-  titles: Types.ObjectId[] | ITitleDocument[];
+  experience?: number;
+  level?: number;
+  titles?: Types.ObjectId[] | ITitleDocument[];
   currentTitle?: Types.ObjectId | ITitleDocument;
-  rank: IRank;
-  achievements: Types.ObjectId[] | IAchievementDocument[];
+  rank?: IRank;
+  achievements?: Types.ObjectId[] | IAchievementDocument[];
   user: Types.ObjectId | IUserDocument;
   game: Types.ObjectId | IGameDocument;
 }
@@ -68,7 +68,13 @@ const PlayerSchema = new Schema(
   {},
 );
 
-export interface IPlayerDocument extends IPlayer, Document {
+interface IPlayerBaseDocument extends IPlayer, Document {
+  experience: number;
+  level: number;
+  rank: IRank;
+}
+
+export interface IPlayerDocument extends IPlayerBaseDocument {
   titles: Types.Array<ITitleDocument['_id']>;
   currentTitle?: ITitleDocument['_id'];
   achievements: Types.Array<IAchievementDocument['_id']>;
@@ -76,7 +82,7 @@ export interface IPlayerDocument extends IPlayer, Document {
   game: IGameDocument['_id'];
 }
 
-export interface IPlayerPopulatedDocument extends IPlayer, Document {
+export interface IPlayerPopulatedDocument extends IPlayerBaseDocument {
   titles: Types.Array<ITitleDocument>;
   currentTitle?: ITitleDocument;
   achievements: Types.Array<IAchievementDocument>;

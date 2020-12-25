@@ -1,20 +1,23 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // Actions
-const handleLevelUp = require('../actions/handleLevelUp');
-const handleRemoveActivityRegister = require('../actions/handleRemoveActivityRegister');
+import handleLevelUp from 'actions/handleLevelUp';
+import handleRemoveActivityRegister from 'actions/handleRemoveActivityRegister';
 
 // Models
-const Activity = require('../models/Activity');
-const FeedItem = require('../models/FeedItem');
-const Game = require('../models/Game');
-const Player = require('../models/Player');
+import Activity from 'models/Activity';
+import FeedItem, { IFeedItem } from 'models/FeedItem';
+import Game from 'models/Game';
+import Player from 'models/Player';
+
+// Types
+import { Request, Response } from 'express';
 
 /* 
   This controller manages the game level info configuration
 */
-module.exports = {
-  async store(req, res) {
+export default {
+  async store(req: Request, res: Response) {
     const {
       userId,
       playerId,
@@ -75,7 +78,7 @@ module.exports = {
         await handleRemoveActivityRegister(registerId, game, { session });
 
         // add info in the item feed
-        await FeedItem.create(
+        await FeedItem.create<IFeedItem>(
           [
             {
               player: playerId,
@@ -89,9 +92,11 @@ module.exports = {
         );
 
         // add xp in the weekly ranking
-        const { weeklyRanking } = await Game.findById(game);
+        const foundGame = await Game.findById(game);
+        if (!foundGame) throw new Error();
+
         // Searches for an entry of the player on the ranking
-        const index = weeklyRanking.findIndex(
+        const index = foundGame.weeklyRanking.findIndex(
           ranking => String(ranking.player) === String(playerId),
         );
 

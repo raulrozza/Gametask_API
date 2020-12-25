@@ -1,14 +1,16 @@
-const mongoose = require('mongoose');
-const Game = require('../models/Game');
-const Player = require('../models/Player');
-const { MissingParametersError, errorCodes } = require('../utils/Errors');
+import mongoose from 'mongoose';
+import Game, { IGame } from 'models/Game';
+import Player, { IPlayer } from 'models/Player';
+import { MissingParametersError, errorCodes } from 'utils/Errors';
+import { Request, Response } from 'express';
+import { ITheme } from 'models/utils/ThemeSchema';
 
 /* 
   This controller manages the game configurations
 */
-module.exports = {
+export default {
   // Retrieve all games that belong to a certain user
-  async index(req, res) {
+  async index(req: Request, res: Response) {
     const { id } = req.auth;
     try {
       const games = await Game.find({
@@ -32,7 +34,7 @@ module.exports = {
     }
   },
   // Retrieve the game's info
-  async show(req, res) {
+  async show(req: Request, res: Response) {
     const { id } = req.params;
 
     try {
@@ -69,7 +71,7 @@ module.exports = {
     }
   },
   // Create a game's initial config
-  async store(req, res) {
+  async store(req: Request, res: Response) {
     const { name, description, theme, levelInfo } = req.body;
     const { filename } = req.file;
     const { id } = req.auth;
@@ -82,7 +84,7 @@ module.exports = {
       await session.startTransaction();
 
       try {
-        const [game] = await Game.create(
+        const [game] = await Game.create<IGame>(
           [
             {
               name,
@@ -96,7 +98,7 @@ module.exports = {
           { session },
         );
 
-        await Player.create({
+        await Player.create<IPlayer>({
           user: id,
           game: game._id,
         });
@@ -117,7 +119,7 @@ module.exports = {
     }
   },
   // Update a game's setting
-  async update(req, res) {
+  async update(req: Request, res: Response) {
     const { name, description, theme } = req.body;
     const { id } = req.params;
     const { id: userId } = req.auth;
@@ -126,7 +128,14 @@ module.exports = {
       if (!id)
         throw new MissingParametersError('Missing game id on parameters.');
 
-      const updateDocument = {};
+      interface UpdateDocument {
+        name?: string;
+        description?: string;
+        theme?: ITheme;
+        image?: string;
+      }
+
+      const updateDocument: UpdateDocument = {};
       if (name) updateDocument.name = name;
       if (description) updateDocument.description = description;
       if (theme) updateDocument.theme = JSON.parse(theme);

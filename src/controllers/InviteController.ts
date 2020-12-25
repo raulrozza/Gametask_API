@@ -1,13 +1,14 @@
-const {
+import {
   MissingParametersError,
   PlayerExistsError,
   errorCodes,
-} = require('../utils/Errors');
-const Game = require('../models/Game');
-const Player = require('../models/Player');
+} from 'utils/Errors';
+import Game from 'models/Game';
+import Player from 'models/Player';
+import { Request, Response } from 'express';
 
-module.exports = {
-  async show(req, res) {
+export default {
+  async show(req: Request, res: Response) {
     const { gameId, inviter } = req.params;
     const { id } = req.auth;
 

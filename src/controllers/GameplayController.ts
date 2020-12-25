@@ -1,12 +1,13 @@
-const Player = require('../models/Player');
-const { MissingParametersError, errorCodes } = require('../utils/Errors');
+import { Request, Response } from 'express';
+import Player from 'models/Player';
+import { MissingParametersError, errorCodes } from 'utils/Errors';
 
 /* 
   This controller manages gameplay actions, such as listing all games to a player
 */
-module.exports = {
+export default {
   // Retrieve all games registered by a certain player
-  async index(req, res) {
+  async index(req: Request, res: Response) {
     const { id } = req.auth;
     try {
       const games = await Player.find({
@@ -43,7 +44,7 @@ module.exports = {
     }
   },
   // Retrieve the info of a player, with his game's stored info
-  async show(req, res) {
+  async show(req: Request, res: Response) {
     const { id } = req.params;
     const { id: user } = req.auth;
     const game = req.game;

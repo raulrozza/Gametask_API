@@ -1,9 +1,10 @@
-const FeedItem = require('../models/FeedItem');
+import { Request, Response } from 'express';
+import FeedItem from 'models/FeedItem';
 
 // This controller manages the feeds in the application
-module.exports = {
+export default {
   // The index method returns all instances of feed registers
-  async index(req, res) {
+  async index(req: Request, res: Response) {
     try {
       const feed = await FeedItem.find({ game: req.game })
         .populate({

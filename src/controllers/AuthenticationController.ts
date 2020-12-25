@@ -1,8 +1,9 @@
-const User = require('../models/User');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { SECRET_KEY } = require('../config/environment');
-const { BadAuthenticationError, errorCodes } = require('../utils/Errors');
+import User from 'models/User';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import config from 'config/environment';
+import { BadAuthenticationError, errorCodes } from 'utils/Errors';
+import { Request, Response } from 'express';
 
 const VALID_DAYS = 7;
 
@@ -10,15 +11,13 @@ const VALID_DAYS = 7;
   The Authentication Controller is responsible for the authentication methods. It's operations consists in returning the user trying to
   login, and also creating a login session in assossiation with an user
 */
-module.exports = {
+export default {
   // Create a user's session
-  async store(req, res) {
+  async store(req: Request, res: Response) {
     const { email, password } = req.body;
 
     try {
-      const user = await User.findOne({ email }).catch(error => {
-        throw error;
-      });
+      const user = await User.findOne({ email });
 
       if (!user) throw new BadAuthenticationError();
 
@@ -32,9 +31,13 @@ module.exports = {
       if (!passwordMatch) throw new BadAuthenticationError();
 
       // Token expires in {VALID_DAYS} days. ExpiresIn takes on a number of seconds, so 60*60*24*VALID_DAYS
-      const token = jwt.sign({ id: user._id, email }, SECRET_KEY, {
-        expiresIn: VALID_DAYS * 86400,
-      });
+      const token = jwt.sign(
+        { id: user._id, email },
+        String(config.SECRET_KEY),
+        {
+          expiresIn: VALID_DAYS * 86400,
+        },
+      );
       if (!token) throw new jwt.JsonWebTokenError('Could not generate token.');
 
       await User.updateOne(
@@ -44,9 +47,7 @@ module.exports = {
         {
           $set: { token },
         },
-      ).catch(error => {
-        throw error;
-      });
+      );
 
       user.token = token;
 
