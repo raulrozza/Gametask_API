@@ -1,11 +1,12 @@
-import { Schema, model, Document, Types, Model } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
 import config from 'config/environment';
 import { IGameDocument } from './Game';
+import { ITitleDocument } from './Title';
 
 export interface IAchievement {
   name: string;
   description: string;
-  title?: string;
+  title?: Types.ObjectId | ITitleDocument;
   image?: string;
   game: Types.ObjectId | IGameDocument;
 }
@@ -48,11 +49,13 @@ AchievementSchema.virtual('image_url').get(function (this: IAchievement) {
 
 export interface IAchievementDocument extends IAchievementBaseDocument {
   game: IGameDocument['_id'];
+  title: ITitleDocument['_id'];
 }
 
 export interface IAchievementPopulatedDocument
   extends IAchievementBaseDocument {
   game: IGameDocument;
+  title: ITitleDocument;
 }
 
 export default model<IAchievementDocument>('Achievement', AchievementSchema);

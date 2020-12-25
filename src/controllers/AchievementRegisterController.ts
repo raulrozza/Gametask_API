@@ -1,15 +1,16 @@
-const Game = require('../models/Game');
-const AchievementRegister = require('../models/AchievementRegister');
-const {
+import Game from 'models/Game';
+import AchievementRegister from 'models/AchievementRegister';
+import {
   MissingParametersError,
   errorCodes,
   AchievementRegisterExistsError,
-} = require('../utils/Errors');
+} from 'utils/Errors';
+import { Request, Response } from 'express';
 
 // This controller manages the activities in the application, creating and updating their data
-module.exports = {
+export default {
   // This method lists all activity registers
-  async index(req, res) {
+  async index(req: Request, res: Response) {
     try {
       const achievementRegisters = await AchievementRegister.find({
         game: req.game,
@@ -38,7 +39,7 @@ module.exports = {
       return res.status(500).json({ error: 'Internal server error.' });
     }
   },
-  async delete(req, res) {
+  async delete(req: Request, res: Response) {
     const { id } = req.params;
     const game = req.game;
 
@@ -70,7 +71,7 @@ module.exports = {
     }
   },
   // The store methods creates a new activity
-  async store(req, res) {
+  async store(req: Request, res: Response) {
     const { requester, achievement, requestDate, information } = req.body;
 
     const game = req.game;

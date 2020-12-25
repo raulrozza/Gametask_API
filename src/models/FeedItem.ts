@@ -14,8 +14,8 @@ export interface IFeedItem {
   activity?: Types.ObjectId | IActivityDocument;
   achievement?: Types.ObjectId | IAchievementDocument;
   game: Types.ObjectId | IGameDocument;
-  level: ILevelInfo;
-  rank: IRank;
+  level?: ILevelInfo;
+  rank?: IRank;
   date: Date;
 }
 
@@ -68,14 +68,19 @@ const FeedItem = new Schema(
   {},
 );
 
-export interface IFeedItemDocument extends IFeedItem, Document {
+interface IFeedItemBaseDocument extends IFeedItem, Document {
+  level: ILevelInfo;
+  rank?: IRank;
+}
+
+export interface IFeedItemDocument extends IFeedItemBaseDocument {
   player: IPlayerDocument['_id'];
   activity?: IActivityDocument['_id'];
   achievement?: IAchievementDocument['_id'];
   game: IGameDocument['_id'];
 }
 
-export interface IFeedItemPopulatedDocument extends IFeedItem, Document {
+export interface IFeedItemPopulatedDocument extends IFeedItemBaseDocument {
   player: IPlayerDocument;
   activity?: IActivityDocument;
   achievement?: IAchievementDocument;

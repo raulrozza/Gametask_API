@@ -1,12 +1,13 @@
 import 'express';
+import { Types } from 'mongoose';
 
 declare module 'express' {
   export interface IAuth {
-    id: string;
+    id: Types.ObjectId;
   }
 
   export interface Request {
-    game: string;
+    game: Types.ObjectId;
     auth: IAuth;
   }
 }

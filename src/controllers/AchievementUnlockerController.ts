@@ -1,12 +1,14 @@
-const mongoose = require('mongoose');
-const Player = require('../models/Player');
-const Achievement = require('../models/Achievement');
-const AchievementRegister = require('../models/AchievementRegister');
-const Game = require('../models/Game');
-const FeedItem = require('../models/FeedItem');
+import mongoose, { Types } from 'mongoose';
+import Player from 'models/Player';
+import Achievement from 'models/Achievement';
+import AchievementRegister from 'models/AchievementRegister';
+import Game from 'models/Game';
+import FeedItem, { IFeedItem } from 'models/FeedItem';
+import { Request, Response } from 'express';
+import { BadRequestError, errorCodes } from 'utils/Errors';
 
-module.exports = {
-  async store(req, res) {
+export default {
+  async store(req: Request, res: Response) {
     const { userId, playerId, achievementId, registerId } = req.body;
     const game = req.game;
 
@@ -21,7 +23,14 @@ module.exports = {
         // Check if the achievement has a title
         const achievement = await Achievement.findById(achievementId);
 
-        const pushDocument = {
+        if (!achievement) throw new BadRequestError();
+
+        interface PushDocument {
+          achievements: Types.ObjectId;
+          titles?: Types.ObjectId;
+        }
+
+        const pushDocument: PushDocument = {
           achievements: achievementId,
         };
 
@@ -59,7 +68,7 @@ module.exports = {
         );
 
         // Create feed item for acomplishment
-        await FeedItem.create(
+        await FeedItem.create<IFeedItem>(
           [
             {
               player: playerId,
@@ -82,6 +91,11 @@ module.exports = {
 
       return res.status(201).send();
     } catch (error) {
+      if (error instanceof BadRequestError)
+        return res
+          .status(400)
+          .json({ error: error.message, code: errorCodes.BAD_REQUEST_ERROR });
+
       return res.status(500).json({ error: 'Internal server error.' });
     }
   },

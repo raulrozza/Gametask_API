@@ -1,12 +1,14 @@
-const Game = require('../models/Game');
-const ActivityRegister = require('../models/ActivityRegister');
-const handleRemoveActivityRegister = require('../actions/handleRemoveActivityRegister');
-const { MissingParametersError, errorCodes } = require('../utils/Errors');
+import Game from 'models/Game';
+import ActivityRegister from 'models/ActivityRegister';
+import handleRemoveActivityRegister from 'actions/handleRemoveActivityRegister';
+import { MissingParametersError, errorCodes } from 'utils/Errors';
+import { Request, Response } from 'express';
+import { isValidObjectId, Types } from 'mongoose';
 
 // This controller manages the activities in the application, creating and updating their data
-module.exports = {
+export default {
   // This method lists all activity registers
-  async index(req, res) {
+  async index(req: Request, res: Response) {
     try {
       const activities = await ActivityRegister.find({ game: req.game })
         .populate('activity')
@@ -16,22 +18,19 @@ module.exports = {
             path: 'user',
           },
         })
-        .sort({ requestDate: -1 })
-        .catch(error => {
-          throw error;
-        });
+        .sort({ requestDate: -1 });
 
       return res.json(activities);
     } catch (error) {
       return res.status(500).json({ error: 'Internal server error.' });
     }
   },
-  async delete(req, res) {
+  async delete(req: Request<{ id: Types.ObjectId }>, res: Response) {
     const { id } = req.params;
     const game = req.game;
 
     try {
-      if (!id)
+      if (!id || !isValidObjectId(id))
         throw new MissingParametersError('Missing activity id on parameters.');
 
       await handleRemoveActivityRegister(id, game);
@@ -45,7 +44,7 @@ module.exports = {
     }
   },
   // The store methods creates a new activity
-  async store(req, res) {
+  async store(req: Request, res: Response) {
     const {
       requester,
       activity,

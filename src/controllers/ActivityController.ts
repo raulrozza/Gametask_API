@@ -1,10 +1,15 @@
-const Activity = require('../models/Activity');
-const { MissingParametersError, errorCodes } = require('../utils/Errors');
+import { Request, Response } from 'express';
+import Activity, { IActivity } from 'models/Activity';
+import {
+  MissingParametersError,
+  errorCodes,
+  BadRequestError,
+} from 'utils/Errors';
 
 // This controller manages the activities in the application, creating and updating their data
-module.exports = {
+export default {
   // This method removes an activity
-  async delete(req, res) {
+  async delete(req: Request, res: Response) {
     const { id } = req.params;
 
     try {
@@ -21,7 +26,7 @@ module.exports = {
     }
   },
   // This method lists all activities
-  async index(req, res) {
+  async index(req: Request, res: Response) {
     try {
       const activities = await Activity.find({ game: req.game }).catch(
         error => {
@@ -35,7 +40,7 @@ module.exports = {
     }
   },
   // This method returns one activities info
-  async show(req, res) {
+  async show(req: Request, res: Response) {
     const { id } = req.params;
 
     try {
@@ -57,11 +62,11 @@ module.exports = {
     }
   },
   // The store methods creates a new activity
-  async store(req, res) {
+  async store(req: Request, res: Response) {
     const { name, description, experience, dmRules } = req.body;
 
     try {
-      const activity = await Activity.create({
+      const activity = await Activity.create<IActivity>({
         name,
         description,
         experience,
@@ -77,7 +82,7 @@ module.exports = {
     }
   },
   // This method updates an activity
-  async update(req, res) {
+  async update(req: Request, res: Response) {
     const { name, description, experience, dmRules } = req.body;
     const { id } = req.params;
 
@@ -85,9 +90,9 @@ module.exports = {
       if (!id)
         throw new MissingParametersError('Missing activity id on parameters.');
 
-      const activity = await Activity.findById(id).catch(error => {
-        throw error;
-      });
+      const activity = await Activity.findById(id);
+
+      if (!activity) throw new BadRequestError();
 
       const changelog = {
         version: activity.changelog[0] ? activity.changelog[0].version + 1 : 1,
@@ -132,6 +137,10 @@ module.exports = {
         return res
           .status(400)
           .json({ error: error.message, code: errorCodes.MISSING_PARAMETERS });
+      if (error instanceof BadRequestError)
+        return res
+          .status(400)
+          .json({ error: error.message, code: errorCodes.BAD_REQUEST_ERROR });
 
       return res.status(500).json({ error: 'Internal server error.' });
     }

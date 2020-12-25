@@ -12,10 +12,10 @@ export interface IGame {
   theme: ITheme;
   image?: string;
   administrators: Types.ObjectId[] | IUserDocument[];
-  levelInfo: ILevelInfo;
+  levelInfo: ILevelInfo[];
   newRegisters: number;
-  ranks: IRank[];
-  weeklyRanking: IWeeklyRanking[];
+  ranks?: IRank[];
+  weeklyRanking?: IWeeklyRanking[];
 }
 
 const GameSchema = new Schema(
@@ -76,6 +76,8 @@ const GameSchema = new Schema(
 
 interface IGameBaseDocument extends IGame, Document {
   image_url: string;
+  ranks: IRank[];
+  weeklyRanking: IWeeklyRanking[];
 }
 
 export interface IGameDocument extends IGameBaseDocument {

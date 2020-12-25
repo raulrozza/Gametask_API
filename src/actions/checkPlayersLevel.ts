@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const Player = require('../models/Player');
-const handleLevelUp = require('./handleLevelUp');
+import mongoose, { Types } from 'mongoose';
+import Player from 'models/Player';
+import handleLevelUp from './handleLevelUp';
 
-const checkPlayersLevels = async gameId => {
+const checkPlayersLevels = async (gameId: Types.ObjectId) => {
   try {
     const players = await Player.find({ game: gameId });
 
@@ -10,7 +10,7 @@ const checkPlayersLevels = async gameId => {
 
     await session.startTransaction();
     try {
-      const promiseArray = [];
+      const promiseArray: Promise<void>[] = [];
 
       players.forEach(player =>
         promiseArray.push(handleLevelUp(player._id, gameId, session)),
@@ -30,4 +30,4 @@ const checkPlayersLevels = async gameId => {
   }
 };
 
-module.exports = checkPlayersLevels;
+export default checkPlayersLevels;

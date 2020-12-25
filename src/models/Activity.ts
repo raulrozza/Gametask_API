@@ -8,8 +8,8 @@ export interface IActivity {
   description?: string;
   experience: number;
   dmRules?: string;
-  history: IHistory[];
-  changelog: ILog[];
+  history?: IHistory[];
+  changelog?: ILog[];
   game: Types.ObjectId | IGameDocument;
 }
 
@@ -42,11 +42,16 @@ const ActivitySchema = new Schema(
   {},
 );
 
-export interface IActivityDocument extends IActivity, Document {
+interface IActivityBaseDocument extends IActivity, Document {
+  history: IHistory[];
+  changelog: ILog[];
+}
+
+export interface IActivityDocument extends IActivityBaseDocument {
   game: IGameDocument['_id'];
 }
 
-export interface IActivityPopulatedDocument extends IActivity, Document {
+export interface IActivityPopulatedDocument extends IActivityBaseDocument {
   game: IGameDocument;
 }
 
