@@ -5,7 +5,7 @@
   "main": "src/server.ts",
   "scripts": {
     "start": "tsnd src/server.ts",
-    "dev": "tsnd -r tsconfig-paths/register --respawn --ignore-watch node_modules --no-notify src/server.ts"
+    "dev": "tsnd -r tsconfig-paths/register --transpile-only --respawn --ignore-watch node_modules --no-notify src/server.ts"
   },
   "engines": {
     "node": ">=12.14.0",
@@ -18,17 +18,11 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "ip": "^1.1.5",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.28",
     "multer": "^1.4.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.10",
-    "@babel/core": "^7.12.10",
-    "@babel/node": "^7.12.10",
-    "@babel/preset-env": "^7.12.11",
-    "@babel/preset-typescript": "^7.12.7",
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.9",
     "@types/express": "^4.17.9",
@@ -46,7 +40,6 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "nodemon": "^2.0.6",
     "prettier": "^2.0.5",
     "ts-node-dev": "^1.1.1",
     "tsconfig-paths": "^3.9.0",

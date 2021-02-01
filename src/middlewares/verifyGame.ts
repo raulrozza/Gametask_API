@@ -1,14 +1,13 @@
-import { NextFunction, Request, Response } from 'express';
-import { Types } from 'mongoose';
+import { RequestHandler } from 'express';
 import { GameNotFoundError } from '@utils/Errors';
 
-export default async (req: Request, res: Response, next: NextFunction) => {
+const verifyGame: RequestHandler = async (req, res, next) => {
   try {
     const gameId = req.headers['x-game-id'];
 
     if (!gameId) throw new GameNotFoundError('Unindentified game');
 
-    req.game = (String(gameId) as unknown) as Types.ObjectId;
+    req.game = String(gameId);
 
     return next();
   } catch (error) {
@@ -17,3 +16,5 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     else return res.status(500).json({ error: 'Unknown error' });
   }
 };
+
+export default verifyGame;
