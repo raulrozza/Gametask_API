@@ -1,14 +1,14 @@
 import mongoose from 'mongoose';
 
 // Actions
-import handleLevelUp from 'actions/handleLevelUp';
-import handleRemoveActivityRegister from 'actions/handleRemoveActivityRegister';
+import handleLevelUp from '@actions/handleLevelUp';
+import handleRemoveActivityRegister from '@actions/handleRemoveActivityRegister';
 
 // Models
-import Activity from 'models/Activity';
-import FeedItem, { IFeedItem } from 'models/FeedItem';
-import Game from 'models/Game';
-import Player from 'models/Player';
+import Activity from '@models/Activity';
+import FeedItem, { IFeedItem } from '@models/FeedItem';
+import Game from '@models/Game';
+import Player from '@models/Player';
 
 // Types
 import { Request, Response } from 'express';

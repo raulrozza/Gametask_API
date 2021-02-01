@@ -1,5 +1,5 @@
 import { Schema, model, Document, Types } from 'mongoose';
-import RankSchema, { IRank } from 'models/utils/RankSchema';
+import RankSchema, { IRank } from '@models/utils/RankSchema';
 import { ITitleDocument } from './Title';
 import { IAchievementDocument } from './Achievement';
 import { IUserDocument } from './User';

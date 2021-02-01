@@ -2,9 +2,9 @@ import {
   MissingParametersError,
   PlayerExistsError,
   errorCodes,
-} from 'utils/Errors';
-import Game from 'models/Game';
-import Player from 'models/Player';
+} from '@utils/Errors';
+import Game from '@models/Game';
+import Player from '@models/Player';
 import { Request, Response } from 'express';
 
 export default {

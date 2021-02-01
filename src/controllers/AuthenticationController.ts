@@ -1,8 +1,8 @@
-import User from 'models/User';
+import User from '@models/User';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import config from 'config/environment';
-import { BadAuthenticationError, errorCodes } from 'utils/Errors';
+import config from '@config/environment';
+import { BadAuthenticationError, errorCodes } from '@utils/Errors';
 import { Request, Response } from 'express';
 
 const VALID_DAYS = 7;

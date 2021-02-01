@@ -1,10 +1,10 @@
-import Game from 'models/Game';
-import AchievementRegister from 'models/AchievementRegister';
+import Game from '@models/Game';
+import AchievementRegister from '@models/AchievementRegister';
 import {
   MissingParametersError,
   errorCodes,
   AchievementRegisterExistsError,
-} from 'utils/Errors';
+} from '@utils/Errors';
 import { Request, Response } from 'express';
 
 // This controller manages the activities in the application, creating and updating their data

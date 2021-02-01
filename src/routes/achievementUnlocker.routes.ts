@@ -1,8 +1,8 @@
 import express from 'express';
-import verifyGame from 'middlewares/verifyGame';
-import verifyJwt from 'middlewares/verifyJwt';
+import verifyGame from '@middlewares/verifyGame';
+import verifyJwt from '@middlewares/verifyJwt';
 
-import AchievementUnlockerController from 'controllers/AchievementUnlockerController';
+import AchievementUnlockerController from '@controllers/AchievementUnlockerController';
 
 const achievementUnlockerRoutes = express.Router();
 

@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
-import Game, { IGame } from 'models/Game';
-import Player, { IPlayer } from 'models/Player';
-import { MissingParametersError, errorCodes } from 'utils/Errors';
+import Game, { IGame } from '@models/Game';
+import Player, { IPlayer } from '@models/Player';
+import { MissingParametersError, errorCodes } from '@utils/Errors';
 import { Request, Response } from 'express';
-import { ITheme } from 'models/utils/ThemeSchema';
+import { ITheme } from '@models/utils/ThemeSchema';
 
 /* 
   This controller manages the game configurations

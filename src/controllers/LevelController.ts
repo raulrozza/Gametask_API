@@ -1,6 +1,6 @@
-import Game from 'models/Game';
-import { MissingParametersError, errorCodes } from 'utils/Errors';
-import checkPlayersLevels from 'actions/checkPlayersLevel';
+import Game from '@models/Game';
+import { MissingParametersError, errorCodes } from '@utils/Errors';
+import checkPlayersLevels from '@actions/checkPlayersLevel';
 import { Request, Response } from 'express';
 import { isValidObjectId, Types } from 'mongoose';
 

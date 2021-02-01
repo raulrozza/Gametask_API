@@ -1,5 +1,5 @@
 import mongoose, { Types } from 'mongoose';
-import Player from 'models/Player';
+import Player from '@models/Player';
 import handleLevelUp from './handleLevelUp';
 
 const checkPlayersLevels = async (gameId: Types.ObjectId) => {

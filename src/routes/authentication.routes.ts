@@ -1,6 +1,6 @@
 import express from 'express';
 
-import AuthenticationController from 'controllers/AuthenticationController';
+import AuthenticationController from '@controllers/AuthenticationController';
 
 const authenticationRoutes = express.Router();
 

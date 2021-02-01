@@ -1,9 +1,9 @@
 import express from 'express';
 import multer from 'multer';
-import verifyJwt from 'middlewares/verifyJwt';
-import uploadConfig from 'config/upload';
+import verifyJwt from '@middlewares/verifyJwt';
+import uploadConfig from '@config/upload';
 
-import UserController from 'controllers/UserController';
+import UserController from '@controllers/UserController';
 
 const userRoutes = express.Router();
 const upload = multer(uploadConfig('user'));

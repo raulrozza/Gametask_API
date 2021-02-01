@@ -1,8 +1,8 @@
 import express from 'express';
-import verifyGame from 'middlewares/verifyGame';
-import verifyJwt from 'middlewares/verifyJwt';
+import verifyGame from '@middlewares/verifyGame';
+import verifyJwt from '@middlewares/verifyJwt';
 
-import FeedController from 'controllers/FeedController';
+import FeedController from '@controllers/FeedController';
 
 const feedRoutes = express.Router();
 

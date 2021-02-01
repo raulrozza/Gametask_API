@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
-import Player from 'models/Player';
-import Title from 'models/Title';
+import Player from '@models/Player';
+import Title from '@models/Title';
 import { Types } from 'mongoose';
 import {
   MissingParametersError,
   errorCodes,
   TitleBelongsToPlayerError,
-} from 'utils/Errors';
+} from '@utils/Errors';
 
 // This controller manages the titles in the application, creating and updating their data
 export default {

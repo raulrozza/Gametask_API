@@ -1,5 +1,5 @@
 import { Document, Schema, model } from 'mongoose';
-import config from 'config/environment';
+import config from '@config/environment';
 
 export interface IUser {
   firstname: string;

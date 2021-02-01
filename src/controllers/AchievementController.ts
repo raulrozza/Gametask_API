@@ -2,9 +2,9 @@ import { Request, Response } from 'express';
 import Achievement, {
   IAchievement,
   IAchievementDocument,
-} from 'models/Achievement';
+} from '@models/Achievement';
 import { MongooseUpdateQuery } from 'mongoose';
-import { MissingParametersError, errorCodes } from 'utils/Errors';
+import { MissingParametersError, errorCodes } from '@utils/Errors';
 
 // This controller manages the achievements in the application, creating and updating their data
 export default {

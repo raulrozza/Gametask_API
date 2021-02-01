@@ -1,10 +1,10 @@
 import express from 'express';
 import multer from 'multer';
-import verifyGame from 'middlewares/verifyGame';
-import verifyJwt from 'middlewares/verifyJwt';
-import uploadConfig from 'config/upload';
+import verifyGame from '@middlewares/verifyGame';
+import verifyJwt from '@middlewares/verifyJwt';
+import uploadConfig from '@config/upload';
 
-import AchievementController from 'controllers/AchievementController';
+import AchievementController from '@controllers/AchievementController';
 
 const achievementRoutes = express.Router();
 const upload = multer(uploadConfig('achievement'));

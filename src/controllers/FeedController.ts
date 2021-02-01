@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import FeedItem from 'models/FeedItem';
+import FeedItem from '@models/FeedItem';
 
 // This controller manages the feeds in the application
 export default {

@@ -1,11 +1,11 @@
 import mongoose, { Types } from 'mongoose';
-import Player from 'models/Player';
-import Achievement from 'models/Achievement';
-import AchievementRegister from 'models/AchievementRegister';
-import Game from 'models/Game';
-import FeedItem, { IFeedItem } from 'models/FeedItem';
+import Player from '@models/Player';
+import Achievement from '@models/Achievement';
+import AchievementRegister from '@models/AchievementRegister';
+import Game from '@models/Game';
+import FeedItem, { IFeedItem } from '@models/FeedItem';
 import { Request, Response } from 'express';
-import { BadRequestError, errorCodes } from 'utils/Errors';
+import { BadRequestError, errorCodes } from '@utils/Errors';
 
 export default {
   async store(req: Request, res: Response) {

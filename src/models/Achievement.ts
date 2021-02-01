@@ -1,5 +1,5 @@
 import { Schema, model, Document, Types } from 'mongoose';
-import config from 'config/environment';
+import config from '@config/environment';
 import { IGameDocument } from './Game';
 import { ITitleDocument } from './Title';
 

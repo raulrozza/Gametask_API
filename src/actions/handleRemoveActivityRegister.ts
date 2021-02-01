@@ -1,5 +1,5 @@
-import ActivityRegister from 'models/ActivityRegister';
-import Game from 'models/Game';
+import ActivityRegister from '@models/ActivityRegister';
+import Game from '@models/Game';
 import { ModelUpdateOptions, Types } from 'mongoose';
 
 export default async (

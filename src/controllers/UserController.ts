@@ -1,11 +1,11 @@
-import User, { IUser } from 'models/User';
+import User, { IUser } from '@models/User';
 import bcrypt from 'bcryptjs';
 import { JsonWebTokenError } from 'jsonwebtoken';
 import {
   UserExistsError,
   errorCodes,
   MissingParametersError,
-} from 'utils/Errors';
+} from '@utils/Errors';
 import { Request, Response } from 'express';
 
 const BCRYPT_SALT_ROUNDS = 12; // salt rounds used in password crypto

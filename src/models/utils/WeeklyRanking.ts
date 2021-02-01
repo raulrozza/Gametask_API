@@ -1,4 +1,4 @@
-import { IPlayerDocument } from 'models/Player';
+import { IPlayerDocument } from '@models/Player';
 import mongoose, { Types } from 'mongoose';
 
 export interface IWeeklyRanking {

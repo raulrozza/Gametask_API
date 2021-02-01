@@ -1,4 +1,4 @@
-import { IUserDocument } from 'models/User';
+import { IUserDocument } from '@models/User';
 import mongoose, { Types } from 'mongoose';
 
 export interface IHistory {

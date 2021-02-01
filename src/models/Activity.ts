@@ -1,6 +1,6 @@
 import { Schema, model, Document, Types } from 'mongoose';
-import HistorySchema, { IHistory } from 'models/utils/HistorySchema';
-import LogSchema, { ILog } from 'models/utils/LogSchema';
+import HistorySchema, { IHistory } from '@models/utils/HistorySchema';
+import LogSchema, { ILog } from '@models/utils/LogSchema';
 import { IGameDocument } from './Game';
 
 export interface IActivity {

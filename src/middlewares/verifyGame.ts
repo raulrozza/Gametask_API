@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { Types } from 'mongoose';
-import { GameNotFoundError } from 'utils/Errors';
+import { GameNotFoundError } from '@utils/Errors';
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {

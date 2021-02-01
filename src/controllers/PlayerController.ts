@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import Player, { IPlayer } from 'models/Player';
-import { errorCodes, MissingParametersError } from 'utils/Errors';
-import handleLevelUp from 'actions/handleLevelUp';
+import Player, { IPlayer } from '@models/Player';
+import { errorCodes, MissingParametersError } from '@utils/Errors';
+import handleLevelUp from '@actions/handleLevelUp';
 import { Request, Response } from 'express';
 
 // This controller manages the players in the application, managing their data

@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import config from 'config/environment';
+import config from '@config/environment';
 import { IAuth, NextFunction, Request, Response } from 'express';
 
 // TOKEN FORMAT

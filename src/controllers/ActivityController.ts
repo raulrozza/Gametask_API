@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import Activity, { IActivity } from 'models/Activity';
+import Activity, { IActivity } from '@models/Activity';
 import {
   MissingParametersError,
   errorCodes,
   BadRequestError,
-} from 'utils/Errors';
+} from '@utils/Errors';
 
 // This controller manages the activities in the application, creating and updating their data
 export default {

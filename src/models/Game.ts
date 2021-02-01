@@ -1,9 +1,9 @@
 import { Schema, model, Document, Types } from 'mongoose';
-import config from 'config/environment';
-import LevelInfoSchema, { ILevelInfo } from 'models/utils/LevelInfoSchema';
-import ThemeSchema, { ITheme } from 'models/utils/ThemeSchema';
-import RankSchema, { IRank } from 'models/utils/RankSchema';
-import WeeklyRanking, { IWeeklyRanking } from 'models/utils/WeeklyRanking';
+import config from '@config/environment';
+import LevelInfoSchema, { ILevelInfo } from '@models/utils/LevelInfoSchema';
+import ThemeSchema, { ITheme } from '@models/utils/ThemeSchema';
+import RankSchema, { IRank } from '@models/utils/RankSchema';
+import WeeklyRanking, { IWeeklyRanking } from '@models/utils/WeeklyRanking';
 import { IUserDocument } from './User';
 
 export interface IGame {

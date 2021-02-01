@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import Player from 'models/Player';
-import { MissingParametersError, errorCodes } from 'utils/Errors';
+import Player from '@models/Player';
+import { MissingParametersError, errorCodes } from '@utils/Errors';
 
 /* 
   This controller manages gameplay actions, such as listing all games to a player

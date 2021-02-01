@@ -1,8 +1,8 @@
-import Player from 'models/Player';
-import Game from 'models/Game';
-import FeedItem, { IFeedItem } from 'models/FeedItem';
+import Player from '@models/Player';
+import Game from '@models/Game';
+import FeedItem, { IFeedItem } from '@models/FeedItem';
 import { ClientSession, Types } from 'mongoose';
-import { IRank } from 'models/utils/RankSchema';
+import { IRank } from '@models/utils/RankSchema';
 
 export default async (
   playerId: Types.ObjectId,

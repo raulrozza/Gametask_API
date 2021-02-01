@@ -1,6 +1,6 @@
 import { Schema, model, Document, Types } from 'mongoose';
-import LevelInfoSchema, { ILevelInfo } from 'models/utils/LevelInfoSchema';
-import RankSchema, { IRank } from 'models/utils/RankSchema';
+import LevelInfoSchema, { ILevelInfo } from '@models/utils/LevelInfoSchema';
+import RankSchema, { IRank } from '@models/utils/RankSchema';
 import { IPlayerDocument } from './Player';
 import { IActivityDocument } from './Activity';
 import { IAchievementDocument } from './Achievement';

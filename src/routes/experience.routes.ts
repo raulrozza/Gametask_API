@@ -1,8 +1,8 @@
 import express from 'express';
-import verifyGame from 'middlewares/verifyGame';
-import verifyJwt from 'middlewares/verifyJwt';
+import verifyGame from '@middlewares/verifyGame';
+import verifyJwt from '@middlewares/verifyJwt';
 
-import ExperienceController from 'controllers/ExperienceController';
+import ExperienceController from '@controllers/ExperienceController';
 
 const experienceRoutes = express.Router();
 

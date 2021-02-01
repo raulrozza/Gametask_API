@@ -1,7 +1,7 @@
-import Game from 'models/Game';
-import ActivityRegister from 'models/ActivityRegister';
-import handleRemoveActivityRegister from 'actions/handleRemoveActivityRegister';
-import { MissingParametersError, errorCodes } from 'utils/Errors';
+import Game from '@models/Game';
+import ActivityRegister from '@models/ActivityRegister';
+import handleRemoveActivityRegister from '@actions/handleRemoveActivityRegister';
+import { MissingParametersError, errorCodes } from '@utils/Errors';
 import { Request, Response } from 'express';
 import { isValidObjectId, Types } from 'mongoose';
 
