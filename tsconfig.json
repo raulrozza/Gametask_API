@@ -14,6 +14,7 @@
       "@middlewares/*": ["./src/middlewares/*"],
       "@models/*": ["./src/models/*"],
       "@routes/*": ["./src/routes/*"],
+      "@shared/*": ["./src/shared/*"],
       "@utils/*": ["./src/utils/*"]
     },                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
     "rootDir": "./src",                        /* List of root folders whose combined content represents the structure of the project at runtime. */

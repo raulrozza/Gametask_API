@@ -1,5 +1,5 @@
-import multer from 'multer'
-import path from 'path'
+import multer from 'multer';
+import path from 'path';
 
 export default (folder: string) => ({
   storage: multer.diskStorage({
@@ -15,4 +15,4 @@ export default (folder: string) => ({
       cb(null, `${name}-${Date.now()}${ext}`);
     },
   }),
-})
+});

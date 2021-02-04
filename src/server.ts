@@ -1,4 +1,4 @@
-import app from './app';
+import app from '@shared/infra/http/app';
 import config from '@config/environment';
 
 app.listen(config.PORT, () =>
