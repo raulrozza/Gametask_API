@@ -20,9 +20,8 @@ module.exports = {
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: [
     'src/**/middlewares/*.ts',
-    'src/**/implementations/*.ts',
-    'src/**/services/*.ts',
-    '!src/server.ts',
+    //'src/**/implementations/*.ts',
+    //'src/**/services/*.ts',
     '!<rootDir>/node_modules/',
     '!<rootDir>/path/to/dir/',
   ],
@@ -84,9 +83,7 @@ module.exports = {
   // ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
-    prefix: '<rootDir>/src/',
-  }),
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>' }),
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -152,7 +149,7 @@ module.exports = {
 
   // The glob patterns Jest uses to detect test files
   testMatch: [
-    "**/__tests__/**/*.ts",
+    "**/__tests__/**/*.spec.ts",
     "**/*.spec.ts"
   ],
 
