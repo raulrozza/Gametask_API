@@ -6,14 +6,15 @@ import {
   requestErrorHandler,
 } from '@shared/infra/http/middlewares';
 
-// Routes
-
 const appRoutes = express.Router();
 
 // Static routes
 appRoutes.use('/files', express.static(resolve(__dirname, '..', 'uploads')));
 
 // Routes
+appRoutes.get('/', (_, response) => {
+  return response.json({ message: 'Welcome to GameTask API' });
+});
 
 // Handlers
 appRoutes.use(notFoundErrorHandler);
