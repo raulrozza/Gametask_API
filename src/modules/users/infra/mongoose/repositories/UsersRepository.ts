@@ -12,7 +12,7 @@ export default class UsersRepository
   }
 
   public async findOne(id: string): Promise<IUserDocument> {
-    const user = await User.findOne({ id }, { password: 0 });
+    const user = await User.findOne({ _id: id }, { password: 0 });
 
     return user || undefined;
   }

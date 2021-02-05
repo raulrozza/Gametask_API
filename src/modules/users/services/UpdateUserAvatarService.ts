@@ -26,11 +26,14 @@ export default class UpdateUserAvatarService {
   public async execute({ filename, id }: IExecute) {
     const user = await this.usersRepository.findOne(id);
 
-    if (!user)
+    console.log(id, user);
+
+    if (!user) {
       throw new RequestError(
         'Could not find user on database',
         errorCodes.COULD_NOT_FIND_USER,
       );
+    }
 
     if (user.image)
       await this.storageProvider.deleteFile(user.image, USER_FOLDER);
