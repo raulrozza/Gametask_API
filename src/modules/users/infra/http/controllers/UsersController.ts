@@ -1,6 +1,10 @@
 import { RequestHandler } from 'express';
 import { container } from 'tsyringe';
-import { CreateUsersService, ListUsersService } from '@modules/users/services';
+import {
+  CreateUsersService,
+  ListUsersService,
+  ShowUsersService,
+} from '@modules/users/services';
 
 export default class UsersController {
   public index: RequestHandler = async (_, response) => {
@@ -11,28 +15,15 @@ export default class UsersController {
     return response.json(users);
   };
 
-  /* public show: RequestHandler = async (request, response) => {
+  public show: RequestHandler = async (request, response) => {
     const { id } = request.params;
 
-    try {
-      if (!id)
-        throw new MissingParametersError('Missing user id on parameters.');
+    const showUsers = container.resolve(ShowUsersService);
 
-      const user = await User.findById(id, {
-        token: 0,
-        password: 0,
-      });
+    const user = await showUsers.execute(id);
 
-      return res.json(user);
-    } catch (error) {
-      if (error instanceof MissingParametersError)
-        return res
-          .status(400)
-          .json({ error: error.message, code: errorCodes.MISSING_PARAMETERS });
-
-      return res.status(500).json({ error: 'Internal server error.' });
-    }
-  }; */
+    return response.json(user);
+  };
 
   public store: RequestHandler = async (request, response) => {
     const { firstname, lastname, email, password } = request.body;
