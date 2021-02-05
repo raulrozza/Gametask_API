@@ -10,7 +10,7 @@ export default {
 
   multerConfig: {
     storage: multer.diskStorage({
-      destination: (req, _, cb) => cb(null, uploadsPath),
+      destination: (req, _, cb) => cb(null, tmpPath),
       filename: (_, file, cb) => {
         const ext = path.extname(file.originalname);
         const name = path.basename(file.originalname, ext);

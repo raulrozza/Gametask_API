@@ -1,4 +1,4 @@
 import { container } from 'tsyringe';
-import DiskStorageProvider from './implementations/DiskStorageProvider';
+import DiskStorageProvider from './StorageProvider/implementations/DiskStorageProvider';
 
 container.registerSingleton('StorageProvider', DiskStorageProvider);

@@ -3,20 +3,24 @@ import multer from 'multer';
 
 import uploadConfig from '@config/upload';
 
-import { UsersController } from '@modules/users/infra/http/controllers';
+import {
+  UsersAvatarController,
+  UsersController,
+} from '@modules/users/infra/http/controllers';
 import verifyAuthentication from '@modules/users/infra/http/middlewares/verifyAuthentication';
 
 const usersController = new UsersController();
+const usersAvatarController = new UsersAvatarController();
 
 const usersRoutes = express.Router();
 const upload = multer(uploadConfig.multerConfig);
 
 usersRoutes.get('/:id', verifyAuthentication, usersController.show);
-usersRoutes.put(
-  '/',
+usersRoutes.patch(
+  '/avatar',
   verifyAuthentication,
   upload.single('avatar'),
-  usersController.update,
+  usersAvatarController.update,
 );
 usersRoutes.post('/signup', usersController.store);
 

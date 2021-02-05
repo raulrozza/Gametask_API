@@ -1,5 +1,5 @@
 import errorCodes from '@config/errorCodes';
-import IStorageProvider from '@shared/container/providers/models/IStorageProvider';
+import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
 import { RequestError } from '@shared/errors/implementations';
 import { inject, injectable } from 'tsyringe';
 import { IUsersRepository } from '../repositories';
