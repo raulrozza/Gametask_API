@@ -3,7 +3,8 @@ import envs from '@config/environment';
 
 import { IUser } from 'src/modules/users/entities';
 
-export interface IUserDocument extends IUser, Document {
+export interface IUserDocument extends Omit<IUser, 'id'>, Document {
+  id: NonNullable<Document['id']>;
   profile_url: string;
 }
 

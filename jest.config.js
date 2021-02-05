@@ -21,7 +21,8 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/middlewares/*.ts',
     //'src/**/implementations/*.ts',
-    //'src/**/services/*.ts',
+    'src/**/services/*.ts',
+    '!src/**/index.ts',
     '!<rootDir>/node_modules/',
     '!<rootDir>/path/to/dir/',
   ],
@@ -35,7 +36,7 @@ module.exports = {
   // ],
 
   // Indicates which provider should be used to instrument code for coverage
-  coverageProvider: "v8",
+  //coverageProvider: "v8",
 
   // A list of reporter names that Jest uses when writing coverage reports
   coverageReporters: [

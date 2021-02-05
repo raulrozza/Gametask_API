@@ -1,6 +1,4 @@
 import app from '@shared/infra/http/app';
-import config from '@config/environment';
+import envs from '@config/environment';
 
-app.listen(config.PORT, () =>
-  console.log(`Server started on port ${config.PORT}`),
-);
+app.listen(envs.PORT, () => console.log(`Server started on port ${envs.PORT}`));

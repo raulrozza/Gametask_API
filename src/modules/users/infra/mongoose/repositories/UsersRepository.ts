@@ -1,21 +1,29 @@
 import { IUser } from '@modules/users/entities';
 import { IUsersRepository } from '@modules/users/repositories';
 import { User } from '@modules/users/infra/mongoose/entities';
+import { IUserDocument } from '../entities/User';
 
-export default class UsersRepository implements IUsersRepository {
-  public async findAll(): Promise<IUser[]> {
+export default class UsersRepository
+  implements IUsersRepository<IUserDocument> {
+  public async findAll(): Promise<IUserDocument[]> {
     const users = await User.find({}, { password: 0 });
 
     return users;
   }
 
-  public async findOne(id: string): Promise<IUser> {
+  public async findOne(id: string): Promise<IUserDocument> {
     const user = await User.findOne({ id }, { password: 0 });
 
     return user || undefined;
   }
 
-  public async create(user: IUser): Promise<IUser> {
+  public async findOneByEmail(email: string): Promise<IUserDocument> {
+    const user = await User.findOne({ email }, { password: 0 });
+
+    return user || undefined;
+  }
+
+  public async create(user: IUser): Promise<IUserDocument> {
     const createdUser = await User.create(user);
 
     return createdUser;
