@@ -40,11 +40,10 @@ export default class UsersController {
     return response.json(user);
   };
 
-  /* public update: RequestHandler = async (req: Request, res: Response) => {
-    const { firstname, lastname } = req.body;
+  public update: RequestHandler = async (request, response) => {
+    /*  const { firstname, lastname } = req.body;
     const { id } = req.auth;
 
-    try {
       interface UpdateDocument {
         firstname: string;
         lastname: string;
@@ -69,9 +68,6 @@ export default class UsersController {
         throw error;
       });
 
-      return res.status(201).send();
-    } catch (error) {
-      return res.status(500).json({ error: 'Internal server error.' });
-    }
-  }; */
+      return res.status(201).send(); */
+  };
 }

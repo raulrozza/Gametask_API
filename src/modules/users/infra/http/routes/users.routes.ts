@@ -9,15 +9,15 @@ import verifyAuthentication from '@modules/users/infra/http/middlewares/verifyAu
 const usersController = new UsersController();
 
 const usersRoutes = express.Router();
-const upload = multer(uploadConfig('user'));
+const upload = multer(uploadConfig.multerConfig);
 
 usersRoutes.get('/:id', verifyAuthentication, usersController.show);
-/* usersRoutes.put(
+usersRoutes.put(
   '/',
-  verifyJwt,
+  verifyAuthentication,
   upload.single('avatar'),
   usersController.update,
-); */
+);
 usersRoutes.post('/signup', usersController.store);
 
 export default usersRoutes;

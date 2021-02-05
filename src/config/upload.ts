@@ -1,18 +1,22 @@
 import multer from 'multer';
 import path from 'path';
 
-export default (folder: string) => ({
-  storage: multer.diskStorage({
-    destination: (req, _, cb) => {
-      const filepath = path.resolve(__dirname, '..', '..', 'uploads', folder);
+const uploadsPath = path.resolve(__dirname, '..', '..', 'uploads');
+const tmpPath = path.resolve(__dirname, '..', '..', 'tmp');
 
-      cb(null, filepath);
-    },
-    filename: (_, file, cb) => {
-      const ext = path.extname(file.originalname);
-      const name = path.basename(file.originalname, ext);
+export default {
+  uploadsPath,
+  tmpPath,
 
-      cb(null, `${name}-${Date.now()}${ext}`);
-    },
-  }),
-});
+  multerConfig: {
+    storage: multer.diskStorage({
+      destination: (req, _, cb) => cb(null, uploadsPath),
+      filename: (_, file, cb) => {
+        const ext = path.extname(file.originalname);
+        const name = path.basename(file.originalname, ext);
+
+        cb(null, `${name}-${Date.now()}${ext}`);
+      },
+    }),
+  },
+};

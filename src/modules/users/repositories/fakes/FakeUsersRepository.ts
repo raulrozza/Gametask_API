@@ -29,4 +29,19 @@ export default class FakeUsersRepository implements IUsersRepository {
 
     return Promise.resolve(user);
   }
+
+  public async update({ id, ...user }: IUser): Promise<IUser> {
+    const foundIndex = this.users.findIndex(storedUser => storedUser.id === id);
+
+    const foundUser = this.users[foundIndex];
+
+    const updatedUser = {
+      ...foundUser,
+      ...user,
+    };
+
+    this.users[foundIndex] = updatedUser;
+
+    return updatedUser;
+  }
 }

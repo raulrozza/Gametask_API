@@ -28,4 +28,17 @@ export default class UsersRepository
 
     return createdUser;
   }
+
+  public async update({ id, ...user }: IUser): Promise<IUserDocument> {
+    const updatedUser = await User.updateOne(
+      {
+        _id: id,
+      },
+      {
+        $set: user,
+      },
+    );
+
+    return updatedUser;
+  }
 }
