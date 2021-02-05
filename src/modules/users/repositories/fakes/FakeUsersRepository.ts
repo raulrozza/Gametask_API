@@ -6,6 +6,7 @@ export default class FakeUsersRepository implements IUsersRepository {
   private readonly users: IUser[] = [];
 
   public async findAll(): Promise<IUser[]> {
+    console.log(this.users);
     return Promise.resolve(this.users);
   }
 

@@ -1,6 +1,8 @@
+import 'reflect-metadata';
+
 import { inject, injectable } from 'tsyringe';
-import { IUser } from '../entities';
-import { IUsersRepository } from '../repositories';
+import { IUser } from '@modules/users/entities';
+import { IUsersRepository } from '@modules/users/repositories';
 
 @injectable()
 export default class ListUsersService {
@@ -10,6 +12,6 @@ export default class ListUsersService {
   ) {}
 
   public async execute(): Promise<IUser[]> {
-    return this.usersRepository.findAll();
+    return await this.usersRepository.findAll();
   }
 }
