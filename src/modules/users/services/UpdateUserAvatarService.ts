@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import errorCodes from '@config/errorCodes';
 import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
 import { RequestError } from '@shared/errors/implementations';

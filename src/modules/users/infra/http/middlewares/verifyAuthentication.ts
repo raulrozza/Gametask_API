@@ -1,10 +1,9 @@
 import { RequestHandler } from 'express';
-import jwt from 'jsonwebtoken';
 
-import envs from '@config/environment';
 import errorCodes from '@config/errorCodes';
 
 import { RequestError } from '@shared/errors/implementations';
+import JwtTokenProvider from '@modules/users/providers/TokenProvider/implementations/JwtTokenProvider';
 
 interface IAuth {
   id: string;
@@ -20,28 +19,22 @@ const verifyAuthentication: RequestHandler = async (request, _, next) => {
       403,
     );
 
-  try {
-    const [, token] = header.split(' ');
+  const [, token] = header.split(' ');
 
-    const auth = await jwt.verify(token, String(envs.SECRET_KEY));
+  const tokenProvider = new JwtTokenProvider();
 
-    request.auth = auth as IAuth;
+  const auth = await tokenProvider.verify<IAuth>(token);
 
-    return next();
-  } catch (error) {
-    if (error instanceof jwt.JsonWebTokenError)
-      throw new RequestError(
-        'Invalid authentication token',
-        errorCodes.INVALID_TOKEN,
-        401,
-      );
-    else
-      throw new RequestError(
-        'Internal server error!',
-        errorCodes.INTERNAL_SERVER_ERROR,
-        500,
-      );
-  }
+  if (!auth)
+    throw new RequestError(
+      'Invalid authentication token',
+      errorCodes.INVALID_TOKEN,
+      401,
+    );
+
+  request.auth = auth;
+
+  return next();
 };
 
 export default verifyAuthentication;

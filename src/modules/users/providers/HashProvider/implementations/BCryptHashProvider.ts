@@ -9,4 +9,10 @@ export default class BCryptHashProvider implements IHashProvider {
 
     return hashed;
   }
+
+  public async compareHash(payload: string, hash: string): Promise<boolean> {
+    const result = await bcrypt.compare(payload, hash);
+
+    return result;
+  }
 }
