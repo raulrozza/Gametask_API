@@ -1,34 +1,18 @@
-import { Request, RequestHandler, Response } from 'express';
-import bcrypt from 'bcryptjs';
-import { JsonWebTokenError } from 'jsonwebtoken';
-import {
-  UserExistsError,
-  errorCodes,
-  MissingParametersError,
-} from '@utils/Errors';
-import { User } from '@modules/users/infra/mongoose/entities';
-
-const BCRYPT_SALT_ROUNDS = 12;
+import { RequestHandler } from 'express';
+import { container } from 'tsyringe';
+import { CreateUsersService, ListUsersService } from '@modules/users/services';
 
 export default class UsersController {
-  public index: RequestHandler = async (_: Request, res: Response) => {
-    try {
-      const users = await User.find(
-        {},
-        {
-          token: 0,
-          password: 0,
-        },
-      );
+  public index: RequestHandler = async (_, response) => {
+    const listUsers = container.resolve(ListUsersService);
 
-      return res.json(users);
-    } catch (error) {
-      return res.status(500).json({ error: 'Internal server error.' });
-    }
+    const users = await listUsers.execute();
+
+    return response.json(users);
   };
 
-  public show: RequestHandler = async (req: Request, res: Response) => {
-    const { id } = req.params;
+  /* public show: RequestHandler = async (request, response) => {
+    const { id } = request.params;
 
     try {
       if (!id)
@@ -48,57 +32,24 @@ export default class UsersController {
 
       return res.status(500).json({ error: 'Internal server error.' });
     }
+  }; */
+
+  public store: RequestHandler = async (request, response) => {
+    const { firstname, lastname, email, password } = request.body;
+
+    const createUser = container.resolve(CreateUsersService);
+
+    const user = await createUser.execute({
+      firstname,
+      lastname,
+      email,
+      password,
+    });
+
+    return response.json(user);
   };
 
-  public store: RequestHandler = async (req: Request, res: Response) => {
-    const { firstname, lastname, email, password } = req.body;
-
-    try {
-      const hashedPassword = await bcrypt
-        .hash(password, BCRYPT_SALT_ROUNDS)
-        .catch(error => {
-          throw error;
-        });
-      if (!hashedPassword)
-        throw new JsonWebTokenError('Could not generate password');
-
-      const foundUser = await User.findOne(
-        {
-          email,
-        },
-        {
-          password: 0,
-        },
-      ).catch(error => {
-        throw error;
-      });
-
-      if (foundUser) throw new UserExistsError('User already exists.');
-
-      const user = await User.create<IUser>({
-        firstname,
-        lastname,
-        email,
-        password: hashedPassword,
-      }).catch(error => {
-        throw error;
-      });
-
-      return res.json(user);
-    } catch (error) {
-      if (error instanceof JsonWebTokenError)
-        return res.status(500).json({ error: error.message });
-
-      if (error instanceof UserExistsError)
-        return res
-          .status(400)
-          .json({ error: error.message, code: errorCodes.USER_ALREADY_EXISTS });
-
-      return res.status(500).json({ error: 'Internal server error.' });
-    }
-  };
-
-  public update: RequestHandler = async (req: Request, res: Response) => {
+  /* public update: RequestHandler = async (req: Request, res: Response) => {
     const { firstname, lastname } = req.body;
     const { id } = req.auth;
 
@@ -131,5 +82,5 @@ export default class UsersController {
     } catch (error) {
       return res.status(500).json({ error: 'Internal server error.' });
     }
-  };
+  }; */
 }

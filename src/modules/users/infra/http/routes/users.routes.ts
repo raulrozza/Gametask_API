@@ -10,13 +10,13 @@ const usersController = new UsersController();
 const usersRoutes = express.Router();
 const upload = multer(uploadConfig('user'));
 
-usersRoutes.get('/:id', verifyJwt, usersController.show);
-usersRoutes.put(
+// usersRoutes.get('/:id', verifyJwt, usersController.show);
+/* usersRoutes.put(
   '/',
   verifyJwt,
   upload.single('avatar'),
   usersController.update,
-);
+); */
 usersRoutes.post('/signup', usersController.store);
 
 export default usersRoutes;
