@@ -18,7 +18,7 @@ export default class UsersRepository
   }
 
   public async findOneByEmail(email: string): Promise<IUserDocument> {
-    const user = await User.findOne({ email }, { password: 0 });
+    const user = await User.findOne({ email });
 
     return user || undefined;
   }

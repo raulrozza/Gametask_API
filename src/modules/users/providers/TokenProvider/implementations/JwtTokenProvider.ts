@@ -19,7 +19,7 @@ export default class JwtTokenProvider implements ITokenProvider {
   }
 
   async sign(payload: unknown): Promise<string> {
-    const token = jwt.sign(
+    const token = await jwt.sign(
       payload as string | object,
       String(envs.SECRET_KEY),
       {
