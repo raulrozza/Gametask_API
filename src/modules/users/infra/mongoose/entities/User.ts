@@ -1,20 +1,13 @@
 import { Document, Schema, model } from 'mongoose';
-import config from '@config/environment';
+import envs from '@config/environment';
 
-export interface IUser {
-  firstname: string;
-  lastname: string;
-  email: string;
-  password: string;
-  token?: string;
-  image?: string;
-}
+import { IUser } from 'src/modules/users/entities';
 
 export interface IUserDocument extends IUser, Document {
   profile_url: string;
 }
 
-const UserSchema = new Schema<IUser>(
+const UserSchema = new Schema<IUserDocument>(
   {
     firstname: {
       type: String,
@@ -31,7 +24,6 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: true,
     },
-    token: String,
     image: String,
   },
   {
@@ -42,7 +34,7 @@ const UserSchema = new Schema<IUser>(
 );
 
 UserSchema.virtual('profile_url').get(function (this: IUser) {
-  return `${config.ADDRESS}/files/user/${this.image}`;
+  return `${envs.ADDRESS}/files/user/${this.image}`;
 });
 
 export default model<IUserDocument>('User', UserSchema);

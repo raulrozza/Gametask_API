@@ -9,6 +9,7 @@ import corsOptions from '@shared/infra/http/corsOptions';
 import appRoutes from './routes';
 
 import '@shared/infra/mongoose';
+import '@shared/container';
 
 // Initial server configuration
 const app = express();

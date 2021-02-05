@@ -1,4 +1,4 @@
-import User, { IUser } from '@models/User';
+import { Request, RequestHandler, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { JsonWebTokenError } from 'jsonwebtoken';
 import {
@@ -6,14 +6,12 @@ import {
   errorCodes,
   MissingParametersError,
 } from '@utils/Errors';
-import { Request, Response } from 'express';
+import { User } from '@modules/users/infra/mongoose/entities';
 
-const BCRYPT_SALT_ROUNDS = 12; // salt rounds used in password crypto
+const BCRYPT_SALT_ROUNDS = 12;
 
-// This controller manages the users in the application, creating and updating their data
-export default {
-  // The index method returns all instances of users
-  async index(_: Request, res: Response) {
+export default class UsersController {
+  public index: RequestHandler = async (_: Request, res: Response) => {
     try {
       const users = await User.find(
         {},
@@ -27,9 +25,9 @@ export default {
     } catch (error) {
       return res.status(500).json({ error: 'Internal server error.' });
     }
-  },
-  // The show method returns the data of a single user
-  async show(req: Request, res: Response) {
+  };
+
+  public show: RequestHandler = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     try {
@@ -50,9 +48,9 @@ export default {
 
       return res.status(500).json({ error: 'Internal server error.' });
     }
-  },
-  // The store methods creates a new user
-  async store(req: Request, res: Response) {
+  };
+
+  public store: RequestHandler = async (req: Request, res: Response) => {
     const { firstname, lastname, email, password } = req.body;
 
     try {
@@ -98,8 +96,9 @@ export default {
 
       return res.status(500).json({ error: 'Internal server error.' });
     }
-  },
-  async update(req: Request, res: Response) {
+  };
+
+  public update: RequestHandler = async (req: Request, res: Response) => {
     const { firstname, lastname } = req.body;
     const { id } = req.auth;
 
@@ -132,5 +131,5 @@ export default {
     } catch (error) {
       return res.status(500).json({ error: 'Internal server error.' });
     }
-  },
-};
+  };
+}
