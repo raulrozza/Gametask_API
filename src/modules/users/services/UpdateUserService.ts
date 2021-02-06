@@ -28,8 +28,8 @@ export default class UpdateUserService {
     foundUser.firstname = firstname;
     foundUser.lastname = lastname;
 
-    const updatedUser = await this.usersRepository.update(foundUser);
+    await this.usersRepository.update(foundUser);
 
-    return updatedUser;
+    return foundUser;
   }
 }

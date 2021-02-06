@@ -14,6 +14,6 @@ export default class UsersAvatarController {
       id,
     });
 
-    return response.json(updatedUser);
+    return response.status(201).json(updatedUser);
   };
 }

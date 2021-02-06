@@ -26,5 +26,6 @@ usersRoutes.patch(
 );
 usersRoutes.post('/login', authenticationController.store);
 usersRoutes.post('/signup', usersController.store);
+usersRoutes.put('/', verifyAuthentication, usersController.update);
 
 export default usersRoutes;

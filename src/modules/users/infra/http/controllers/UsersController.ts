@@ -4,6 +4,7 @@ import {
   CreateUsersService,
   ListUsersService,
   ShowUsersService,
+  UpdateUserService,
 } from '@modules/users/services';
 
 export default class UsersController {
@@ -37,37 +38,17 @@ export default class UsersController {
       password,
     });
 
-    return response.json(user);
+    return response.status(201).json(user);
   };
 
   public update: RequestHandler = async (request, response) => {
-    /*  const { firstname, lastname } = req.body;
-    const { id } = req.auth;
+    const { firstname, lastname } = request.body;
+    const { id } = request.auth;
 
-      interface UpdateDocument {
-        firstname: string;
-        lastname: string;
-        image?: string;
-      }
+    const updateUser = container.resolve(UpdateUserService);
 
-      const updateDocument: UpdateDocument = {
-        firstname,
-        lastname,
-      };
+    const user = await updateUser.execute({ firstname, lastname, id });
 
-      if (req.file) updateDocument.image = req.file.filename;
-
-      await User.updateOne(
-        {
-          _id: id,
-        },
-        {
-          $set: updateDocument,
-        },
-      ).catch(error => {
-        throw error;
-      });
-
-      return res.status(201).send(); */
+    return response.status(201).json(user);
   };
 }
