@@ -1,16 +1,14 @@
-import errorCodes from '@config/errorCodes';
-import { RequestError } from '@shared/errors/implementations';
 import 'reflect-metadata';
-
 import { inject, injectable } from 'tsyringe';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
-import ITokenProvider from '../providers/TokenProvider/models/ITokenProvider';
-import { IUsersRepository } from '../repositories';
 
-interface IExecuteParams {
-  email: string;
-  password: string;
-}
+import errorCodes from '@config/errorCodes';
+
+import { RequestError } from '@shared/errors/implementations';
+
+import { IAuthenticateUserDTO } from '@modules/users/dtos';
+import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
+import ITokenProvider from '@modules/users/providers/TokenProvider/models/ITokenProvider';
+import { IUsersRepository } from '@modules/users/repositories';
 
 interface IExecuteResponse {
   token: string;
@@ -34,7 +32,7 @@ export default class AuthenticateUserService {
   public async execute({
     email,
     password,
-  }: IExecuteParams): Promise<IExecuteResponse> {
+  }: IAuthenticateUserDTO): Promise<IExecuteResponse> {
     const foundUser = await this.usersRepository.findOneByEmail(email);
 
     if (!foundUser)

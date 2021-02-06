@@ -1,17 +1,15 @@
 import 'reflect-metadata';
+import { inject, injectable } from 'tsyringe';
 
 import errorCodes from '@config/errorCodes';
+
 import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
 import { RequestError } from '@shared/errors/implementations';
-import { inject, injectable } from 'tsyringe';
-import { IUsersRepository } from '../repositories';
+
+import { IUsersRepository } from '@modules/users/repositories';
+import { IUpdateUserAvatarDTO } from '@modules/users/dtos';
 
 const USER_FOLDER = 'user';
-
-interface IExecute {
-  filename: string;
-  id: string;
-}
 
 @injectable()
 export default class UpdateUserAvatarService {
@@ -23,7 +21,7 @@ export default class UpdateUserAvatarService {
     private storageProvider: IStorageProvider,
   ) {}
 
-  public async execute({ filename, id }: IExecute) {
+  public async execute({ filename, id }: IUpdateUserAvatarDTO) {
     const user = await this.usersRepository.findOne(id);
 
     console.log(id, user);

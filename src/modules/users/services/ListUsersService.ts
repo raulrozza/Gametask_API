@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-
 import { inject, injectable } from 'tsyringe';
+
 import { IUser } from '@modules/users/entities';
 import { IUsersRepository } from '@modules/users/repositories';
 
