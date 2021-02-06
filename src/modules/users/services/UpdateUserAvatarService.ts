@@ -24,8 +24,6 @@ export default class UpdateUserAvatarService {
   public async execute({ filename, id }: IUpdateUserAvatarDTO) {
     const user = await this.usersRepository.findOne(id);
 
-    console.log(id, user);
-
     if (!user) {
       throw new RequestError(
         'Could not find user on database',
