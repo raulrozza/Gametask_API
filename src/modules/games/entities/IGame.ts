@@ -5,10 +5,10 @@ export default interface IGame {
   id: string;
   name: string;
   description: string;
-  theme: ITheme;
+  theme?: ITheme;
   image?: string;
   administrators: string[] | IUser[];
-  levelInfo: ILevelInfo[];
+  levelInfo?: ILevelInfo[];
   newRegisters?: number;
   ranks?: IRank[];
 }
