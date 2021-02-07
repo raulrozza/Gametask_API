@@ -2,6 +2,7 @@ import express from 'express';
 import { resolve } from 'path';
 import {
   internalErrorHandler,
+  multerErrorHandler,
   notFoundErrorHandler,
   requestErrorHandler,
 } from '@shared/infra/http/middlewares';
@@ -24,6 +25,7 @@ appRoutes.use('/games', gameRoutes);
 // Handlers
 appRoutes.use(notFoundErrorHandler);
 appRoutes.use(requestErrorHandler);
+appRoutes.use(multerErrorHandler);
 appRoutes.use(internalErrorHandler);
 
 export default appRoutes;

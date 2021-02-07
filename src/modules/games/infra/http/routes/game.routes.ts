@@ -1,19 +1,27 @@
 import express from 'express';
 import multer from 'multer';
 import uploadConfig from '@config/upload';
-import { GameController } from '@modules/games/infra/http/controllers';
+
+import {
+  GameAvatarController,
+  GameController,
+} from '@modules/games/infra/http/controllers';
+import verifyGameSelected from '@modules/games/infra/http/middlewares/verifyGameSelected';
 import verifyAuthentication from '@modules/users/infra/http/middlewares/verifyAuthentication';
 
 const gameController = new GameController();
+const gameAvatarController = new GameAvatarController();
 
 const gameRoutes = express.Router();
 const upload = multer(uploadConfig.multerConfig);
 
-gameRoutes.post(
-  '/',
+gameRoutes.patch(
+  '/avatar',
   verifyAuthentication,
+  verifyGameSelected,
   upload.single('image'),
-  gameController.store,
+  gameAvatarController.update,
 );
+gameRoutes.post('/', verifyAuthentication, gameController.store);
 
 export default gameRoutes;
