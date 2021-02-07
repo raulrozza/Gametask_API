@@ -7,6 +7,7 @@ import {
 } from '@shared/infra/http/middlewares';
 
 import { usersRoutes } from '@modules/users/infra/http/routes';
+import { gameRoutes } from '@modules/games/infra/http/routes';
 
 const appRoutes = express.Router();
 
@@ -18,6 +19,7 @@ appRoutes.get('/', (_, response) => {
   return response.json({ message: 'Welcome to GameTask API' });
 });
 appRoutes.use('/users', usersRoutes);
+appRoutes.use('/games', gameRoutes);
 
 // Handlers
 appRoutes.use(notFoundErrorHandler);
