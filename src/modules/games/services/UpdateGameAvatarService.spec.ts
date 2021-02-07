@@ -21,6 +21,7 @@ describe('UpdateGameAvatar', () => {
     const { updateGameAvatar, gamesRepository } = getService();
 
     const fakeGame = new FakeGame();
+    fakeGame.administrators = ['fake_id'];
 
     const game = await gamesRepository.create(fakeGame);
     const filename = 'avatar.jpg';
@@ -28,6 +29,7 @@ describe('UpdateGameAvatar', () => {
     const updatedGame = await updateGameAvatar.execute({
       filename,
       id: game.id,
+      userId: 'fake_id',
     });
 
     expect(updatedGame.image).toBe(filename);
@@ -38,14 +40,20 @@ describe('UpdateGameAvatar', () => {
     const deleteFile = jest.spyOn(storageProvider, 'deleteFile');
 
     const fakeGame = new FakeGame();
+    fakeGame.administrators = ['fake_id'];
 
     const game = await gamesRepository.create(fakeGame);
     const filename = 'avatar.jpg';
 
-    await updateGameAvatar.execute({ filename: 'first_file', id: game.id });
+    await updateGameAvatar.execute({
+      filename: 'first_file',
+      id: game.id,
+      userId: 'fake_id',
+    });
     const updatedGame = await updateGameAvatar.execute({
       filename,
       id: game.id,
+      userId: 'fake_id',
     });
 
     expect(deleteFile).toHaveBeenCalledWith('first_file', 'game');
@@ -56,7 +64,11 @@ describe('UpdateGameAvatar', () => {
     const { updateGameAvatar } = getService();
 
     await expect(
-      updateGameAvatar.execute({ filename: 'avatar.jpg', id: 'invalid id' }),
+      updateGameAvatar.execute({
+        filename: 'avatar.jpg',
+        id: 'invalid id',
+        userId: 'invalid id',
+      }),
     ).rejects.toBeInstanceOf(RequestError);
   });
 });

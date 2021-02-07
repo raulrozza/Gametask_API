@@ -7,7 +7,7 @@ export default class FakeGame implements IGame {
   public name: string = faker.hacker.noun();
   public description: string = faker.hacker.phrase();
   public theme = new FakeTheme();
-  public administrators = [];
+  public administrators: string[] = [];
   public levelInfo = [];
   public ranks = [];
   public newRegisters = 0;

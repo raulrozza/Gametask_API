@@ -21,8 +21,8 @@ export default class UpdateGameAvatarService {
     private storageProvider: IStorageProvider,
   ) {}
 
-  public async execute({ filename, id }: IUpdateGameAvatarDTO) {
-    const game = await this.gamesRepository.findOne(id);
+  public async execute({ filename, id, userId }: IUpdateGameAvatarDTO) {
+    const game = await this.gamesRepository.findOne(id, userId);
 
     if (!game) {
       throw new RequestError(
