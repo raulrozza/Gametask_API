@@ -61,6 +61,7 @@ const GameSchema = new Schema(
 );
 
 interface IGameBaseDocument extends Omit<IGame, 'id'>, Document {
+  id: NonNullable<Document['id']>;
   image_url: string;
   ranks: IRank[];
   newRegisters: number;
