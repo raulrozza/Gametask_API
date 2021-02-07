@@ -4,8 +4,10 @@ import Game, { IGameDocument } from '../entities/Game';
 
 export default class GamesRepository
   implements IGamesRepository<IGameDocument> {
-  public async findAll(): Promise<IGameDocument[]> {
-    const games = await Game.find({}, { password: 0 });
+  public async findAllFromUser(userId: string): Promise<IGameDocument[]> {
+    const games = await Game.find({
+      administrators: userId,
+    });
 
     return games;
   }

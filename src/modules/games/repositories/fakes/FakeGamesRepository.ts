@@ -5,8 +5,12 @@ import { IGamesRepository } from '..';
 export default class FakeGamesRepository implements IGamesRepository {
   private readonly games: IGame[] = [];
 
-  public async findAll(): Promise<IGame[]> {
-    return Promise.resolve(this.games);
+  public async findAllFromUser(userId: string): Promise<IGame[]> {
+    return Promise.resolve(
+      this.games.filter(game =>
+        (game.administrators as string[]).includes(userId),
+      ),
+    );
   }
 
   public async findOne(id: string): Promise<IGame | undefined> {
