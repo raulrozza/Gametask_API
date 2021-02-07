@@ -1,7 +1,11 @@
 import { container } from 'tsyringe';
 import { RequestHandler } from 'express';
 
-import { CreateGameService, ListGamesService } from '@modules/games/services';
+import {
+  CreateGameService,
+  ListGamesService,
+  ShowGameService,
+} from '@modules/games/services';
 
 export default class GameController {
   public index: RequestHandler = async (request, response) => {
@@ -12,6 +16,20 @@ export default class GameController {
     const games = await listGame.execute(id);
 
     return response.json(games);
+  };
+
+  public show: RequestHandler = async (request, response) => {
+    const { id } = request.auth;
+    const gameId = request.game;
+
+    const showGame = container.resolve(ShowGameService);
+
+    const game = await showGame.execute({
+      gameId,
+      userId: id,
+    });
+
+    return response.json(game);
   };
 
   public store: RequestHandler = async (request, response) => {

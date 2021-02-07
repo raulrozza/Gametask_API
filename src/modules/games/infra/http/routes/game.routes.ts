@@ -15,6 +15,12 @@ const gameAvatarController = new GameAvatarController();
 const gameRoutes = express.Router();
 const upload = multer(uploadConfig.multerConfig);
 
+gameRoutes.get(
+  '/details',
+  verifyAuthentication,
+  verifyGameSelected,
+  gameController.show,
+);
 gameRoutes.get('/', verifyAuthentication, gameController.index);
 gameRoutes.patch(
   '/avatar',

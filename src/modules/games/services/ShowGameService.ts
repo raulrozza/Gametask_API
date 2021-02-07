@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
 import { IGamesRepository } from '@modules/games/repositories';
+import IShowGameDTO from '@modules/games/dtos/IShowGameDTO';
 
 @injectable()
 export default class ShowGameService {
@@ -11,7 +12,7 @@ export default class ShowGameService {
     private gamesRepository: IGamesRepository,
   ) {}
 
-  public async execute(id: string, userId: string) {
-    return await this.gamesRepository.findOne(id, userId);
+  public async execute({ gameId, userId }: IShowGameDTO) {
+    return await this.gamesRepository.findOne(gameId, userId);
   }
 }

@@ -18,7 +18,10 @@ describe('ShowGameService', () => {
       administrators: [userId],
     } as IGame);
 
-    const fetchedGame = await showGames.execute(game.id, userId);
+    const fetchedGame = await showGames.execute({
+      gameId: game.id,
+      userId,
+    });
 
     expect(fetchedGame).toEqual(game);
   });
@@ -35,7 +38,10 @@ describe('ShowGameService', () => {
       administrators: ['random-user-id'],
     } as IGame);
 
-    const fetchedGame = await showGames.execute(game.id, userId);
+    const fetchedGame = await showGames.execute({
+      gameId: game.id,
+      userId,
+    });
 
     expect(fetchedGame).toBeUndefined();
   });
