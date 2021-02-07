@@ -10,7 +10,7 @@ export default class GamesRepository
     return games;
   }
 
-  public async findOne(id: string): Promise<IGameDocument> {
+  public async findOne(id: string): Promise<IGameDocument | undefined> {
     const game = await Game.findOne({ _id: id });
 
     return game || undefined;
