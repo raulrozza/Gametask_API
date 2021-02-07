@@ -1,6 +1,9 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
+import errorCodes from '@config/errorCodes';
+import { RequestError } from '@shared/errors/implementations';
+
 import IUpdateGameDTO from '@modules/games/dtos/IUpdateGameDTO';
 import { IGame } from '@modules/games/entities';
 import { IGamesRepository } from '@modules/games/repositories';
@@ -20,5 +23,27 @@ export default class UpdateGameService {
     theme,
     levelInfo,
     ranks,
-  }: IUpdateGameDTO): Promise<IGame> {}
+  }: IUpdateGameDTO): Promise<IGame> {
+    const game = await this.gamesRepository.findOne(id, adminId);
+
+    if (!game)
+      throw new RequestError(
+        'This game does not exist',
+        errorCodes.RESOURCE_NOT_FOUND,
+        400,
+      );
+
+    const updatedGame = {
+      ...game,
+      name,
+      description,
+      theme,
+      levelInfo,
+      ranks,
+    };
+
+    await this.gamesRepository.update(updatedGame);
+
+    return updatedGame;
+  }
 }
