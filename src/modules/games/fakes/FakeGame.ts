@@ -1,6 +1,6 @@
 import faker from 'faker';
 import { FakeTheme } from '.';
-import { IGame } from '../entities';
+import { IGame, ILevelInfo, IRank } from '../entities';
 
 export default class FakeGame implements IGame {
   public id: string = '';
@@ -8,7 +8,7 @@ export default class FakeGame implements IGame {
   public description: string = faker.hacker.phrase();
   public theme = new FakeTheme();
   public administrators: string[] = [];
-  public levelInfo = [];
-  public ranks = [];
+  public levelInfo: ILevelInfo[] = [];
+  public ranks: IRank[] = [];
   public newRegisters = 0;
 }
