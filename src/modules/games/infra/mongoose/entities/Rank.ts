@@ -1,13 +1,9 @@
-import { Schema } from 'mongoose';
+import { Document, Schema } from 'mongoose';
+import { IRank } from '@modules/games/entities';
 
-export interface IRank {
-  name: string;
-  tag: string;
-  level: number;
-  color: string;
-}
+interface IRankDocument extends IRank, Document {}
 
-const RankSchema = new Schema<IRank>(
+const RankSchema = new Schema<IRankDocument>(
   {
     name: {
       type: String,

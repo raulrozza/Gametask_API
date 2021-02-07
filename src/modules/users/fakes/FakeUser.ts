@@ -7,5 +7,5 @@ export default class FakeUser implements IUser {
   public firstname = faker.name.firstName();
   public lastname = faker.name.lastName();
   public email = faker.internet.email();
-  public password = faker.random.alphaNumeric(6);
+  public password = faker.internet.password(6);
 }

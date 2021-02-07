@@ -1,22 +1,12 @@
-import { Schema, model, Document, Types } from 'mongoose';
-import config from '@config/environment';
-import LevelInfoSchema, { ILevelInfo } from '@models/utils/LevelInfoSchema';
-import ThemeSchema, { ITheme } from '@models/utils/ThemeSchema';
-import RankSchema, { IRank } from '@models/utils/RankSchema';
-import WeeklyRanking, { IWeeklyRanking } from '@models/utils/WeeklyRanking';
-import { IUserDocument } from './User';
+import { Schema, model, Document } from 'mongoose';
+import envs from '@config/environment';
 
-export interface IGame {
-  name: string;
-  description: string;
-  theme: ITheme;
-  image?: string;
-  administrators: Types.ObjectId[] | IUserDocument[];
-  levelInfo: ILevelInfo[];
-  newRegisters?: number;
-  ranks?: IRank[];
-  weeklyRanking?: IWeeklyRanking[];
-}
+import { IGame, IRank } from '@modules/games/entities';
+import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
+
+import ThemeSchema from './Theme';
+import LevelInfoSchema from './LevelInfoSchema';
+import RankSchema from './Rank';
 
 const GameSchema = new Schema(
   {
@@ -62,10 +52,6 @@ const GameSchema = new Schema(
       type: [RankSchema],
       default: [],
     },
-    weeklyRanking: {
-      type: [WeeklyRanking],
-      default: [],
-    },
   },
   {
     toJSON: {
@@ -74,10 +60,9 @@ const GameSchema = new Schema(
   },
 );
 
-interface IGameBaseDocument extends IGame, Document {
+interface IGameBaseDocument extends Omit<IGame, 'id'>, Document {
   image_url: string;
   ranks: IRank[];
-  weeklyRanking: IWeeklyRanking[];
   newRegisters: number;
 }
 
@@ -90,7 +75,7 @@ export interface IGamePopulatedDocument extends IGameBaseDocument {
 }
 
 GameSchema.virtual('image_url').get(function (this: IGame) {
-  return `${config.ADDRESS}/files/game/${this.image}`;
+  return `${envs.ADDRESS}/files/game/${this.image}`;
 });
 
 export default model<IGameDocument>('Game', GameSchema);
