@@ -29,6 +29,12 @@ gameRoutes.patch(
   upload.single('image'),
   gameAvatarController.update,
 );
+gameRoutes.put(
+  '/',
+  verifyAuthentication,
+  verifyGameSelected,
+  gameController.update,
+);
 gameRoutes.post('/', verifyAuthentication, gameController.store);
 
 export default gameRoutes;

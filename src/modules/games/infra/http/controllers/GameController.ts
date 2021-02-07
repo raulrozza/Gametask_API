@@ -5,6 +5,7 @@ import {
   CreateGameService,
   ListGamesService,
   ShowGameService,
+  UpdateGameService,
 } from '@modules/games/services';
 
 export default class GameController {
@@ -42,6 +43,26 @@ export default class GameController {
       name,
       description,
       creatorId: id,
+    });
+
+    return response.status(201).json(game);
+  };
+
+  public update: RequestHandler = async (request, response) => {
+    const { name, description, ranks, levelInfo, theme } = request.body;
+    const { id } = request.auth;
+    const gameId = request.game;
+
+    const updateGame = container.resolve(UpdateGameService);
+
+    const game = await updateGame.execute({
+      adminId: id,
+      id: gameId,
+      name,
+      description,
+      theme,
+      levelInfo,
+      ranks,
     });
 
     return response.status(201).json(game);

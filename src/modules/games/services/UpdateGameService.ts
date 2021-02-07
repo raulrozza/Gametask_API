@@ -34,13 +34,13 @@ export default class UpdateGameService {
       );
 
     const updatedGame = {
-      ...game,
+      id,
       name,
       description,
       theme,
       levelInfo,
       ranks,
-    };
+    } as IGame;
 
     await this.gamesRepository.update(updatedGame);
 
