@@ -4,11 +4,26 @@ import { RequestHandler } from 'express';
 import errorCodes from '@config/errorCodes';
 import {
   CreateTitleService,
+  ListTitlesService,
   UpdateTitleService,
 } from '@modules/games/services';
 import { RequestError } from '@shared/errors/implementations';
 
 export default class TitleController {
+  public index: RequestHandler = async (request, response) => {
+    const gameId = request.game;
+    const { name } = request.query;
+
+    const listTitles = container.resolve(ListTitlesService);
+
+    const titles =
+      name && typeof name === 'string'
+        ? await listTitles.execute({ gameId, name })
+        : await listTitles.execute({ gameId });
+
+    return response.json(titles);
+  };
+
   public store: RequestHandler = async (request, response) => {
     const { name } = request.body;
     const gameId = request.game;
