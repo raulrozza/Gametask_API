@@ -6,6 +6,12 @@ import verifyGameSelected from '@modules/games/infra/http/middlewares/verifyGame
 const titleRoutes = Router();
 const titleController = new TitleController();
 
+titleRoutes.delete(
+  '/:id',
+  verifyAuthentication,
+  verifyGameSelected,
+  titleController.remove,
+);
 titleRoutes.get(
   '/',
   verifyAuthentication,

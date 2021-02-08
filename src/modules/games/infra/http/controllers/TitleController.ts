@@ -4,6 +4,7 @@ import { RequestHandler } from 'express';
 import errorCodes from '@config/errorCodes';
 import {
   CreateTitleService,
+  DeleteTitleService,
   ListTitlesService,
   UpdateTitleService,
 } from '@modules/games/services';
@@ -22,6 +23,22 @@ export default class TitleController {
         : await listTitles.execute({ gameId });
 
     return response.json(titles);
+  };
+
+  public remove: RequestHandler = async (request, response) => {
+    const gameId = request.game;
+    const { id } = request.params;
+    if (!id)
+      throw new RequestError(
+        'Missing id in params',
+        errorCodes.MISSING_PARAMETERS,
+      );
+
+    const deleteTitle = container.resolve(DeleteTitleService);
+
+    await deleteTitle.execute({ gameId, titleId: id });
+
+    return response.status(201).end();
   };
 
   public store: RequestHandler = async (request, response) => {
