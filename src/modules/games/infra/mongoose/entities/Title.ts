@@ -1,12 +1,9 @@
-import { Schema, model, Document, Types } from 'mongoose';
+import { ITitle } from '@modules/games/entities';
+import { Schema, model, Document } from 'mongoose';
 import { IGameDocument, IGamePopulatedDocument } from './Game';
 
-export interface ITitle {
-  name: string;
-  game: Types.ObjectId | IGameDocument;
-}
-
 export interface ITitleDocument extends ITitle, Document {
+  id: NonNullable<Document['id']>;
   game: IGameDocument['_id'];
 }
 

@@ -1,15 +1,8 @@
-import { Schema, model, Document, Types } from 'mongoose';
-import config from '@config/environment';
+import { Schema, model, Document } from 'mongoose';
+import envs from '@config/environment';
 import { IGameDocument } from './Game';
+import { IAchievement } from '@modules/games/entities';
 import { ITitleDocument } from './Title';
-
-export interface IAchievement {
-  name: string;
-  description: string;
-  title?: Types.ObjectId | ITitleDocument;
-  image?: string;
-  game: Types.ObjectId | IGameDocument;
-}
 
 const AchievementSchema = new Schema(
   {
@@ -40,11 +33,12 @@ const AchievementSchema = new Schema(
 );
 
 interface IAchievementBaseDocument extends IAchievement, Document {
+  id: NonNullable<Document['id']>;
   image_url: string;
 }
 
 AchievementSchema.virtual('image_url').get(function (this: IAchievement) {
-  return `${config.ADDRESS}/files/achievement/${this.image}`;
+  return `${envs.ADDRESS}/files/achievement/${this.image}`;
 });
 
 export interface IAchievementDocument extends IAchievementBaseDocument {
