@@ -4,3 +4,4 @@ export { default as ListGamesService } from './ListGamesService';
 export { default as ShowGameService } from './ShowGameService';
 export { default as UpdateGameAvatarService } from './UpdateGameAvatarService';
 export { default as UpdateGameService } from './UpdateGameService';
+export { default as UpdateTitleService } from './UpdateTitleService';

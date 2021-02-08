@@ -12,5 +12,11 @@ titleRoutes.post(
   verifyGameSelected,
   titleController.store,
 );
+titleRoutes.put(
+  '/:id',
+  verifyAuthentication,
+  verifyGameSelected,
+  titleController.update,
+);
 
 export default titleRoutes;
