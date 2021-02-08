@@ -14,7 +14,7 @@ const verifyAuthentication: RequestHandler = async (request, _, next) => {
 
   if (!header)
     throw new RequestError(
-      'Authentication is need to access this resource',
+      'Authentication is needed to access this resource',
       errorCodes.INVALID_TOKEN,
       403,
     );

@@ -8,7 +8,7 @@ import {
 } from '@shared/infra/http/middlewares';
 
 import { usersRoutes } from '@modules/users/infra/http/routes';
-import { gameRoutes } from '@modules/games/infra/http/routes';
+import { gameRoutes, titleRoutes } from '@modules/games/infra/http/routes';
 
 const appRoutes = express.Router();
 
@@ -21,6 +21,7 @@ appRoutes.get('/', (_, response) => {
 });
 appRoutes.use('/users', usersRoutes);
 appRoutes.use('/games', gameRoutes);
+appRoutes.use('/titles', titleRoutes);
 
 // Handlers
 appRoutes.use(notFoundErrorHandler);
