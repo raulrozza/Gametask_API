@@ -1,9 +1,27 @@
 import { container } from 'tsyringe';
 
-import GamesRepository from '@modules/games/infra/mongoose/repositories/GamesRepository';
-import { IGamesRepository } from '@modules/games/repositories';
+import {
+  AchievementsRepository,
+  GamesRepository,
+  TitlesRepository,
+} from '@modules/games/infra/mongoose/repositories';
+import {
+  IAchievementsRepository,
+  IGamesRepository,
+  ITitlesRepository,
+} from '@modules/games/repositories';
+
+container.registerSingleton<IAchievementsRepository>(
+  'AchievementsRepository',
+  AchievementsRepository,
+);
 
 container.registerSingleton<IGamesRepository>(
   'GamesRepository',
   GamesRepository,
+);
+
+container.registerSingleton<ITitlesRepository>(
+  'TitlesRepository',
+  TitlesRepository,
 );

@@ -40,7 +40,8 @@ export default class UpdateGameService {
       theme,
       levelInfo,
       ranks,
-    } as IGame;
+      administrators: game.administrators,
+    };
 
     await this.gamesRepository.update(updatedGame);
 
