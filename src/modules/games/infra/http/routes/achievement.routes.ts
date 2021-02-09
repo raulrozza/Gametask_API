@@ -14,6 +14,12 @@ const upload = multer(uploadConfig.multerConfig);
 const achievementController = new AchievementController();
 const achievementAvatarController = new AchievementAvatarController();
 
+achievementRoutes.delete(
+  '/:id',
+  verifyAuthentication,
+  verifyGameSelected,
+  achievementController.remove,
+);
 achievementRoutes.get(
   '/:id',
   verifyAuthentication,

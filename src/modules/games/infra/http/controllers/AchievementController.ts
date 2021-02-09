@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 
 import {
   CreateAchievementService,
+  DeleteAchievementService,
   ListAchievementsService,
   ShowAchievementService,
   UpdateAchievementService,
@@ -17,6 +18,17 @@ export default class AchievementController {
     const achievements = await listAchievements.execute(gameId);
 
     return response.json(achievements);
+  };
+
+  public remove: RequestHandler = async (request, response) => {
+    const gameId = request.game;
+    const { id } = request.params;
+
+    const deleteAchievement = container.resolve(DeleteAchievementService);
+
+    await deleteAchievement.execute({ id, gameId });
+
+    return response.status(201).end();
   };
 
   public show: RequestHandler = async (request, response) => {
