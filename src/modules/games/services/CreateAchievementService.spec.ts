@@ -8,11 +8,12 @@ import FakeTitlesRepository from '../repositories/fakes/FakeTitlesRepository';
 import CreateAchievementService from './CreateAchievementService';
 
 describe('CreateAchievementService', () => {
-  it('should create the achievement', async () => {
+  it('should create the achievement with title', async () => {
     const achievementsRepository = new FakeAchievementsRepository();
     const titlesRepository = new FakeTitlesRepository();
     const createAchievement = new CreateAchievementService(
       achievementsRepository,
+      titlesRepository,
     );
 
     const gameId = uuid();
@@ -36,6 +37,31 @@ describe('CreateAchievementService', () => {
     expect(achievement).toHaveProperty('id');
     expect(achievement.name).toBe(fakeAchievement.name);
     expect(achievement.description).toBe(fakeAchievement.description);
+    expect(achievement.title).toBe(title.id);
+  });
+
+  it('should create the achievement without a title', async () => {
+    const achievementsRepository = new FakeAchievementsRepository();
+    const titlesRepository = new FakeTitlesRepository();
+    const createAchievement = new CreateAchievementService(
+      achievementsRepository,
+      titlesRepository,
+    );
+
+    const gameId = uuid();
+    const fakeAchievement = new FakeAchievement(gameId);
+
+    const payload = {
+      gameId,
+      name: fakeAchievement.name,
+      description: fakeAchievement.description,
+    };
+
+    const achievement = await createAchievement.execute(payload);
+
+    expect(achievement).toHaveProperty('id');
+    expect(achievement.name).toBe(fakeAchievement.name);
+    expect(achievement.description).toBe(fakeAchievement.description);
   });
 
   it('should throw when creating the achievement with an unexisting title', async () => {
@@ -43,6 +69,7 @@ describe('CreateAchievementService', () => {
     const titlesRepository = new FakeTitlesRepository();
     const createAchievement = new CreateAchievementService(
       achievementsRepository,
+      titlesRepository,
     );
 
     const gameId = uuid();
