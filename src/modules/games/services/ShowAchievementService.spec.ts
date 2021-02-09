@@ -8,7 +8,7 @@ import ShowAchievementService from './ShowAchievementService';
 describe('ShowAchievementService', () => {
   it('should return the correct achievement', async () => {
     const achievementsRepository = new FakeAchievementsRepository();
-    const showGames = new ShowAchievementService(achievementsRepository);
+    const showAchievement = new ShowAchievementService(achievementsRepository);
 
     const gameId = uuid();
     const fakeAchievement = new FakeAchievement(gameId);
@@ -18,7 +18,7 @@ describe('ShowAchievementService', () => {
       game: fakeAchievement.game,
     } as IAchievement);
 
-    const fetchedAchievement = await showGames.execute({
+    const fetchedAchievement = await showAchievement.execute({
       achievementId: achievement.id,
       gameId,
     });
@@ -28,7 +28,7 @@ describe('ShowAchievementService', () => {
 
   it('should return undefined when trying to fetch an achievement while providing a wrong id', async () => {
     const achievementsRepository = new FakeAchievementsRepository();
-    const showGames = new ShowAchievementService(achievementsRepository);
+    const showAchievement = new ShowAchievementService(achievementsRepository);
 
     const gameId = uuid();
     const fakeAchievement = new FakeAchievement(gameId);
@@ -38,7 +38,7 @@ describe('ShowAchievementService', () => {
       game: 'random-game-id',
     } as IAchievement);
 
-    const fetchedAchievement = await showGames.execute({
+    const fetchedAchievement = await showAchievement.execute({
       achievementId: achievement.id,
       gameId,
     });

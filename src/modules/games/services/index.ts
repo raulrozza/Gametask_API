@@ -9,6 +9,7 @@ export { default as ListActivitiesService } from './ListActivitiesService';
 export { default as ListGamesService } from './ListGamesService';
 export { default as ListTitlesService } from './ListTitlesService';
 export { default as ShowAchievementService } from './ShowAchievementService';
+export { default as ShowActivityService } from './ShowActivityService';
 export { default as ShowGameService } from './ShowGameService';
 export { default as UpdateAchievementAvatarService } from './UpdateAchievementAvatarService';
 export { default as UpdateAchievementService } from './UpdateAchievementService';
