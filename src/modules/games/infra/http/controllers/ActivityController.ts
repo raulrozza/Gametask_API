@@ -1,9 +1,22 @@
 import { RequestHandler } from 'express';
 import { container } from 'tsyringe';
 
-import { CreateActivityService } from '@modules/games/services';
+import {
+  CreateActivityService,
+  ListActivitiesService,
+} from '@modules/games/services';
 
 export default class ActivityReport {
+  public index: RequestHandler = async (request, response) => {
+    const gameId = request.game;
+
+    const listActivities = container.resolve(ListActivitiesService);
+
+    const activities = await listActivities.execute(gameId);
+
+    return response.json(activities);
+  };
+
   public store: RequestHandler = async (request, response) => {
     const { name, description, experience, dmRules } = request.body;
     const gameId = request.game;

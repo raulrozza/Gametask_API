@@ -7,6 +7,12 @@ import verifyAuthentication from '@modules/users/infra/http/middlewares/verifyAu
 const activityRoutes = Router();
 const activityController = new ActivityController();
 
+activityRoutes.get(
+  '/',
+  verifyAuthentication,
+  verifyGameSelected,
+  activityController.index,
+);
 activityRoutes.post(
   '/',
   verifyAuthentication,
