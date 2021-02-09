@@ -8,7 +8,11 @@ import {
 } from '@shared/infra/http/middlewares';
 
 import { usersRoutes } from '@modules/users/infra/http/routes';
-import { gameRoutes, titleRoutes } from '@modules/games/infra/http/routes';
+import {
+  achievementRoutes,
+  gameRoutes,
+  titleRoutes,
+} from '@modules/games/infra/http/routes';
 
 const appRoutes = express.Router();
 
@@ -19,9 +23,10 @@ appRoutes.use('/files', express.static(resolve(__dirname, '..', 'uploads')));
 appRoutes.get('/', (_, response) => {
   return response.json({ message: 'Welcome to GameTask API' });
 });
-appRoutes.use('/users', usersRoutes);
+appRoutes.use('/achievements', achievementRoutes);
 appRoutes.use('/games', gameRoutes);
 appRoutes.use('/titles', titleRoutes);
+appRoutes.use('/users', usersRoutes);
 
 // Handlers
 appRoutes.use(notFoundErrorHandler);

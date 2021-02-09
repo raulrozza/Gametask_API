@@ -1,3 +1,4 @@
+export { default as CreateAchievementService } from './CreateAchievementService';
 export { default as CreateGameService } from './CreateGameService';
 export { default as CreateTitleService } from './CreateTitleService';
 export { default as DeleteTitleService } from './DeleteTitleService';
