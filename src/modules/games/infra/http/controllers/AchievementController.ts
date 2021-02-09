@@ -4,6 +4,7 @@ import { container } from 'tsyringe';
 import {
   CreateAchievementService,
   ListAchievementsService,
+  ShowAchievementService,
 } from '@modules/games/services';
 
 export default class AchievementController {
@@ -15,6 +16,20 @@ export default class AchievementController {
     const achievements = await listAchievements.execute(gameId);
 
     return response.json(achievements);
+  };
+
+  public show: RequestHandler = async (request, response) => {
+    const gameId = request.game;
+    const { id } = request.params;
+
+    const showAchievement = container.resolve(ShowAchievementService);
+
+    const achievement = await showAchievement.execute({
+      gameId,
+      achievementId: id,
+    });
+
+    return response.json(achievement);
   };
 
   public store: RequestHandler = async (request, response) => {

@@ -8,7 +8,7 @@ import IShowAchievementDTO from '@modules/games/dtos/IShowAchievementDTO';
 @injectable()
 export default class ShowAchievementService {
   constructor(
-    @inject('AchievementsService')
+    @inject('AchievementsRepository')
     private achievementsRepository: IAchievementsRepository,
   ) {}
 

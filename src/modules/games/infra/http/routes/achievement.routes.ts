@@ -15,6 +15,12 @@ const achievementController = new AchievementController();
 const achievementAvatarController = new AchievementAvatarController();
 
 achievementRoutes.get(
+  '/:id',
+  verifyAuthentication,
+  verifyGameSelected,
+  achievementController.show,
+);
+achievementRoutes.get(
   '/',
   verifyAuthentication,
   verifyGameSelected,

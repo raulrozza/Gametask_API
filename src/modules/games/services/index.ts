@@ -5,6 +5,7 @@ export { default as DeleteTitleService } from './DeleteTitleService';
 export { default as ListAchievementsService } from './ListAchievementsService';
 export { default as ListGamesService } from './ListGamesService';
 export { default as ListTitlesService } from './ListTitlesService';
+export { default as ShowAchievementService } from './ShowAchievementService';
 export { default as ShowGameService } from './ShowGameService';
 export { default as UpdateAchievementAvatarService } from './UpdateAchievementAvatarService';
 export { default as UpdateGameAvatarService } from './UpdateGameAvatarService';
