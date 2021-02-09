@@ -8,6 +8,12 @@ const activityRoutes = Router();
 const activityController = new ActivityController();
 
 activityRoutes.get(
+  '/:id',
+  verifyAuthentication,
+  verifyGameSelected,
+  activityController.show,
+);
+activityRoutes.get(
   '/',
   verifyAuthentication,
   verifyGameSelected,
