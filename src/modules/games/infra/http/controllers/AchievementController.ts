@@ -5,6 +5,7 @@ import {
   CreateAchievementService,
   ListAchievementsService,
   ShowAchievementService,
+  UpdateAchievementService,
 } from '@modules/games/services';
 
 export default class AchievementController {
@@ -43,6 +44,23 @@ export default class AchievementController {
       name,
       description,
       title,
+    });
+
+    return response.status(201).json(achievement);
+  };
+
+  public update: RequestHandler = async (request, response) => {
+    const { name, description } = request.body;
+    const { id } = request.params;
+    const gameId = request.game;
+
+    const updateAchievement = container.resolve(UpdateAchievementService);
+
+    const achievement = await updateAchievement.execute({
+      gameId,
+      id,
+      name,
+      description,
     });
 
     return response.status(201).json(achievement);

@@ -33,6 +33,12 @@ achievementRoutes.patch(
   upload.single('image'),
   achievementAvatarController.update,
 );
+achievementRoutes.put(
+  '/:id',
+  verifyAuthentication,
+  verifyGameSelected,
+  achievementController.update,
+);
 achievementRoutes.post(
   '/',
   verifyAuthentication,
