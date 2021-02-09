@@ -1,12 +1,9 @@
-import { IUserDocument } from '@models/User';
-import mongoose, { Types } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
+import { IHistory } from '@modules/games/entities';
 
-export interface IHistory {
-  user: Types.ObjectId | IUserDocument;
-  log: Date;
-}
+interface IHistoryDocument extends IHistory, Document {}
 
-const HistorySchema = new mongoose.Schema<IHistory>(
+const HistorySchema = new mongoose.Schema<IHistoryDocument>(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,

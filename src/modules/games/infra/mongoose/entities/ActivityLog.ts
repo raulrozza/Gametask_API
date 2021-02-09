@@ -1,14 +1,9 @@
-import { IUserDocument } from '@models/User';
-import mongoose, { Types } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
+import { IActivityLog } from '@modules/games/entities';
 
-export interface ILog {
-  version: number;
-  log: Date;
-  changes: unknown;
-  userId: Types.ObjectId | IUserDocument;
-}
+interface IActivityLogDocument extends IActivityLog, Document {}
 
-const LogSchema = new mongoose.Schema<ILog>(
+const ActivityLogSchema = new mongoose.Schema<IActivityLogDocument>(
   {
     version: {
       type: Number,
@@ -33,4 +28,4 @@ const LogSchema = new mongoose.Schema<ILog>(
   },
 );
 
-export default LogSchema;
+export default ActivityLogSchema;
