@@ -25,5 +25,11 @@ activityRoutes.post(
   verifyGameSelected,
   activityController.store,
 );
+activityRoutes.put(
+  '/:id',
+  verifyAuthentication,
+  verifyGameSelected,
+  activityController.update,
+);
 
 export default activityRoutes;

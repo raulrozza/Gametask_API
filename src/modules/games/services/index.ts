@@ -13,6 +13,7 @@ export { default as ShowActivityService } from './ShowActivityService';
 export { default as ShowGameService } from './ShowGameService';
 export { default as UpdateAchievementAvatarService } from './UpdateAchievementAvatarService';
 export { default as UpdateAchievementService } from './UpdateAchievementService';
+export { default as UpdateActivityService } from './UpdateActivityService';
 export { default as UpdateGameAvatarService } from './UpdateGameAvatarService';
 export { default as UpdateGameService } from './UpdateGameService';
 export { default as UpdateTitleService } from './UpdateTitleService';

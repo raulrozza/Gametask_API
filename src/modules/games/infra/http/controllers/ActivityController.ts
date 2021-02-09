@@ -7,6 +7,7 @@ import {
   CreateActivityService,
   ListActivitiesService,
   ShowActivityService,
+  UpdateActivityService,
 } from '@modules/games/services';
 
 export default class ActivityReport {
@@ -48,6 +49,27 @@ export default class ActivityReport {
       name,
       experience,
       description,
+      dmRules,
+    });
+
+    return response.status(201).json(activity);
+  };
+
+  public update: RequestHandler = async (request, response) => {
+    const { name, description, experience, dmRules } = request.body;
+    const gameId = request.game;
+    const { id } = request.params;
+    const { id: userId } = request.auth;
+
+    const updateActivity = container.resolve(UpdateActivityService);
+
+    const activity = await updateActivity.execute({
+      gameId,
+      userId,
+      id,
+      name,
+      description,
+      experience,
       dmRules,
     });
 
