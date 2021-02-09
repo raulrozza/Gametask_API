@@ -35,7 +35,7 @@ const UserSchema = new Schema<IUserDocument>(
 );
 
 UserSchema.virtual('profile_url').get(function (this: IUser) {
-  return `${envs.ADDRESS}/files/user/${this.image}`;
+  if (this.image) return `${envs.ADDRESS}/files/user/${this.image}`;
 });
 
 export default model<IUserDocument>('User', UserSchema);

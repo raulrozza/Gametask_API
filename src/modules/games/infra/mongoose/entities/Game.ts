@@ -76,7 +76,7 @@ export interface IGamePopulatedDocument extends IGameBaseDocument {
 }
 
 GameSchema.virtual('image_url').get(function (this: IGame) {
-  return `${envs.ADDRESS}/files/game/${this.image}`;
+  if (this.image) return `${envs.ADDRESS}/files/game/${this.image}`;
 });
 
 export default model<IGameDocument>('Game', GameSchema);

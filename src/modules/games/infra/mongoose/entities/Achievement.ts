@@ -38,7 +38,7 @@ interface IAchievementBaseDocument extends IAchievement, Document {
 }
 
 AchievementSchema.virtual('image_url').get(function (this: IAchievement) {
-  return `${envs.ADDRESS}/files/achievement/${this.image}`;
+  if (this.image) return `${envs.ADDRESS}/files/achievement/${this.image}`;
 });
 
 export interface IAchievementDocument extends IAchievementBaseDocument {
