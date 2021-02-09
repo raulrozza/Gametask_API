@@ -18,7 +18,7 @@ const getService = () => {
 };
 
 describe('UpdateAchievementAvatar', () => {
-  it('should upload the game avatar', async () => {
+  it('should upload the achievement avatar', async () => {
     const { updateAchievementAvatar, achievementsRepository } = getService();
 
     const gameId = uuid();
@@ -36,7 +36,7 @@ describe('UpdateAchievementAvatar', () => {
     expect(updatedAchievement.image).toBe(filename);
   });
 
-  it('should update the game avatar and delete the old one', async () => {
+  it('should update the achievement avatar and delete the old one', async () => {
     const {
       updateAchievementAvatar,
       storageProvider,

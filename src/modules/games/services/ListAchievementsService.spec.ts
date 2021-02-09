@@ -6,7 +6,7 @@ import ListAchievementsService from './ListAchievementsService';
 import { IAchievement } from '../entities';
 
 describe('ListAchievementsService', () => {
-  it('should list only the user owned games', async () => {
+  it('should list only the achievements of the selected game', async () => {
     const achievementsRepository = new FakeAchievementsRepository();
 
     const listAchievements = new ListAchievementsService(

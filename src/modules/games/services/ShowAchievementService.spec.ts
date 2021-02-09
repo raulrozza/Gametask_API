@@ -6,7 +6,7 @@ import FakeAchievementsRepository from '../repositories/fakes/FakeAchievementsRe
 import ShowAchievementService from './ShowAchievementService';
 
 describe('ShowAchievementService', () => {
-  it('should return the correct game', async () => {
+  it('should return the correct achievement', async () => {
     const achievementsRepository = new FakeAchievementsRepository();
     const showGames = new ShowAchievementService(achievementsRepository);
 
@@ -26,7 +26,7 @@ describe('ShowAchievementService', () => {
     expect(fetchedAchievement).toEqual(achievement);
   });
 
-  it('should return undefined when trying to fetch a game you do not own', async () => {
+  it('should return undefined when trying to fetch an achievement while providing a wrong id', async () => {
     const achievementsRepository = new FakeAchievementsRepository();
     const showGames = new ShowAchievementService(achievementsRepository);
 
