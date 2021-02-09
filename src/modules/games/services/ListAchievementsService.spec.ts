@@ -33,8 +33,8 @@ describe('ListAchievementsService', () => {
       description: fakeAchievement.description,
     } as IAchievement);
 
-    const games = await listAchievements.execute(gameId);
+    const achievements = await listAchievements.execute(gameId);
 
-    expect(games).toHaveLength(2);
+    expect(achievements).toHaveLength(2);
   });
 });

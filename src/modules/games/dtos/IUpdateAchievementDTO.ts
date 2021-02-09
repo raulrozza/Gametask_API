@@ -3,4 +3,5 @@ export default interface IUpdateAchievementDTO {
   id: string;
   name: string;
   description: string;
+  title?: string;
 }

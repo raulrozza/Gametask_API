@@ -9,14 +9,17 @@ export default class AchievementsRepository
   public async findAllFromGame(
     gameId: string,
   ): Promise<IAchievementDocument[]> {
-    return await Achievement.find({ game: gameId });
+    return await Achievement.find({ game: gameId }).populate('title');
   }
 
   public async findOne(
     id: string,
     gameId: string,
   ): Promise<IAchievementDocument | undefined> {
-    return await Achievement.findOne({ _id: id, game: gameId });
+    return await Achievement.findOne({
+      _id: id,
+      game: gameId,
+    }).populate('title');
   }
 
   public async create(

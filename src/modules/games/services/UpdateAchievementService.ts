@@ -20,6 +20,7 @@ export default class UpdateAchievementService {
     id,
     name,
     description,
+    title,
   }: IUpdateAchievementDTO): Promise<IAchievement> {
     const achievement = await this.achievementsRepository.findOne(id, gameId);
 
@@ -34,6 +35,7 @@ export default class UpdateAchievementService {
       id,
       name,
       description,
+      title,
       game: gameId,
     };
 

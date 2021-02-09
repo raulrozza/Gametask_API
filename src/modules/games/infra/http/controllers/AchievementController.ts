@@ -62,7 +62,7 @@ export default class AchievementController {
   };
 
   public update: RequestHandler = async (request, response) => {
-    const { name, description } = request.body;
+    const { name, description, title } = request.body;
     const { id } = request.params;
     const gameId = request.game;
 
@@ -72,6 +72,7 @@ export default class AchievementController {
       gameId,
       id,
       name,
+      title,
       description,
     });
 
