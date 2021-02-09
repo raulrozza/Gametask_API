@@ -7,6 +7,12 @@ import verifyAuthentication from '@modules/users/infra/http/middlewares/verifyAu
 const activityRoutes = Router();
 const activityController = new ActivityController();
 
+activityRoutes.delete(
+  '/:id',
+  verifyAuthentication,
+  verifyGameSelected,
+  activityController.remove,
+);
 activityRoutes.get(
   '/:id',
   verifyAuthentication,

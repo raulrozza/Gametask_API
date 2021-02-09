@@ -8,7 +8,9 @@ import DeleteAchievementService from './DeleteAchievementService';
 describe('DeleteAchievementService', () => {
   it('should delete the right achievement', async () => {
     const achievementsRepository = new FakeAchievementsRepository();
-    const deleteTitle = new DeleteAchievementService(achievementsRepository);
+    const deleteAchievement = new DeleteAchievementService(
+      achievementsRepository,
+    );
 
     const gameId = uuid();
     const fakeAchievement = new FakeAchievement(gameId);
@@ -29,7 +31,7 @@ describe('DeleteAchievementService', () => {
       description: fakeAchievement.description,
     } as IAchievement);
 
-    await deleteTitle.execute({ gameId, id: achievementToBeDeleted.id });
+    await deleteAchievement.execute({ gameId, id: achievementToBeDeleted.id });
 
     const achievements = await achievementsRepository.findAllFromGame(gameId);
 
