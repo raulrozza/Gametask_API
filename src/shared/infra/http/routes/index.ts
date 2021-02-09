@@ -10,6 +10,7 @@ import {
 import { usersRoutes } from '@modules/users/infra/http/routes';
 import {
   achievementRoutes,
+  activityRoutes,
   gameRoutes,
   titleRoutes,
 } from '@modules/games/infra/http/routes';
@@ -24,6 +25,7 @@ appRoutes.get('/', (_, response) => {
   return response.json({ message: 'Welcome to GameTask API' });
 });
 appRoutes.use('/achievements', achievementRoutes);
+appRoutes.use('/activities', activityRoutes);
 appRoutes.use('/games', gameRoutes);
 appRoutes.use('/titles', titleRoutes);
 appRoutes.use('/users', usersRoutes);
