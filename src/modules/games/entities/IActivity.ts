@@ -7,6 +7,6 @@ export default interface IActivity {
   experience: number;
   dmRules?: string;
   history?: IHistory[];
-  changelog?: IActivityLog[];
+  changelog: IActivityLog[];
   game: string | IGame;
 }
