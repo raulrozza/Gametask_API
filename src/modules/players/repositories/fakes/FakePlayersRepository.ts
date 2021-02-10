@@ -1,0 +1,62 @@
+import { v4 as uuid } from 'uuid';
+
+import { IPlayersRepository } from '@modules/players/repositories';
+import { IPlayer } from '@modules/players/entities';
+
+export default class FakePlayersRepository implements IPlayersRepository {
+  private readonly players: IPlayer[] = [];
+
+  public async findAllFromUser(userId: string): Promise<IPlayer[]> {
+    return Promise.resolve(
+      this.players.filter(player =>
+        typeof player.user === 'string'
+          ? player.user === userId
+          : player.user.id === userId,
+      ),
+    );
+  }
+
+  public async findOne(
+    id: string,
+    userId: string,
+    gameId: string,
+  ): Promise<IPlayer | undefined> {
+    const foundPlayer = this.players.find(
+      player =>
+        player.id === id &&
+        (typeof player.user === 'string'
+          ? player.user === userId
+          : player.user.id === userId) &&
+        (typeof player.game === 'string'
+          ? player.game === gameId
+          : player.game.id === gameId),
+    );
+
+    return Promise.resolve(foundPlayer);
+  }
+
+  public async create(player: IPlayer): Promise<IPlayer> {
+    player.id = uuid();
+
+    this.players.push(player);
+
+    return Promise.resolve(player);
+  }
+
+  public async update({ id, ...player }: IPlayer): Promise<IPlayer> {
+    const foundIndex = this.players.findIndex(
+      storedPlayer => storedPlayer.id === id,
+    );
+
+    const foundPlayer = this.players[foundIndex];
+
+    const updatedPlayer = {
+      ...foundPlayer,
+      ...player,
+    };
+
+    this.players[foundIndex] = updatedPlayer;
+
+    return updatedPlayer;
+  }
+}
