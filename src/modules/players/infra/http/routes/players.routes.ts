@@ -7,6 +7,7 @@ import verifyGameSelected from '@modules/games/infra/http/middlewares/verifyGame
 const playerRoutes = Router();
 const playersController = new PlayersController();
 
+playerRoutes.get('/', verifyAuthentication, playersController.index);
 playerRoutes.post(
   '/',
   verifyAuthentication,
