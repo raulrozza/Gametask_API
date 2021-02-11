@@ -8,7 +8,7 @@ export default interface IGame {
   theme?: ITheme;
   image?: string;
   administrators: string[] | IUser[];
-  levelInfo?: ILevelInfo[];
+  levelInfo: ILevelInfo[];
   newRegisters?: number;
-  ranks?: IRank[];
+  ranks: IRank[];
 }
