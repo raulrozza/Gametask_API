@@ -23,7 +23,6 @@ export default class CreatePlayerService {
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
   ) {}
-  // dale
 
   public async execute({ userId, gameId }: ICreatePlayerDTO): Promise<IPlayer> {
     const [user, game] = await Promise.all([
@@ -66,11 +65,8 @@ export default class CreatePlayerService {
   private async getInitialRankAndLevel(
     game: IGame,
   ): Promise<[IRank | undefined, number]> {
-    const initialLevel = await this.getInitialLevel(game.levelInfo || []);
-    const initialRank = await this.getInitialRank(
-      game.ranks || [],
-      initialLevel,
-    );
+    const initialLevel = await this.getInitialLevel(game.levelInfo);
+    const initialRank = await this.getInitialRank(game.ranks, initialLevel);
 
     return [initialRank, initialLevel];
   }
