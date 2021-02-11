@@ -4,6 +4,7 @@ import { container } from 'tsyringe';
 import {
   CreatePlayerService,
   ListPlayersService,
+  ShowPlayerService,
 } from '@modules/players/services';
 
 export default class PlayersController {
@@ -15,6 +16,18 @@ export default class PlayersController {
     const players = await listPlayers.execute(id);
 
     return response.json(players);
+  };
+
+  public show: RequestHandler = async (request, response) => {
+    const { id: userId } = request.auth;
+    const gameId = request.game;
+    const { id } = request.params;
+
+    const showPlayer = container.resolve(ShowPlayerService);
+
+    const player = await showPlayer.execute({ id, userId, gameId });
+
+    return response.json(player);
   };
 
   public store: RequestHandler = async (request, response) => {
