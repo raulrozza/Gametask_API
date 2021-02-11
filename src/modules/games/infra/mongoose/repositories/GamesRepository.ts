@@ -14,9 +14,11 @@ export default class GamesRepository
 
   public async findOne(
     id: string,
-    userId: string,
+    userId?: string,
   ): Promise<IGameDocument | undefined> {
-    const game = await Game.findOne({ _id: id, administrators: userId });
+    const game = userId
+      ? await Game.findOne({ _id: id, administrators: userId })
+      : await Game.findById(id);
 
     return game || undefined;
   }

@@ -43,6 +43,23 @@ export default class FakePlayersRepository implements IPlayersRepository {
     return Promise.resolve(player);
   }
 
+  public async isThereAPlayerAssociatedWith(
+    userId: string,
+    gameId: string,
+  ): Promise<boolean> {
+    const player = this.players.find(
+      player =>
+        (typeof player.user === 'string'
+          ? player.user === userId
+          : player.user.id === userId) &&
+        (typeof player.game === 'string'
+          ? player.game === gameId
+          : player.game.id === gameId),
+    );
+
+    return Boolean(player);
+  }
+
   public async update({ id, ...player }: IPlayer): Promise<IPlayer> {
     const foundIndex = this.players.findIndex(
       storedPlayer => storedPlayer.id === id,

@@ -13,13 +13,17 @@ export default class FakeGamesRepository implements IGamesRepository {
     );
   }
 
-  public async findOne(id: string, userId: string): Promise<IGame | undefined> {
-    const foundGame = this.games.find(
-      game =>
-        game.id === id && (game.administrators as string[]).includes(userId),
-    );
+  public async findOne(
+    id: string,
+    userId?: string,
+  ): Promise<IGame | undefined> {
+    if (userId)
+      return this.games.find(
+        game =>
+          game.id === id && (game.administrators as string[]).includes(userId),
+      );
 
-    return Promise.resolve(foundGame);
+    return this.games.find(game => game.id === id);
   }
 
   public async create(game: IGame): Promise<IGame> {

@@ -39,6 +39,15 @@ export default class PlayersRepository
     return await Player.create(player);
   }
 
+  public async isThereAPlayerAssociatedWith(
+    userId: string,
+    gameId: string,
+  ): Promise<boolean> {
+    const player = await Player.findOne({ user: userId, game: gameId });
+
+    return Boolean(player);
+  }
+
   public async update({ id, ...player }: IPlayer): Promise<IPlayer> {
     const updatedPlayer = await Player.updateOne(
       { _id: id },
