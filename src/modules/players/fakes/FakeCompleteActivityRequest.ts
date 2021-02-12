@@ -3,6 +3,7 @@ import { ICompleteActivityRequest } from '@modules/players/entities';
 
 export default class FakeCompleteActivityRequest
   implements ICompleteActivityRequest {
+  public id: string = '';
   public requestDate: Date = new Date();
   public completionDate: Date = new Date();
   public information: string = faker.random.words();

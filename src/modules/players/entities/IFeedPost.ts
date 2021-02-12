@@ -8,6 +8,7 @@ import {
 import { IPlayer } from '@modules/players/entities';
 
 export default interface IFeedPost {
+  id: string;
   player: string | IPlayer;
   type: 'achievement' | 'activity' | 'level' | 'rank';
   activity?: string | IActivity;
