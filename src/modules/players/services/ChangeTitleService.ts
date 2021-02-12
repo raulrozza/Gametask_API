@@ -26,6 +26,7 @@ export default class ChangeTitleService {
   }: IChangeTitleDTO): Promise<IPlayer> {
     if (titleId) {
       const title = await this.titlesRepository.findOne(titleId, gameId);
+
       if (!title)
         throw new RequestError(
           'This title does not exist',
@@ -47,7 +48,14 @@ export default class ChangeTitleService {
       );
 
     const updatedPlayer = await this.playersRepository.update({
-      ...player,
+      id: player.id,
+      achievements: player.achievements,
+      experience: player.experience,
+      game: player.game,
+      level: player.level,
+      titles: player.titles,
+      user: player.user,
+      rank: player.rank,
       currentTitle: titleId,
     });
 

@@ -48,10 +48,25 @@ export default class PlayersRepository
     return Boolean(player);
   }
 
-  public async update({ id, ...player }: IPlayer): Promise<IPlayer> {
-    const updatedPlayer = await Player.updateOne(
-      { _id: id },
-      { $set: player },
+  public async update({
+    id,
+    experience,
+    level,
+    achievements,
+    currentTitle,
+    rank,
+  }: IPlayer): Promise<IPlayer> {
+    const updatedPlayer = await Player.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          experience,
+          level,
+          achievements,
+          currentTitle,
+          rank,
+        },
+      },
       { new: true },
     );
 
