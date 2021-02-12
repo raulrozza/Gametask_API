@@ -31,14 +31,15 @@ export default class TitlesRepository
     await Title.deleteOne({ _id: titleId, game: gameId });
   }
 
-  public async update({ id, ...title }: ITitle): Promise<ITitle> {
-    const updatedTitle = await Title.updateOne(
+  public async update({ id, name }: ITitle): Promise<ITitle> {
+    const updatedTitle = await Title.findByIdAndUpdate(
+      id,
       {
-        _id: id,
+        $set: {
+          name,
+        },
       },
-      {
-        $set: title,
-      },
+      { new: true },
     );
 
     return updatedTitle;

@@ -25,13 +25,11 @@ export default class UpdateTitleService {
         400,
       );
 
-    const updatedTitle: ITitle = {
-      id,
+    const updatedTitle = await this.titlesRepository.update({
+      id: title.id,
+      game: title.game,
       name,
-      game: gameId,
-    };
-
-    await this.titlesRepository.update(updatedTitle);
+    });
 
     return updatedTitle;
   }
