@@ -31,15 +31,14 @@ export default class UpdateAchievementService {
         400,
       );
 
-    const updatedAchievement = {
-      id,
+    const updatedAchievement = await this.achievementsRepository.update({
+      id: achievement.id,
       name,
       description,
       title,
-      game: gameId,
-    };
-
-    await this.achievementsRepository.update(updatedAchievement);
+      image: achievement.image,
+      game: achievement.game,
+    });
 
     return updatedAchievement;
   }

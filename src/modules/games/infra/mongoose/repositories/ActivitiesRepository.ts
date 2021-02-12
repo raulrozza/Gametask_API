@@ -33,21 +33,33 @@ export default class ActivitiesRepository
   public async update({
     id,
     changelog,
-    ...activity
+    name,
+    description,
+    dmRules,
+    experience,
+    history,
   }: IActivity): Promise<IActivity> {
-    const updatedActivity = await Activity.updateOne(
+    const updatedActivity = await Activity.findByIdAndUpdate(
+      id,
       {
-        _id: id,
-      },
-      {
-        $set: activity,
+        $set: {
+          name,
+          description,
+          dmRules,
+          experience,
+        },
         $push: {
           changelog: {
             $each: changelog,
             $position: 0,
           },
+          history: {
+            $each: history,
+            $position: 0,
+          },
         },
       },
+      { new: true },
     );
 
     return updatedActivity;

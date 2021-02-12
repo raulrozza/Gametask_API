@@ -34,15 +34,22 @@ export default class AchievementsRepository
 
   public async update({
     id,
-    ...achievement
+    name,
+    description,
+    image,
+    title,
   }: IAchievement): Promise<IAchievement> {
-    const updatedAchievement = await Achievement.updateOne(
+    const updatedAchievement = await Achievement.findByIdAndUpdate(
+      id,
       {
-        _id: id,
+        $set: {
+          name,
+          description,
+          image,
+          title,
+        },
       },
-      {
-        $set: achievement,
-      },
+      { new: true },
     );
 
     return updatedAchievement;

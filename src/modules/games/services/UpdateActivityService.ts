@@ -51,17 +51,16 @@ export default class UpdateActivityService {
       experience,
     });
 
-    const updatedActivity = {
-      id,
+    const updatedActivity = await this.activitiesRepository.update({
+      id: this.originalActivity.id,
       name,
+      experience,
       description,
       dmRules,
-      experience,
-      game: gameId,
-      changelog: [newActivityLog, ...this.originalActivity.changelog],
-    };
-
-    await this.activitiesRepository.update(updatedActivity);
+      changelog: [newActivityLog],
+      game: this.originalActivity.game,
+      history: [],
+    });
 
     return updatedActivity;
   }

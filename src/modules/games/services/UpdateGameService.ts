@@ -33,17 +33,17 @@ export default class UpdateGameService {
         400,
       );
 
-    const updatedGame = {
-      id,
+    const updatedGame = await this.gamesRepository.update({
+      id: game.id,
       name,
       description,
       theme,
       levelInfo,
       ranks,
       administrators: game.administrators,
-    };
-
-    await this.gamesRepository.update(updatedGame);
+      image: game.image,
+      newRegisters: game.newRegisters,
+    });
 
     return updatedGame;
   }

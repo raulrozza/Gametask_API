@@ -29,14 +29,32 @@ export default class GamesRepository
     return createdGame;
   }
 
-  public async update({ id, ...game }: IGame): Promise<IGameDocument> {
-    const updatedGame = await Game.updateOne(
+  public async update({
+    id,
+    name,
+    description,
+    theme,
+    image,
+    newRegisters,
+    levelInfo,
+    administrators,
+    ranks,
+  }: IGame): Promise<IGameDocument> {
+    const updatedGame = await Game.findByIdAndUpdate(
+      id,
       {
-        _id: id,
+        $set: {
+          name,
+          description,
+          theme,
+          image,
+          newRegisters,
+          levelInfo,
+          ranks,
+          administrators,
+        },
       },
-      {
-        $set: game,
-      },
+      { new: true },
     );
 
     return updatedGame;

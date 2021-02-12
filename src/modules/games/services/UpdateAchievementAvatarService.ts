@@ -38,10 +38,16 @@ export default class UpdateAchievementAvatarService {
       );
 
     await this.storageProvider.saveFile(filename, ACHIEVEMENT_FOLDER);
-    achievement.image = filename;
 
-    await this.achievementRepository.update(achievement);
+    const updatedAchievement = await this.achievementRepository.update({
+      id: achievement.id,
+      name: achievement.name,
+      description: achievement.description,
+      title: achievement.title,
+      game: achievement.game,
+      image: filename,
+    });
 
-    return achievement;
+    return updatedAchievement;
   }
 }
