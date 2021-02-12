@@ -25,11 +25,15 @@ export default class UpdateUserService {
     if (!foundUser)
       throw new RequestError('User not found.', errorCodes.COULD_NOT_FIND_USER);
 
-    foundUser.firstname = firstname;
-    foundUser.lastname = lastname;
+    const updatedUser = await this.usersRepository.update({
+      id: foundUser.id,
+      firstname,
+      lastname,
+      email: foundUser.email,
+      password: foundUser.password,
+      image: foundUser.image,
+    });
 
-    await this.usersRepository.update(foundUser);
-
-    return foundUser;
+    return updatedUser;
   }
 }
