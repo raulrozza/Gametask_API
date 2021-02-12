@@ -21,6 +21,8 @@ export default class CreateGameService {
       name,
       description,
       administrators: [creatorId],
+      levelInfo: [],
+      ranks: [],
     });
 
     return createdGame;

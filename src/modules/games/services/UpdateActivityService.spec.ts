@@ -40,7 +40,7 @@ describe('UpdateActivityService', () => {
       userId,
       id: activity.id,
       name: updatedActivity.name,
-      description: updatedActivity.name,
+      description: updatedActivity.description,
       experience: 10,
     });
 

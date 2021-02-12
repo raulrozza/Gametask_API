@@ -26,6 +26,7 @@ export default class CreateActivityService {
       dmRules,
       description,
       changelog: [],
+      history: [],
     });
 
     return createdAchievement;
