@@ -13,6 +13,7 @@ import {
 } from '@modules/players/repositories';
 import { RequestError } from '@shared/errors/implementations';
 import errorCodes from '@config/errorCodes';
+import { IGame } from '@modules/games/entities';
 
 @injectable()
 export default class CreateUnlockAchievementRequestService {
@@ -35,6 +36,8 @@ export default class CreateUnlockAchievementRequestService {
     gameId,
     requester,
     achievement,
+    requestDate,
+    information,
   }: ICreateUnlockAchievementRequestDTO): Promise<IUnlockAchievementRequest> {
     const game = await this.gamesRepository.findOne(gameId);
     if (!game)
@@ -67,6 +70,41 @@ export default class CreateUnlockAchievementRequestService {
         404,
       );
 
-    return null as any;
+    const alreadyRequested = await this.unlockAchievementRequestRepository.checkIfRequested(
+      requester,
+      gameId,
+      achievement,
+    );
+    if (alreadyRequested)
+      throw new RequestError(
+        'This achievement was already requested',
+        errorCodes.ACHIEVEMENT_REGISTER_ALREADY_EXISTS,
+      );
+
+    const request = await this.unlockAchievementRequestRepository.create({
+      achievement,
+      game: gameId,
+      requestDate,
+      information,
+      requester,
+    });
+
+    await this.increaseGameNewRegisters(game);
+
+    return request;
+  }
+
+  private async increaseGameNewRegisters(game: IGame): Promise<void> {
+    await this.gamesRepository.update({
+      id: game.id,
+      administrators: game.administrators,
+      description: game.description,
+      levelInfo: game.levelInfo,
+      name: game.name,
+      ranks: game.ranks,
+      image: game.image,
+      theme: game.theme,
+      newRegisters: Number(game.newRegisters) + 1,
+    });
   }
 }
