@@ -1,7 +1,7 @@
 import faker from 'faker';
 import { IUnlockAchievementRequest } from '@modules/players/entities';
 
-export default class UnlockAchievementRequest
+export default class FakeUnlockAchievementRequest
   implements IUnlockAchievementRequest {
   public id: string = '';
   public requestDate: Date = new Date();
