@@ -48,6 +48,8 @@ export default class FakeUnlockAchievementRequestRepository
       request => request.id === id && request.game === gameId,
     );
 
+    if (foundIndex < 0) throw new Error('Request not found');
+
     this.unlockAchievementRequests.splice(foundIndex, 1);
   }
 }
