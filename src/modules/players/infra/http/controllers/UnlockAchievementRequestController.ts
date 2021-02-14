@@ -1,5 +1,6 @@
 import {
   CreateUnlockAchievementRequestService,
+  DeleteUnlockAchievementRequestService,
   ListUnlockAchievementRequestsService,
 } from '@modules/players/services';
 import { RequestHandler } from 'express';
@@ -16,6 +17,19 @@ export default class UnlockAchievementRequestController {
     const requests = await listUnlockAchievementRequest.execute(gameId);
 
     return response.json(requests);
+  };
+
+  public remove: RequestHandler = async (request, response) => {
+    const gameId = request.game;
+    const { id } = request.params;
+
+    const deleteUnlockAchievementRequest = container.resolve(
+      DeleteUnlockAchievementRequestService,
+    );
+
+    await deleteUnlockAchievementRequest.execute({ requestId: id, gameId });
+
+    return response.status(201).end();
   };
 
   public store: RequestHandler = async (request, response) => {

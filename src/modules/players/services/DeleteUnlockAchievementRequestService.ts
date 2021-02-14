@@ -22,29 +22,33 @@ export default class DeleteUnlockAchievementRequestService {
     requestId,
   }: IRequestExecutionDTO): Promise<void> {
     const game = await this.gamesRepository.findOne(gameId);
-
     if (!game)
       throw new RequestError(
         'Game does not exist',
         errorCodes.BAD_REQUEST_ERROR,
       );
 
-    try {
-      await this.unlockAchievementRequestRepository.delete(requestId, gameId);
+    const requestExists = await this.unlockAchievementRequestRepository.findOne(
+      requestId,
+    );
+    if (!requestExists)
+      throw new RequestError(
+        'This request does not exist',
+        errorCodes.BAD_REQUEST_ERROR,
+      );
 
-      await this.gamesRepository.update({
-        id: gameId,
-        administrators: game.administrators,
-        description: game.description,
-        levelInfo: game.levelInfo,
-        name: game.name,
-        ranks: game.ranks,
-        image: game.image,
-        newRegisters: Number(game.newRegisters) - 1,
-        theme: game.theme,
-      });
-    } catch (error) {
-      throw new RequestError(error.message, errorCodes.BAD_REQUEST_ERROR);
-    }
+    await this.unlockAchievementRequestRepository.delete(requestId, gameId);
+
+    await this.gamesRepository.update({
+      id: gameId,
+      administrators: game.administrators,
+      description: game.description,
+      levelInfo: game.levelInfo,
+      name: game.name,
+      ranks: game.ranks,
+      image: game.image,
+      newRegisters: Number(game.newRegisters) - 1,
+      theme: game.theme,
+    });
   }
 }

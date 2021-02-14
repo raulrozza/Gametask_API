@@ -12,5 +12,11 @@ requestsRoutes.get(
   verifyGameSelected,
   unlockAchievementRequestController.index,
 );
+requestsRoutes.delete(
+  '/achievements/:id',
+  verifyAuthentication,
+  verifyGameSelected,
+  unlockAchievementRequestController.remove,
+);
 
 export default requestsRoutes;

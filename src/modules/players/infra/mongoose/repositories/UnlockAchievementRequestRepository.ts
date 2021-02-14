@@ -40,6 +40,12 @@ export default class UnlockAchievementRequestRepository
       .sort({ requestDate: -1 });
   }
 
+  public async findOne(
+    id: string,
+  ): Promise<IUnlockAchievementRequestDocument | undefined> {
+    return await UnlockAchievementRequest.findById(id);
+  }
+
   public async create({
     requester,
     achievement,
@@ -60,6 +66,9 @@ export default class UnlockAchievementRequestRepository
   }
 
   public async delete(id: string, gameId: string): Promise<void> {
-    await UnlockAchievementRequest.deleteOne({ _id: id, game: gameId });
+    await UnlockAchievementRequest.findOneAndDelete({
+      _id: id,
+      game: gameId,
+    });
   }
 }

@@ -30,6 +30,12 @@ export default class FakeUnlockAchievementRequestRepository
     );
   }
 
+  public async findOne(
+    id: string,
+  ): Promise<IUnlockAchievementRequest | undefined> {
+    return this.unlockAchievementRequests.find(request => request.id === id);
+  }
+
   public async create(
     request: Omit<IUnlockAchievementRequest, 'id'>,
   ): Promise<IUnlockAchievementRequest> {

@@ -9,6 +9,7 @@ export default interface IUnlockAchievementRequestRepository<
     achievementId: string,
   ): Promise<boolean>;
   findAllFromGame(gameId: string): Promise<T[]>;
+  findOne(id: string): Promise<IUnlockAchievementRequest | undefined>;
   create(request: Omit<IUnlockAchievementRequest, 'id'>): Promise<T>;
   delete(id: string, gameId: string): Promise<void>;
 }
