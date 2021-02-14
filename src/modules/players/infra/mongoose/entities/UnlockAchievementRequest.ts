@@ -1,4 +1,4 @@
-import { IActivityDocument } from '@modules/games/infra/mongoose/entities/Activity';
+import { IAchievementDocument } from '@modules/games/infra/mongoose/entities/Achievement';
 import { IGameDocument } from '@modules/games/infra/mongoose/entities/Game';
 import { IUnlockAchievementRequest } from '@modules/players/entities';
 import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
@@ -11,20 +11,19 @@ const UnlockAchievementRequestSchema = new Schema(
       ref: 'Player',
       required: true,
     },
-    activity: {
+    achievement: {
       type: Schema.Types.ObjectId,
-      ref: 'Activity',
+      ref: 'Achievement',
       required: true,
     },
     requestDate: {
       type: Date,
       required: true,
     },
-    completionDate: {
-      type: Date,
-      required: true,
+    information: {
+      type: String,
+      required: false,
     },
-    information: String,
     game: {
       type: Schema.Types.ObjectId,
       ref: 'Game',
@@ -43,14 +42,14 @@ interface IUnlockAchievementRequestBaseDocument
 export interface IUnlockAchievementRequestDocument
   extends IUnlockAchievementRequestBaseDocument {
   requester: IUserDocument['_id'];
-  activity: IActivityDocument['_id'];
+  achievement: IAchievementDocument['_id'];
   game: IGameDocument['_id'];
 }
 
 export interface IUnlockAchievementRequestPopulatedDocument
   extends IUnlockAchievementRequestBaseDocument {
   requester: IUserDocument;
-  activity: IActivityDocument;
+  achievement: IAchievementDocument;
   game: IGameDocument;
 }
 

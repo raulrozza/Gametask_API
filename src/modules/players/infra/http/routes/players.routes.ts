@@ -3,6 +3,7 @@ import { Router } from 'express';
 import {
   PlayersController,
   PlayerTitlesController,
+  UnlockAchievementRequestController,
 } from '@modules/players/infra/http/controllers';
 import verifyAuthentication from '@modules/users/infra/http/middlewares/verifyAuthentication';
 import verifyGameSelected from '@modules/games/infra/http/middlewares/verifyGameSelected';
@@ -10,6 +11,14 @@ import verifyGameSelected from '@modules/games/infra/http/middlewares/verifyGame
 const playerRoutes = Router();
 const playersController = new PlayersController();
 const playerTitlesController = new PlayerTitlesController();
+const unlockAchievementRequestController = new UnlockAchievementRequestController();
+
+playerRoutes.post(
+  '/:requester/achievement',
+  verifyAuthentication,
+  verifyGameSelected,
+  unlockAchievementRequestController.store,
+);
 
 playerRoutes.get(
   '/:id',

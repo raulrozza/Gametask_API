@@ -12,7 +12,7 @@ export default class UnlockAchievementRequestRepository
     gameId: string,
     achievementId: string,
   ): Promise<boolean> {
-    const request = await UnlockAchievementRequest.find({
+    const request = await UnlockAchievementRequest.findOne({
       game: gameId,
       achievement: achievementId,
       requester,
@@ -50,7 +50,7 @@ export default class UnlockAchievementRequestRepository
     IUnlockAchievementRequest,
     'id'
   >): Promise<IUnlockAchievementRequestDocument> {
-    return await UnlockAchievementRequest.create({
+    return UnlockAchievementRequest.create({
       requester,
       achievement,
       requestDate,
