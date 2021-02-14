@@ -14,7 +14,10 @@ import {
   gameRoutes,
   titleRoutes,
 } from '@modules/games/infra/http/routes';
-import { playerRoutes } from '@modules/players/infra/http/routes';
+import {
+  playerRoutes,
+  requestsRoutes,
+} from '@modules/players/infra/http/routes';
 
 const appRoutes = express.Router();
 
@@ -29,6 +32,7 @@ appRoutes.use('/achievements', achievementRoutes);
 appRoutes.use('/activities', activityRoutes);
 appRoutes.use('/games', gameRoutes);
 appRoutes.use('/players', playerRoutes);
+appRoutes.use('/requests', requestsRoutes);
 appRoutes.use('/titles', titleRoutes);
 appRoutes.use('/users', usersRoutes);
 

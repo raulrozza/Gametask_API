@@ -1,8 +1,23 @@
-import { CreateUnlockAchievementRequestService } from '@modules/players/services';
+import {
+  CreateUnlockAchievementRequestService,
+  ListUnlockAchievementRequestsService,
+} from '@modules/players/services';
 import { RequestHandler } from 'express';
 import { container } from 'tsyringe';
 
 export default class UnlockAchievementRequestController {
+  public index: RequestHandler = async (request, response) => {
+    const gameId = request.game;
+
+    const listUnlockAchievementRequest = container.resolve(
+      ListUnlockAchievementRequestsService,
+    );
+
+    const requests = await listUnlockAchievementRequest.execute(gameId);
+
+    return response.json(requests);
+  };
+
   public store: RequestHandler = async (request, response) => {
     const { achievement, requestDate, information } = request.body;
     const gameId = request.game;
