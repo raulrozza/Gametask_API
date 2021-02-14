@@ -7,6 +7,20 @@ import UnlockAchievementRequest, {
 export default class UnlockAchievementRequestRepository
   implements
     IUnlockAchievementRequestRepository<IUnlockAchievementRequestDocument> {
+  public async checkIfRequested(
+    requester: string,
+    gameId: string,
+    achievementId: string,
+  ): Promise<boolean> {
+    const request = await UnlockAchievementRequest.find({
+      game: gameId,
+      achievement: achievementId,
+      requester,
+    });
+
+    return Boolean(request);
+  }
+
   public async findAllFromGame(
     gameId: string,
   ): Promise<IUnlockAchievementRequestDocument[]> {

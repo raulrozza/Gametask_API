@@ -7,6 +7,21 @@ export default class FakeUnlockAchievementRequestRepository
   implements IUnlockAchievementRequestRepository<IUnlockAchievementRequest> {
   private unlockAchievementRequests: IUnlockAchievementRequest[] = [];
 
+  public async checkIfRequested(
+    requester: string,
+    gameId: string,
+    achievementId: string,
+  ): Promise<boolean> {
+    const request = this.unlockAchievementRequests.find(
+      request =>
+        request.requester === requester &&
+        request.game === gameId &&
+        request.achievement === achievementId,
+    );
+
+    return Boolean(request);
+  }
+
   public async findAllFromGame(
     gameId: string,
   ): Promise<IUnlockAchievementRequest[]> {
