@@ -2,6 +2,7 @@ import { RequestHandler } from 'express';
 import { container } from 'tsyringe';
 import {
   CreateCompleteActivityRequestService,
+  DeleteCompleteActivityRequestService,
   ListCompleteActivityRequestsService,
 } from '@modules/players/services';
 
@@ -16,6 +17,19 @@ export default class CompleteActivityRequestController {
     const activityRequests = await listCompleteActivityRequest.execute(gameId);
 
     return response.json(activityRequests);
+  };
+
+  public remove: RequestHandler = async (request, response) => {
+    const gameId = request.game;
+    const { id } = request.params;
+
+    const deleteCompleteActivityRequest = container.resolve(
+      DeleteCompleteActivityRequestService,
+    );
+
+    await deleteCompleteActivityRequest.execute({ requestId: id, gameId });
+
+    return response.status(201).end();
   };
 
   public store: RequestHandler = async (request, response) => {

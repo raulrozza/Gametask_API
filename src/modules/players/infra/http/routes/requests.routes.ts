@@ -28,5 +28,11 @@ requestsRoutes.delete(
   verifyGameSelected,
   unlockAchievementRequestController.remove,
 );
+requestsRoutes.delete(
+  '/activities/:id',
+  verifyAuthentication,
+  verifyGameSelected,
+  completeActivityRequestController.remove,
+);
 
 export default requestsRoutes;
