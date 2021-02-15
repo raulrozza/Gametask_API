@@ -13,7 +13,6 @@ import {
 } from '@modules/players/repositories';
 import { RequestError } from '@shared/errors/implementations';
 import errorCodes from '@config/errorCodes';
-import { IGame } from '@modules/games/entities';
 
 @injectable()
 export default class CreateUnlockAchievementRequestService {
@@ -89,22 +88,8 @@ export default class CreateUnlockAchievementRequestService {
       requester,
     });
 
-    await this.increaseGameNewRegisters(game);
+    await this.gamesRepository.updateRegisters(game.id, 1);
 
     return request;
-  }
-
-  private async increaseGameNewRegisters(game: IGame): Promise<void> {
-    await this.gamesRepository.update({
-      id: game.id,
-      administrators: game.administrators,
-      description: game.description,
-      levelInfo: game.levelInfo,
-      name: game.name,
-      ranks: game.ranks,
-      image: game.image,
-      theme: game.theme,
-      newRegisters: Number(game.newRegisters) + 1,
-    });
   }
 }

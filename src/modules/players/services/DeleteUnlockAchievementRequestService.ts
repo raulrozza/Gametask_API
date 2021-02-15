@@ -39,16 +39,6 @@ export default class DeleteUnlockAchievementRequestService {
 
     await this.unlockAchievementRequestRepository.delete(requestId, gameId);
 
-    await this.gamesRepository.update({
-      id: gameId,
-      administrators: game.administrators,
-      description: game.description,
-      levelInfo: game.levelInfo,
-      name: game.name,
-      ranks: game.ranks,
-      image: game.image,
-      newRegisters: Number(game.newRegisters) - 1,
-      theme: game.theme,
-    });
+    await this.gamesRepository.updateRegisters(game.id, -1);
   }
 }
