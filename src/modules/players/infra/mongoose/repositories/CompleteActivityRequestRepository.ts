@@ -25,6 +25,15 @@ export default class CompleteActivityRequestRepository
       .sort({ requestDate: -1 });
   }
 
+  public async findOne(
+    id: string,
+  ): Promise<ICompleteActivityRequestDocument | undefined> {
+    if (!isValidObjectId(id))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
+    return await CompleteActivityRequest.findById(id);
+  }
+
   public async create({
     requester,
     activity,

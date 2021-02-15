@@ -15,6 +15,12 @@ export default class FakeCompleteActivityRequestRepository
     );
   }
 
+  public async findOne(
+    id: string,
+  ): Promise<ICompleteActivityRequest | undefined> {
+    return this.completeActivityRequests.find(request => request.id === id);
+  }
+
   public async create(
     request: Omit<ICompleteActivityRequest, 'id'>,
   ): Promise<ICompleteActivityRequest> {
