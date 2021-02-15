@@ -11,18 +11,21 @@ import CreateUnlockAchievementRequestService from './CreateUnlockAchievementRequ
 import { IPlayer } from '../entities';
 import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest';
 import { RequestError } from '@shared/errors/implementations';
+import FakeTransactionProvider from '@shared/container/providers/TransactionProvider/fakes/FakeTransactionProvider';
 
 const initService = async () => {
   const unlockAchievementRequestRepository = new FakeUnlockAchievementRequestRepository();
   const gamesRepository = new FakeGamesRepository();
   const achievementsRepository = new FakeAchievementsRepository();
   const playersRepository = new FakePlayersRepository();
+  const transactionProvider = new FakeTransactionProvider();
 
   const createUnlockAchievementRequest = new CreateUnlockAchievementRequestService(
     unlockAchievementRequestRepository,
     gamesRepository,
     achievementsRepository,
     playersRepository,
+    transactionProvider,
   );
 
   const userId = uuid();

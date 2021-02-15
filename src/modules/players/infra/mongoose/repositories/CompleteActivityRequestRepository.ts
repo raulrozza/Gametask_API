@@ -1,4 +1,4 @@
-import { isValidObjectId } from 'mongoose';
+import { ClientSession, isValidObjectId } from 'mongoose';
 
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/errors/implementations';
@@ -34,31 +34,45 @@ export default class CompleteActivityRequestRepository
     return await CompleteActivityRequest.findById(id);
   }
 
-  public async create({
-    requester,
-    activity,
-    requestDate,
-    completionDate,
-    information,
-    game,
-  }: Omit<
-    ICompleteActivityRequest,
-    'id'
-  >): Promise<ICompleteActivityRequestDocument> {
-    return await CompleteActivityRequest.create({
+  public async create(
+    {
       requester,
       activity,
       requestDate,
       completionDate,
       information,
       game,
-    });
+    }: Omit<ICompleteActivityRequest, 'id'>,
+    session?: ClientSession,
+  ): Promise<ICompleteActivityRequestDocument> {
+    const [result] = await CompleteActivityRequest.create(
+      [
+        {
+          requester,
+          activity,
+          requestDate,
+          completionDate,
+          information,
+          game,
+        },
+      ],
+      { session },
+    );
+
+    return result;
   }
 
-  public async delete(id: string, gameId: string): Promise<void> {
+  public async delete(
+    id: string,
+    gameId: string,
+    session?: ClientSession,
+  ): Promise<void> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    await CompleteActivityRequest.deleteOne({ _id: id, game: gameId });
+    await CompleteActivityRequest.deleteOne(
+      { _id: id, game: gameId },
+      { session },
+    );
   }
 }

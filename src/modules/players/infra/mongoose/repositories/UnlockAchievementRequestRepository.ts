@@ -1,4 +1,4 @@
-import { isValidObjectId } from 'mongoose';
+import { ClientSession, isValidObjectId } from 'mongoose';
 
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/errors/implementations';
@@ -59,32 +59,46 @@ export default class UnlockAchievementRequestRepository
     return await UnlockAchievementRequest.findById(id);
   }
 
-  public async create({
-    requester,
-    achievement,
-    requestDate,
-    information,
-    game,
-  }: Omit<
-    IUnlockAchievementRequest,
-    'id'
-  >): Promise<IUnlockAchievementRequestDocument> {
-    return UnlockAchievementRequest.create({
+  public async create(
+    {
       requester,
       achievement,
       requestDate,
       information,
       game,
-    });
+    }: Omit<IUnlockAchievementRequest, 'id'>,
+    session?: ClientSession,
+  ): Promise<IUnlockAchievementRequestDocument> {
+    const [result] = await UnlockAchievementRequest.create(
+      [
+        {
+          requester,
+          achievement,
+          requestDate,
+          information,
+          game,
+        },
+      ],
+      { session },
+    );
+
+    return result;
   }
 
-  public async delete(id: string, gameId: string): Promise<void> {
+  public async delete(
+    id: string,
+    gameId: string,
+    session?: ClientSession,
+  ): Promise<void> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    await UnlockAchievementRequest.findOneAndDelete({
-      _id: id,
-      game: gameId,
-    });
+    await UnlockAchievementRequest.findOneAndDelete(
+      {
+        _id: id,
+        game: gameId,
+      },
+      { session },
+    );
   }
 }

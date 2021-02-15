@@ -6,6 +6,7 @@ import { IGamesRepository } from '@modules/games/repositories';
 import IRequestExecutionDTO from '../dtos/IRequestExecutionDTO';
 import { RequestError } from '@shared/errors/implementations';
 import errorCodes from '@config/errorCodes';
+import ITransactionProvider from '@shared/container/providers/TransactionProvider/models/ITransactionProvider';
 
 @injectable()
 export default class DeleteCompleteActivityRequestService {
@@ -15,6 +16,9 @@ export default class DeleteCompleteActivityRequestService {
 
     @inject('GamesRepository')
     private gamesRepository: IGamesRepository,
+
+    @inject('TransactionProvider')
+    private transactionProvider: ITransactionProvider,
   ) {}
 
   public async execute({
@@ -37,8 +41,14 @@ export default class DeleteCompleteActivityRequestService {
         errorCodes.BAD_REQUEST_ERROR,
       );
 
-    await this.completeActivityRequestRepository.delete(requestId, gameId);
+    await this.transactionProvider.startSession(async session => {
+      await this.completeActivityRequestRepository.delete(
+        requestId,
+        gameId,
+        session,
+      );
 
-    await this.gamesRepository.updateRegisters(game.id, -1);
+      await this.gamesRepository.updateRegisters(game.id, -1, session);
+    });
   }
 }

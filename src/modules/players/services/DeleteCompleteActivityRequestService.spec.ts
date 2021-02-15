@@ -6,14 +6,17 @@ import DeleteCompleteActivityRequestService from './DeleteCompleteActivityReques
 import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
 import { RequestError } from '@shared/errors/implementations';
 import { FakeGame } from '@modules/games/fakes';
+import FakeTransactionProvider from '@shared/container/providers/TransactionProvider/fakes/FakeTransactionProvider';
 
 describe('DeleteCompleteActivityRequest', () => {
   it('should successfully delete the request', async () => {
     const completeActivityRequestRepository = new FakeCompleteActivityRequestRepository();
     const gamesRepository = new FakeGamesRepository();
+    const transactionProvider = new FakeTransactionProvider();
     const deleteUnlockAchievementRequest = new DeleteCompleteActivityRequestService(
       completeActivityRequestRepository,
       gamesRepository,
+      transactionProvider,
     );
 
     const fakeGame = new FakeGame();
@@ -46,9 +49,11 @@ describe('DeleteCompleteActivityRequest', () => {
   it('should throw when trying to delete a non existing game', async () => {
     const completeActivityRequestRepository = new FakeCompleteActivityRequestRepository();
     const gamesRepository = new FakeGamesRepository();
+    const transactionProvider = new FakeTransactionProvider();
     const deleteUnlockAchievementRequest = new DeleteCompleteActivityRequestService(
       completeActivityRequestRepository,
       gamesRepository,
+      transactionProvider,
     );
 
     const id = uuid();
@@ -66,9 +71,11 @@ describe('DeleteCompleteActivityRequest', () => {
   it('should throw when trying to delete a non existing request', async () => {
     const completeActivityRequestRepository = new FakeCompleteActivityRequestRepository();
     const gamesRepository = new FakeGamesRepository();
+    const transactionProvider = new FakeTransactionProvider();
     const deleteUnlockAchievementRequest = new DeleteCompleteActivityRequestService(
       completeActivityRequestRepository,
       gamesRepository,
+      transactionProvider,
     );
 
     const fakeGame = new FakeGame();

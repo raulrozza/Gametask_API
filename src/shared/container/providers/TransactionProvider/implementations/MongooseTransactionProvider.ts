@@ -5,13 +5,17 @@ import ITransactionProvider, {
 
 export default class MongooseTransactionProvider
   implements ITransactionProvider {
-  public async startSession(sessionWorkflow: SessionWorkflow): Promise<void> {
+  public async startSession<T>(
+    sessionWorkflow: SessionWorkflow<T>,
+  ): Promise<T> {
+    let result: T;
+
     const session = await mongoose.startSession();
 
     try {
       await session.startTransaction();
 
-      await sessionWorkflow(session);
+      result = await sessionWorkflow(session);
 
       await session.commitTransaction();
     } catch (error) {
@@ -20,5 +24,7 @@ export default class MongooseTransactionProvider
     } finally {
       session.endSession();
     }
+
+    return result;
   }
 }

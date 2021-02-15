@@ -3,7 +3,9 @@ import ITransactionProvider, {
 } from '../models/ITransactionProvider';
 
 export default class FakeTransactionProvider implements ITransactionProvider {
-  public async startSession(sessionWorkflow: SessionWorkflow): Promise<void> {
-    sessionWorkflow({});
+  public async startSession<T>(
+    sessionWorkflow: SessionWorkflow<T>,
+  ): Promise<T> {
+    return sessionWorkflow({});
   }
 }

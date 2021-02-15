@@ -1,6 +1,9 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
+import errorCodes from '@config/errorCodes';
+import { RequestError } from '@shared/errors/implementations';
+import ITransactionProvider from '@shared/container/providers/TransactionProvider/models/ITransactionProvider';
 import {
   IAchievementsRepository,
   IGamesRepository,
@@ -11,8 +14,13 @@ import {
   IPlayersRepository,
   IUnlockAchievementRequestRepository,
 } from '@modules/players/repositories';
-import { RequestError } from '@shared/errors/implementations';
-import errorCodes from '@config/errorCodes';
+
+interface ValidadeInputParams {
+  gameId: string;
+  userId: string;
+  requester: string;
+  achievement: string;
+}
 
 @injectable()
 export default class CreateUnlockAchievementRequestService {
@@ -28,6 +36,9 @@ export default class CreateUnlockAchievementRequestService {
 
     @inject('PlayersRepository')
     private playersRepository: IPlayersRepository,
+
+    @inject('TransactionProvider')
+    private transactionProvider: ITransactionProvider,
   ) {}
 
   public async execute({
@@ -38,6 +49,36 @@ export default class CreateUnlockAchievementRequestService {
     requestDate,
     information,
   }: ICreateUnlockAchievementRequestDTO): Promise<IUnlockAchievementRequest> {
+    await this.validateInput({
+      userId,
+      gameId,
+      requester,
+      achievement,
+    });
+
+    return await this.transactionProvider.startSession<IUnlockAchievementRequest>(
+      async session => {
+        const request = await this.unlockAchievementRequestRepository.create({
+          achievement,
+          game: gameId,
+          requestDate,
+          information,
+          requester,
+        });
+
+        await this.gamesRepository.updateRegisters(gameId, 1);
+
+        return request;
+      },
+    );
+  }
+
+  private async validateInput({
+    userId,
+    gameId,
+    requester,
+    achievement,
+  }: ValidadeInputParams): Promise<void> {
     const game = await this.gamesRepository.findOne(gameId);
     if (!game)
       throw new RequestError(
@@ -79,17 +120,5 @@ export default class CreateUnlockAchievementRequestService {
         'This achievement was already requested',
         errorCodes.ACHIEVEMENT_REGISTER_ALREADY_EXISTS,
       );
-
-    const request = await this.unlockAchievementRequestRepository.create({
-      achievement,
-      game: gameId,
-      requestDate,
-      information,
-      requester,
-    });
-
-    await this.gamesRepository.updateRegisters(game.id, 1);
-
-    return request;
   }
 }

@@ -1,9 +1,10 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
+import ITransactionProvider from '@shared/container/providers/TransactionProvider/models/ITransactionProvider';
 import { IUnlockAchievementRequestRepository } from '@modules/players/repositories';
 import { IGamesRepository } from '@modules/games/repositories';
-import IRequestExecutionDTO from '../dtos/IRequestExecutionDTO';
+import IRequestExecutionDTO from '@modules/players/dtos/IRequestExecutionDTO';
 import { RequestError } from '@shared/errors/implementations';
 import errorCodes from '@config/errorCodes';
 
@@ -15,6 +16,9 @@ export default class DeleteUnlockAchievementRequestService {
 
     @inject('GamesRepository')
     private gamesRepository: IGamesRepository,
+
+    @inject('TransactionProvider')
+    private transactionProvider: ITransactionProvider,
   ) {}
 
   public async execute({
@@ -37,8 +41,14 @@ export default class DeleteUnlockAchievementRequestService {
         errorCodes.BAD_REQUEST_ERROR,
       );
 
-    await this.unlockAchievementRequestRepository.delete(requestId, gameId);
+    await this.transactionProvider.startSession(async session => {
+      await this.unlockAchievementRequestRepository.delete(
+        requestId,
+        gameId,
+        session,
+      );
 
-    await this.gamesRepository.updateRegisters(game.id, -1);
+      await this.gamesRepository.updateRegisters(game.id, -1, session);
+    });
   }
 }

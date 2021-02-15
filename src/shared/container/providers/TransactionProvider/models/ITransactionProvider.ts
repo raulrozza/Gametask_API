@@ -1,5 +1,5 @@
-export type SessionWorkflow = (session: object) => Promise<void>;
+export type SessionWorkflow<T> = (session: object) => Promise<T>;
 
 export default interface ITransactionProvider {
-  startSession: (sessionWorkflow: SessionWorkflow) => Promise<void>;
+  startSession: <T>(sessionWorkflow: SessionWorkflow<T>) => Promise<T>;
 }

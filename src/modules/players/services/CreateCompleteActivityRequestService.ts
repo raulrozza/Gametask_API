@@ -13,6 +13,14 @@ import { ICompleteActivityRequest } from '@modules/players/entities';
 import ICreateCompleteActivityRequestDTO from '@modules/players/dtos/ICreateCompleteActivityRequestDTO';
 import { RequestError } from '@shared/errors/implementations';
 import errorCodes from '@config/errorCodes';
+import ITransactionProvider from '@shared/container/providers/TransactionProvider/models/ITransactionProvider';
+
+interface IValidateInputParams {
+  activity: string;
+  gameId: string;
+  userId: string;
+  requester: string;
+}
 
 @injectable()
 export default class CreateCompleteActivityRequestService {
@@ -28,6 +36,9 @@ export default class CreateCompleteActivityRequestService {
 
     @inject('PlayersRepository')
     private playersRepository: IPlayersRepository,
+
+    @inject('TransactionProvider')
+    private transactionProvider: ITransactionProvider,
   ) {}
 
   public async execute({
@@ -39,6 +50,33 @@ export default class CreateCompleteActivityRequestService {
     information,
     requestDate,
   }: ICreateCompleteActivityRequestDTO): Promise<ICompleteActivityRequest> {
+    await this.validateInput({ activity, gameId, userId, requester });
+
+    return await this.transactionProvider.startSession(async session => {
+      const request = await this.completeActivityRequestRepository.create(
+        {
+          activity,
+          game: gameId,
+          requester,
+          completionDate,
+          information,
+          requestDate,
+        },
+        session,
+      );
+
+      await this.gamesRepository.updateRegisters(gameId, 1, session);
+
+      return request;
+    });
+  }
+
+  private async validateInput({
+    activity,
+    gameId,
+    userId,
+    requester,
+  }: IValidateInputParams): Promise<void> {
     const game = await this.gamesRepository.findOne(gameId);
     if (!game)
       throw new RequestError(
@@ -66,18 +104,5 @@ export default class CreateCompleteActivityRequestService {
         'This player does not exist',
         errorCodes.BAD_REQUEST_ERROR,
       );
-
-    const request = await this.completeActivityRequestRepository.create({
-      activity,
-      game: gameId,
-      requester,
-      completionDate,
-      information,
-      requestDate,
-    });
-
-    await this.gamesRepository.updateRegisters(game.id, 1);
-
-    return request;
   }
 }

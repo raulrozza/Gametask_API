@@ -11,18 +11,21 @@ import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import FakePlayer from '../fakes/FakePlayer';
 import { IPlayer } from '../entities';
 import { RequestError } from '@shared/errors/implementations';
+import FakeTransactionProvider from '@shared/container/providers/TransactionProvider/fakes/FakeTransactionProvider';
 
 const initService = async () => {
   const completeActivityRequestRepository = new FakeCompleteActivityRequestRepository();
   const gamesRepository = new FakeGamesRepository();
   const activitiesRepository = new FakeActivitiesRepository();
   const playersRepository = new FakePlayersRepository();
+  const transactionProvider = new FakeTransactionProvider();
 
   const createCompleteActivity = new CreateCompleteActivityRequestService(
     completeActivityRequestRepository,
     gamesRepository,
     activitiesRepository,
     playersRepository,
+    transactionProvider,
   );
 
   const userId = uuid();

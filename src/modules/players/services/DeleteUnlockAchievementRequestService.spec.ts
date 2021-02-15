@@ -6,14 +6,17 @@ import DeleteUnlockAchievementRequestService from './DeleteUnlockAchievementRequ
 import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest';
 import { RequestError } from '@shared/errors/implementations';
 import { FakeGame } from '@modules/games/fakes';
+import FakeTransactionProvider from '@shared/container/providers/TransactionProvider/fakes/FakeTransactionProvider';
 
 describe('DeleteUnlockAchievementRequestService', () => {
   it('should successfully delete the request', async () => {
     const unlockAchievementRequestRepository = new FakeUnlockAchievementRequestRepository();
     const gamesRepository = new FakeGamesRepository();
+    const transactionProvider = new FakeTransactionProvider();
     const deleteUnlockAchievementRequest = new DeleteUnlockAchievementRequestService(
       unlockAchievementRequestRepository,
       gamesRepository,
+      transactionProvider,
     );
 
     const fakeGame = new FakeGame();
@@ -46,9 +49,11 @@ describe('DeleteUnlockAchievementRequestService', () => {
   it('should throw when trying to delete a non existing game', async () => {
     const unlockAchievementRequestRepository = new FakeUnlockAchievementRequestRepository();
     const gamesRepository = new FakeGamesRepository();
+    const transactionProvider = new FakeTransactionProvider();
     const deleteUnlockAchievementRequest = new DeleteUnlockAchievementRequestService(
       unlockAchievementRequestRepository,
       gamesRepository,
+      transactionProvider,
     );
 
     const id = uuid();
@@ -68,9 +73,11 @@ describe('DeleteUnlockAchievementRequestService', () => {
   it('should throw when trying to delete a non existing request', async () => {
     const unlockAchievementRequestRepository = new FakeUnlockAchievementRequestRepository();
     const gamesRepository = new FakeGamesRepository();
+    const transactionProvider = new FakeTransactionProvider();
     const deleteUnlockAchievementRequest = new DeleteUnlockAchievementRequestService(
       unlockAchievementRequestRepository,
       gamesRepository,
+      transactionProvider,
     );
 
     const fakeGame = new FakeGame();

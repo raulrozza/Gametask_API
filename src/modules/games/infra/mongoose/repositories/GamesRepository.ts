@@ -1,4 +1,4 @@
-import { isValidObjectId } from 'mongoose';
+import { ClientSession, isValidObjectId } from 'mongoose';
 
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/errors/implementations';
@@ -83,6 +83,7 @@ export default class GamesRepository
   public async updateRegisters(
     id: string,
     increase: number,
+    session?: ClientSession,
   ): Promise<IGameDocument> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
@@ -94,7 +95,7 @@ export default class GamesRepository
           newRegisters: increase,
         },
       },
-      { new: true },
+      { new: true, session },
     );
 
     return updatedGame;
