@@ -1,8 +1,14 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import { IGamesRepository } from '@modules/games/repositories';
-import { ICompleteActivityRequestRepository } from '@modules/players/repositories';
+import {
+  IActivitiesRepository,
+  IGamesRepository,
+} from '@modules/games/repositories';
+import {
+  ICompleteActivityRequestRepository,
+  IPlayersRepository,
+} from '@modules/players/repositories';
 import { ICompleteActivityRequest } from '@modules/players/entities';
 import ICreateCompleteActivityRequestDTO from '@modules/players/dtos/ICreateCompleteActivityRequestDTO';
 import { RequestError } from '@shared/errors/implementations';
@@ -16,11 +22,18 @@ export default class CreateCompleteActivityRequestService {
 
     @inject('GamesRepository')
     private gamesRepository: IGamesRepository,
+
+    @inject('ActivitiesRepositiry')
+    private activitiesRepository: IActivitiesRepository,
+
+    @inject('PlayersRepository')
+    private playersRepository: IPlayersRepository,
   ) {}
 
   public async execute({
     activity,
     gameId,
+    userId,
     requester,
     completionDate,
     information,
@@ -33,6 +46,27 @@ export default class CreateCompleteActivityRequestService {
         errorCodes.BAD_REQUEST_ERROR,
       );
 
+    const foundActivity = await this.activitiesRepository.findOne(
+      activity,
+      gameId,
+    );
+    if (!foundActivity)
+      throw new RequestError(
+        'This activity does not exist',
+        errorCodes.BAD_REQUEST_ERROR,
+      );
+
+    const player = await this.playersRepository.findOne(
+      requester,
+      userId,
+      gameId,
+    );
+    if (!player)
+      throw new RequestError(
+        'This player does not exist',
+        errorCodes.BAD_REQUEST_ERROR,
+      );
+
     const request = await this.completeActivityRequestRepository.create({
       activity,
       game: gameId,
@@ -41,6 +75,8 @@ export default class CreateCompleteActivityRequestService {
       information,
       requestDate,
     });
+
+    await this.gamesRepository.updateRegisters(game.id, 1);
 
     return request;
   }

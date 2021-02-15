@@ -21,6 +21,8 @@ const initService = async () => {
   const createCompleteActivity = new CreateCompleteActivityRequestService(
     completeActivityRequestRepository,
     gamesRepository,
+    activitiesRepository,
+    playersRepository,
   );
 
   const userId = uuid();
@@ -46,6 +48,7 @@ const initService = async () => {
 describe('CreateCompleteActivityRequestService', () => {
   it('should create an complete activity request successfully', async () => {
     const {
+      userId,
       createCompleteActivity,
       activity,
       game,
@@ -59,6 +62,7 @@ describe('CreateCompleteActivityRequestService', () => {
     );
 
     const request = await createCompleteActivity.execute({
+      userId,
       activity: fakeCompleteActivity.activity,
       gameId: fakeCompleteActivity.game,
       requester: fakeCompleteActivity.requester,
@@ -74,7 +78,12 @@ describe('CreateCompleteActivityRequestService', () => {
   });
 
   it('should throw when trying to make a request to a non existing game', async () => {
-    const { createCompleteActivity, activity, player } = await initService();
+    const {
+      userId,
+      createCompleteActivity,
+      activity,
+      player,
+    } = await initService();
 
     const fakeCompleteActivity = new FakeCompleteActivityRequest(
       player.id,
@@ -84,6 +93,7 @@ describe('CreateCompleteActivityRequestService', () => {
 
     await expect(
       createCompleteActivity.execute({
+        userId,
         activity: fakeCompleteActivity.activity,
         gameId: fakeCompleteActivity.game,
         requester: fakeCompleteActivity.requester,
@@ -95,7 +105,12 @@ describe('CreateCompleteActivityRequestService', () => {
   });
 
   it('should throw when trying to request to a unknown activity', async () => {
-    const { createCompleteActivity, game, player } = await initService();
+    const {
+      userId,
+      createCompleteActivity,
+      game,
+      player,
+    } = await initService();
 
     const fakeCompleteActivity = new FakeCompleteActivityRequest(
       player.id,
@@ -105,6 +120,7 @@ describe('CreateCompleteActivityRequestService', () => {
 
     await expect(
       createCompleteActivity.execute({
+        userId,
         activity: fakeCompleteActivity.activity,
         gameId: fakeCompleteActivity.game,
         requester: fakeCompleteActivity.requester,
@@ -116,7 +132,12 @@ describe('CreateCompleteActivityRequestService', () => {
   });
 
   it('should throw when the requesting player does is invalid', async () => {
-    const { createCompleteActivity, activity, game } = await initService();
+    const {
+      userId,
+      createCompleteActivity,
+      activity,
+      game,
+    } = await initService();
 
     const fakeCompleteActivity = new FakeCompleteActivityRequest(
       'invalid player',
@@ -126,6 +147,7 @@ describe('CreateCompleteActivityRequestService', () => {
 
     await expect(
       createCompleteActivity.execute({
+        userId,
         activity: fakeCompleteActivity.activity,
         gameId: fakeCompleteActivity.game,
         requester: fakeCompleteActivity.requester,
