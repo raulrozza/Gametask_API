@@ -67,7 +67,20 @@ export default class UnlockAchievementService {
       gameId,
     });
 
-    await this.transactionProvider.startSession(async session => {});
+    await this.transactionProvider.startSession(async session => {
+      await this.playersRepository.unlockAchievement(
+        playerId,
+        achievementId,
+        achievementTitle,
+        session,
+      );
+
+      await this.unlockAchievementRequestRepository.delete(
+        requestId,
+        gameId,
+        session,
+      );
+    });
   }
 
   private async validateInput({

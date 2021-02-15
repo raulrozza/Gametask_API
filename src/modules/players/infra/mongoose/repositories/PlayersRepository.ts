@@ -1,4 +1,4 @@
-import { isValidObjectId } from 'mongoose';
+import { ClientSession, isValidObjectId } from 'mongoose';
 
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/errors/implementations';
@@ -96,7 +96,8 @@ export default class PlayersRepository
   public async unlockAchievement(
     id: string,
     achievement: string,
-    title?: string,
+    title: string | undefined,
+    session?: ClientSession,
   ): Promise<IPlayer> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
@@ -110,7 +111,7 @@ export default class PlayersRepository
             titles: title,
           },
         },
-        { new: true },
+        { new: true, session },
       );
 
     return await Player.findByIdAndUpdate(
@@ -120,7 +121,7 @@ export default class PlayersRepository
           achievements: achievement,
         },
       },
-      { new: true },
+      { new: true, session },
     );
   }
 }

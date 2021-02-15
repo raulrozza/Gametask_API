@@ -12,6 +12,7 @@ export default interface IPlayersRepository<T extends IPlayer = IPlayer> {
   unlockAchievement(
     id: string,
     achievement: string,
-    title?: string,
+    title: string | undefined,
+    session?: object,
   ): Promise<IPlayer>;
 }
