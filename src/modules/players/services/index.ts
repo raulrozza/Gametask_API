@@ -6,5 +6,6 @@ export { default as DeleteCompleteActivityRequestService } from './DeleteComplet
 export { default as DeleteUnlockAchievementRequestService } from './DeleteUnlockAchievementRequestService';
 export { default as ListPlayersService } from './ListPlayersService';
 export { default as ListCompleteActivityRequestsService } from './ListCompleteActivityRequestsService';
+export { default as ListFeedPostsService } from './ListFeedPostsService';
 export { default as ListUnlockAchievementRequestsService } from './ListUnlockAchievementRequestsService';
 export { default as ShowPlayerService } from './ShowPlayerService';
