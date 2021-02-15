@@ -48,4 +48,19 @@ export default class FakeGamesRepository implements IGamesRepository {
 
     return updatedGame;
   }
+
+  public async updateRegisters(id: string, increase: number): Promise<IGame> {
+    const foundIndex = this.games.findIndex(storedGame => storedGame.id === id);
+
+    const foundGame = this.games[foundIndex];
+
+    const updatedGame: IGame = {
+      ...foundGame,
+      newRegisters: Number(foundGame.newRegisters) + increase,
+    };
+
+    this.games[foundIndex] = updatedGame;
+
+    return updatedGame;
+  }
 }

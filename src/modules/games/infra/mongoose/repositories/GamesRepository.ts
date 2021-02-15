@@ -79,4 +79,24 @@ export default class GamesRepository
 
     return updatedGame;
   }
+
+  public async updateRegisters(
+    id: string,
+    increase: number,
+  ): Promise<IGameDocument> {
+    if (!isValidObjectId(id))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
+    const updatedGame = await Game.findByIdAndUpdate(
+      id,
+      {
+        $inc: {
+          newRegisters: increase,
+        },
+      },
+      { new: true },
+    );
+
+    return updatedGame;
+  }
 }
