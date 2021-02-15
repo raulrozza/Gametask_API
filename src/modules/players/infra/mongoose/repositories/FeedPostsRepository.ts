@@ -40,12 +40,11 @@ export default class FeedPostsRepository
       player,
       type,
       game,
-      date,
       achievement,
       activity,
       level,
       rank,
-    }: Omit<IFeedPost, 'id'>,
+    }: Omit<IFeedPost, 'id' | 'date'>,
     session?: ClientSession,
   ): Promise<IFeedPostDocument> {
     const [result] = await FeedPost.create(
@@ -54,7 +53,7 @@ export default class FeedPostsRepository
           player,
           type,
           game,
-          date,
+          date: new Date(),
           achievement,
           activity,
           level,

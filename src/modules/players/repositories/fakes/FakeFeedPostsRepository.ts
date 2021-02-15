@@ -11,11 +11,14 @@ export default class FakeFeedPostsRepository
     return this.feedPosts.filter(post => post.game === gameId);
   }
 
-  public async create(feedPost: Omit<IFeedPost, 'id'>): Promise<IFeedPost> {
+  public async create(
+    feedPost: Omit<IFeedPost, 'id' | 'date'>,
+  ): Promise<IFeedPost> {
     const id = uuid();
     const newPost = {
       ...feedPost,
       id,
+      date: new Date(),
     };
 
     this.feedPosts.push(newPost);

@@ -11,7 +11,7 @@ export default interface IUnlockAchievementRequestRepository<
   findAllFromGame(gameId: string): Promise<T[]>;
   findOne(id: string): Promise<IUnlockAchievementRequest | undefined>;
   create(
-    request: Omit<IUnlockAchievementRequest, 'id'>,
+    request: Omit<IUnlockAchievementRequest, 'id' | 'date'>,
     session?: object,
   ): Promise<T>;
   delete(id: string, gameId: string, session?: object): Promise<void>;
