@@ -80,6 +80,15 @@ export default class UnlockAchievementService {
         gameId,
         session,
       );
+
+      await this.gamesRepository.updateRegisters(gameId, -1, session);
+
+      await this.feedPostsRepository.create({
+        game: gameId,
+        player: playerId,
+        type: 'achievement',
+        achievement: achievementId,
+      });
     });
   }
 

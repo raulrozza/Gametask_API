@@ -6,15 +6,15 @@ import FakeFeedPostsRepository from '../repositories/fakes/FakeFeedPostsReposito
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import FakeUnlockAchievementRequestRepository from '../repositories/fakes/FakeUnlockAchievementRequestRepository';
 import UnlockAchievementService from './UnlockAchievementService';
-import { FakeAchievement } from '@modules/games/fakes';
-import { IAchievement } from '@modules/games/entities';
+import { FakeAchievement, FakeGame } from '@modules/games/fakes';
+import { IAchievement, IGame, ITitle } from '@modules/games/entities';
 import FakePlayer from '../fakes/FakePlayer';
 import { IPlayer, IUnlockAchievementRequest } from '../entities';
 import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest';
 import { RequestError } from '@shared/errors/implementations';
 import FakeTransactionProvider from '@shared/container/providers/TransactionProvider/fakes/FakeTransactionProvider';
 
-const initService = async () => {
+const initService = async (title?: ITitle) => {
   const playersRepository = new FakePlayersRepository();
   const achievementsRepository = new FakeAchievementsRepository();
   const unlockAchievementRequestRepository = new FakeUnlockAchievementRequestRepository();
@@ -31,18 +31,21 @@ const initService = async () => {
     transactionProvider,
   );
 
-  const generalId = uuid();
+  const userId = uuid();
 
-  const { id: _, ...fakeAchievement } = new FakeAchievement(generalId);
+  const { id: _, ...fakeGame } = new FakeGame();
+  const game = await gamesRepository.create(fakeGame as IGame);
+
+  const { id: __, ...fakeAchievement } = new FakeAchievement(game.id, title);
   const achievement = await achievementsRepository.create(
     fakeAchievement as IAchievement,
   );
 
-  const { id: __, ...fakePlayer } = new FakePlayer(generalId, generalId);
+  const { id: ___, ...fakePlayer } = new FakePlayer(userId, game.id);
   const player = await playersRepository.create(fakePlayer as IPlayer);
 
-  const { id: ___, ...fakeRequest } = new FakeUnlockAchievementRequest(
-    generalId,
+  const { id: ____, ...fakeRequest } = new FakeUnlockAchievementRequest(
+    game.id,
     player.id,
     achievement.id,
   );
@@ -51,8 +54,9 @@ const initService = async () => {
   );
 
   return {
-    generalId,
+    userId,
     unlockAchievement,
+    game,
     achievement,
     player,
     request,
@@ -65,7 +69,8 @@ describe('UnlockAchievementService', () => {
   it('should unlock the achievement for the player, removing the unlock request', async () => {
     const {
       unlockAchievement,
-      generalId,
+      userId,
+      game,
       achievement,
       player,
       request,
@@ -75,16 +80,16 @@ describe('UnlockAchievementService', () => {
 
     await unlockAchievement.execute({
       achievementId: achievement.id,
-      gameId: generalId,
+      gameId: game.id,
       playerId: player.id,
       requestId: request.id,
-      userId: generalId,
+      userId: userId,
     });
 
     const updatedPlayer = (await playersRepository.findOne(
       player.id,
-      generalId,
-      generalId,
+      userId,
+      game.id,
     )) as IPlayer;
 
     expect(updatedPlayer.achievements).toContain(achievement.id);
@@ -99,7 +104,8 @@ describe('UnlockAchievementService', () => {
   it('should throw when trying to unlock an unexisting achievement', async () => {
     const {
       unlockAchievement,
-      generalId,
+      game,
+      userId,
       player,
       request,
     } = await initService();
@@ -107,10 +113,10 @@ describe('UnlockAchievementService', () => {
     await expect(
       unlockAchievement.execute({
         achievementId: 'wrong-achievement',
-        gameId: generalId,
+        gameId: game.id,
         playerId: player.id,
         requestId: request.id,
-        userId: generalId,
+        userId: userId,
       }),
     ).rejects.toBeInstanceOf(RequestError);
   });
@@ -118,7 +124,8 @@ describe('UnlockAchievementService', () => {
   it('should throw when trying to unlock an achievement for a non existing player', async () => {
     const {
       unlockAchievement,
-      generalId,
+      userId,
+      game,
       achievement,
       request,
     } = await initService();
@@ -126,10 +133,10 @@ describe('UnlockAchievementService', () => {
     await expect(
       unlockAchievement.execute({
         achievementId: achievement.id,
-        gameId: generalId,
+        gameId: game.id,
         playerId: 'wrong player',
         requestId: request.id,
-        userId: generalId,
+        userId: userId,
       }),
     ).rejects.toBeInstanceOf(RequestError);
   });
@@ -137,7 +144,8 @@ describe('UnlockAchievementService', () => {
   it('should throw when trying to unlock an achievement that hasnt been requested', async () => {
     const {
       unlockAchievement,
-      generalId,
+      userId,
+      game,
       achievement,
       player,
     } = await initService();
@@ -145,10 +153,10 @@ describe('UnlockAchievementService', () => {
     await expect(
       unlockAchievement.execute({
         achievementId: achievement.id,
-        gameId: generalId,
+        gameId: game.id,
         playerId: player.id,
         requestId: 'wrong-request',
-        userId: generalId,
+        userId: userId,
       }),
     ).rejects.toBeInstanceOf(RequestError);
   });
