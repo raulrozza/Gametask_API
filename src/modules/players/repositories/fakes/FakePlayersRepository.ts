@@ -76,4 +76,22 @@ export default class FakePlayersRepository implements IPlayersRepository {
 
     return updatedPlayer;
   }
+
+  public async unlockAchievement(
+    id: string,
+    achievement: string,
+    title?: string,
+  ): Promise<IPlayer> {
+    const foundIndex = this.players.findIndex(
+      storedPlayer => storedPlayer.id === id,
+    );
+
+    const foundPlayer = this.players[foundIndex];
+    (foundPlayer.achievements as string[]).push(achievement);
+    if (title) (foundPlayer.titles as string[]).push(title);
+
+    this.players[foundIndex] = foundPlayer;
+
+    return foundPlayer;
+  }
 }

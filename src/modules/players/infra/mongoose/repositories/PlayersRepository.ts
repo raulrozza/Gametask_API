@@ -92,4 +92,35 @@ export default class PlayersRepository
 
     return updatedPlayer;
   }
+
+  public async unlockAchievement(
+    id: string,
+    achievement: string,
+    title?: string,
+  ): Promise<IPlayer> {
+    if (!isValidObjectId(id))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
+    if (title)
+      return await Player.findByIdAndUpdate(
+        id,
+        {
+          $push: {
+            achievements: achievement,
+            titles: title,
+          },
+        },
+        { new: true },
+      );
+
+    return await Player.findByIdAndUpdate(
+      id,
+      {
+        $push: {
+          achievements: achievement,
+        },
+      },
+      { new: true },
+    );
+  }
 }

@@ -9,4 +9,9 @@ export default interface IPlayersRepository<T extends IPlayer = IPlayer> {
     gameId: string,
   ): Promise<boolean>;
   update(player: IPlayer): Promise<IPlayer>;
+  unlockAchievement(
+    id: string,
+    achievement: string,
+    title?: string,
+  ): Promise<IPlayer>;
 }
