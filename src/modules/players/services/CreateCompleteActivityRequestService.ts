@@ -23,7 +23,7 @@ export default class CreateCompleteActivityRequestService {
     @inject('GamesRepository')
     private gamesRepository: IGamesRepository,
 
-    @inject('ActivitiesRepositiry')
+    @inject('ActivitiesRepository')
     private activitiesRepository: IActivitiesRepository,
 
     @inject('PlayersRepository')
