@@ -1,3 +1,7 @@
+import { isValidObjectId } from 'mongoose';
+
+import errorCodes from '@config/errorCodes';
+import { RequestError } from '@shared/errors/implementations';
 import { IUnlockAchievementRequest } from '@modules/players/entities';
 import { IUnlockAchievementRequestRepository } from '@modules/players/repositories';
 import UnlockAchievementRequest, {
@@ -12,6 +16,12 @@ export default class UnlockAchievementRequestRepository
     gameId: string,
     achievementId: string,
   ): Promise<boolean> {
+    if (!isValidObjectId(requester))
+      throw new RequestError('Requester is invalid!', errorCodes.INVALID_ID);
+
+    if (!isValidObjectId(achievementId))
+      throw new RequestError('Achievement is invalid!', errorCodes.INVALID_ID);
+
     const request = await UnlockAchievementRequest.findOne({
       game: gameId,
       achievement: achievementId,
@@ -43,6 +53,9 @@ export default class UnlockAchievementRequestRepository
   public async findOne(
     id: string,
   ): Promise<IUnlockAchievementRequestDocument | undefined> {
+    if (!isValidObjectId(id))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
     return await UnlockAchievementRequest.findById(id);
   }
 
@@ -66,6 +79,9 @@ export default class UnlockAchievementRequestRepository
   }
 
   public async delete(id: string, gameId: string): Promise<void> {
+    if (!isValidObjectId(id))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
     await UnlockAchievementRequest.findOneAndDelete({
       _id: id,
       game: gameId,

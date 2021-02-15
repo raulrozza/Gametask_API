@@ -1,3 +1,7 @@
+import { isValidObjectId } from 'mongoose';
+
+import errorCodes from '@config/errorCodes';
+import { RequestError } from '@shared/errors/implementations';
 import { ICompleteActivityRequestRepository } from '@modules/players/repositories';
 import { ICompleteActivityRequest } from '@modules/players/entities';
 import CompleteActivityRequest, {
@@ -43,6 +47,9 @@ export default class CompleteActivityRequestRepository
   }
 
   public async delete(id: string, gameId: string): Promise<void> {
+    if (!isValidObjectId(id))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
     await CompleteActivityRequest.deleteOne({ _id: id, game: gameId });
   }
 }

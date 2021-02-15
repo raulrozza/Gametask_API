@@ -1,3 +1,7 @@
+import { isValidObjectId } from 'mongoose';
+
+import errorCodes from '@config/errorCodes';
+import { RequestError } from '@shared/errors/implementations';
 import { IPlayersRepository } from '@modules/players/repositories';
 import Player, {
   IPlayerDocument,
@@ -23,6 +27,9 @@ export default class PlayersRepository
     userId: string,
     gameId: string,
   ): Promise<IPlayerPopulatedDocument | undefined> {
+    if (!isValidObjectId(id))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
     return await Player.findOne({
       _id: id,
       user: userId,
@@ -35,8 +42,18 @@ export default class PlayersRepository
     });
   }
 
-  public async create(player: Omit<IPlayer, 'id'>): Promise<IPlayerDocument> {
-    return await Player.create(player);
+  public async create({
+    user,
+    game,
+    rank,
+    level,
+  }: Omit<IPlayer, 'id'>): Promise<IPlayerDocument> {
+    return await Player.create({
+      user,
+      game,
+      rank,
+      level,
+    });
   }
 
   public async isThereAPlayerAssociatedWith(
@@ -56,6 +73,9 @@ export default class PlayersRepository
     currentTitle,
     rank,
   }: IPlayer): Promise<IPlayer> {
+    if (!isValidObjectId(id))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
     const updatedPlayer = await Player.findByIdAndUpdate(
       id,
       {

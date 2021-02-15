@@ -1,5 +1,8 @@
+import errorCodes from '@config/errorCodes';
 import { ITitle } from '@modules/games/entities';
 import { ITitlesRepository } from '@modules/games/repositories';
+import { RequestError } from '@shared/errors/implementations';
+import { isValidObjectId } from 'mongoose';
 import Title, { ITitleDocument } from '../entities/Title';
 
 export default class TitlesRepository
@@ -20,18 +23,30 @@ export default class TitlesRepository
     id: string,
     gameId: string,
   ): Promise<ITitleDocument | undefined> {
+    if (!isValidObjectId(id))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
     return await Title.findOne({ _id: id, game: gameId });
   }
 
-  public async create(title: Omit<ITitle, 'id'>): Promise<ITitleDocument> {
-    return await Title.create(title);
+  public async create({
+    name,
+    game,
+  }: Omit<ITitle, 'id'>): Promise<ITitleDocument> {
+    return await Title.create({ name, game });
   }
 
   public async delete(titleId: string, gameId: string): Promise<void> {
+    if (!isValidObjectId(titleId))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
     await Title.deleteOne({ _id: titleId, game: gameId });
   }
 
   public async update({ id, name }: ITitle): Promise<ITitle> {
+    if (!isValidObjectId(id))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
     const updatedTitle = await Title.findByIdAndUpdate(
       id,
       {

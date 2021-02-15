@@ -1,7 +1,11 @@
+import { isValidObjectId } from 'mongoose';
+
+import errorCodes from '@config/errorCodes';
+import { RequestError } from '@shared/errors/implementations';
 import { IUser } from '@modules/users/entities';
 import { IUsersRepository } from '@modules/users/repositories';
 import { User } from '@modules/users/infra/mongoose/entities';
-import { IUserDocument } from '../entities/User';
+import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
 
 export default class UsersRepository
   implements IUsersRepository<IUserDocument> {
@@ -12,6 +16,9 @@ export default class UsersRepository
   }
 
   public async findOne(id: string): Promise<IUserDocument> {
+    if (!isValidObjectId(id))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
     const user = await User.findOne({ _id: id }, { password: 0 });
 
     return user || undefined;
@@ -23,8 +30,18 @@ export default class UsersRepository
     return user || undefined;
   }
 
-  public async create(user: IUser): Promise<IUserDocument> {
-    const createdUser = await User.create(user);
+  public async create({
+    firstname,
+    lastname,
+    email,
+    password,
+  }: IUser): Promise<IUserDocument> {
+    const createdUser = await User.create({
+      firstname,
+      lastname,
+      email,
+      password,
+    });
 
     return createdUser;
   }
@@ -35,6 +52,9 @@ export default class UsersRepository
     lastname,
     image,
   }: IUser): Promise<IUserDocument> {
+    if (!isValidObjectId(id))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
     const updatedUser = await User.findByIdAndUpdate(
       id,
       {

@@ -1,6 +1,7 @@
+import { RequestHandler } from 'express';
+import { isValidObjectId } from 'mongoose';
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/errors/implementations';
-import { RequestHandler } from 'express';
 
 const verifyGameSelected: RequestHandler = async (request, _, next) => {
   const gameId = request.headers['x-game-id'];
@@ -11,6 +12,9 @@ const verifyGameSelected: RequestHandler = async (request, _, next) => {
       errorCodes.INVALID_TOKEN,
       403,
     );
+
+  if (!isValidObjectId(gameId))
+    throw new RequestError('Invalid game id', errorCodes.INVALID_ID);
 
   request.game = String(gameId);
 
