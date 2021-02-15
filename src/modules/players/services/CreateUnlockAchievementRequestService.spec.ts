@@ -47,6 +47,7 @@ const initService = async () => {
     game,
     player,
     achievement,
+    playersRepository,
   };
 };
 
@@ -104,6 +105,37 @@ describe('CreateUnlockAchievementRequestService', () => {
       requester: fakeRequest.requester,
       information: fakeRequest.information,
     });
+
+    await expect(
+      createUnlockAchievementRequest.execute({
+        userId,
+        achievement: fakeRequest.achievement,
+        gameId: fakeRequest.game,
+        requestDate: fakeRequest.requestDate,
+        requester: fakeRequest.requester,
+        information: fakeRequest.information,
+      }),
+    ).rejects.toBeInstanceOf(RequestError);
+  });
+
+  it('should not be able to request the unlock of an achievement the player already possesses', async () => {
+    const {
+      userId,
+      createUnlockAchievementRequest,
+      game,
+      player,
+      achievement,
+      playersRepository,
+    } = await initService();
+
+    (player.achievements as string[]).push(achievement.id);
+    await playersRepository.update(player);
+
+    const fakeRequest = new FakeUnlockAchievementRequest(
+      game.id,
+      player.id,
+      achievement.id,
+    );
 
     await expect(
       createUnlockAchievementRequest.execute({

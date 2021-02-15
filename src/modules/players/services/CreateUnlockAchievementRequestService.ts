@@ -58,15 +58,18 @@ export default class CreateUnlockAchievementRequestService {
 
     return await this.transactionProvider.startSession<IUnlockAchievementRequest>(
       async session => {
-        const request = await this.unlockAchievementRequestRepository.create({
-          achievement,
-          game: gameId,
-          requestDate,
-          information,
-          requester,
-        });
+        const request = await this.unlockAchievementRequestRepository.create(
+          {
+            achievement,
+            game: gameId,
+            requestDate,
+            information,
+            requester,
+          },
+          session,
+        );
 
-        await this.gamesRepository.updateRegisters(gameId, 1);
+        await this.gamesRepository.updateRegisters(gameId, 1, session);
 
         return request;
       },
@@ -119,6 +122,12 @@ export default class CreateUnlockAchievementRequestService {
       throw new RequestError(
         'This achievement was already requested',
         errorCodes.ACHIEVEMENT_REGISTER_ALREADY_EXISTS,
+      );
+
+    if ((player.achievements as string[]).includes(achievement))
+      throw new RequestError(
+        'This player already has this achievement',
+        errorCodes.ACHIEVEMENT_BELONGS_TO_PLAYER,
       );
   }
 }
