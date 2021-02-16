@@ -37,13 +37,43 @@ const initService = async () => {
   const userId = uuid();
 
   const fakeGame = new FakeGame();
-  fakeGame.levelInfo.push({
-    level: 1,
-    requiredExperience: 300,
-  });
+  fakeGame.levelInfo.push(
+    {
+      level: 1,
+      requiredExperience: 0,
+    },
+    {
+      level: 2,
+      requiredExperience: 300,
+    },
+    {
+      level: 3,
+      requiredExperience: 400,
+    },
+    {
+      level: 4,
+      requiredExperience: 600,
+    },
+  );
+  fakeGame.ranks.push(
+    {
+      level: 4,
+      color: '#000',
+      name: 'Rank',
+      tag: 'RNK',
+    },
+    {
+      level: 3,
+      color: '#000',
+      name: 'Rank',
+      tag: 'RNK',
+    },
+  );
   const game = await gamesRepository.create(fakeGame);
 
   const fakePlayer = new FakePlayer(userId, game.id);
+  fakePlayer.experience = 0;
+  fakePlayer.level = 1;
   const player = await playersRepository.create(fakePlayer);
 
   return {
@@ -72,6 +102,7 @@ describe('CompleteActivityService', () => {
     } = await initService();
 
     const fakeActivity = new FakeActivity(game.id);
+    fakeActivity.experience = 200;
     const activity = await activitiesRepository.create(fakeActivity);
 
     const fakeRequest = new FakeCompleteActivityRequest(
@@ -121,7 +152,7 @@ describe('CompleteActivityService', () => {
     } = await initService();
 
     const fakeActivity = new FakeActivity(game.id);
-    fakeActivity.experience = 200;
+    fakeActivity.experience = 350;
     const activity = await activitiesRepository.create(fakeActivity);
 
     const fakeRequest = new FakeCompleteActivityRequest(
@@ -147,6 +178,7 @@ describe('CompleteActivityService', () => {
 
     expect(updatedPlayer?.experience).toBe(activity.experience * 2);
     expect(updatedPlayer?.level).toBe(game.levelInfo[0].level);
+    expect(updatedPlayer?.rank).toEqual(game.ranks[0]);
 
     const leaderboard = await leaderboardsRepository.getGameCurrentRanking(
       game.id,

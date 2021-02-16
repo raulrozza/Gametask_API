@@ -15,7 +15,7 @@ import ITransactionProvider from '@shared/container/providers/TransactionProvide
 import ICompleteActivityDTO from '@modules/players/dtos/ICompleteActivityDTO';
 import { RequestError } from '@shared/errors/implementations';
 import errorCodes from '@config/errorCodes';
-import { IActivity, IGame, ILevelInfo } from '@modules/games/entities';
+import { IActivity, IGame, ILevelInfo, IRank } from '@modules/games/entities';
 import { IPlayer } from '../entities';
 
 interface IAddCompletionToActivityHistory {
@@ -38,6 +38,24 @@ interface IGiveExperienceToPlayer {
   playerId: string;
   userId: string;
   gameId: string;
+  experience: number;
+}
+
+interface IPostNewLevel {
+  playerId: string;
+  level: ILevelInfo;
+  gameId: string;
+}
+
+interface IPostNewRank {
+  playerId: string;
+  rank: IRank;
+  gameId: string;
+}
+
+interface IPositionPlayerOnLeaderboard {
+  gameId: string;
+  playerId: string;
   experience: number;
 }
 
@@ -112,11 +130,16 @@ export default class CompleteActivityService {
 
       await this.giveExperienceToPlayer(
         {
-          gameId: gameId,
-          playerId: playerId,
+          gameId,
+          playerId,
           userId,
           experience: activity.experience,
         },
+        session,
+      );
+
+      await this.positionPlayerOnLeaderboard(
+        { gameId, playerId, experience: activity.experience },
         session,
       );
     });
@@ -182,8 +205,22 @@ export default class CompleteActivityService {
       player.experience,
     );
 
-    if (!playerNextLevel || playerNextLevel.level > player.level)
+    if (!playerNextLevel || playerNextLevel.level <= player.level)
       return await this.updatePlayer(player, session);
+
+    player.level = playerNextLevel.level;
+    await this.postNewLevel(
+      { playerId, level: playerNextLevel, gameId },
+      session,
+    );
+
+    const newRank = this.getNewRank(game.ranks, player.level);
+    if (newRank) {
+      player.rank = newRank;
+      await this.postNewRank({ playerId, rank: newRank, gameId }, session);
+    }
+
+    return await this.updatePlayer(player, session);
   }
 
   private getNextLevel(
@@ -201,6 +238,54 @@ export default class CompleteActivityService {
     return nextObtainableLevel;
   }
 
+  private getNewRank(
+    gameRanks: IRank[],
+    playerLevel: number,
+  ): IRank | undefined {
+    const obtainableRanks = gameRanks.filter(rank => rank.level <= playerLevel);
+    const ranksSortedByHigherLevel = obtainableRanks.sort(
+      (a, b) => b.level - a.level,
+    );
+    console.log(
+      gameRanks,
+      obtainableRanks,
+      ranksSortedByHigherLevel,
+      playerLevel,
+    );
+
+    return ranksSortedByHigherLevel[0];
+  }
+
+  private async postNewLevel(
+    { playerId, level, gameId }: IPostNewLevel,
+    session: object,
+  ): Promise<void> {
+    await this.feedPostsRepository.create(
+      {
+        player: playerId,
+        type: 'level',
+        level,
+        game: gameId,
+      },
+      session,
+    );
+  }
+
+  private async postNewRank(
+    { playerId, rank, gameId }: IPostNewRank,
+    session: object,
+  ): Promise<void> {
+    await this.feedPostsRepository.create(
+      {
+        player: playerId,
+        type: 'rank',
+        rank,
+        game: gameId,
+      },
+      session,
+    );
+  }
+
   private async updatePlayer(player: IPlayer, session: object): Promise<void> {
     await this.playersRepository.update(
       {
@@ -213,6 +298,29 @@ export default class CompleteActivityService {
         user: player.user,
         rank: player.rank,
       },
+      session,
+    );
+  }
+
+  private async positionPlayerOnLeaderboard(
+    { gameId, playerId, experience }: IPositionPlayerOnLeaderboard,
+    session: object,
+  ): Promise<void> {
+    let leaderboard = await this.leaderboardsRepository.getGameCurrentRanking(
+      gameId,
+    );
+
+    if (!leaderboard)
+      leaderboard = await this.leaderboardsRepository.create({
+        game: gameId,
+        createdAt: new Date(),
+        position: [],
+      });
+
+    await this.leaderboardsRepository.createOrUpdatePosition(
+      leaderboard.id,
+      playerId,
+      experience,
       session,
     );
   }
