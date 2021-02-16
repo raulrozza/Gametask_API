@@ -65,14 +65,10 @@ export default class PlayersRepository
     return Boolean(player);
   }
 
-  public async update({
-    id,
-    experience,
-    level,
-    achievements,
-    currentTitle,
-    rank,
-  }: IPlayer): Promise<IPlayer> {
+  public async update(
+    { id, experience, level, achievements, currentTitle, rank }: IPlayer,
+    session?: ClientSession,
+  ): Promise<IPlayer> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
@@ -87,7 +83,7 @@ export default class PlayersRepository
           rank,
         },
       },
-      { new: true },
+      { new: true, session },
     );
 
     return updatedPlayer;
