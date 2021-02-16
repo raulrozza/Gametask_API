@@ -11,6 +11,6 @@ export default class ShowCurrentLeaderboardService {
   ) {}
 
   public async execute(gameId: string): Promise<ILeaderboard | undefined> {
-    return this.leaderboardsRepository.getGameCurrentRanking(gameId);
+    return await this.leaderboardsRepository.getGameCurrentRanking(gameId);
   }
 }
