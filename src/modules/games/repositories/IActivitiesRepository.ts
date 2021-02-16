@@ -8,5 +8,5 @@ export default interface IActivitiesRepository<
   create(activity: Omit<IActivity, 'id'>): Promise<T>;
   delete(activityId: string, gameId: string): Promise<void>;
   update(activity: IActivity): Promise<IActivity>;
-  updateHistory(id: string, history: IHistory): Promise<T>;
+  updateHistory(id: string, history: IHistory, session?: object): Promise<T>;
 }

@@ -1,4 +1,4 @@
-import { isValidObjectId } from 'mongoose';
+import { ClientSession, isValidObjectId } from 'mongoose';
 
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/errors/implementations';
@@ -86,6 +86,7 @@ export default class ActivitiesRepository
   public async updateHistory(
     id: string,
     history: IHistory,
+    session?: ClientSession,
   ): Promise<IActivityDocument> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
@@ -100,7 +101,7 @@ export default class ActivitiesRepository
           },
         },
       },
-      { new: true },
+      { new: true, session },
     );
 
     return updatedActivity;
