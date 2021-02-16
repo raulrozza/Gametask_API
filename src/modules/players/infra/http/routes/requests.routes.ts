@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   CompleteActivityRequestController,
+  PlayerActivitiesController,
   UnlockAchievementRequestController,
 } from '@modules/players/infra/http/controllers';
 import verifyAuthentication from '@modules/users/infra/http/middlewares/verifyAuthentication';
@@ -8,6 +9,7 @@ import verifyGameSelected from '@modules/games/infra/http/middlewares/verifyGame
 
 const requestsRoutes = Router();
 const completeActivityRequestController = new CompleteActivityRequestController();
+const playerActivitiesController = new PlayerActivitiesController();
 const unlockAchievementRequestController = new UnlockAchievementRequestController();
 
 requestsRoutes.get(
@@ -21,6 +23,12 @@ requestsRoutes.get(
   verifyAuthentication,
   verifyGameSelected,
   completeActivityRequestController.index,
+);
+requestsRoutes.patch(
+  '/activities/:id/complete',
+  verifyAuthentication,
+  verifyGameSelected,
+  playerActivitiesController.update,
 );
 requestsRoutes.delete(
   '/achievements/:id',

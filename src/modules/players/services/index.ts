@@ -1,4 +1,5 @@
 export { default as ChangeTitleService } from './ChangeTitleService';
+export { default as CompleteActivityService } from './CompleteActivityService';
 export { default as CreateCompleteActivityRequestService } from './CreateCompleteActivityRequestService';
 export { default as CreatePlayerService } from './CreatePlayerService';
 export { default as CreateUnlockAchievementRequestService } from './CreateUnlockAchievementRequestService';

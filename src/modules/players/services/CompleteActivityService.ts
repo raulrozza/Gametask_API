@@ -169,6 +169,8 @@ export default class CompleteActivityService {
       gameId,
       session,
     );
+
+    await this.gamesRepository.updateRegisters(gameId, -1, session);
   }
 
   private async postActivityCompletion(
@@ -245,12 +247,6 @@ export default class CompleteActivityService {
     const obtainableRanks = gameRanks.filter(rank => rank.level <= playerLevel);
     const ranksSortedByHigherLevel = obtainableRanks.sort(
       (a, b) => b.level - a.level,
-    );
-    console.log(
-      gameRanks,
-      obtainableRanks,
-      ranksSortedByHigherLevel,
-      playerLevel,
     );
 
     return ranksSortedByHigherLevel[0];
