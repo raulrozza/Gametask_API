@@ -1,6 +1,8 @@
 import { v4 as uuid } from 'uuid';
-import { IActivity } from '@modules/games/entities';
+import { IActivity, IHistory } from '@modules/games/entities';
 import { IActivitiesRepository } from '..';
+import { RequestError } from '@shared/errors/implementations';
+import errorCodes from '@config/errorCodes';
 
 export default class FakeActivitiesRepository implements IActivitiesRepository {
   private readonly activities: IActivity[] = [];
@@ -48,6 +50,12 @@ export default class FakeActivitiesRepository implements IActivitiesRepository {
         storedActivity.id === id && storedActivity.game === activity.game,
     );
 
+    if (foundIndex < 0)
+      throw new RequestError(
+        'This activity does not exist',
+        errorCodes.BAD_REQUEST_ERROR,
+      );
+
     const foundActivity = this.activities[foundIndex];
 
     const updatedActivity = {
@@ -59,5 +67,26 @@ export default class FakeActivitiesRepository implements IActivitiesRepository {
     this.activities[foundIndex] = updatedActivity;
 
     return updatedActivity;
+  }
+
+  public async updateHistory(
+    id: string,
+    history: IHistory,
+  ): Promise<IActivity> {
+    const foundIndex = this.activities.findIndex(
+      storedActivity => storedActivity.id === id,
+    );
+
+    if (foundIndex < 0)
+      throw new RequestError(
+        'This activity does not exist',
+        errorCodes.BAD_REQUEST_ERROR,
+      );
+
+    const foundActivity = this.activities[foundIndex];
+    foundActivity.history.unshift(history);
+    this.activities[foundIndex] = foundActivity;
+
+    return foundActivity;
   }
 }

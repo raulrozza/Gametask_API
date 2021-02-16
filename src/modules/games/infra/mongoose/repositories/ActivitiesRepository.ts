@@ -3,7 +3,7 @@ import { isValidObjectId } from 'mongoose';
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/errors/implementations';
 import { IActivitiesRepository } from '@modules/games/repositories';
-import { IActivity } from '@modules/games/entities';
+import { IActivity, IHistory } from '@modules/games/entities';
 import Activity, {
   IActivityDocument,
 } from '@modules/games/infra/mongoose/entities/Activity';
@@ -57,7 +57,6 @@ export default class ActivitiesRepository
     description,
     dmRules,
     experience,
-    history,
   }: IActivity): Promise<IActivity> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
@@ -76,8 +75,27 @@ export default class ActivitiesRepository
             $each: changelog,
             $position: 0,
           },
+        },
+      },
+      { new: true },
+    );
+
+    return updatedActivity;
+  }
+
+  public async updateHistory(
+    id: string,
+    history: IHistory,
+  ): Promise<IActivityDocument> {
+    if (!isValidObjectId(id))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
+    const updatedActivity = await Activity.findByIdAndUpdate(
+      id,
+      {
+        $push: {
           history: {
-            $each: history,
+            $each: [history],
             $position: 0,
           },
         },

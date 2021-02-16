@@ -1,4 +1,4 @@
-import { IActivity } from '../entities';
+import { IActivity, IHistory } from '../entities';
 
 export default interface IActivitiesRepository<
   T extends IActivity = IActivity
@@ -8,4 +8,5 @@ export default interface IActivitiesRepository<
   create(activity: Omit<IActivity, 'id'>): Promise<T>;
   delete(activityId: string, gameId: string): Promise<void>;
   update(activity: IActivity): Promise<IActivity>;
+  updateHistory(id: string, history: IHistory): Promise<T>;
 }
