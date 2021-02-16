@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import FeedPostsController from '@modules/players/infra/http/controllers/FeedPostsController';
+import { FeedPostsController } from '@modules/players/infra/http/controllers';
 import verifyAuthentication from '@modules/users/infra/http/middlewares/verifyAuthentication';
 import verifyGameSelected from '@modules/games/infra/http/middlewares/verifyGameSelected';
 

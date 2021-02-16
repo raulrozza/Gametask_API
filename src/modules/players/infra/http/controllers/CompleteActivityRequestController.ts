@@ -34,7 +34,7 @@ export default class CompleteActivityRequestController {
 
   public store: RequestHandler = async (request, response) => {
     const { activity, completionDate, information, requestDate } = request.body;
-    const { requester } = request.params;
+    const { id: requester } = request.params;
     const { id: userId } = request.auth;
     const gameId = request.game;
 

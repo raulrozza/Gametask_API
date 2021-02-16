@@ -36,7 +36,7 @@ export default class UnlockAchievementRequestController {
     const { achievement, requestDate, information } = request.body;
     const gameId = request.game;
     const { id } = request.auth;
-    const { requester } = request.params;
+    const { id: requester } = request.params;
 
     const createUnlockAchievementRequest = container.resolve(
       CreateUnlockAchievementRequestService,

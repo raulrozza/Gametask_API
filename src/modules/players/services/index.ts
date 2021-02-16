@@ -9,3 +9,4 @@ export { default as ListCompleteActivityRequestsService } from './ListCompleteAc
 export { default as ListFeedPostsService } from './ListFeedPostsService';
 export { default as ListUnlockAchievementRequestsService } from './ListUnlockAchievementRequestsService';
 export { default as ShowPlayerService } from './ShowPlayerService';
+export { default as UnlockAchievementService } from './UnlockAchievementService';
