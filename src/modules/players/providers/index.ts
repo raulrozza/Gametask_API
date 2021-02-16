@@ -3,12 +3,14 @@ import { container } from 'tsyringe';
 import {
   CompleteActivityRequestRepository,
   FeedPostsRepository,
+  LeaderboardsRepository,
   PlayersRepository,
   UnlockAchievementRequestRepository,
 } from '@modules/players/infra/mongoose/repositories';
 import {
   ICompleteActivityRequestRepository,
   IFeedPostsRepository,
+  ILeaderboardsRepository,
   IPlayersRepository,
   IUnlockAchievementRequestRepository,
 } from '@modules/players/repositories';
@@ -16,6 +18,11 @@ import {
 container.registerSingleton<IFeedPostsRepository>(
   'FeedPostsRepository',
   FeedPostsRepository,
+);
+
+container.registerSingleton<ILeaderboardsRepository>(
+  'LeaderboardsRepository',
+  LeaderboardsRepository,
 );
 
 container.registerSingleton<IPlayersRepository>(
