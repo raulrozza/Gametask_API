@@ -52,7 +52,10 @@ export default class AuthenticateUserService {
         errorCodes.USER_PASSWORD_DONT_MATCH,
       );
 
-    const token = await this.tokenProvider.sign({ id: foundUser.id });
+    const token = await this.tokenProvider.sign({
+      id: foundUser.id,
+      name: foundUser.firstname,
+    });
 
     return { token };
   }
