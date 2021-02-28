@@ -24,7 +24,10 @@ import {
 const appRoutes = express.Router();
 
 // Static routes
-appRoutes.use('/files', express.static(resolve(__dirname, '..', 'uploads')));
+appRoutes.use(
+  '/files',
+  express.static(resolve(__dirname, '..', '..', '..', '..', '..', 'uploads')),
+);
 
 // Routes
 appRoutes.get('/', (_, response) => {
