@@ -13,6 +13,6 @@ export default class ListGamesService {
   ) {}
 
   public async execute({ gameId, name }: IListTitlesDTO): Promise<ITitle[]> {
-    return await this.titlesRepository.findAllFromGame(gameId, name);
+    return this.titlesRepository.findAllFromGame(gameId, name);
   }
 }

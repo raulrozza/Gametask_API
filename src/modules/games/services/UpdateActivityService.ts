@@ -35,34 +35,44 @@ export default class UpdateActivityService {
     description,
     dmRules,
   }: IUpdateActivityDTO): Promise<IActivity> {
-    const foundActivity = await this.findOriginalActivity(id, gameId);
+    try {
+      const foundActivity = await this.findOriginalActivity(id, gameId);
 
-    if (!foundActivity)
+      if (!foundActivity)
+        throw new RequestError(
+          'This activity does not exist',
+          errorCodes.RESOURCE_NOT_FOUND,
+          400,
+        );
+
+      const newActivityLog = this.generateActivityLog(userId, {
+        name,
+        description,
+        dmRules,
+        experience,
+      });
+
+      const updatedActivity = await this.activitiesRepository.update({
+        id: this.originalActivity.id,
+        name,
+        experience,
+        description,
+        dmRules,
+        changelog: [newActivityLog],
+        game: this.originalActivity.game,
+        history: [],
+      });
+
+      return updatedActivity;
+    } catch (error) {
+      if (error instanceof RequestError) throw error;
+
       throw new RequestError(
-        'This activity does not exist',
-        errorCodes.RESOURCE_NOT_FOUND,
-        400,
+        error.message,
+        errorCodes.INTERNAL_SERVER_ERROR,
+        500,
       );
-
-    const newActivityLog = this.generateActivityLog(userId, {
-      name,
-      description,
-      dmRules,
-      experience,
-    });
-
-    const updatedActivity = await this.activitiesRepository.update({
-      id: this.originalActivity.id,
-      name,
-      experience,
-      description,
-      dmRules,
-      changelog: [newActivityLog],
-      game: this.originalActivity.game,
-      history: [],
-    });
-
-    return updatedActivity;
+    }
   }
 
   private async findOriginalActivity(

@@ -17,14 +17,12 @@ export default class CreateGameService {
     name,
     description,
   }: ICreateGameDTO): Promise<IGame> {
-    const createdGame = await this.gamesRepository.create({
+    return this.gamesRepository.create({
       name,
       description,
       administrators: [creatorId],
       levelInfo: [],
       ranks: [],
     });
-
-    return createdGame;
   }
 }

@@ -22,32 +22,42 @@ export default class UpdateGameAvatarService {
   ) {}
 
   public async execute({ filename, id, userId }: IUpdateGameAvatarDTO) {
-    const game = await this.gamesRepository.findOne(id, userId);
+    try {
+      const game = await this.gamesRepository.findOne(id, userId);
 
-    if (!game) {
+      if (!game) {
+        throw new RequestError(
+          'Could not find game on database',
+          errorCodes.RESOURCE_NOT_FOUND,
+        );
+      }
+
+      if (game.image)
+        await this.storageProvider.deleteFile(game.image, GAME_FOLDER);
+
+      await this.storageProvider.saveFile(filename, GAME_FOLDER);
+
+      const updatedGame = await this.gamesRepository.update({
+        id: game.id,
+        name: game.name,
+        description: game.description,
+        levelInfo: game.levelInfo,
+        ranks: game.ranks,
+        newRegisters: game.newRegisters,
+        theme: game.theme,
+        administrators: game.administrators,
+        image: filename,
+      });
+
+      return updatedGame;
+    } catch (error) {
+      if (error instanceof RequestError) throw error;
+
       throw new RequestError(
-        'Could not find game on database',
-        errorCodes.RESOURCE_NOT_FOUND,
+        error.message,
+        errorCodes.INTERNAL_SERVER_ERROR,
+        500,
       );
     }
-
-    if (game.image)
-      await this.storageProvider.deleteFile(game.image, GAME_FOLDER);
-
-    await this.storageProvider.saveFile(filename, GAME_FOLDER);
-
-    const updatedGame = await this.gamesRepository.update({
-      id: game.id,
-      name: game.name,
-      description: game.description,
-      levelInfo: game.levelInfo,
-      ranks: game.ranks,
-      newRegisters: game.newRegisters,
-      theme: game.theme,
-      administrators: game.administrators,
-      image: filename,
-    });
-
-    return updatedGame;
   }
 }

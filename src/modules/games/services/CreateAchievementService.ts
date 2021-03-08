@@ -26,24 +26,34 @@ export default class CreateAchievementService {
     description,
     title,
   }: ICreateAchievementDTO): Promise<IAchievement> {
-    if (title) {
-      const foundTitle = await this.titlesRepository.findOne(title, gameId);
+    try {
+      if (title) {
+        const foundTitle = await this.titlesRepository.findOne(title, gameId);
 
-      if (!foundTitle)
-        throw new RequestError(
-          'The title does not exist.',
-          errorCodes.RESOURCE_NOT_FOUND,
-          404,
-        );
+        if (!foundTitle)
+          throw new RequestError(
+            'The title does not exist.',
+            errorCodes.RESOURCE_NOT_FOUND,
+            404,
+          );
+      }
+
+      const createdAchievement = await this.achievementsRepository.create({
+        name,
+        description,
+        game: gameId,
+        title,
+      });
+
+      return createdAchievement;
+    } catch (error) {
+      if (error instanceof RequestError) throw error;
+
+      throw new RequestError(
+        error.message,
+        errorCodes.INTERNAL_SERVER_ERROR,
+        500,
+      );
     }
-
-    const createdAchievement = await this.achievementsRepository.create({
-      name,
-      description,
-      game: gameId,
-      title,
-    });
-
-    return createdAchievement;
   }
 }

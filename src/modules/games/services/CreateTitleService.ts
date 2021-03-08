@@ -13,8 +13,6 @@ export default class CreateTitleService {
   ) {}
 
   public async execute({ name, game }: ICreateTitleDTO): Promise<ITitle> {
-    const createdTitle = await this.titlesRepository.create({ name, game });
-
-    return createdTitle;
+    return this.titlesRepository.create({ name, game });
   }
 }

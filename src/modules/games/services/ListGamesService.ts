@@ -12,6 +12,6 @@ export default class ListGamesService {
   ) {}
 
   public async execute(userId: string): Promise<IGame[]> {
-    return await this.gamesRepository.findAllFromUser(userId);
+    return this.gamesRepository.findAllFromUser(userId);
   }
 }

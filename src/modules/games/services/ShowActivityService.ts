@@ -13,6 +13,6 @@ export default class ShowActivityService {
   ) {}
 
   public async execute({ gameId, activityId }: ISelectActivityDTO) {
-    return await this.activitesRepository.findOne(activityId, gameId);
+    return this.activitesRepository.findOne(activityId, gameId);
   }
 }

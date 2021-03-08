@@ -12,6 +12,6 @@ export default class ListActivitiesService {
   ) {}
 
   public async execute(gameId: string): Promise<IActivity[]> {
-    return await this.activitiesRepository.findAllFromGame(gameId);
+    return this.activitiesRepository.findAllFromGame(gameId);
   }
 }

@@ -13,6 +13,6 @@ export default class ShowGameService {
   ) {}
 
   public async execute({ gameId, userId }: IShowGameDTO) {
-    return await this.gamesRepository.findOne(gameId, userId);
+    return this.gamesRepository.findOne(gameId, userId);
   }
 }

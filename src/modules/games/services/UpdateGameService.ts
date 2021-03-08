@@ -24,27 +24,37 @@ export default class UpdateGameService {
     levelInfo,
     ranks,
   }: IUpdateGameDTO): Promise<IGame> {
-    const game = await this.gamesRepository.findOne(id, adminId);
+    try {
+      const game = await this.gamesRepository.findOne(id, adminId);
 
-    if (!game)
+      if (!game)
+        throw new RequestError(
+          'This game does not exist',
+          errorCodes.RESOURCE_NOT_FOUND,
+          400,
+        );
+
+      const updatedGame = await this.gamesRepository.update({
+        id: game.id,
+        name,
+        description,
+        theme,
+        levelInfo,
+        ranks,
+        administrators: game.administrators,
+        image: game.image,
+        newRegisters: game.newRegisters,
+      });
+
+      return updatedGame;
+    } catch (error) {
+      if (error instanceof RequestError) throw error;
+
       throw new RequestError(
-        'This game does not exist',
-        errorCodes.RESOURCE_NOT_FOUND,
-        400,
+        error.message,
+        errorCodes.INTERNAL_SERVER_ERROR,
+        500,
       );
-
-    const updatedGame = await this.gamesRepository.update({
-      id: game.id,
-      name,
-      description,
-      theme,
-      levelInfo,
-      ranks,
-      administrators: game.administrators,
-      image: game.image,
-      newRegisters: game.newRegisters,
-    });
-
-    return updatedGame;
+    }
   }
 }

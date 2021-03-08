@@ -12,6 +12,6 @@ export default class DeleteTitleService {
   ) {}
 
   public async execute({ gameId, titleId }: IDeleteTitleDTO): Promise<void> {
-    await this.titlesRepository.delete(titleId, gameId);
+    return this.titlesRepository.delete(titleId, gameId);
   }
 }

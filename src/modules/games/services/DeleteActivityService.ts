@@ -15,6 +15,6 @@ export default class DeleteActivityService {
     gameId,
     activityId,
   }: ISelectActivityDTO): Promise<void> {
-    await this.activitiesRepository.delete(activityId, gameId);
+    return this.activitiesRepository.delete(activityId, gameId);
   }
 }

@@ -13,6 +13,6 @@ export default class ShowAchievementService {
   ) {}
 
   public async execute({ gameId, achievementId }: IShowAchievementDTO) {
-    return await this.achievementsRepository.findOne(achievementId, gameId);
+    return this.achievementsRepository.findOne(achievementId, gameId);
   }
 }

@@ -16,21 +16,31 @@ export default class UpdateTitleService {
   ) {}
 
   public async execute({ id, name, gameId }: IUpdateTitleDTO): Promise<ITitle> {
-    const title = await this.titlesRepository.findOne(id, gameId);
+    try {
+      const title = await this.titlesRepository.findOne(id, gameId);
 
-    if (!title)
+      if (!title)
+        throw new RequestError(
+          'This title does not exist',
+          errorCodes.RESOURCE_NOT_FOUND,
+          400,
+        );
+
+      const updatedTitle = await this.titlesRepository.update({
+        id: title.id,
+        game: title.game,
+        name,
+      });
+
+      return updatedTitle;
+    } catch (error) {
+      if (error instanceof RequestError) throw error;
+
       throw new RequestError(
-        'This title does not exist',
-        errorCodes.RESOURCE_NOT_FOUND,
-        400,
+        error.message,
+        errorCodes.INTERNAL_SERVER_ERROR,
+        500,
       );
-
-    const updatedTitle = await this.titlesRepository.update({
-      id: title.id,
-      game: title.game,
-      name,
-    });
-
-    return updatedTitle;
+    }
   }
 }

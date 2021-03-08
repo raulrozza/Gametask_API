@@ -13,7 +13,7 @@ export default class AchievementsRepository
   public async findAllFromGame(
     gameId: string,
   ): Promise<IAchievementDocument[]> {
-    return await Achievement.find({ game: gameId }).populate('title');
+    return Achievement.find({ game: gameId }).populate('title');
   }
 
   public async findOne(
@@ -23,7 +23,7 @@ export default class AchievementsRepository
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return await Achievement.findOne({
+    return Achievement.findOne({
       _id: id,
       game: gameId,
     }).populate('title');
@@ -36,7 +36,7 @@ export default class AchievementsRepository
     image,
     title,
   }: Omit<IAchievement, 'id'>): Promise<IAchievementDocument> {
-    return await Achievement.create({
+    return Achievement.create({
       name,
       description,
       game,
@@ -49,7 +49,7 @@ export default class AchievementsRepository
     if (!isValidObjectId(achievementId))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    await Achievement.deleteOne({ _id: achievementId, game: gameId });
+    Achievement.deleteOne({ _id: achievementId, game: gameId });
   }
 
   public async update({
@@ -62,7 +62,7 @@ export default class AchievementsRepository
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    const updatedAchievement = await Achievement.findByIdAndUpdate(
+    return Achievement.findByIdAndUpdate(
       id,
       {
         $set: {
@@ -74,7 +74,5 @@ export default class AchievementsRepository
       },
       { new: true },
     );
-
-    return updatedAchievement;
   }
 }

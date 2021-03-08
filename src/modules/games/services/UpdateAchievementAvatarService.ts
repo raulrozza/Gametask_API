@@ -22,32 +22,42 @@ export default class UpdateAchievementAvatarService {
   ) {}
 
   public async execute({ filename, id, gameId }: IUpdateAchievementAvatarDTO) {
-    const achievement = await this.achievementRepository.findOne(id, gameId);
+    try {
+      const achievement = await this.achievementRepository.findOne(id, gameId);
 
-    if (!achievement) {
+      if (!achievement) {
+        throw new RequestError(
+          'Could not find achievement on database',
+          errorCodes.RESOURCE_NOT_FOUND,
+        );
+      }
+
+      if (achievement.image)
+        await this.storageProvider.deleteFile(
+          achievement.image,
+          ACHIEVEMENT_FOLDER,
+        );
+
+      await this.storageProvider.saveFile(filename, ACHIEVEMENT_FOLDER);
+
+      const updatedAchievement = await this.achievementRepository.update({
+        id: achievement.id,
+        name: achievement.name,
+        description: achievement.description,
+        title: achievement.title,
+        game: achievement.game,
+        image: filename,
+      });
+
+      return updatedAchievement;
+    } catch (error) {
+      if (error instanceof RequestError) throw error;
+
       throw new RequestError(
-        'Could not find achievement on database',
-        errorCodes.RESOURCE_NOT_FOUND,
+        error.message,
+        errorCodes.INTERNAL_SERVER_ERROR,
+        500,
       );
     }
-
-    if (achievement.image)
-      await this.storageProvider.deleteFile(
-        achievement.image,
-        ACHIEVEMENT_FOLDER,
-      );
-
-    await this.storageProvider.saveFile(filename, ACHIEVEMENT_FOLDER);
-
-    const updatedAchievement = await this.achievementRepository.update({
-      id: achievement.id,
-      name: achievement.name,
-      description: achievement.description,
-      title: achievement.title,
-      game: achievement.game,
-      image: filename,
-    });
-
-    return updatedAchievement;
   }
 }

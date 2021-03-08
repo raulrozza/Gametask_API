@@ -19,7 +19,7 @@ export default class CreateActivityService {
     description,
     dmRules,
   }: ICreateActivityDTO): Promise<IActivity> {
-    const createdAchievement = await this.activitiesRepository.create({
+    return this.activitiesRepository.create({
       name,
       experience,
       game: gameId,
@@ -28,7 +28,5 @@ export default class CreateActivityService {
       changelog: [],
       history: [],
     });
-
-    return createdAchievement;
   }
 }

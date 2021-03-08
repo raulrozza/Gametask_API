@@ -12,6 +12,6 @@ export default class DeleteAchievementService {
   ) {}
 
   public async execute({ gameId, id }: IDeleteAchievementDTO): Promise<void> {
-    await this.achievementsRepository.delete(id, gameId);
+    return this.achievementsRepository.delete(id, gameId);
   }
 }

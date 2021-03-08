@@ -22,24 +22,34 @@ export default class UpdateAchievementService {
     description,
     title,
   }: IUpdateAchievementDTO): Promise<IAchievement> {
-    const achievement = await this.achievementsRepository.findOne(id, gameId);
+    try {
+      const achievement = await this.achievementsRepository.findOne(id, gameId);
 
-    if (!achievement)
+      if (!achievement)
+        throw new RequestError(
+          'This achievement does not exist',
+          errorCodes.RESOURCE_NOT_FOUND,
+          400,
+        );
+
+      const updatedAchievement = await this.achievementsRepository.update({
+        id,
+        name,
+        description,
+        title: title,
+        image: achievement.image,
+        game: achievement.game,
+      });
+
+      return updatedAchievement;
+    } catch (error) {
+      if (error instanceof RequestError) throw error;
+
       throw new RequestError(
-        'This achievement does not exist',
-        errorCodes.RESOURCE_NOT_FOUND,
-        400,
+        error.message,
+        errorCodes.INTERNAL_SERVER_ERROR,
+        500,
       );
-
-    const updatedAchievement = await this.achievementsRepository.update({
-      id: achievement.id,
-      name,
-      description,
-      title,
-      image: achievement.image,
-      game: achievement.game,
-    });
-
-    return updatedAchievement;
+    }
   }
 }
