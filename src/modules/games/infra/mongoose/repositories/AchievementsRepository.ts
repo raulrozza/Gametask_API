@@ -49,7 +49,7 @@ export default class AchievementsRepository
     if (!isValidObjectId(achievementId))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    Achievement.deleteOne({ _id: achievementId, game: gameId });
+    return Achievement.deleteOne({ _id: achievementId, game: gameId });
   }
 
   public async update({

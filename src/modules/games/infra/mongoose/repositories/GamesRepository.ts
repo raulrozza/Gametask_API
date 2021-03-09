@@ -11,11 +11,9 @@ import Game, {
 export default class GamesRepository
   implements IGamesRepository<IGameDocument> {
   public async findAllFromUser(userId: string): Promise<IGameDocument[]> {
-    const games = await Game.find({
+    return Game.find({
       administrators: userId,
     });
-
-    return games;
   }
 
   public async findOne(
@@ -37,13 +35,11 @@ export default class GamesRepository
     description,
     administrators,
   }: IGame): Promise<IGameDocument> {
-    const createdGame = await Game.create({
+    return Game.create({
       name,
       description,
       administrators,
     });
-
-    return createdGame;
   }
 
   public async update({
@@ -60,7 +56,7 @@ export default class GamesRepository
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    const updatedGame = await Game.findByIdAndUpdate(
+    return Game.findByIdAndUpdate(
       id,
       {
         $set: {
@@ -76,8 +72,6 @@ export default class GamesRepository
       },
       { new: true },
     );
-
-    return updatedGame;
   }
 
   public async updateRegisters(
@@ -88,7 +82,7 @@ export default class GamesRepository
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    const updatedGame = await Game.findByIdAndUpdate(
+    return Game.findByIdAndUpdate(
       id,
       {
         $inc: {
@@ -97,7 +91,5 @@ export default class GamesRepository
       },
       { new: true, session },
     );
-
-    return updatedGame;
   }
 }

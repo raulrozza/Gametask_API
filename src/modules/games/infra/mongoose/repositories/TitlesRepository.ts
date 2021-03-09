@@ -13,7 +13,7 @@ export default class TitlesRepository
   ): Promise<ITitleDocument[]> {
     if (!name) return await Title.find({ game: gameId });
 
-    return await Title.find({
+    return Title.find({
       game: gameId,
       name: { $regex: `^${name}`, $options: 'i' },
     });
@@ -26,28 +26,28 @@ export default class TitlesRepository
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return await Title.findOne({ _id: id, game: gameId });
+    return Title.findOne({ _id: id, game: gameId });
   }
 
   public async create({
     name,
     game,
   }: Omit<ITitle, 'id'>): Promise<ITitleDocument> {
-    return await Title.create({ name, game });
+    return Title.create({ name, game });
   }
 
   public async delete(titleId: string, gameId: string): Promise<void> {
     if (!isValidObjectId(titleId))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    await Title.deleteOne({ _id: titleId, game: gameId });
+    return Title.deleteOne({ _id: titleId, game: gameId });
   }
 
   public async update({ id, name }: ITitle): Promise<ITitle> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    const updatedTitle = await Title.findByIdAndUpdate(
+    return Title.findByIdAndUpdate(
       id,
       {
         $set: {
@@ -56,7 +56,5 @@ export default class TitlesRepository
       },
       { new: true },
     );
-
-    return updatedTitle;
   }
 }

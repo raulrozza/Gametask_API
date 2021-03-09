@@ -11,7 +11,7 @@ import Activity, {
 export default class ActivitiesRepository
   implements IActivitiesRepository<IActivityDocument> {
   public async findAllFromGame(gameId: string): Promise<IActivityDocument[]> {
-    return await Activity.find({ game: gameId });
+    return Activity.find({ game: gameId });
   }
 
   public async findOne(
@@ -21,7 +21,7 @@ export default class ActivitiesRepository
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return await Activity.findOne({
+    return Activity.findOne({
       _id: id,
       game: gameId,
     });
@@ -34,7 +34,7 @@ export default class ActivitiesRepository
     dmRules,
     game,
   }: Omit<IActivity, 'id'>): Promise<IActivityDocument> {
-    return await Activity.create({
+    return Activity.create({
       name,
       description,
       experience,
@@ -47,7 +47,7 @@ export default class ActivitiesRepository
     if (!isValidObjectId(activityId))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    await Activity.deleteOne({ _id: activityId, game: gameId });
+    return Activity.deleteOne({ _id: activityId, game: gameId });
   }
 
   public async update({
@@ -61,7 +61,7 @@ export default class ActivitiesRepository
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    const updatedActivity = await Activity.findByIdAndUpdate(
+    return Activity.findByIdAndUpdate(
       id,
       {
         $set: {
@@ -79,8 +79,6 @@ export default class ActivitiesRepository
       },
       { new: true },
     );
-
-    return updatedActivity;
   }
 
   public async updateHistory(
@@ -91,7 +89,7 @@ export default class ActivitiesRepository
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    const updatedActivity = await Activity.findByIdAndUpdate(
+    return Activity.findByIdAndUpdate(
       id,
       {
         $push: {
@@ -103,7 +101,5 @@ export default class ActivitiesRepository
       },
       { new: true, session },
     );
-
-    return updatedActivity;
   }
 }
