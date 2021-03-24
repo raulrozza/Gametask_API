@@ -1,3 +1,4 @@
+import { RequestError } from '@shared/errors/implementations';
 import mongoose from 'mongoose';
 import ITransactionProvider, {
   SessionWorkflow,
@@ -12,6 +13,8 @@ export default class MongooseTransactionProvider
 
     const session = await mongoose.startSession();
 
+    let errorHappened = false;
+
     try {
       await session.startTransaction();
 
@@ -20,10 +23,15 @@ export default class MongooseTransactionProvider
       await session.commitTransaction();
     } catch (error) {
       await session.abortTransaction();
-      throw error;
+
+      console.error(error.message);
+
+      errorHappened = true;
     } finally {
-      session.endSession();
+      await session.endSession();
     }
+
+    if (errorHappened) throw new RequestError('An unknown error ocurred', 500);
 
     return result;
   }

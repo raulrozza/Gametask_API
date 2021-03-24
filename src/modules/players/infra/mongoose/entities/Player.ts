@@ -57,7 +57,11 @@ const PlayerSchema = new Schema(
       required: true,
     },
   },
-  {},
+  {
+    toJSON: {
+      virtuals: true,
+    },
+  },
 );
 
 interface IPlayerBaseDocument extends Omit<IPlayer, 'id'>, Document {

@@ -14,12 +14,21 @@ export default class PlayersRepository
   public async findAllFromUser(
     userId: string,
   ): Promise<IPlayerPopulatedDocument[]> {
-    return await Player.find({ user: userId }).populate('user', {
-      firstname: 1,
-      lastname: 1,
-      image: 1,
-      profile_url: 1,
-    });
+    return await Player.find({ user: userId })
+      .populate('user', {
+        firstname: 1,
+        lastname: 1,
+        image: 1,
+        profile_url: 1,
+      })
+      .populate('game', {
+        theme: 1,
+        name: 1,
+        description: 1,
+        id: 1,
+        image: 1,
+        image_url: 1,
+      });
   }
 
   public async findOne(
@@ -34,12 +43,21 @@ export default class PlayersRepository
       _id: id,
       user: userId,
       game: gameId,
-    }).populate('user', {
-      firstname: 1,
-      lastname: 1,
-      image: 1,
-      profile_url: 1,
-    });
+    })
+      .populate('user', {
+        firstname: 1,
+        lastname: 1,
+        image: 1,
+        profile_url: 1,
+      })
+      .populate('game', {
+        theme: 1,
+        name: 1,
+        description: 1,
+        id: 1,
+        image: 1,
+        image_url: 1,
+      });
   }
 
   public async create({
