@@ -31,7 +31,11 @@ const ActivitySchema = new Schema(
       required: true,
     },
   },
-  {},
+  {
+    toJSON: {
+      virtuals: true,
+    },
+  },
 );
 
 interface IActivityBaseDocument extends Omit<IActivity, 'id'>, Document {
