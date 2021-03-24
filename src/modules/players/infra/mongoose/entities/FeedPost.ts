@@ -61,7 +61,7 @@ const FeedPostSchema = new Schema(
       required: true,
     },
   },
-  {},
+  { toJSON: { virtuals: true } },
 );
 
 interface IFeedPostBaseDocument extends IFeedPost, Document {

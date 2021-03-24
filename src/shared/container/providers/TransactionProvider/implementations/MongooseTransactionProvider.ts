@@ -1,3 +1,4 @@
+import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/errors/implementations';
 import mongoose from 'mongoose';
 import ITransactionProvider, {
@@ -31,7 +32,12 @@ export default class MongooseTransactionProvider
       await session.endSession();
     }
 
-    if (errorHappened) throw new RequestError('An unknown error ocurred', 500);
+    if (errorHappened)
+      throw new RequestError(
+        'An unknown error ocurred',
+        errorCodes.INTERNAL_SERVER_ERROR,
+        500,
+      );
 
     return result;
   }

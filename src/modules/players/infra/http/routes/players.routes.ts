@@ -18,19 +18,19 @@ const playerTitlesController = new PlayerTitlesController();
 const unlockAchievementRequestController = new UnlockAchievementRequestController();
 
 playerRoutes.post(
-  '/:id/achievement',
+  '/:id/achievements',
   verifyAuthentication,
   verifyGameSelected,
   unlockAchievementRequestController.store,
 );
 playerRoutes.patch(
-  '/:id/achievement',
+  '/:id/achievements',
   verifyAuthentication,
   verifyGameSelected,
   playerAchievementsController.update,
 );
 playerRoutes.post(
-  '/:id/activity',
+  '/:id/activities',
   verifyAuthentication,
   verifyGameSelected,
   completeActivityRequest.store,
@@ -44,7 +44,7 @@ playerRoutes.get(
 );
 playerRoutes.get('/', verifyAuthentication, playersController.index);
 playerRoutes.patch(
-  '/:id/title',
+  '/:id/titles',
   verifyAuthentication,
   verifyGameSelected,
   playerTitlesController.update,

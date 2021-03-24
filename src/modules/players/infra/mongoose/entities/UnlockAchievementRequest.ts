@@ -30,7 +30,7 @@ const UnlockAchievementRequestSchema = new Schema(
       required: true,
     },
   },
-  {},
+  { toJSON: { virtuals: true } },
 );
 
 interface IUnlockAchievementRequestBaseDocument

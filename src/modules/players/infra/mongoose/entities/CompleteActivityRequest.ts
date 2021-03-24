@@ -31,7 +31,7 @@ const CompleteActivityRequestSchema = new Schema(
       required: true,
     },
   },
-  {},
+  { toJSON: { virtuals: true } },
 );
 
 interface ICompleteActivityRequestBaseDocument

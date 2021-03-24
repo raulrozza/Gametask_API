@@ -30,6 +30,7 @@ interface IFinishRequest {
 }
 
 interface IPostActivityCompletion {
+  activityId: string;
   gameId: string;
   playerId: string;
 }
@@ -122,6 +123,7 @@ export default class CompleteActivityService {
 
       await this.postActivityCompletion(
         {
+          activityId,
           gameId,
           playerId,
         },
@@ -174,13 +176,14 @@ export default class CompleteActivityService {
   }
 
   private async postActivityCompletion(
-    { gameId, playerId }: IPostActivityCompletion,
+    { activityId, gameId, playerId }: IPostActivityCompletion,
     session: object,
   ): Promise<void> {
     await this.feedPostsRepository.create(
       {
         game: gameId,
         player: playerId,
+        activity: activityId,
         type: 'activity',
       },
       session,
