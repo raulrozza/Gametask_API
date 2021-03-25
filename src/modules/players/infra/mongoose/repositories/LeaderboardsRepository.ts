@@ -54,26 +54,46 @@ export default class LeaderboardsRepository
         errorCodes.BAD_REQUEST_ERROR,
       );
 
-    return await Leaderboard.findOneAndUpdate(
+    const leaderboard = (await Leaderboard.findById(
+      id,
+    )) as ILeaderboardDocument;
+
+    const positions = [...leaderboard.position];
+
+    const playerIndex = positions.findIndex(
+      position => String(position.player) === String(playerId),
+    );
+
+    if (playerIndex < 0) {
+      positions.push({ player: playerId, experience });
+
+      return Leaderboard.updateOne(
+        {
+          _id: id,
+        },
+        {
+          $set: {
+            position: positions,
+          },
+        },
+        {
+          session,
+        },
+      );
+    }
+
+    positions[playerIndex].experience += experience;
+
+    return await Leaderboard.updateOne(
       {
         _id: id,
       },
       {
         $set: {
-          'position.$[player]': {
-            player: playerId,
-            experience,
-          },
+          position: positions,
         },
       },
       {
-        new: true,
-        upsert: true,
-        arrayFilters: [
-          {
-            player: playerId,
-          },
-        ],
         session,
       },
     );

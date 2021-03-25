@@ -10,6 +10,10 @@ const PositionSchema = new Schema<IPositionDocument>(
       ref: 'Player',
       required: true,
     },
+    experiece: {
+      type: Number,
+      required: true,
+    },
   },
   {
     _id: false,

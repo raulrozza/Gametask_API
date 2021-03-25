@@ -3,22 +3,29 @@ import PositionSchema from '@modules/players/infra/mongoose/entities/Position';
 import { ILeaderboard } from '@modules/players/entities';
 import { IGameDocument } from '@modules/games/infra/mongoose/entities/Game';
 
-const LeaderboardSchema = new Schema({
-  game: {
-    type: Schema.Types.ObjectId,
-    ref: 'Game',
-    required: true,
+const LeaderboardSchema = new Schema(
+  {
+    game: {
+      type: Schema.Types.ObjectId,
+      ref: 'Game',
+      required: true,
+    },
+    position: {
+      type: [PositionSchema],
+      default: [],
+    },
+    createdAt: {
+      type: Date,
+      required: true,
+    },
+    expiresAt: Date,
   },
-  position: {
-    type: [PositionSchema],
-    default: [],
+  {
+    toJSON: {
+      virtuals: true,
+    },
   },
-  createdAt: {
-    type: Date,
-    required: true,
-  },
-  expiresAt: Date,
-});
+);
 
 interface ILeaderboardBaseDocument extends ILeaderboard, Document {
   id: NonNullable<Document['id']>;
