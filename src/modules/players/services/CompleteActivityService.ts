@@ -195,11 +195,7 @@ export default class CompleteActivityService {
     session: object,
   ): Promise<void> {
     const [player, game] = await Promise.all([
-      this.playersRepository.findOne(
-        playerId,
-        userId,
-        gameId,
-      ) as Promise<IPlayer>,
+      this.playersRepository.findById(playerId) as Promise<IPlayer>,
       this.gamesRepository.findOne(gameId) as Promise<IGame>,
     ]);
 

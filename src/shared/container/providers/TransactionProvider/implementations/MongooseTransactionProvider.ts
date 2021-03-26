@@ -10,7 +10,7 @@ export default class MongooseTransactionProvider
   public async startSession<T>(
     sessionWorkflow: SessionWorkflow<T>,
   ): Promise<T> {
-    let result: T;
+    const result: { data: T } = { data: null as any };
 
     const session = await mongoose.startSession();
 
@@ -19,13 +19,13 @@ export default class MongooseTransactionProvider
     try {
       await session.startTransaction();
 
-      result = await sessionWorkflow(session);
+      result.data = await sessionWorkflow(session);
 
       await session.commitTransaction();
     } catch (error) {
       await session.abortTransaction();
 
-      console.error(error.message);
+      console.error(error);
 
       errorHappened = true;
     } finally {
@@ -39,6 +39,6 @@ export default class MongooseTransactionProvider
         500,
       );
 
-    return result;
+    return result.data;
   }
 }

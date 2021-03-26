@@ -35,6 +35,10 @@ export default class FakePlayersRepository implements IPlayersRepository {
     return Promise.resolve(foundPlayer);
   }
 
+  public async findById(id: string): Promise<IPlayer | undefined> {
+    return this.players.find(player => player.id === id);
+  }
+
   public async create(player: IPlayer): Promise<IPlayer> {
     player.id = uuid();
 

@@ -60,6 +60,31 @@ export default class PlayersRepository
       });
   }
 
+  public async findById(
+    id: string,
+  ): Promise<IPlayerPopulatedDocument | undefined> {
+    if (!isValidObjectId(id))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
+    return await Player.findOne({
+      _id: id,
+    })
+      .populate('user', {
+        firstname: 1,
+        lastname: 1,
+        image: 1,
+        profile_url: 1,
+      })
+      .populate('game', {
+        theme: 1,
+        name: 1,
+        description: 1,
+        id: 1,
+        image: 1,
+        image_url: 1,
+      });
+  }
+
   public async create({
     user,
     game,
