@@ -34,7 +34,7 @@ export default class UnlockAchievementRequestRepository
   public async findAllFromGame(
     gameId: string,
   ): Promise<IUnlockAchievementRequestDocument[]> {
-    return await UnlockAchievementRequest.find({ game: gameId })
+    return UnlockAchievementRequest.find({ game: gameId })
       .populate({
         path: 'achievement',
         populate: {
