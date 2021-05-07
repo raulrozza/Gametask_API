@@ -57,6 +57,7 @@ export default class PlayersRepository
         id: 1,
         image: 1,
         image_url: 1,
+        levelInfo: 1,
       });
   }
 

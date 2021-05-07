@@ -8,15 +8,9 @@
 
     "baseUrl": ".",
     "paths": {
-      "@actions/*": ["./src/actions/*"],
       "@config/*": ["./src/config/*"],
-      "@controllers/*": ["./src/controllers/*"],
-      "@middlewares/*": ["./src/middlewares/*"],
-      "@models/*": ["./src/models/*"],
       "@modules/*": ["./src/modules/*"],
-      "@routes/*": ["./src/routes/*"],
-      "@shared/*": ["./src/shared/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@shared/*": ["./src/shared/*"]
     },
     "typeRoots": [
       "./node_modules/@types",

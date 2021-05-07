@@ -55,6 +55,7 @@ export default class AuthenticateUserService {
     const token = await this.tokenProvider.sign({
       id: foundUser.id,
       name: foundUser.firstname,
+      profile_url: foundUser.profile_url,
     });
 
     return { token };
