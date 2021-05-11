@@ -41,6 +41,7 @@ describe('UpdateAchievementService', () => {
         gameId,
         ...fakeAchievement,
         id: 'invalid id',
+        title: fakeAchievement.title as string | undefined,
       }),
     ).rejects.toBeInstanceOf(RequestError);
   });

@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const multer_1 = __importDefault(require("multer"));
+const upload_1 = __importDefault(require("@config/upload"));
+const verifyAuthentication_1 = __importDefault(require("@modules/users/infra/http/middlewares/verifyAuthentication"));
+const controllers_1 = require("@modules/games/infra/http/controllers");
+const verifyGameSelected_1 = __importDefault(require("@modules/games/infra/http/middlewares/verifyGameSelected"));
+const achievementRoutes = express_1.Router();
+const upload = multer_1.default(upload_1.default.multerConfig);
+const achievementController = new controllers_1.AchievementController();
+const achievementAvatarController = new controllers_1.AchievementAvatarController();
+achievementRoutes.delete('/:id', verifyAuthentication_1.default, verifyGameSelected_1.default, achievementController.remove);
+achievementRoutes.get('/:id', verifyAuthentication_1.default, verifyGameSelected_1.default, achievementController.show);
+achievementRoutes.get('/', verifyAuthentication_1.default, verifyGameSelected_1.default, achievementController.index);
+achievementRoutes.patch('/:id/avatar', verifyAuthentication_1.default, verifyGameSelected_1.default, upload.single('image'), achievementAvatarController.update);
+achievementRoutes.put('/:id', verifyAuthentication_1.default, verifyGameSelected_1.default, achievementController.update);
+achievementRoutes.post('/', verifyAuthentication_1.default, verifyGameSelected_1.default, achievementController.store);
+exports.default = achievementRoutes;

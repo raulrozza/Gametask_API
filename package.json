@@ -4,7 +4,7 @@
   "description": "The API from GameTask",
   "main": "src/server.ts",
   "scripts": {
-    "start": "tsnd src/server.ts",
+    "start": "tsnd -r tsconfig-paths/register --transpile-only src/server.ts",
     "dev": "tsnd -r tsconfig-paths/register --transpile-only --respawn --inspect --ignore-watch node_modules --no-notify src/server.ts",
     "test": "jest --watch",
     "coverage": "jest"
@@ -25,6 +25,8 @@
     "mongoose": "^5.9.28",
     "multer": "^1.4.2",
     "reflect-metadata": "^0.1.13",
+    "ts-node-dev": "^1.1.1",
+    "tsconfig-paths": "^3.9.0",
     "tsyringe": "^4.4.0",
     "uuid": "^8.3.2"
   },
@@ -55,8 +57,6 @@
     "prettier": "^2.0.5",
     "supertest": "^6.1.3",
     "ts-jest": "^26.5.0",
-    "ts-node-dev": "^1.1.1",
-    "tsconfig-paths": "^3.9.0",
     "typescript": "^4.1.3"
   }
 }
