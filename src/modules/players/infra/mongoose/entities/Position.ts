@@ -10,7 +10,7 @@ const PositionSchema = new Schema<IPositionDocument>(
       ref: 'Player',
       required: true,
     },
-    experiece: {
+    experience: {
       type: Number,
       required: true,
     },

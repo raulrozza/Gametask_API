@@ -3,7 +3,7 @@ import { ILeaderboard } from '@modules/players/entities';
 export default interface ILeaderboardsRepository<
   T extends ILeaderboard = ILeaderboard
 > {
-  create(leaderboard: Omit<ILeaderboard, 'id'>): Promise<T>;
+  create(leaderboard: Omit<ILeaderboard, 'id' | 'position'>): Promise<T>;
   getGameCurrentRanking(gameId: string): Promise<T | undefined>;
   /**
    * Creates a new position on the leaderboard, or updates an already positioned player's experience and ranking
