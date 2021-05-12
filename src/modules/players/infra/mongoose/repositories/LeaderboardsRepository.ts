@@ -13,7 +13,7 @@ export default class LeaderboardsRepository
     game,
     createdAt,
     expiresAt,
-  }: Omit<ILeaderboard, 'id'>): Promise<ILeaderboardDocument> {
+  }: Omit<ILeaderboard, 'id' | 'position'>): Promise<ILeaderboardDocument> {
     return await Leaderboard.create({
       game,
       createdAt,

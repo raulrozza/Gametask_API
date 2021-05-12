@@ -309,7 +309,6 @@ export default class CompleteActivityService {
       leaderboard = await this.leaderboardsRepository.create({
         game: gameId,
         createdAt: new Date(),
-        position: [],
       });
 
     await this.leaderboardsRepository.createOrUpdatePosition(
