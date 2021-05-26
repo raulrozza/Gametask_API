@@ -24,22 +24,24 @@ export default class LeaderboardsRepository
   public async getGameCurrentRanking(
     gameId: string,
   ): Promise<ILeaderboardDocument | undefined> {
-    return await Leaderboard.findOne({ game: gameId }).populate({
-      path: 'position',
-      populate: {
-        path: 'player',
-        select: 'level rank currentTitle user id',
-        populate: [
-          {
-            path: 'user',
-            select: 'id firstname lastname image profile_url',
-          },
-          {
-            path: 'currentTitle',
-          },
-        ],
-      },
-    });
+    return await Leaderboard.findOne({ game: gameId })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: 'position',
+        populate: {
+          path: 'player',
+          select: 'level rank currentTitle user id',
+          populate: [
+            {
+              path: 'user',
+              select: 'id firstname lastname image profile_url',
+            },
+            {
+              path: 'currentTitle',
+            },
+          ],
+        },
+      });
   }
 
   public async createOrUpdatePosition(
