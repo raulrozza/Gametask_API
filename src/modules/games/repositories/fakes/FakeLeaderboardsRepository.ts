@@ -7,6 +7,10 @@ export default class FakeLeaderboardsRepository
   implements ILeaderboardsRepository {
   private leaderboards: ILeaderboard[] = [];
 
+  public getLeaderboards(): ILeaderboard[] {
+    return this.leaderboards;
+  }
+
   public async create(
     leaderboard: Omit<ILeaderboard, 'id'>,
   ): Promise<ILeaderboard> {
