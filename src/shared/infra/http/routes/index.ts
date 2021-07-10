@@ -12,11 +12,12 @@ import {
   achievementRoutes,
   activityRoutes,
   gameRoutes,
+  leaderboardRoutes as gamesLeaderboardRoutes,
   titleRoutes,
 } from '@modules/games/infra/http/routes';
 import {
   feedPostsRoutes,
-  leaderboardsRouter,
+  leaderboardsRouter as playersLeaderboardRoutes,
   playerRoutes,
   requestsRoutes,
 } from '@modules/players/infra/http/routes';
@@ -36,7 +37,11 @@ appRoutes.get('/', (_, response) => {
 appRoutes.use('/achievements', achievementRoutes);
 appRoutes.use('/activities', activityRoutes);
 appRoutes.use('/feed', feedPostsRoutes);
-appRoutes.use('/leaderboards', leaderboardsRouter);
+appRoutes.use(
+  '/leaderboards',
+  playersLeaderboardRoutes,
+  gamesLeaderboardRoutes,
+);
 appRoutes.use('/games', gameRoutes);
 appRoutes.use('/players', playerRoutes);
 appRoutes.use('/requests', requestsRoutes);
