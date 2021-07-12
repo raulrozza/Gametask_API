@@ -20,29 +20,8 @@ describe('ShowGameService', () => {
 
     const fetchedGame = await showGames.execute({
       gameId: game.id,
-      userId,
     });
 
     expect(fetchedGame).toEqual(game);
-  });
-
-  it('should return undefined when trying to fetch a game you do not own', async () => {
-    const gamesRepository = new FakeGamesRepository();
-    const showGames = new ShowGameService(gamesRepository);
-    const userId = uuid();
-
-    const fakeGame = new FakeGame();
-    const game = await gamesRepository.create({
-      name: fakeGame.name,
-      description: fakeGame.description,
-      administrators: ['random-user-id'],
-    } as IGame);
-
-    const fetchedGame = await showGames.execute({
-      gameId: game.id,
-      userId,
-    });
-
-    expect(fetchedGame).toBeUndefined();
   });
 });
