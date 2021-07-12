@@ -12,7 +12,7 @@ export default class ShowGameService {
     private gamesRepository: IGamesRepository,
   ) {}
 
-  public async execute({ gameId, userId }: IShowGameDTO) {
-    return this.gamesRepository.findOne(gameId, userId);
+  public async execute({ gameId }: IShowGameDTO) {
+    return this.gamesRepository.findOne(gameId);
   }
 }

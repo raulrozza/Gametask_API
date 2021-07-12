@@ -20,14 +20,12 @@ export default class GameController {
   };
 
   public show: RequestHandler = async (request, response) => {
-    const { id } = request.auth;
     const gameId = request.game;
 
     const showGame = container.resolve(ShowGameService);
 
     const game = await showGame.execute({
       gameId,
-      userId: id,
     });
 
     return response.json(game);
