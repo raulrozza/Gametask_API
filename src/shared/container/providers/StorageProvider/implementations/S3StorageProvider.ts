@@ -9,6 +9,10 @@ import mime from 'mime';
 export default class S3StorageProvider implements IStorageProvider {
   private client = new aws.S3({
     region: environment.AWS_BUCKET_REGION,
+    credentials: {
+      accessKeyId: String(environment.AWS_ACCESS_KEY),
+      secretAccessKey: String(environment.AWS_SECRET_KEY),
+    },
   });
 
   public async saveFile(file: string, filefolder: string): Promise<string> {
@@ -25,11 +29,11 @@ export default class S3StorageProvider implements IStorageProvider {
     await this.client
       .putObject({
         Bucket: String(environment.AWS_BUCKET_NAME),
-        Key: file,
+        Key: `${filefolder}/${file}`,
         ACL: 'public-read',
         Body: fileContent,
         ContentType,
-        ContentDisposition: `inline; filename=${filefolder}/${file}`,
+        ContentDisposition: `inline; filename=${file}`,
       })
       .promise();
 
@@ -38,11 +42,11 @@ export default class S3StorageProvider implements IStorageProvider {
     return file;
   }
 
-  public async deleteFile(file: string): Promise<void> {
+  public async deleteFile(file: string, filefolder: string): Promise<void> {
     await this.client
       .deleteObject({
         Bucket: String(environment.AWS_BUCKET_NAME),
-        Key: file,
+        Key: `${filefolder}/${file}`,
       })
       .promise();
   }
