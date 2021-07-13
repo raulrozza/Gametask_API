@@ -13,7 +13,7 @@ export default {
   SECRET_KEY: process.env.SECRET_KEY,
   MONGO_URL: process.env.MONGO_URL,
   CORS_CONFIG: process.env.CORS_CONFIG,
-  ADDRESS: process.env.ADDRESS,
+  STORAGE_ADDRESS: process.env.STORAGE_ADDRESS,
   AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY,
   AWS_SECRET_KEY: process.env.AWS_SECRET_KEY,
   AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME,
