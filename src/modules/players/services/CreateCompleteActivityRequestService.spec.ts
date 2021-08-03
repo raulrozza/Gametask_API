@@ -11,7 +11,7 @@ import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import FakePlayer from '../fakes/FakePlayer';
 import { IPlayer } from '../entities';
 import { RequestError } from '@shared/infra/errors';
-import FakeTransactionProvider from '@shared/container/providers/TransactionProvider/fakes/FakeTransactionProvider';
+import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 
 const initService = async () => {
   const completeActivityRequestRepository = new FakeCompleteActivityRequestRepository();

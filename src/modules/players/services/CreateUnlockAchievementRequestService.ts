@@ -3,7 +3,7 @@ import { inject, injectable } from 'tsyringe';
 
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
-import ITransactionProvider from '@shared/container/providers/TransactionProvider/models/ITransactionProvider';
+import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
 import {
   IAchievementsRepository,
   IGamesRepository,

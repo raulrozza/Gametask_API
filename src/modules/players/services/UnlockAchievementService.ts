@@ -10,7 +10,7 @@ import {
   IGamesRepository,
 } from '@modules/games/repositories';
 import IUnlockAchievementDTO from '../dtos/IUnlockAchievementDTO';
-import ITransactionProvider from '@shared/container/providers/TransactionProvider/models/ITransactionProvider';
+import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 

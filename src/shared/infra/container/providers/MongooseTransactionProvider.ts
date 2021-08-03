@@ -3,7 +3,7 @@ import { RequestError } from '@shared/infra/errors';
 import mongoose from 'mongoose';
 import ITransactionProvider, {
   SessionWorkflow,
-} from '../models/ITransactionProvider';
+} from '@shared/domain/providers/ITransactionProvider';
 
 export default class MongooseTransactionProvider
   implements ITransactionProvider {

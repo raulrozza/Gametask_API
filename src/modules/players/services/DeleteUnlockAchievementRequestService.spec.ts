@@ -6,7 +6,7 @@ import DeleteUnlockAchievementRequestService from './DeleteUnlockAchievementRequ
 import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest';
 import { RequestError } from '@shared/infra/errors';
 import { FakeGame } from '@modules/games/fakes';
-import FakeTransactionProvider from '@shared/container/providers/TransactionProvider/fakes/FakeTransactionProvider';
+import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 
 describe('DeleteUnlockAchievementRequestService', () => {
   it('should successfully delete the request', async () => {

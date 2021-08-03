@@ -11,6 +11,7 @@ import corsOptions from '@shared/infra/http/corsOptions';
 import appRoutes from './routes';
 
 import '@shared/infra/mongoose';
+import '@shared/infra/container';
 import '@shared/container';
 
 // Initial server configuration

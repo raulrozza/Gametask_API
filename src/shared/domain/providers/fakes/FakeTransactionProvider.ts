@@ -1,6 +1,4 @@
-import ITransactionProvider, {
-  SessionWorkflow,
-} from '../models/ITransactionProvider';
+import ITransactionProvider, { SessionWorkflow } from '../ITransactionProvider';
 
 export default class FakeTransactionProvider implements ITransactionProvider {
   public async startSession<T>(
