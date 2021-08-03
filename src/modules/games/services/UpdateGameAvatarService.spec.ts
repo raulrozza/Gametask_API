@@ -1,4 +1,4 @@
-import FakeStorageProvider from '@shared/container/providers/StorageProvider/fakes/FakeStorageProvider';
+import FakeStorageProvider from '@shared/domain/providers/fakes/FakeStorageProvider';
 import { RequestError } from '@shared/infra/errors';
 import FakeGame from '../fakes/FakeGame';
 import FakeGamesRepository from '../repositories/fakes/FakeGamesRepository';

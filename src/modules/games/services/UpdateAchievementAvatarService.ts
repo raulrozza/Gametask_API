@@ -3,7 +3,7 @@ import { inject, injectable } from 'tsyringe';
 
 import errorCodes from '@config/errorCodes';
 
-import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
+import IStorageProvider from '@shared/domain/providers/IStorageProvider';
 import { RequestError } from '@shared/infra/errors';
 
 import IUpdateAchievementAvatarDTO from '@modules/games/dtos/IUpdateAchievementAvatarDTO';

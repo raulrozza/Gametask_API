@@ -14,7 +14,7 @@ const corsOptionsDelegate: CorsOptionsDelegate = (req, callback) => {
   // reflect (enable) the requested origin in the CORS response
   else corsOptions = { origin: false }; // disable CORS for this request
 
-  callback(null, corsOptions); // callback expects two parameters: error and options
+  callback(null, corsOptions);
 };
 
 const corsOptions = envs.CORS_CONFIG ? corsOptionsDelegate : undefined;

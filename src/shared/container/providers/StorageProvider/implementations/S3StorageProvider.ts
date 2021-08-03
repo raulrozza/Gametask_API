@@ -1,6 +1,6 @@
 import environment from '@config/environment';
 import upload from '@config/upload';
-import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
+import IStorageProvider from '@shared/domain/providers/IStorageProvider';
 import aws from 'aws-sdk';
 import path from 'path';
 import fs from 'fs';
