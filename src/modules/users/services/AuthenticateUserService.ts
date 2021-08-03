@@ -5,7 +5,7 @@ import errorCodes from '@config/errorCodes';
 
 import { RequestError } from '@shared/infra/errors';
 
-import { IAuthenticateUserDTO } from '@modules/users/dtos';
+import { IAuthenticateUserDTO } from '@modules/users/domain/dtos';
 import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
 import ITokenProvider from '@modules/users/providers/TokenProvider/models/ITokenProvider';
 import { IUsersRepository } from '@modules/users/repositories';

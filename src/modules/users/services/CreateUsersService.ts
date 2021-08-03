@@ -5,7 +5,7 @@ import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
 // Modules
-import { ICreateUserDTO } from '@modules/users/dtos';
+import { ICreateUserDTO } from '@modules/users/domain/dtos';
 import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
 import { IUsersRepository } from '@modules/users/repositories';
 

@@ -7,7 +7,7 @@ import IStorageProvider from '@shared/domain/providers/IStorageProvider';
 import { RequestError } from '@shared/infra/errors';
 
 import { IUsersRepository } from '@modules/users/repositories';
-import { IUpdateUserAvatarDTO } from '@modules/users/dtos';
+import { IUpdateUserAvatarDTO } from '@modules/users/domain/dtos';
 
 const USER_FOLDER = 'user';
 
