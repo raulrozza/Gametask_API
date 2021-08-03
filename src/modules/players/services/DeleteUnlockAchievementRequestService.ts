@@ -5,7 +5,7 @@ import ITransactionProvider from '@shared/container/providers/TransactionProvide
 import { IUnlockAchievementRequestRepository } from '@modules/players/repositories';
 import { IGamesRepository } from '@modules/games/repositories';
 import IRequestExecutionDTO from '@modules/players/dtos/IRequestExecutionDTO';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 
 @injectable()

@@ -2,7 +2,7 @@ import { v4 as uuid } from 'uuid';
 
 import { ILeaderboard } from '@modules/players/entities';
 import { ILeaderboardsRepository } from '..';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 
 export default class FakeLeaderboardsRepository

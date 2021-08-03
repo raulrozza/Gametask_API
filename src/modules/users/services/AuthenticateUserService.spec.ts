@@ -1,4 +1,4 @@
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import FakeUser from '../fakes/FakeUser';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import FakeTokenProvider from '../providers/TokenProvider/fakes/FakeTokenProvider';

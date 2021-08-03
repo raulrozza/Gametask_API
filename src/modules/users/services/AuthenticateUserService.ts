@@ -3,7 +3,7 @@ import { inject, injectable } from 'tsyringe';
 
 import errorCodes from '@config/errorCodes';
 
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 
 import { IAuthenticateUserDTO } from '@modules/users/dtos';
 import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';

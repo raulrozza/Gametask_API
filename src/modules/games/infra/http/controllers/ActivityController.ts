@@ -2,7 +2,6 @@ import { RequestHandler } from 'express';
 import { container } from 'tsyringe';
 
 import errorCodes from '@config/errorCodes';
-import { RequestError } from '@shared/errors/implementations';
 import {
   CreateActivityService,
   DeleteActivityService,
@@ -10,6 +9,7 @@ import {
   ShowActivityService,
   UpdateActivityService,
 } from '@modules/games/services';
+import { RequestError } from '@shared/infra/errors';
 
 export default class ActivityReport {
   public index: RequestHandler = async (request, response) => {

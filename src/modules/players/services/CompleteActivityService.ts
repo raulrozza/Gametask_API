@@ -13,7 +13,7 @@ import {
 } from '@modules/games/repositories';
 import ITransactionProvider from '@shared/container/providers/TransactionProvider/models/ITransactionProvider';
 import ICompleteActivityDTO from '@modules/players/dtos/ICompleteActivityDTO';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import { IActivity, IGame, ILevelInfo, IRank } from '@modules/games/entities';
 import { IPlayer } from '../entities';

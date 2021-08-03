@@ -4,7 +4,7 @@ import FakeGamesRepository from '@modules/games/repositories/fakes/FakeGamesRepo
 import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCompleteActivityRequestRepository';
 import DeleteCompleteActivityRequestService from './DeleteCompleteActivityRequestService';
 import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import { FakeGame } from '@modules/games/fakes';
 import FakeTransactionProvider from '@shared/container/providers/TransactionProvider/fakes/FakeTransactionProvider';
 

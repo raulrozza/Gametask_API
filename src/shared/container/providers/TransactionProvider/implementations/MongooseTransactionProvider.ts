@@ -1,5 +1,5 @@
 import errorCodes from '@config/errorCodes';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import mongoose from 'mongoose';
 import ITransactionProvider, {
   SessionWorkflow,

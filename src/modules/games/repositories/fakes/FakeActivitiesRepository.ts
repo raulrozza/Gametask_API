@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 import { IActivity, IHistory } from '@modules/games/entities';
 import { IActivitiesRepository } from '..';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 
 export default class FakeActivitiesRepository implements IActivitiesRepository {

@@ -4,7 +4,7 @@ import FakeGamesRepository from '@modules/games/repositories/fakes/FakeGamesRepo
 import FakeUnlockAchievementRequestRepository from '../repositories/fakes/FakeUnlockAchievementRequestRepository';
 import DeleteUnlockAchievementRequestService from './DeleteUnlockAchievementRequestService';
 import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import { FakeGame } from '@modules/games/fakes';
 import FakeTransactionProvider from '@shared/container/providers/TransactionProvider/fakes/FakeTransactionProvider';
 

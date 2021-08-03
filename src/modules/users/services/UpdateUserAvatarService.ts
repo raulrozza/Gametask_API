@@ -4,7 +4,7 @@ import { inject, injectable } from 'tsyringe';
 import errorCodes from '@config/errorCodes';
 
 import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 
 import { IUsersRepository } from '@modules/users/repositories';
 import { IUpdateUserAvatarDTO } from '@modules/users/dtos';

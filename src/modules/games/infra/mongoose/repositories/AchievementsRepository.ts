@@ -1,6 +1,6 @@
 import { isValidObjectId } from 'mongoose';
 
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import { IAchievementsRepository } from '@modules/games/repositories';
 import { IAchievement } from '@modules/games/entities';

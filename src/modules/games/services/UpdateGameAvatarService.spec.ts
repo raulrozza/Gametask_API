@@ -1,5 +1,5 @@
 import FakeStorageProvider from '@shared/container/providers/StorageProvider/fakes/FakeStorageProvider';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import FakeGame from '../fakes/FakeGame';
 import FakeGamesRepository from '../repositories/fakes/FakeGamesRepository';
 import UpdateGameAvatarService from './UpdateGameAvatarService';

@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 
 import errorCodes from '@config/errorCodes';
 
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import JwtTokenProvider from '@modules/users/providers/TokenProvider/implementations/JwtTokenProvider';
 
 interface IAuth {

@@ -2,7 +2,7 @@ import FakeStorageProvider from '@shared/container/providers/StorageProvider/fak
 import { UpdateUserAvatarService } from '.';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeUser from '../fakes/FakeUser';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 
 const getService = () => {
   const usersRepository = new FakeUsersRepository();

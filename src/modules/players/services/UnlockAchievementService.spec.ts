@@ -11,7 +11,7 @@ import { IAchievement, IGame, ITitle } from '@modules/games/entities';
 import FakePlayer from '../fakes/FakePlayer';
 import { IPlayer, IUnlockAchievementRequest } from '../entities';
 import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/container/providers/TransactionProvider/fakes/FakeTransactionProvider';
 
 const initService = async (title?: ITitle) => {

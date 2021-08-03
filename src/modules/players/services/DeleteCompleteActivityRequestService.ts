@@ -4,7 +4,7 @@ import { inject, injectable } from 'tsyringe';
 import { ICompleteActivityRequestRepository } from '@modules/players/repositories';
 import { IGamesRepository } from '@modules/games/repositories';
 import IRequestExecutionDTO from '../dtos/IRequestExecutionDTO';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import ITransactionProvider from '@shared/container/providers/TransactionProvider/models/ITransactionProvider';
 

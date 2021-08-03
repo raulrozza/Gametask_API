@@ -4,7 +4,7 @@ import Leaderboard, {
 } from '@modules/players/infra/mongoose/entities/Leaderboard';
 import { ILeaderboard } from '@modules/players/entities';
 import { ClientSession, isValidObjectId } from 'mongoose';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 
 export default class LeaderboardsRepository

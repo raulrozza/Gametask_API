@@ -4,7 +4,7 @@ import { inject, injectable } from 'tsyringe';
 import errorCodes from '@config/errorCodes';
 
 import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 
 import IUpdateGameAvatarDTO from '@modules/games/dtos/IUpdateGameAvatarDTO';
 import { IGamesRepository } from '@modules/games/repositories';

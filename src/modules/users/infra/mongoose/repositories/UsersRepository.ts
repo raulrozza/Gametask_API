@@ -1,7 +1,7 @@
 import { isValidObjectId } from 'mongoose';
 
 import errorCodes from '@config/errorCodes';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import { IUser } from '@modules/users/entities';
 import { IUsersRepository } from '@modules/users/repositories';
 import { User } from '@modules/users/infra/mongoose/entities';

@@ -6,7 +6,7 @@ import { IGame, IRank } from '@modules/games/entities';
 import FakeGamesRepository from '@modules/games/repositories/fakes/FakeGamesRepository';
 import { CreatePlayerService } from '.';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 
 const initService = async (addRanks: boolean | IRank[] = false) => {
   const playersRepository = new FakePlayersRepository();

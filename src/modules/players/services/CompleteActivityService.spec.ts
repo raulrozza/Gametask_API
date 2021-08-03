@@ -12,7 +12,7 @@ import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import CompleteActivityService from './CompleteActivityService';
 import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
 import { IPosition } from '../entities/ILeaderboard';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 
 const initService = async () => {
   const playersRepository = new FakePlayersRepository();
