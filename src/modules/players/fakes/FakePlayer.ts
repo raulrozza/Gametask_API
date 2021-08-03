@@ -2,7 +2,7 @@ import faker from 'faker';
 
 import { IPlayer } from '@modules/players/entities';
 import { IAchievement, IGame, IRank, ITitle } from '@modules/games/entities';
-import { IUser } from '@modules/users/entities';
+import { IUser } from '@modules/users/domain/entities';
 
 export default class FakePlayer implements IPlayer {
   public id: string = '';

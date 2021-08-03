@@ -1,4 +1,4 @@
-import { IUser } from '@modules/users/entities';
+import { IUser } from '@modules/users/domain/entities';
 import FakeUser from '@modules/users/fakes/FakeUser';
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
 import { FakeGame } from '@modules/games/fakes';

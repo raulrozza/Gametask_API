@@ -1,4 +1,4 @@
-import { IUser } from '@modules/users/entities';
+import { IUser } from '@modules/users/domain/entities';
 
 export default interface IHistory {
   user: string | IUser;

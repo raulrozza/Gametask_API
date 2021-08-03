@@ -3,7 +3,7 @@ import { inject, injectable } from 'tsyringe';
 
 import errorCodes from '@config/errorCodes';
 
-import { IUser } from '@modules/users/entities';
+import { IUser } from '@modules/users/domain/entities';
 import { IUsersRepository } from '@modules/users/repositories';
 import { IUpdateUserDTO } from '@modules/users/domain/dtos';
 import { RequestError } from '@shared/infra/errors';

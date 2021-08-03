@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import { IUser } from '@modules/users/entities';
+import { IUser } from '@modules/users/domain/entities';
 import { IUsersRepository } from '@modules/users/repositories';
 
 @injectable()

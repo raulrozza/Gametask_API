@@ -1,4 +1,4 @@
-import { IUser } from '@modules/users/entities';
+import { IUser } from '@modules/users/domain/entities';
 import { ILevelInfo, IRank, ITheme } from '.';
 
 export default interface IGame {

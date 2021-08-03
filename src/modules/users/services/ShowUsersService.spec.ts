@@ -1,5 +1,5 @@
 import faker from 'faker';
-import { IUser } from '../entities';
+import { IUser } from '@modules/users/domain/entities';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import ShowUsersService from './ShowUsersService';
 

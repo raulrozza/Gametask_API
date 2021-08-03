@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { IUser } from '@modules/users/entities';
+import { IUser } from '@modules/users/domain/entities';
 import { IUsersRepository } from '..';
 
 export default class FakeUsersRepository implements IUsersRepository {

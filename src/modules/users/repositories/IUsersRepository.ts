@@ -1,4 +1,4 @@
-import { IUser } from '../entities';
+import { IUser } from '@modules/users/domain/entities';
 
 export default interface IUsersRepository<T extends IUser = IUser> {
   findAll(): Promise<T[]>;

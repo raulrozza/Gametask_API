@@ -1,7 +1,7 @@
 import faker from 'faker';
 
 import { ListUsersService } from '.';
-import { IUser } from '../entities';
+import { IUser } from '@modules/users/domain/entities';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 
 describe('ListUsersService', () => {
