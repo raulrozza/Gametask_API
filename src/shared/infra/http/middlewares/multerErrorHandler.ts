@@ -1,11 +1,11 @@
 import errorCodes from '@config/errorCodes';
+import { IErrorResponse } from '@shared/domain/errors';
 import { ErrorRequestHandler } from 'express';
 import { MulterError } from 'multer';
-import { IResponseError } from '../entities';
 
 const multerErrorHandler: ErrorRequestHandler = (error, _, response, next) => {
   if (error instanceof MulterError) {
-    const responseJson: IResponseError = {
+    const responseJson: IErrorResponse = {
       errorCode: errorCodes.BAD_REQUEST_ERROR,
       message: error.message,
     };

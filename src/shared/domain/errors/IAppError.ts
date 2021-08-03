@@ -1,9 +1,12 @@
-import { IResponseError } from '@shared/infra/http/entities';
+export interface IErrorResponse {
+  message: string;
+  errorCode: number;
+}
 
 export default interface IAppError {
   message: string;
   errorCode: number;
   statusCode?: number;
 
-  toJsonResponse(): IResponseError;
+  toJsonResponse(): IErrorResponse;
 }

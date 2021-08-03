@@ -1,6 +1,6 @@
 import errorCodes from '@config/errorCodes';
+import { IErrorResponse } from '@shared/domain/errors';
 import { ErrorRequestHandler } from 'express';
-import { IResponseError } from '@shared/infra/http/entities';
 
 const internalErrorHandler: ErrorRequestHandler = (
   error,
@@ -10,7 +10,7 @@ const internalErrorHandler: ErrorRequestHandler = (
 ) => {
   console.error(error);
 
-  const responseError: IResponseError = {
+  const responseError: IErrorResponse = {
     message: 'Internal server error',
     errorCode: errorCodes.INTERNAL_SERVER_ERROR,
   };

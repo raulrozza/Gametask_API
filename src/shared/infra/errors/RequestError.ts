@@ -1,5 +1,4 @@
-import { IAppError } from '@shared/domain/errors';
-import { IResponseError } from '@shared/infra/http/entities';
+import { IAppError, IErrorResponse } from '@shared/domain/errors';
 
 export default class RequestError extends Error implements IAppError {
   constructor(
@@ -10,8 +9,8 @@ export default class RequestError extends Error implements IAppError {
     super(message);
   }
 
-  public toJsonResponse(): IResponseError {
-    const jsonResponse: IResponseError = {
+  public toJsonResponse(): IErrorResponse {
+    const jsonResponse: IErrorResponse = {
       errorCode: this.errorCode,
       message: this.message,
     };

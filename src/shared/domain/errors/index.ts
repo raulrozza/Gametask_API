@@ -1,1 +1,1 @@
-export { default as IAppError } from './IAppError';
+export { default as IAppError, IErrorResponse } from './IAppError';
