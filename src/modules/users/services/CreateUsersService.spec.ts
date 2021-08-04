@@ -1,7 +1,7 @@
 import { RequestError } from '@shared/infra/errors';
 import faker from 'faker';
 
-import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
+import FakeHashProvider from '@modules/users/domain/providers/fakes/FakeHashProvider';
 import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
 import CreateUsersService from './CreateUsersService';
 

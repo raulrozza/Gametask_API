@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
-import IHashProvider from '../models/IHashProvider';
+
+import IHashProvider from '@modules/users/domain/providers/IHashProvider';
 
 const BCRYPT_SALT_ROUNDS = 12;
 

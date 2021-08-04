@@ -2,12 +2,10 @@ import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
 import errorCodes from '@config/errorCodes';
-import { RequestError } from '@shared/infra/errors';
-
-// Modules
 import { ICreateUserDTO } from '@modules/users/domain/dtos';
-import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
+import IHashProvider from '@modules/users/domain/providers/IHashProvider';
 import { IUsersRepository } from '@modules/users/domain/repositories';
+import { RequestError } from '@shared/infra/errors';
 
 @injectable()
 export default class CreateUsersService {
