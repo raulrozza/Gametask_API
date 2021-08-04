@@ -7,7 +7,7 @@ import { RequestError } from '@shared/infra/errors';
 // Modules
 import { ICreateUserDTO } from '@modules/users/domain/dtos';
 import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
-import { IUsersRepository } from '@modules/users/repositories';
+import { IUsersRepository } from '@modules/users/domain/repositories';
 
 @injectable()
 export default class CreateUsersService {

@@ -5,10 +5,9 @@ import { IUser } from 'src/modules/users/domain/entities';
 
 export interface IUserDocument extends Omit<IUser, 'id'>, Document {
   id: NonNullable<Document['id']>;
-  profile_url: string;
 }
 
-const UserSchema = new Schema<IUserDocument>(
+const UserSchema = new Schema(
   {
     firstname: {
       type: String,

@@ -6,7 +6,7 @@ import { RequestError } from '@shared/infra/errors';
 
 import { IGamesRepository } from '@modules/games/repositories';
 import { IGame, ILevelInfo, IRank } from '@modules/games/entities';
-import { IUsersRepository } from '@modules/users/repositories';
+import { IUsersRepository } from '@modules/users/domain/repositories';
 import { IPlayersRepository } from '@modules/players/repositories';
 import { IPlayer } from '@modules/players/entities';
 import ICreatePlayerDTO from '@modules/players/dtos/ICreatePlayerDTO';

@@ -3,7 +3,7 @@ import { isValidObjectId } from 'mongoose';
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 import { IUser } from '@modules/users/domain/entities';
-import { IUsersRepository } from '@modules/users/repositories';
+import { IUsersRepository } from '@modules/users/domain/repositories';
 import { User } from '@modules/users/infra/mongoose/entities';
 import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
 

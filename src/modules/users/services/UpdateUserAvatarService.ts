@@ -6,7 +6,7 @@ import errorCodes from '@config/errorCodes';
 import IStorageProvider from '@shared/domain/providers/IStorageProvider';
 import { RequestError } from '@shared/infra/errors';
 
-import { IUsersRepository } from '@modules/users/repositories';
+import { IUsersRepository } from '@modules/users/domain/repositories';
 import { IUpdateUserAvatarDTO } from '@modules/users/domain/dtos';
 
 const USER_FOLDER = 'user';

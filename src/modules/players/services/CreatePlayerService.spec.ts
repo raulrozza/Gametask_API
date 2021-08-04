@@ -1,6 +1,6 @@
 import { IUser } from '@modules/users/domain/entities';
 import FakeUser from '@modules/users/fakes/FakeUser';
-import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
+import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
 import { FakeGame } from '@modules/games/fakes';
 import { IGame, IRank } from '@modules/games/entities';
 import FakeGamesRepository from '@modules/games/repositories/fakes/FakeGamesRepository';

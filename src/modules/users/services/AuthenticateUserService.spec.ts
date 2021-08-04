@@ -2,7 +2,7 @@ import { RequestError } from '@shared/infra/errors';
 import FakeUser from '../fakes/FakeUser';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import FakeTokenProvider from '../providers/TokenProvider/fakes/FakeTokenProvider';
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
+import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
 import AuthenticateUserService from './AuthenticateUserService';
 
 const getService = () => {

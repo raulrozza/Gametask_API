@@ -1,6 +1,6 @@
 import FakeStorageProvider from '@shared/domain/providers/fakes/FakeStorageProvider';
 import { UpdateUserAvatarService } from '.';
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
+import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
 import FakeUser from '../fakes/FakeUser';
 import { RequestError } from '@shared/infra/errors';
 

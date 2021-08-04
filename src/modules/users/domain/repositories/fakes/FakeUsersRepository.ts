@@ -1,5 +1,8 @@
 import { v4 as uuid } from 'uuid';
+
+import { ICreateUserDTO, IUpdateUserDTO } from '@modules/users/domain/dtos';
 import { IUser } from '@modules/users/domain/entities';
+
 import { IUsersRepository } from '..';
 
 export default class FakeUsersRepository implements IUsersRepository {
@@ -21,22 +24,33 @@ export default class FakeUsersRepository implements IUsersRepository {
     return Promise.resolve(foundUser);
   }
 
-  public async create(user: IUser): Promise<IUser> {
-    user.id = uuid();
+  public async create({
+    email,
+    firstname,
+    lastname,
+    password,
+  }: ICreateUserDTO): Promise<IUser> {
+    const user: IUser = {
+      id: uuid(),
+      email,
+      firstname,
+      lastname,
+      password,
+    };
 
     this.users.push(user);
 
     return Promise.resolve(user);
   }
 
-  public async update({ id, ...user }: IUser): Promise<IUser> {
+  public async update({ id, ...data }: IUpdateUserDTO): Promise<IUser> {
     const foundIndex = this.users.findIndex(storedUser => storedUser.id === id);
 
     const foundUser = this.users[foundIndex];
 
     const updatedUser = {
       ...foundUser,
-      ...user,
+      ...data,
     };
 
     this.users[foundIndex] = updatedUser;

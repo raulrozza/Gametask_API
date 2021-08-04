@@ -1,4 +1,4 @@
-import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
+import FakeUsersRepository from '@modules/users/doma@modules/users/domain/repositories/fakes/FakeUsersRepository';
 import FakeUser from '@modules/users/fakes/FakeUser';
 import UpdateUserService from './UpdateUserService';
 import { RequestError } from '@shared/infra/errors';
