@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 
 import envs from '@config/environment';
 
-import ITokenProvider from '../models/ITokenProvider';
+import ITokenProvider from '@modules/users/domain/providers/ITokenProvider';
 
 const VALID_DAYS = 7;
 const EXPIRES_IN = VALID_DAYS * 86400;
