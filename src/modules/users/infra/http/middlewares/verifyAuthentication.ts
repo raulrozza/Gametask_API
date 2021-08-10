@@ -2,8 +2,9 @@ import { RequestHandler } from 'express';
 
 import errorCodes from '@config/errorCodes';
 
+import ITokenProvider from '@modules/users/domain/providers/ITokenProvider';
 import { RequestError } from '@shared/infra/errors';
-import JwtTokenProvider from '@modules/users/providers/TokenProvider/implementations/JwtTokenProvider';
+import { container } from 'tsyringe';
 
 interface IAuth {
   id: string;
@@ -21,7 +22,7 @@ const verifyAuthentication: RequestHandler = async (request, _, next) => {
 
   const [, token] = header.split(' ');
 
-  const tokenProvider = new JwtTokenProvider();
+  const tokenProvider = container.resolve<ITokenProvider>('TokenProvider');
 
   const auth = await tokenProvider.verify<IAuth>(token);
 
