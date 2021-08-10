@@ -1,21 +1,20 @@
 import { isValidObjectId } from 'mongoose';
 
 import errorCodes from '@config/errorCodes';
-import { RequestError } from '@shared/errors/implementations';
-import { IUser } from '@modules/users/entities';
-import { IUsersRepository } from '@modules/users/repositories';
+import { RequestError } from '@shared/infra/errors';
+import { IUser } from '@modules/users/domain/entities';
+import { IUsersRepository } from '@modules/users/domain/repositories';
 import { User } from '@modules/users/infra/mongoose/entities';
 import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
 
-export default class UsersRepository
-  implements IUsersRepository<IUserDocument> {
-  public async findAll(): Promise<IUserDocument[]> {
+export default class UsersRepository implements IUsersRepository {
+  public async findAll(): Promise<IUser[]> {
     const users = await User.find({}, { password: 0 });
 
     return users;
   }
 
-  public async findOne(id: string): Promise<IUserDocument> {
+  public async findOne(id: string): Promise<IUser | undefined> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
@@ -24,7 +23,7 @@ export default class UsersRepository
     return user || undefined;
   }
 
-  public async findOneByEmail(email: string): Promise<IUserDocument> {
+  public async findOneByEmail(email: string): Promise<IUser | undefined> {
     const user = await User.findOne({ email });
 
     return user || undefined;
@@ -51,7 +50,7 @@ export default class UsersRepository
     firstname,
     lastname,
     image,
-  }: IUser): Promise<IUserDocument> {
+  }: IUser): Promise<IUser> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
@@ -66,6 +65,9 @@ export default class UsersRepository
       },
       { new: true },
     );
+
+    if (!updatedUser)
+      throw new RequestError('User not found', errorCodes.COULD_NOT_FIND_USER);
 
     return updatedUser;
   }

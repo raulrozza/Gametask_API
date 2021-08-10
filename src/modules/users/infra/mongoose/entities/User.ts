@@ -1,14 +1,13 @@
 import { Document, Schema, model } from 'mongoose';
 import envs from '@config/environment';
 
-import { IUser } from 'src/modules/users/entities';
+import { IUser } from '@modules/users/domain/entities';
 
 export interface IUserDocument extends Omit<IUser, 'id'>, Document {
   id: NonNullable<Document['id']>;
-  profile_url: string;
 }
 
-const UserSchema = new Schema<IUserDocument>(
+const UserSchema = new Schema(
   {
     firstname: {
       type: String,

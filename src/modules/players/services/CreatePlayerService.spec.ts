@@ -1,12 +1,12 @@
-import { IUser } from '@modules/users/entities';
-import FakeUser from '@modules/users/fakes/FakeUser';
-import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
+import { IUser } from '@modules/users/domain/entities';
+import FakeUser from '@modules/users/domain/entities/fakes/FakeUser';
+import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
 import { FakeGame } from '@modules/games/fakes';
 import { IGame, IRank } from '@modules/games/entities';
 import FakeGamesRepository from '@modules/games/repositories/fakes/FakeGamesRepository';
 import { CreatePlayerService } from '.';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 
 const initService = async (addRanks: boolean | IRank[] = false) => {
   const playersRepository = new FakePlayersRepository();

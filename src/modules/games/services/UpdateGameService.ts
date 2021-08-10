@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
 import errorCodes from '@config/errorCodes';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 
 import IUpdateGameDTO from '@modules/games/dtos/IUpdateGameDTO';
 import { IGame } from '@modules/games/entities';

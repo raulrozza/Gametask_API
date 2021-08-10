@@ -10,8 +10,8 @@ import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import FakePlayer from '../fakes/FakePlayer';
 import { IPlayer } from '../entities';
-import { RequestError } from '@shared/errors/implementations';
-import FakeTransactionProvider from '@shared/container/providers/TransactionProvider/fakes/FakeTransactionProvider';
+import { RequestError } from '@shared/infra/errors';
+import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 
 const initService = async () => {
   const completeActivityRequestRepository = new FakeCompleteActivityRequestRepository();

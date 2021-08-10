@@ -8,7 +8,7 @@ import {
   ListTitlesService,
   UpdateTitleService,
 } from '@modules/games/services';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 
 export default class TitleController {
   public index: RequestHandler = async (request, response) => {

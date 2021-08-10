@@ -11,9 +11,9 @@ import {
 } from '@modules/players/repositories';
 import { ICompleteActivityRequest } from '@modules/players/entities';
 import ICreateCompleteActivityRequestDTO from '@modules/players/dtos/ICreateCompleteActivityRequestDTO';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
-import ITransactionProvider from '@shared/container/providers/TransactionProvider/models/ITransactionProvider';
+import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
 
 interface IValidateInputParams {
   activity: string;

@@ -3,10 +3,10 @@ import { inject, injectable } from 'tsyringe';
 
 import errorCodes from '@config/errorCodes';
 
-import { IUser } from '@modules/users/entities';
-import { IUsersRepository } from '@modules/users/repositories';
-import { IUpdateUserDTO } from '@modules/users/dtos';
-import { RequestError } from '@shared/errors/implementations';
+import { IUser } from '@modules/users/domain/entities';
+import { IUsersRepository } from '@modules/users/domain/repositories';
+import { IUpdateUserDTO } from '@modules/users/domain/dtos';
+import { RequestError } from '@shared/infra/errors';
 
 @injectable()
 export default class UpdateUserService {

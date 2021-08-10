@@ -1,7 +1,7 @@
 import { ClientSession, isValidObjectId } from 'mongoose';
 
 import errorCodes from '@config/errorCodes';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import { IPlayersRepository } from '@modules/players/repositories';
 import Player, {
   IPlayerDocument,

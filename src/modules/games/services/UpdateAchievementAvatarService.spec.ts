@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
-import FakeStorageProvider from '@shared/container/providers/StorageProvider/fakes/FakeStorageProvider';
-import { RequestError } from '@shared/errors/implementations';
+import FakeStorageProvider from '@shared/domain/providers/fakes/FakeStorageProvider';
+import { RequestError } from '@shared/infra/errors';
 import FakeAchievement from '../fakes/FakeAchievement';
 import FakeAchievementsRepository from '../repositories/fakes/FakeAchievementsRepository';
 import UpdateAchievementAvatarService from './UpdateAchievementAvatarService';

@@ -1,8 +1,8 @@
-import { RequestError } from '@shared/errors/implementations';
-import FakeUser from '../fakes/FakeUser';
-import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
-import FakeTokenProvider from '../providers/TokenProvider/fakes/FakeTokenProvider';
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
+import { RequestError } from '@shared/infra/errors';
+import FakeUser from '@modules/users/domain/entities/fakes/FakeUser';
+import FakeHashProvider from '@modules/users/domain/providers/fakes/FakeHashProvider';
+import FakeTokenProvider from '@modules/users/domain/providers/fakes/FakeTokenProvider';
+import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
 import AuthenticateUserService from './AuthenticateUserService';
 
 const getService = () => {

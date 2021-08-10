@@ -7,7 +7,7 @@ import ChangeTitleService from './ChangeTitleService';
 import FakePlayer from '../fakes/FakePlayer';
 import { ITitle } from '@modules/games/entities';
 import { IPlayer } from '../entities';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 
 const initService = async () => {
   const titlesRepository = new FakeTitlesRepository();

@@ -1,4 +1,4 @@
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import { v4 as uuid } from 'uuid';
 
 import FakeActivity from '../fakes/FakeActivity';

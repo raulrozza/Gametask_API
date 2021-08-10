@@ -1,4 +1,4 @@
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import { ErrorRequestHandler } from 'express';
 
 const requestErrorHandler: ErrorRequestHandler = (error, _, response, next) => {

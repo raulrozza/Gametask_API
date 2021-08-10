@@ -10,8 +10,8 @@ import FakeUnlockAchievementRequestRepository from '../repositories/fakes/FakeUn
 import CreateUnlockAchievementRequestService from './CreateUnlockAchievementRequestService';
 import { IPlayer } from '../entities';
 import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest';
-import { RequestError } from '@shared/errors/implementations';
-import FakeTransactionProvider from '@shared/container/providers/TransactionProvider/fakes/FakeTransactionProvider';
+import { RequestError } from '@shared/infra/errors';
+import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 
 const initService = async () => {
   const unlockAchievementRequestRepository = new FakeUnlockAchievementRequestRepository();

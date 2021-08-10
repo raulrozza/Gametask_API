@@ -1,19 +1,15 @@
 import 'reflect-metadata';
 
+import cors from 'cors';
 import express from 'express';
 import 'express-async-errors';
-import cors from 'cors';
 
-// Config
 import corsOptions from '@shared/infra/http/corsOptions';
+import '@shared/infra/mongoose';
+import '@shared/infra/container';
 
-// Routes
 import appRoutes from './routes';
 
-import '@shared/infra/mongoose';
-import '@shared/container';
-
-// Initial server configuration
 const app = express();
 
 app.use(cors(corsOptions));

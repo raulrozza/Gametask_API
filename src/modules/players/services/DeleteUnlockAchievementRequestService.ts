@@ -1,11 +1,11 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import ITransactionProvider from '@shared/container/providers/TransactionProvider/models/ITransactionProvider';
+import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
 import { IUnlockAchievementRequestRepository } from '@modules/players/repositories';
 import { IGamesRepository } from '@modules/games/repositories';
 import IRequestExecutionDTO from '@modules/players/dtos/IRequestExecutionDTO';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 
 @injectable()

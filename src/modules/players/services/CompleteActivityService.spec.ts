@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { FakeActivity, FakeGame } from '@modules/games/fakes';
 import FakeActivitiesRepository from '@modules/games/repositories/fakes/FakeActivitiesRepository';
 import FakeGamesRepository from '@modules/games/repositories/fakes/FakeGamesRepository';
-import FakeTransactionProvider from '@shared/container/providers/TransactionProvider/fakes/FakeTransactionProvider';
+import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 import FakePlayer from '../fakes/FakePlayer';
 import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCompleteActivityRequestRepository';
 import FakeFeedPostsRepository from '../repositories/fakes/FakeFeedPostsRepository';
@@ -12,7 +12,7 @@ import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import CompleteActivityService from './CompleteActivityService';
 import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
 import { IPosition } from '../entities/ILeaderboard';
-import { RequestError } from '@shared/errors/implementations';
+import { RequestError } from '@shared/infra/errors';
 
 const initService = async () => {
   const playersRepository = new FakePlayersRepository();
