@@ -5,7 +5,7 @@ import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCom
 import DeleteCompleteActivityRequestService from './DeleteCompleteActivityRequestService';
 import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
 import { RequestError } from '@shared/infra/errors';
-import { FakeGame } from '@modules/games/fakes';
+import { FakeGame } from '@modules/games/domain/entities/fakes';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 
 describe('DeleteCompleteActivityRequest', () => {

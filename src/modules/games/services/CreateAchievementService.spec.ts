@@ -1,7 +1,7 @@
 import { RequestError } from '@shared/infra/errors';
 import { v4 as uuid } from 'uuid';
 import { ITitle } from '@modules/games/domain/entities';
-import { FakeTitle } from '../fakes';
+import { FakeTitle } from '@modules/games/domain/entities/fakes';
 import FakeAchievement from '../fakes/FakeAchievement';
 import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
 import FakeTitlesRepository from '@modules/games/domain/repositories/fakes/FakeTitlesRepository';

@@ -1,7 +1,7 @@
 import { IUser } from '@shared/domain/entities';
 import FakeUser from '@shared/domain/entities/fakes/FakeUser';
 import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
-import { FakeGame } from '@modules/games/fakes';
+import { FakeGame } from '@modules/games/domain/entities/fakes';
 import { IGame, IRank } from '@modules/games/domain/entities';
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import { CreatePlayerService } from '.';

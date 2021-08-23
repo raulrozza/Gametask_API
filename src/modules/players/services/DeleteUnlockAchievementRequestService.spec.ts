@@ -5,7 +5,7 @@ import FakeUnlockAchievementRequestRepository from '../repositories/fakes/FakeUn
 import DeleteUnlockAchievementRequestService from './DeleteUnlockAchievementRequestService';
 import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest';
 import { RequestError } from '@shared/infra/errors';
-import { FakeGame } from '@modules/games/fakes';
+import { FakeGame } from '@modules/games/domain/entities/fakes';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 
 describe('DeleteUnlockAchievementRequestService', () => {
