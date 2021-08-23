@@ -4,7 +4,7 @@ import { inject, injectable } from 'tsyringe';
 import {
   IGamesRepository,
   ILeaderboardsRepository,
-} from '@modules/games/repositories';
+} from '@modules/games/domain/repositories';
 import { IGame } from '@modules/games/entities';
 import ICreateGameDTO from '@modules/games/domain/dtos/ICreateGameDTO';
 

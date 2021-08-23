@@ -4,7 +4,7 @@ import { inject, injectable } from 'tsyringe';
 import {
   IAchievementsRepository,
   ITitlesRepository,
-} from '@modules/games/repositories';
+} from '@modules/games/domain/repositories';
 import { IAchievement } from '@modules/games/entities';
 import ICreateAchievementDTO from '@modules/games/domain/dtos/ICreateAchievementDTO';
 import { RequestError } from '@shared/infra/errors';

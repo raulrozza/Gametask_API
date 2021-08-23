@@ -2,7 +2,7 @@ import { RequestError } from '@shared/infra/errors';
 import { v4 as uuid } from 'uuid';
 
 import FakeAchievement from '../fakes/FakeAchievement';
-import FakeAchievementsRepository from '../repositories/fakes/FakeAchievementsRepository';
+import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
 import UpdateAchievementService from './UpdateAchievementService';
 
 describe('UpdateAchievementService', () => {

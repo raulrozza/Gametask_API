@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import FakeTitle from '../fakes/FakeTitle';
-import FakeTitlesRepository from '../repositories/fakes/FakeTitlesRepository';
+import FakeTitlesRepository from '@modules/games/domain/repositories/fakes/FakeTitlesRepository';
 import CreateTitleService from './CreateTitleService';
 
 describe('CreateTitleService', () => {

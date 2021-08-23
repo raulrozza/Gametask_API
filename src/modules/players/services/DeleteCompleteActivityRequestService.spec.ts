@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import FakeGamesRepository from '@modules/games/repositories/fakes/FakeGamesRepository';
+import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCompleteActivityRequestRepository';
 import DeleteCompleteActivityRequestService from './DeleteCompleteActivityRequestService';
 import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';

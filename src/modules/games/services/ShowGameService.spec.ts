@@ -2,7 +2,7 @@ import { v4 as uuid } from 'uuid';
 
 import { IGame } from '../entities';
 import FakeGame from '../fakes/FakeGame';
-import FakeGamesRepository from '../repositories/fakes/FakeGamesRepository';
+import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import ShowGameService from './ShowGameService';
 
 describe('ShowGameService', () => {

@@ -2,10 +2,10 @@ import { v4 as uuid } from 'uuid';
 
 import { IActivity, IGame } from '@modules/games/entities';
 import { FakeActivity, FakeGame } from '@modules/games/fakes';
-import FakeGamesRepository from '@modules/games/repositories/fakes/FakeGamesRepository';
+import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCompleteActivityRequestRepository';
 import CreateCompleteActivityRequestService from './CreateCompleteActivityRequestService';
-import FakeActivitiesRepository from '@modules/games/repositories/fakes/FakeActivitiesRepository';
+import FakeActivitiesRepository from '@modules/games/domain/repositories/fakes/FakeActivitiesRepository';
 import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import FakePlayer from '../fakes/FakePlayer';

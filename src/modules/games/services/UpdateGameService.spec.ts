@@ -2,7 +2,7 @@ import { RequestError } from '@shared/infra/errors';
 import { v4 as uuid } from 'uuid';
 
 import FakeGame from '../fakes/FakeGame';
-import FakeGamesRepository from '../repositories/fakes/FakeGamesRepository';
+import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import UpdateGameService from './UpdateGameService';
 
 describe('UpdateGameService', () => {

@@ -4,7 +4,7 @@ import { inject, injectable } from 'tsyringe';
 import {
   IActivitiesRepository,
   IGamesRepository,
-} from '@modules/games/repositories';
+} from '@modules/games/domain/repositories';
 import {
   ICompleteActivityRequestRepository,
   IPlayersRepository,

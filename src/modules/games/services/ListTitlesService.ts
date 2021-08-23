@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import { ITitlesRepository } from '@modules/games/repositories';
+import { ITitlesRepository } from '@modules/games/domain/repositories';
 import { ITitle } from '@modules/games/entities';
 import IListTitlesDTO from '@modules/games/domain/dtos/IListTitlesDTO';
 

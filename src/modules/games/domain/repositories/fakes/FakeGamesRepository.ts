@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import { IGame } from '@modules/games/entities';
-import { IGamesRepository } from '..';
+import { IGamesRepository } from '@modules/games/domain/repositories';
 
 export default class FakeGamesRepository implements IGamesRepository {
   private readonly games: IGame[] = [];

@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 
 import FakeActivity from '../fakes/FakeActivity';
-import FakeActivitiesRepository from '../repositories/fakes/FakeActivitiesRepository';
+import FakeActivitiesRepository from '@modules/games/domain/repositories/fakes/FakeActivitiesRepository';
 import CreateActivityService from './CreateActivityService';
 
 describe('CreateActivityService', () => {

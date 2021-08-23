@@ -1,4 +1,4 @@
-import { IAchievement } from '../entities';
+import { IAchievement } from '@modules/games/entities';
 
 export default interface IAchievementsRepository<
   T extends IAchievement = IAchievement

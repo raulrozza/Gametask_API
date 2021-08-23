@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import { IActivity, IHistory } from '@modules/games/entities';
-import { IActivitiesRepository } from '..';
+import { IActivitiesRepository } from '@modules/games/domain/repositories';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 

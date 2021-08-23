@@ -10,7 +10,7 @@ import {
 import {
   IActivitiesRepository,
   IGamesRepository,
-} from '@modules/games/repositories';
+} from '@modules/games/domain/repositories';
 import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
 import ICompleteActivityDTO from '@modules/players/dtos/ICompleteActivityDTO';
 import { RequestError } from '@shared/infra/errors';

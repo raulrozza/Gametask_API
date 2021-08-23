@@ -6,7 +6,7 @@ import { RequestError } from '@shared/infra/errors';
 
 import IUpdateActivityDTO from '@modules/games/domain/dtos/IUpdateActivityDTO';
 import { IActivity, IActivityLog } from '@modules/games/entities';
-import { IActivitiesRepository } from '@modules/games/repositories';
+import { IActivitiesRepository } from '@modules/games/domain/repositories';
 
 interface INewActivityDTO {
   name: string;

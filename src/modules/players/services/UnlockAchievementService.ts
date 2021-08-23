@@ -8,7 +8,7 @@ import {
 import {
   IAchievementsRepository,
   IGamesRepository,
-} from '@modules/games/repositories';
+} from '@modules/games/domain/repositories';
 import IUnlockAchievementDTO from '../dtos/IUnlockAchievementDTO';
 import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
 import { RequestError } from '@shared/infra/errors';

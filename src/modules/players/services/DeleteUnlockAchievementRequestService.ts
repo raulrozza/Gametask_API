@@ -3,7 +3,7 @@ import { inject, injectable } from 'tsyringe';
 
 import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
 import { IUnlockAchievementRequestRepository } from '@modules/players/repositories';
-import { IGamesRepository } from '@modules/games/repositories';
+import { IGamesRepository } from '@modules/games/domain/repositories';
 import IRequestExecutionDTO from '@modules/players/dtos/IRequestExecutionDTO';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';

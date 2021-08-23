@@ -2,7 +2,7 @@ import { v4 as uuid } from 'uuid';
 import FakeStorageProvider from '@shared/domain/providers/fakes/FakeStorageProvider';
 import { RequestError } from '@shared/infra/errors';
 import FakeAchievement from '../fakes/FakeAchievement';
-import FakeAchievementsRepository from '../repositories/fakes/FakeAchievementsRepository';
+import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
 import UpdateAchievementAvatarService from './UpdateAchievementAvatarService';
 
 const getService = () => {

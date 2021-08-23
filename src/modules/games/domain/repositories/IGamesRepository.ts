@@ -1,4 +1,4 @@
-import { IGame } from '../entities';
+import { IGame } from '@modules/games/entities';
 
 export default interface IGamesRepository<T extends IGame = IGame> {
   findAllFromUser(userId: string): Promise<T[]>;

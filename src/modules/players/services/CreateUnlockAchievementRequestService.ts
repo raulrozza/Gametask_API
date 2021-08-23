@@ -7,7 +7,7 @@ import ITransactionProvider from '@shared/domain/providers/ITransactionProvider'
 import {
   IAchievementsRepository,
   IGamesRepository,
-} from '@modules/games/repositories';
+} from '@modules/games/domain/repositories';
 import ICreateUnlockAchievementRequestDTO from '@modules/players/dtos/ICreateUnlockAchievementRequestDTO';
 import { IUnlockAchievementRequest } from '@modules/players/entities';
 import {

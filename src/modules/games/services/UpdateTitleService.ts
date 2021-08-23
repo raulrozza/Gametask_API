@@ -6,7 +6,7 @@ import { RequestError } from '@shared/infra/errors';
 
 import IUpdateTitleDTO from '@modules/games/domain/dtos/IUpdateTitleDTO';
 import { ITitle } from '@modules/games/entities';
-import { ITitlesRepository } from '@modules/games/repositories';
+import { ITitlesRepository } from '@modules/games/domain/repositories';
 
 @injectable()
 export default class UpdateTitleService {

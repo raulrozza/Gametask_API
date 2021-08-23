@@ -1,4 +1,4 @@
-import { ILeaderboardsRepository } from '@modules/games/repositories';
+import { ILeaderboardsRepository } from '@modules/games/domain/repositories';
 import Leaderboard, {
   ILeaderboardDocument,
 } from '@modules/players/infra/mongoose/entities/Leaderboard';

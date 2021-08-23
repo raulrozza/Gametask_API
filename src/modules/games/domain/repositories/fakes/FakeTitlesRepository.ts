@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import { ITitle } from '@modules/games/entities';
-import { ITitlesRepository } from '..';
+import { ITitlesRepository } from '@modules/games/domain/repositories';
 
 export default class FakeTitlesRepository implements ITitlesRepository {
   private readonly titles: ITitle[] = [];

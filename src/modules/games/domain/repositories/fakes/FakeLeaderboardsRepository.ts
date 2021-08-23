@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 
 import { ILeaderboard } from '@modules/players/entities';
-import { ILeaderboardsRepository } from '..';
+import { ILeaderboardsRepository } from '@modules/games/domain/repositories';
 
 export default class FakeLeaderboardsRepository
   implements ILeaderboardsRepository {

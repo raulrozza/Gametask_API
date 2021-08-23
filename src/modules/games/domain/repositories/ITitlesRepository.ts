@@ -1,4 +1,4 @@
-import { ITitle } from '../entities';
+import { ITitle } from '@modules/games/entities';
 
 export default interface ITitlesRepository<T extends ITitle = ITitle> {
   findAllFromGame(gameId: string, name?: string): Promise<T[]>;

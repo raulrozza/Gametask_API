@@ -2,7 +2,7 @@ import { v4 as uuid } from 'uuid';
 
 import { FakeAchievement } from '../fakes';
 import { IAchievement } from '../entities';
-import FakeAchievementsRepository from '../repositories/fakes/FakeAchievementsRepository';
+import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
 import DeleteAchievementService from './DeleteAchievementService';
 
 describe('DeleteAchievementService', () => {

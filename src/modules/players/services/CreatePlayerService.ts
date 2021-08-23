@@ -4,7 +4,7 @@ import { inject, injectable } from 'tsyringe';
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
-import { IGamesRepository } from '@modules/games/repositories';
+import { IGamesRepository } from '@modules/games/domain/repositories';
 import { IGame, ILevelInfo, IRank } from '@modules/games/entities';
 import { IUsersRepository } from '@modules/users/domain/repositories';
 import { IPlayersRepository } from '@modules/players/repositories';

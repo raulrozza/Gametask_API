@@ -2,7 +2,7 @@ import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 import { v4 as uuid } from 'uuid';
 
-import FakeLeaderboardsRepository from '../repositories/fakes/FakeLeaderboardsRepository';
+import FakeLeaderboardsRepository from '@modules/games/domain/repositories/fakes/FakeLeaderboardsRepository';
 import ResetLeaderboardsService from './ResetLeaderboardsService';
 
 describe('ResetLeaderboardsService', () => {

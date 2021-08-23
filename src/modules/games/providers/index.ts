@@ -13,7 +13,7 @@ import {
   IGamesRepository,
   ILeaderboardsRepository,
   ITitlesRepository,
-} from '@modules/games/repositories';
+} from '@modules/games/domain/repositories';
 
 container.registerSingleton<IAchievementsRepository>(
   'AchievementsRepository',

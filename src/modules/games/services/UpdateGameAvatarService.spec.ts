@@ -1,7 +1,7 @@
 import FakeStorageProvider from '@shared/domain/providers/fakes/FakeStorageProvider';
 import { RequestError } from '@shared/infra/errors';
 import FakeGame from '../fakes/FakeGame';
-import FakeGamesRepository from '../repositories/fakes/FakeGamesRepository';
+import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import UpdateGameAvatarService from './UpdateGameAvatarService';
 
 const getService = () => {

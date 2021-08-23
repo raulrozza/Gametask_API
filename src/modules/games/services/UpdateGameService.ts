@@ -6,7 +6,7 @@ import { RequestError } from '@shared/infra/errors';
 
 import IUpdateGameDTO from '@modules/games/domain/dtos/IUpdateGameDTO';
 import { IGame } from '@modules/games/entities';
-import { IGamesRepository } from '@modules/games/repositories';
+import { IGamesRepository } from '@modules/games/domain/repositories';
 
 @injectable()
 export default class UpdateGameService {

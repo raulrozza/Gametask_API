@@ -1,8 +1,8 @@
 import { v4 as uuid } from 'uuid';
 
 import { FakeActivity, FakeGame } from '@modules/games/fakes';
-import FakeActivitiesRepository from '@modules/games/repositories/fakes/FakeActivitiesRepository';
-import FakeGamesRepository from '@modules/games/repositories/fakes/FakeGamesRepository';
+import FakeActivitiesRepository from '@modules/games/domain/repositories/fakes/FakeActivitiesRepository';
+import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 import FakePlayer from '../fakes/FakePlayer';
 import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCompleteActivityRequestRepository';

@@ -4,7 +4,7 @@ import { inject, injectable } from 'tsyringe';
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
-import { ILeaderboardsRepository } from '@modules/games/repositories';
+import { ILeaderboardsRepository } from '@modules/games/domain/repositories';
 
 @injectable()
 export default class ResetLeaderboardsService {

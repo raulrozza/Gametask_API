@@ -3,8 +3,8 @@ import { v4 as uuid } from 'uuid';
 import { ITitle } from '../entities';
 import { FakeTitle } from '../fakes';
 import FakeAchievement from '../fakes/FakeAchievement';
-import FakeAchievementsRepository from '../repositories/fakes/FakeAchievementsRepository';
-import FakeTitlesRepository from '../repositories/fakes/FakeTitlesRepository';
+import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
+import FakeTitlesRepository from '@modules/games/domain/repositories/fakes/FakeTitlesRepository';
 import CreateAchievementService from './CreateAchievementService';
 
 describe('CreateAchievementService', () => {

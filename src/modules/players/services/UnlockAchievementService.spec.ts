@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 
-import FakeAchievementsRepository from '@modules/games/repositories/fakes/FakeAchievementsRepository';
-import FakeGamesRepository from '@modules/games/repositories/fakes/FakeGamesRepository';
+import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
+import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import FakeFeedPostsRepository from '../repositories/fakes/FakeFeedPostsRepository';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import FakeUnlockAchievementRequestRepository from '../repositories/fakes/FakeUnlockAchievementRequestRepository';
