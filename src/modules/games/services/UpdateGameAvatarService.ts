@@ -6,7 +6,7 @@ import errorCodes from '@config/errorCodes';
 import IStorageProvider from '@shared/domain/providers/IStorageProvider';
 import { RequestError } from '@shared/infra/errors';
 
-import IUpdateGameAvatarDTO from '@modules/games/dtos/IUpdateGameAvatarDTO';
+import IUpdateGameAvatarDTO from '@modules/games/domain/dtos/IUpdateGameAvatarDTO';
 import { IGamesRepository } from '@modules/games/repositories';
 
 const GAME_FOLDER = 'game';

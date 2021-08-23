@@ -6,7 +6,7 @@ import errorCodes from '@config/errorCodes';
 import IStorageProvider from '@shared/domain/providers/IStorageProvider';
 import { RequestError } from '@shared/infra/errors';
 
-import IUpdateAchievementAvatarDTO from '@modules/games/dtos/IUpdateAchievementAvatarDTO';
+import IUpdateAchievementAvatarDTO from '@modules/games/domain/dtos/IUpdateAchievementAvatarDTO';
 import { IAchievementsRepository } from '@modules/games/repositories';
 
 const ACHIEVEMENT_FOLDER = 'achievement';

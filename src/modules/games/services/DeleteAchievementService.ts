@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
 import { IAchievementsRepository } from '@modules/games/repositories';
-import IDeleteAchievementDTO from '@modules/games/dtos/IDeleteAchievementDTO';
+import IDeleteAchievementDTO from '@modules/games/domain/dtos/IDeleteAchievementDTO';
 
 @injectable()
 export default class DeleteAchievementService {

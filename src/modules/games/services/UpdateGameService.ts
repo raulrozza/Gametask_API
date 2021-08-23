@@ -4,7 +4,7 @@ import { inject, injectable } from 'tsyringe';
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
-import IUpdateGameDTO from '@modules/games/dtos/IUpdateGameDTO';
+import IUpdateGameDTO from '@modules/games/domain/dtos/IUpdateGameDTO';
 import { IGame } from '@modules/games/entities';
 import { IGamesRepository } from '@modules/games/repositories';
 

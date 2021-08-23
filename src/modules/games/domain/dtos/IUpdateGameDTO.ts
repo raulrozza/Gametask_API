@@ -1,4 +1,4 @@
-import { ILevelInfo, IRank, ITheme } from '../entities';
+import { ILevelInfo, IRank, ITheme } from '@modules/games/entities';
 
 export default interface IUpdateGameDTO {
   adminId: string;

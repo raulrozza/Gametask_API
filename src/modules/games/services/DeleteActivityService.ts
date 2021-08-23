@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
 import { IActivitiesRepository } from '@modules/games/repositories';
-import ISelectActivityDTO from '@modules/games/dtos/ISelectActivityDTO';
+import ISelectActivityDTO from '@modules/games/domain/dtos/ISelectActivityDTO';
 
 @injectable()
 export default class DeleteActivityService {
