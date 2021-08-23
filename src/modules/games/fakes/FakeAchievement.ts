@@ -1,5 +1,5 @@
 import faker from 'faker';
-import { IAchievement, IGame, ITitle } from '../entities';
+import { IAchievement, IGame, ITitle } from '@modules/games/domain/entities';
 
 export default class FakeAchievement implements IAchievement {
   public id: string = '';

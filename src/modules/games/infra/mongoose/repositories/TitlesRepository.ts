@@ -1,5 +1,5 @@
 import errorCodes from '@config/errorCodes';
-import { ITitle } from '@modules/games/entities';
+import { ITitle } from '@modules/games/domain/entities';
 import { ITitlesRepository } from '@modules/games/domain/repositories';
 import { RequestError } from '@shared/infra/errors';
 import { isValidObjectId } from 'mongoose';

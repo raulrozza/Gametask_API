@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import { IAchievement, IGame } from '@modules/games/entities';
+import { IAchievement, IGame } from '@modules/games/domain/entities';
 import { FakeAchievement, FakeGame } from '@modules/games/fakes';
 import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';

@@ -2,7 +2,7 @@ import { Schema, model, Document, Types } from 'mongoose';
 
 import RankSchema from '@modules/games/infra/mongoose/entities/Rank';
 import { IPlayer } from '@modules/players/entities';
-import { IRank } from '@modules/games/entities';
+import { IRank } from '@modules/games/domain/entities';
 import { ITitleDocument } from '@modules/games/infra/mongoose/entities/Title';
 import { IAchievementDocument } from '@modules/games/infra/mongoose/entities/Achievement';
 import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';

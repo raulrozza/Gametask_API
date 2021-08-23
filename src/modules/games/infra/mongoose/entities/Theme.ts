@@ -1,5 +1,5 @@
 import mongoose, { Document } from 'mongoose';
-import { ITheme } from '@modules/games/entities';
+import { ITheme } from '@modules/games/domain/entities';
 
 interface IThemeDocument extends ITheme, Document {}
 

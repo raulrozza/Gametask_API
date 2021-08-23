@@ -3,7 +3,7 @@ import FakeGame from '../fakes/FakeGame';
 
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import ListGamesService from './ListGamesService';
-import { IGame } from '../entities';
+import { IGame } from '@modules/games/domain/entities';
 
 describe('ListGamesService', () => {
   it('should list only the user owned games', async () => {

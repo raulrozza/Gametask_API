@@ -3,7 +3,7 @@ import FakeTitle from '../fakes/FakeTitle';
 
 import FakeTitlesRepository from '@modules/games/domain/repositories/fakes/FakeTitlesRepository';
 import ListTitlesService from './ListTitlesService';
-import { ITitle } from '../entities';
+import { ITitle } from '@modules/games/domain/entities';
 
 describe('ListTitlesService', () => {
   it('should list only the titles in a of a given game', async () => {

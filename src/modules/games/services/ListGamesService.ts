@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
 import { IGamesRepository } from '@modules/games/domain/repositories';
-import { IGame } from '@modules/games/entities';
+import { IGame } from '@modules/games/domain/entities';
 
 @injectable()
 export default class ListGamesService {

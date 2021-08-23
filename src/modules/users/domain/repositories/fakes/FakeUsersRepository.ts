@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 
 import { ICreateUserDTO, IUpdateUserDTO } from '@modules/users/domain/dtos';
-import { IUser } from '@modules/users/domain/entities';
+import { IUser } from '@shared/domain/entities';
 
 import { IUsersRepository } from '..';
 

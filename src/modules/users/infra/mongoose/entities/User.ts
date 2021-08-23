@@ -1,7 +1,7 @@
 import { Document, Schema, model } from 'mongoose';
 import envs from '@config/environment';
 
-import { IUser } from '@modules/users/domain/entities';
+import { IUser } from '@shared/domain/entities';
 
 export interface IUserDocument extends Omit<IUser, 'id'>, Document {
   id: NonNullable<Document['id']>;

@@ -5,7 +5,7 @@ import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
 import IUpdateAchievementDTO from '@modules/games/domain/dtos/IUpdateAchievementDTO';
-import { IAchievement } from '@modules/games/entities';
+import { IAchievement } from '@modules/games/domain/entities';
 import { IAchievementsRepository } from '@modules/games/domain/repositories';
 
 @injectable()

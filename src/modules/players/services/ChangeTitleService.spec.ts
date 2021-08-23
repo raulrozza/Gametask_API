@@ -5,7 +5,7 @@ import FakeTitlesRepository from '@modules/games/domain/repositories/fakes/FakeT
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import ChangeTitleService from './ChangeTitleService';
 import FakePlayer from '../fakes/FakePlayer';
-import { ITitle } from '@modules/games/entities';
+import { ITitle } from '@modules/games/domain/entities';
 import { IPlayer } from '../entities';
 import { RequestError } from '@shared/infra/errors';
 

@@ -1,5 +1,5 @@
 import faker from 'faker';
-import { ITitle } from '../entities';
+import { ITitle } from '@modules/games/domain/entities';
 
 export default class FakeTitle implements ITitle {
   public id: string = '';

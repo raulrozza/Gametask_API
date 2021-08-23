@@ -2,7 +2,7 @@ import { Schema, model, Document } from 'mongoose';
 import LevelInfoSchema from '@modules/games/infra/mongoose/entities/LevelInfoSchema';
 import RankSchema from '@modules/games/infra/mongoose/entities/Rank';
 import { IFeedPost } from '@modules/players/entities';
-import { ILevelInfo, IRank } from '@modules/games/entities';
+import { ILevelInfo, IRank } from '@modules/games/domain/entities';
 import { IActivityDocument } from '@modules/games/infra/mongoose/entities/Activity';
 import { IAchievementDocument } from '@modules/games/infra/mongoose/entities/Achievement';
 import { IGameDocument } from '@modules/games/infra/mongoose/entities/Game';

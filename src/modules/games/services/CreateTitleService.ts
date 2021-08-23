@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
 import { ITitlesRepository } from '@modules/games/domain/repositories';
-import { ITitle } from '@modules/games/entities';
+import { ITitle } from '@modules/games/domain/entities';
 import ICreateTitleDTO from '@modules/games/domain/dtos/ICreateTitleDTO';
 
 @injectable()

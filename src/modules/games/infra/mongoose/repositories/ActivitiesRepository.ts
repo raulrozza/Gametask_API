@@ -3,7 +3,7 @@ import { ClientSession, isValidObjectId } from 'mongoose';
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 import { IActivitiesRepository } from '@modules/games/domain/repositories';
-import { IActivity, IHistory } from '@modules/games/entities';
+import { IActivity, IHistory } from '@modules/games/domain/entities';
 import Activity, {
   IActivityDocument,
 } from '@modules/games/infra/mongoose/entities/Activity';

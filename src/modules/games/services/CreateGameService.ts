@@ -5,7 +5,7 @@ import {
   IGamesRepository,
   ILeaderboardsRepository,
 } from '@modules/games/domain/repositories';
-import { IGame } from '@modules/games/entities';
+import { IGame } from '@modules/games/domain/entities';
 import ICreateGameDTO from '@modules/games/domain/dtos/ICreateGameDTO';
 
 @injectable()

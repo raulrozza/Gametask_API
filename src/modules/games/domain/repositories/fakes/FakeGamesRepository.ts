@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { IGame } from '@modules/games/entities';
+import { IGame } from '@modules/games/domain/entities';
 import { IGamesRepository } from '@modules/games/domain/repositories';
 
 export default class FakeGamesRepository implements IGamesRepository {

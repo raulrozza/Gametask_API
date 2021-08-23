@@ -5,7 +5,7 @@ import {
   IAchievementsRepository,
   ITitlesRepository,
 } from '@modules/games/domain/repositories';
-import { IAchievement } from '@modules/games/entities';
+import { IAchievement } from '@modules/games/domain/entities';
 import ICreateAchievementDTO from '@modules/games/domain/dtos/ICreateAchievementDTO';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';

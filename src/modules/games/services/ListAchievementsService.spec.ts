@@ -3,7 +3,7 @@ import FakeAchievement from '../fakes/FakeAchievement';
 
 import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
 import ListAchievementsService from './ListAchievementsService';
-import { IAchievement } from '../entities';
+import { IAchievement } from '@modules/games/domain/entities';
 
 describe('ListAchievementsService', () => {
   it('should list only the achievements of the selected game', async () => {

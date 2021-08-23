@@ -1,6 +1,6 @@
 import { Schema, model, Document } from 'mongoose';
 
-import { IActivity, IActivityLog, IHistory } from '@modules/games/entities';
+import { IActivity, IActivityLog, IHistory } from '@modules/games/domain/entities';
 import ActivityLogSchema from './ActivityLog';
 import HistorySchema from './History';
 import { IGameDocument } from './Game';

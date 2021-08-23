@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import { IActivity } from '../entities';
+import { IActivity } from '@modules/games/domain/entities';
 import FakeActivity from '../fakes/FakeActivity';
 import FakeActivitiesRepository from '@modules/games/domain/repositories/fakes/FakeActivitiesRepository';
 import ShowActivityService from './ShowActivityService';

@@ -1,6 +1,6 @@
 import faker from 'faker';
 import { FakeTheme } from '.';
-import { IGame, ILevelInfo, IRank } from '../entities';
+import { IGame, ILevelInfo, IRank } from '@modules/games/domain/entities';
 
 export default class FakeGame implements IGame {
   public id: string = '';

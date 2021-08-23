@@ -1,5 +1,5 @@
 import { ICreateUserDTO, IUpdateUserDTO } from '@modules/users/domain/dtos';
-import { IUser } from '@modules/users/domain/entities';
+import { IUser } from '@shared/domain/entities';
 
 export default interface IUsersRepository {
   findAll(): Promise<IUser[]>;

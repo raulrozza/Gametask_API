@@ -1,5 +1,10 @@
 import faker from 'faker';
-import { IActivity, IActivityLog, IGame, IHistory } from '../entities';
+import {
+  IActivity,
+  IActivityLog,
+  IGame,
+  IHistory,
+} from '@modules/games/domain/entities';
 
 export default class FakeActivity implements IActivity {
   public id: string = '';

@@ -1,8 +1,8 @@
-import { IUser } from '@modules/users/domain/entities';
-import FakeUser from '@modules/users/domain/entities/fakes/FakeUser';
+import { IUser } from '@shared/domain/entities';
+import FakeUser from '@shared/domain/entities/fakes/FakeUser';
 import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
 import { FakeGame } from '@modules/games/fakes';
-import { IGame, IRank } from '@modules/games/entities';
+import { IGame, IRank } from '@modules/games/domain/entities';
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import { CreatePlayerService } from '.';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';

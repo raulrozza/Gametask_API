@@ -4,7 +4,7 @@ import {
   IGame,
   ILevelInfo,
   IRank,
-} from '@modules/games/entities';
+} from '@modules/games/domain/entities';
 import { IPlayer } from '@modules/players/entities';
 
 export default interface IFeedPost {

@@ -1,5 +1,5 @@
 import mongoose, { Document } from 'mongoose';
-import { IActivityLog } from '@modules/games/entities';
+import { IActivityLog } from '@modules/games/domain/entities';
 
 interface IActivityLogDocument extends IActivityLog, Document {}
 
@@ -17,7 +17,7 @@ const ActivityLogSchema = new mongoose.Schema<IActivityLogDocument>(
       type: Object,
       required: true,
     },
-    userId: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,

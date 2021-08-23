@@ -5,7 +5,7 @@ import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
 import IUpdateActivityDTO from '@modules/games/domain/dtos/IUpdateActivityDTO';
-import { IActivity, IActivityLog } from '@modules/games/entities';
+import { IActivity, IActivityLog } from '@modules/games/domain/entities';
 import { IActivitiesRepository } from '@modules/games/domain/repositories';
 
 interface INewActivityDTO {

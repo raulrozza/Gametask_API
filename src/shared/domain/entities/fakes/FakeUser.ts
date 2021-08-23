@@ -1,6 +1,6 @@
 import faker from 'faker';
 
-import { IUser } from '@modules/users/domain/entities';
+import { IUser } from '@shared/domain/entities';
 
 export default class FakeUser implements IUser {
   public id: string = '';

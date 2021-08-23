@@ -3,7 +3,7 @@ import FakeActivity from '../fakes/FakeActivity';
 
 import FakeActivitiesRepository from '@modules/games/domain/repositories/fakes/FakeActivitiesRepository';
 import ListActivitiesService from './ListActivitiesService';
-import { IActivity } from '../entities';
+import { IActivity } from '@modules/games/domain/entities';
 
 describe('ListActivitiesService', () => {
   it('should list only the activites of the selected game', async () => {

@@ -1,7 +1,7 @@
 import { Schema, model, Document } from 'mongoose';
 import envs from '@config/environment';
 
-import { IGame, IRank } from '@modules/games/entities';
+import { IGame, IRank } from '@modules/games/domain/entities';
 import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
 
 import ThemeSchema from './Theme';

@@ -15,7 +15,7 @@ import ITransactionProvider from '@shared/domain/providers/ITransactionProvider'
 import ICompleteActivityDTO from '@modules/players/dtos/ICompleteActivityDTO';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
-import { IActivity, IGame, ILevelInfo, IRank } from '@modules/games/entities';
+import { IActivity, IGame, ILevelInfo, IRank } from '@modules/games/domain/entities';
 import { IPlayer } from '../entities';
 
 interface IAddCompletionToActivityHistory {

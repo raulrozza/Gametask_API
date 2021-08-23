@@ -4,7 +4,7 @@ export default interface IAchievement {
   id: string;
   name: string;
   description: string;
-  title?: string | ITitle;
+  title?: ITitle;
   image?: string;
-  game: string | IGame;
+  game: IGame;
 }

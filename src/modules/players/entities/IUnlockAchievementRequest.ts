@@ -1,5 +1,5 @@
-import { IAchievement, IGame } from '@modules/games/entities';
-import { IUser } from '@modules/users/domain/entities';
+import { IAchievement, IGame } from '@modules/games/domain/entities';
+import { IUser } from '@shared/domain/entities';
 
 export default interface IUnlockAchievementRequest {
   id: string;

@@ -1,7 +1,7 @@
 import { Schema, model, Document } from 'mongoose';
 import envs from '@config/environment';
 import { IGameDocument } from './Game';
-import { IAchievement } from '@modules/games/entities';
+import { IAchievement } from '@modules/games/domain/entities';
 import { ITitleDocument } from './Title';
 
 const AchievementSchema = new Schema(

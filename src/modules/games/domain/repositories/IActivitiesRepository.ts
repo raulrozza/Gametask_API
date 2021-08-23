@@ -1,4 +1,4 @@
-import { IActivity, IHistory } from '@modules/games/entities';
+import { IActivity, IHistory } from '@modules/games/domain/entities';
 
 export default interface IActivitiesRepository<
   T extends IActivity = IActivity

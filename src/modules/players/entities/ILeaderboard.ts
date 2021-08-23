@@ -1,4 +1,4 @@
-import { IGame } from '@modules/games/entities';
+import { IGame } from '@modules/games/domain/entities';
 import { IPlayer } from '@modules/players/entities';
 
 export interface IPosition {

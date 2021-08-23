@@ -8,5 +8,5 @@ export default interface IActivity {
   dmRules?: string;
   history: IHistory[];
   changelog: IActivityLog[];
-  game: string | IGame;
+  game: IGame;
 }

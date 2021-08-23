@@ -1,4 +1,4 @@
-import { IUser } from '@modules/users/domain/entities';
+import { IUser } from '@shared/domain/entities';
 import { ILevelInfo, IRank, ITheme } from '.';
 
 export default interface IGame {
@@ -7,7 +7,7 @@ export default interface IGame {
   description: string;
   theme?: ITheme;
   image?: string;
-  administrators: string[] | IUser[];
+  administrators: IUser[];
   levelInfo: ILevelInfo[];
   newRegisters?: number;
   ranks: IRank[];

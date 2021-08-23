@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { ITitle } from '@modules/games/entities';
+import { ITitle } from '@modules/games/domain/entities';
 import { ITitlesRepository } from '@modules/games/domain/repositories';
 
 export default class FakeTitlesRepository implements ITitlesRepository {

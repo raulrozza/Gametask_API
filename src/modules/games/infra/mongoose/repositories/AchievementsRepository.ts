@@ -3,7 +3,7 @@ import { isValidObjectId } from 'mongoose';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import { IAchievementsRepository } from '@modules/games/domain/repositories';
-import { IAchievement } from '@modules/games/entities';
+import { IAchievement } from '@modules/games/domain/entities';
 import Achievement, {
   IAchievementDocument,
 } from '@modules/games/infra/mongoose/entities/Achievement';

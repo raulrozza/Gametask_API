@@ -7,7 +7,7 @@ import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import FakeUnlockAchievementRequestRepository from '../repositories/fakes/FakeUnlockAchievementRequestRepository';
 import UnlockAchievementService from './UnlockAchievementService';
 import { FakeAchievement, FakeGame } from '@modules/games/fakes';
-import { IAchievement, IGame, ITitle } from '@modules/games/entities';
+import { IAchievement, IGame, ITitle } from '@modules/games/domain/entities';
 import FakePlayer from '../fakes/FakePlayer';
 import { IPlayer, IUnlockAchievementRequest } from '../entities';
 import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest';

@@ -1,8 +1,8 @@
-import { IUser } from '@modules/users/domain/entities';
+import { IUser } from '@shared/domain/entities';
 
 export default interface IActivityLog {
   version: number;
   log: Date;
   changes: unknown;
-  userId: string | IUser;
+  user: IUser;
 }
