@@ -4,6 +4,7 @@ import { inject, injectable } from 'tsyringe';
 import { IActivitiesRepository } from '@modules/games/domain/repositories';
 import { IActivity } from '@modules/games/domain/entities';
 import ICreateActivityDTO from '@modules/games/domain/dtos/ICreateActivityDTO';
+import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
 
 @injectable()
 export default class CreateActivityService {
@@ -19,14 +20,14 @@ export default class CreateActivityService {
     description,
     dmRules,
   }: ICreateActivityDTO): Promise<IActivity> {
-    return this.activitiesRepository.create({
+    const activity = new CreateActivityAdapter({
+      gameId,
       name,
       experience,
-      game: gameId,
-      dmRules,
       description,
-      changelog: [],
-      history: [],
+      dmRules,
     });
+
+    return this.activitiesRepository.create(activity);
   }
 }

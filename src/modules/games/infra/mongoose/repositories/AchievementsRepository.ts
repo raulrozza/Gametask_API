@@ -63,9 +63,7 @@ export default class AchievementsRepository implements IAchievementsRepository {
     return Achievement.updateOne(
       { _id: id },
       {
-        name,
-        description,
-        title,
+        $set: { name, description, title },
       },
       { new: true },
     );

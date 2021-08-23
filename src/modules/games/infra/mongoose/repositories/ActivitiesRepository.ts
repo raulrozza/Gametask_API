@@ -4,27 +4,28 @@ import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 import { IActivitiesRepository } from '@modules/games/domain/repositories';
 import { IActivity, IHistory } from '@modules/games/domain/entities';
-import Activity, {
-  IActivityDocument,
-} from '@modules/games/infra/mongoose/entities/Activity';
+import Activity from '@modules/games/infra/mongoose/entities/Activity';
+import UpdateActivityAdapter from '@modules/games/domain/adapters/UpdateActivity';
+import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
 
-export default class ActivitiesRepository
-  implements IActivitiesRepository<IActivityDocument> {
-  public async findAllFromGame(gameId: string): Promise<IActivityDocument[]> {
+export default class ActivitiesRepository implements IActivitiesRepository {
+  public async findAllFromGame(gameId: string): Promise<IActivity[]> {
     return Activity.find({ game: gameId });
   }
 
   public async findOne(
     id: string,
     gameId: string,
-  ): Promise<IActivityDocument | undefined> {
+  ): Promise<IActivity | undefined> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return Activity.findOne({
+    const activity = await Activity.findOne({
       _id: id,
       game: gameId,
     });
+
+    return activity || undefined;
   }
 
   public async create({
@@ -33,7 +34,7 @@ export default class ActivitiesRepository
     experience,
     dmRules,
     game,
-  }: Omit<IActivity, 'id'>): Promise<IActivityDocument> {
+  }: CreateActivityAdapter): Promise<IActivity> {
     return Activity.create({
       name,
       description,
@@ -57,12 +58,13 @@ export default class ActivitiesRepository
     description,
     dmRules,
     experience,
-  }: IActivity): Promise<IActivity> {
+    game,
+  }: UpdateActivityAdapter): Promise<IActivity> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return Activity.findByIdAndUpdate(
-      id,
+    const activity = await Activity.updateOne(
+      { _id: id, game },
       {
         $set: {
           name,
@@ -79,18 +81,20 @@ export default class ActivitiesRepository
       },
       { new: true },
     );
+
+    return activity || undefined;
   }
 
   public async updateHistory(
     id: string,
     history: IHistory,
     session?: ClientSession,
-  ): Promise<IActivityDocument> {
+  ): Promise<IActivity> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return Activity.findByIdAndUpdate(
-      id,
+    return Activity.updateOne(
+      { _id: id },
       {
         $push: {
           history: {

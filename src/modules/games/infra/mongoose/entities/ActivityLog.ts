@@ -1,7 +1,10 @@
 import mongoose, { Document } from 'mongoose';
 import { IActivityLog } from '@modules/games/domain/entities';
+import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
 
-interface IActivityLogDocument extends IActivityLog, Document {}
+export interface IActivityLogDocument extends IActivityLog, Document {
+  user: IUserDocument['_id'];
+}
 
 const ActivityLogSchema = new mongoose.Schema<IActivityLogDocument>(
   {

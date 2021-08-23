@@ -1,15 +1,23 @@
 import { v4 as uuid } from 'uuid';
-import { IActivity, IHistory } from '@modules/games/domain/entities';
+import {
+  IActivity,
+  IActivityLog,
+  IHistory,
+} from '@modules/games/domain/entities';
 import { IActivitiesRepository } from '@modules/games/domain/repositories';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
+import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
+import { FakeActivity } from '@modules/games/domain/entities/fakes';
+import UpdateActivityAdapter from '@modules/games/domain/adapters/UpdateActivity';
+import FakeUser from '@shared/domain/entities/fakes/FakeUser';
 
 export default class FakeActivitiesRepository implements IActivitiesRepository {
   private readonly activities: IActivity[] = [];
 
   public async findAllFromGame(gameId: string): Promise<IActivity[]> {
     return Promise.resolve(
-      this.activities.filter(activity => activity.game === gameId),
+      this.activities.filter(activity => activity.game.id === gameId),
     );
   }
 
@@ -19,13 +27,28 @@ export default class FakeActivitiesRepository implements IActivitiesRepository {
   ): Promise<IActivity | undefined> {
     return Promise.resolve(
       this.activities.find(
-        activity => activity.id === id && activity.game === gameId,
+        activity => activity.id === id && activity.game.id === gameId,
       ),
     );
   }
 
-  public async create(activity: IActivity): Promise<IActivity> {
-    activity.id = uuid();
+  public async create({
+    name,
+    description,
+    dmRules,
+    experience,
+    game,
+  }: CreateActivityAdapter): Promise<IActivity> {
+    const id = uuid();
+
+    const activity = new FakeActivity({
+      id,
+      game,
+      name,
+      description,
+      dmRules: { value: dmRules },
+      experience,
+    });
 
     this.activities.push(activity);
 
@@ -34,7 +57,7 @@ export default class FakeActivitiesRepository implements IActivitiesRepository {
 
   public async delete(activityId: string, gameId: string): Promise<void> {
     const foundIndex = this.activities.findIndex(
-      activity => activity.id === activityId && activity.game === gameId,
+      activity => activity.id === activityId && activity.game.id === gameId,
     );
 
     this.activities.splice(foundIndex, 1);
@@ -43,11 +66,12 @@ export default class FakeActivitiesRepository implements IActivitiesRepository {
   public async update({
     id,
     changelog,
+    game,
     ...activity
-  }: IActivity): Promise<IActivity> {
+  }: UpdateActivityAdapter): Promise<IActivity> {
     const foundIndex = this.activities.findIndex(
       storedActivity =>
-        storedActivity.id === id && storedActivity.game === activity.game,
+        storedActivity.id === id && storedActivity.game.id === game,
     );
 
     if (foundIndex < 0)
@@ -58,10 +82,17 @@ export default class FakeActivitiesRepository implements IActivitiesRepository {
 
     const foundActivity = this.activities[foundIndex];
 
+    const formattedChangelog: IActivityLog[] = changelog.map(log => ({
+      changes: log.changes,
+      log: log.log,
+      version: log.version,
+      user: new FakeUser({ id: log.user }),
+    }));
+
     const updatedActivity = {
       ...foundActivity,
       ...activity,
-      changelog: [...changelog, ...foundActivity.changelog],
+      changelog: [...formattedChangelog, ...foundActivity.changelog],
     };
 
     this.activities[foundIndex] = updatedActivity;

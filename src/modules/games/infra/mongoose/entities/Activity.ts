@@ -1,9 +1,15 @@
 import { Schema, model, Document } from 'mongoose';
 
-import { IActivity, IActivityLog, IHistory } from '@modules/games/domain/entities';
-import ActivityLogSchema from './ActivityLog';
+import { IActivity } from '@modules/games/domain/entities';
+import ActivityLogSchema, { IActivityLogDocument } from './ActivityLog';
 import HistorySchema from './History';
 import { IGameDocument } from './Game';
+
+export interface IActivityDocument extends IActivity, Document {
+  id: NonNullable<Document['id']>;
+  game: IGameDocument['_id'];
+  changelog: IActivityLogDocument[];
+}
 
 const ActivitySchema = new Schema(
   {
@@ -37,19 +43,5 @@ const ActivitySchema = new Schema(
     },
   },
 );
-
-interface IActivityBaseDocument extends Omit<IActivity, 'id'>, Document {
-  id: NonNullable<Document['id']>;
-  history: IHistory[];
-  changelog: IActivityLog[];
-}
-
-export interface IActivityDocument extends IActivityBaseDocument {
-  game: IGameDocument['_id'];
-}
-
-export interface IActivityPopulatedDocument extends IActivityBaseDocument {
-  game: IGameDocument;
-}
 
 export default model<IActivityDocument>('Activity', ActivitySchema);

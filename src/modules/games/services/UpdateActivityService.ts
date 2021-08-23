@@ -5,26 +5,17 @@ import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
 import IUpdateActivityDTO from '@modules/games/domain/dtos/IUpdateActivityDTO';
-import { IActivity, IActivityLog } from '@modules/games/domain/entities';
+import { IActivity } from '@modules/games/domain/entities';
 import { IActivitiesRepository } from '@modules/games/domain/repositories';
-
-interface INewActivityDTO {
-  name: string;
-  experience: number;
-  description?: string;
-  dmRules?: string;
-}
+import ActivityLog from '@modules/games/domain/adapters/ActivityLog';
+import UpdateActivityAdapter from '@modules/games/domain/adapters/UpdateActivity';
 
 @injectable()
 export default class UpdateActivityService {
-  private originalActivity: IActivity;
-
   constructor(
     @inject('ActivitiesRepository')
     private activitiesRepository: IActivitiesRepository,
-  ) {
-    this.originalActivity = {} as IActivity;
-  }
+  ) {}
 
   public async execute({
     gameId,
@@ -36,7 +27,7 @@ export default class UpdateActivityService {
     dmRules,
   }: IUpdateActivityDTO): Promise<IActivity> {
     try {
-      const foundActivity = await this.findOriginalActivity(id, gameId);
+      const foundActivity = await this.activitiesRepository.findOne(id, gameId);
 
       if (!foundActivity)
         throw new RequestError(
@@ -45,23 +36,25 @@ export default class UpdateActivityService {
           400,
         );
 
-      const newActivityLog = this.generateActivityLog(userId, {
+      const activityLog = new ActivityLog(foundActivity, {
+        userId,
         name,
+        experience,
         description,
         dmRules,
-        experience,
       });
 
-      const updatedActivity = await this.activitiesRepository.update({
-        id: this.originalActivity.id,
+      const activity = new UpdateActivityAdapter({
+        id,
         name,
         experience,
         description,
         dmRules,
-        changelog: [newActivityLog],
-        game: this.originalActivity.game,
-        history: [],
+        gameId,
+        activityLog,
       });
+
+      const updatedActivity = await this.activitiesRepository.update(activity);
 
       return updatedActivity;
     } catch (error) {
@@ -73,54 +66,5 @@ export default class UpdateActivityService {
         500,
       );
     }
-  }
-
-  private async findOriginalActivity(
-    activityId: string,
-    gameId: string,
-  ): Promise<boolean> {
-    const activity = await this.activitiesRepository.findOne(
-      activityId,
-      gameId,
-    );
-
-    if (activity) this.originalActivity = activity;
-
-    return Boolean(activity);
-  }
-
-  private generateActivityLog(
-    userId: string,
-    newActivity: INewActivityDTO,
-  ): IActivityLog {
-    const changes = this.getChanges(newActivity);
-
-    const logVersion = this.originalActivity.changelog[0]
-      ? this.originalActivity.changelog[0].version + 1
-      : 1;
-
-    const activityLog = {
-      version: logVersion,
-      log: new Date(),
-      changes,
-      userId,
-    };
-
-    return activityLog;
-  }
-
-  private getChanges(newActivity: INewActivityDTO): Partial<IActivity> {
-    const changes: Partial<IActivity> = {};
-
-    if (newActivity.name !== this.originalActivity.name)
-      changes.name = newActivity.name;
-    if (newActivity.description !== this.originalActivity.description)
-      changes.description = newActivity.description;
-    if (newActivity.experience !== this.originalActivity.experience)
-      changes.experience = newActivity.experience;
-    if (newActivity.dmRules !== this.originalActivity.dmRules)
-      changes.dmRules = newActivity.dmRules;
-
-    return changes;
   }
 }
