@@ -88,4 +88,21 @@ export default class FakeAchievementsRepository
 
     return updatedAchievement;
   }
+
+  public async updateAvatar(id: string, image: string): Promise<IAchievement> {
+    const foundIndex = this.achievements.findIndex(
+      storedAchievement => storedAchievement.id === id,
+    );
+
+    if (foundIndex < 0) throw new Error('Achievement not found');
+
+    const updatedAchievement = {
+      ...this.achievements[foundIndex],
+      image,
+    };
+
+    this.achievements[foundIndex] = updatedAchievement;
+
+    return updatedAchievement;
+  }
 }

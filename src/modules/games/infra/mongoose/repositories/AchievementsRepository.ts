@@ -68,4 +68,17 @@ export default class AchievementsRepository implements IAchievementsRepository {
       { new: true },
     );
   }
+
+  public async updateAvatar(id: string, image: string): Promise<IAchievement> {
+    if (!isValidObjectId(id))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
+    return Achievement.updateOne(
+      { _id: id },
+      {
+        $set: { image },
+      },
+      { new: true },
+    );
+  }
 }

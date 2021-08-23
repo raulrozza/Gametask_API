@@ -8,4 +8,5 @@ export default interface IAchievementsRepository {
   create(achievement: ICreateAchievementDTO): Promise<IAchievement>;
   delete(achievementId: string, gameId: string): Promise<void>;
   update(achievement: IUpdateAchievementDTO): Promise<IAchievement>;
+  updateAvatar(id: string, image: string): Promise<IAchievement>;
 }
