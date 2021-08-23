@@ -6,5 +6,6 @@ export default interface IAchievement {
   description: string;
   title?: ITitle;
   image?: string;
+  image_url?: string;
   game: IGame;
 }

@@ -4,43 +4,42 @@ import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import { IAchievementsRepository } from '@modules/games/domain/repositories';
 import { IAchievement } from '@modules/games/domain/entities';
-import Achievement, {
-  IAchievementDocument,
-} from '@modules/games/infra/mongoose/entities/Achievement';
+import Achievement from '@modules/games/infra/mongoose/entities/Achievement';
+import ICreateAchievementDTO from '@modules/games/domain/dtos/ICreateAchievementDTO';
+import IUpdateAchievementDTO from '@modules/games/domain/dtos/IUpdateAchievementDTO';
 
-export default class AchievementsRepository
-  implements IAchievementsRepository<IAchievementDocument> {
-  public async findAllFromGame(
-    gameId: string,
-  ): Promise<IAchievementDocument[]> {
-    return Achievement.find({ game: gameId }).populate('title');
+export default class AchievementsRepository implements IAchievementsRepository {
+  public async findAllFromGame(gameId: string): Promise<IAchievement[]> {
+    return Achievement.find({ game: gameId })
+      .populate('title')
+      .populate('game');
   }
 
   public async findOne(
     id: string,
     gameId: string,
-  ): Promise<IAchievementDocument | undefined> {
+  ): Promise<IAchievement | undefined> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return Achievement.findOne({
+    const achievement = await Achievement.findOne({
       _id: id,
       game: gameId,
     }).populate('title');
+
+    return achievement || undefined;
   }
 
   public async create({
     name,
     description,
-    game,
-    image,
+    gameId,
     title,
-  }: Omit<IAchievement, 'id'>): Promise<IAchievementDocument> {
+  }: ICreateAchievementDTO): Promise<IAchievement> {
     return Achievement.create({
       name,
       description,
-      game,
-      image,
+      game: gameId,
       title,
     });
   }
@@ -56,21 +55,17 @@ export default class AchievementsRepository
     id,
     name,
     description,
-    image,
     title,
-  }: IAchievement): Promise<IAchievement> {
+  }: IUpdateAchievementDTO): Promise<IAchievement> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return Achievement.findByIdAndUpdate(
-      id,
+    return Achievement.updateOne(
+      { _id: id },
       {
-        $set: {
-          name,
-          description,
-          image,
-          title,
-        },
+        name,
+        description,
+        title,
       },
       { new: true },
     );

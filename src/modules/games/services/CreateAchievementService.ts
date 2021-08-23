@@ -41,7 +41,7 @@ export default class CreateAchievementService {
       const createdAchievement = await this.achievementsRepository.create({
         name,
         description,
-        game: gameId,
+        gameId,
         title,
       });
 

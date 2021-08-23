@@ -37,8 +37,7 @@ export default class UpdateAchievementService {
         name,
         description,
         title: title,
-        image: achievement.image,
-        game: achievement.game,
+        gameId,
       });
 
       return updatedAchievement;

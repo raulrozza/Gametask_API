@@ -4,6 +4,16 @@ import { IGameDocument } from './Game';
 import { IAchievement } from '@modules/games/domain/entities';
 import { ITitleDocument } from './Title';
 
+export interface IAchievementDocument extends IAchievement, Document {
+  id: NonNullable<Document['id']>;
+  name: string;
+  description: string;
+  image?: string;
+  image_url?: string;
+  title?: ITitleDocument['_id'];
+  game: IGameDocument['_id'];
+}
+
 const AchievementSchema = new Schema(
   {
     name: {
@@ -32,24 +42,8 @@ const AchievementSchema = new Schema(
   },
 );
 
-interface IAchievementBaseDocument extends IAchievement, Document {
-  id: NonNullable<Document['id']>;
-  image_url: string;
-}
-
 AchievementSchema.virtual('image_url').get(function (this: IAchievement) {
   if (this.image) return `${envs.STORAGE_ADDRESS}/achievement/${this.image}`;
 });
-
-export interface IAchievementDocument extends IAchievementBaseDocument {
-  game: IGameDocument['_id'];
-  title: ITitleDocument['_id'];
-}
-
-export interface IAchievementPopulatedDocument
-  extends IAchievementBaseDocument {
-  game: IGameDocument;
-  title: ITitleDocument;
-}
 
 export default model<IAchievementDocument>('Achievement', AchievementSchema);
