@@ -11,7 +11,7 @@ describe('DeleteActivityService', () => {
     const deleteActivity = new DeleteActivityService(activitiesRepository);
 
     const gameId = uuid();
-    const fakeActivity = new FakeActivity(gameId);
+    const fakeActivity = new FakeActivity({ game: gameId });
 
     await activitiesRepository.create({
       game: fakeActivity.game,

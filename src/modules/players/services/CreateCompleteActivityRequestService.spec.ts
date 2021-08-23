@@ -33,7 +33,7 @@ const initService = async () => {
   const { id: _, ...fakeGame } = new FakeGame();
   const game = await gamesRepository.create(fakeGame as IGame);
 
-  const { id: __, ...fakeActivity } = new FakeActivity(game.id);
+  const { id: __, ...fakeActivity } = new FakeActivity({ game: game.id });
   const activity = await activitiesRepository.create(fakeActivity as IActivity);
 
   const { id: ___, ...fakePlayer } = new FakePlayer(userId, game.id);

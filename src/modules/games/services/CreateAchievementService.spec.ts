@@ -18,7 +18,7 @@ describe('CreateAchievementService', () => {
 
     const gameId = uuid();
     const fakeAchievement = new FakeAchievement(gameId);
-    const fakeTitle = new FakeTitle(gameId);
+    const fakeTitle = new FakeTitle({ game: gameId });
 
     const title = await titlesRepository.create({
       name: fakeTitle.name,

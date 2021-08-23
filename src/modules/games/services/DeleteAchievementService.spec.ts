@@ -13,7 +13,7 @@ describe('DeleteAchievementService', () => {
     );
 
     const gameId = uuid();
-    const fakeAchievement = new FakeAchievement(gameId);
+    const fakeAchievement = new FakeAchievement({ game: gameId });
 
     await achievementsRepository.create({
       game: fakeAchievement.game,

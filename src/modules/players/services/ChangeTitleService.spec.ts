@@ -19,7 +19,7 @@ const initService = async () => {
 
   const userId = uuid();
   const gameId = uuid();
-  const { id: _, ...fakeTitle } = new FakeTitle(gameId);
+  const { id: _, ...fakeTitle } = new FakeTitle({ game: gameId });
   const { id: __, ...fakePlayer } = new FakePlayer(userId, gameId);
 
   const title = await titlesRepository.create(fakeTitle as ITitle);

@@ -39,7 +39,9 @@ const initService = async () => {
   const { id: __, ...fakePlayer } = new FakePlayer(userId, game.id);
   const player = await playersRepository.create(fakePlayer as IPlayer);
 
-  const { id: ___, ...fakeAchievement } = new FakeAchievement(game.id);
+  const { id: ___, ...fakeAchievement } = new FakeAchievement({
+    game: game.id,
+  });
   const achievement = await achievementsRepository.create(
     fakeAchievement as IAchievement,
   );

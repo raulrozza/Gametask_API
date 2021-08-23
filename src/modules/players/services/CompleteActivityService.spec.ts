@@ -101,7 +101,7 @@ describe('CompleteActivityService', () => {
       leaderboardsRepository,
     } = await initService();
 
-    const fakeActivity = new FakeActivity(game.id);
+    const fakeActivity = new FakeActivity({ game: game.id });
     fakeActivity.experience = 200;
     const activity = await activitiesRepository.create(fakeActivity);
 
@@ -151,7 +151,7 @@ describe('CompleteActivityService', () => {
       leaderboardsRepository,
     } = await initService();
 
-    const fakeActivity = new FakeActivity(game.id);
+    const fakeActivity = new FakeActivity({ game: game.id });
     fakeActivity.experience = 350;
     const activity = await activitiesRepository.create(fakeActivity);
 

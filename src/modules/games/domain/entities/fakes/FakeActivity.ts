@@ -5,6 +5,11 @@ import {
   IGame,
   IHistory,
 } from '@modules/games/domain/entities';
+import FakeGame from '@modules/games/domain/entities/fakes/FakeGame';
+
+interface IConstructor {
+  game: string;
+}
 
 export default class FakeActivity implements IActivity {
   public id: string = '';
@@ -14,5 +19,8 @@ export default class FakeActivity implements IActivity {
   public dmRules: string = faker.lorem.sentence();
   public changelog: IActivityLog[] = [];
   public history: IHistory[] = [];
-  constructor(public game: string | IGame) {}
+  public game: IGame;
+  constructor({ game }: IConstructor) {
+    this.game = new FakeGame({ id: game });
+  }
 }

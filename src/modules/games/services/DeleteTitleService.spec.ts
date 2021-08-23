@@ -11,7 +11,7 @@ describe('DeleteTitleService', () => {
     const deleteTitle = new DeleteTitleService(titlesRepository);
 
     const gameId = uuid();
-    const fakeTitle = new FakeTitle(gameId);
+    const fakeTitle = new FakeTitle({ game: gameId });
 
     await titlesRepository.create({
       game: fakeTitle.game,
