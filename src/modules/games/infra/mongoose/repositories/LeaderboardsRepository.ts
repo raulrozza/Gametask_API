@@ -1,17 +1,15 @@
 import { ILeaderboardsRepository } from '@modules/games/domain/repositories';
-import Leaderboard, {
-  ILeaderboardDocument,
-} from '@modules/players/infra/mongoose/entities/Leaderboard';
-import { ILeaderboard } from '@modules/players/entities';
+import CreateLeaderboardAdapter from '@modules/games/domain/adapters/CreateLeaderboard';
+import { ILeaderboard } from '@modules/games/domain/entities';
+import Leaderboard from '@modules/games/infra/mongoose/entities/Leaderboard';
 
-export default class LeaderboardsRepository
-  implements ILeaderboardsRepository<ILeaderboardDocument> {
+export default class LeaderboardsRepository implements ILeaderboardsRepository {
   public async create({
     game,
     createdAt,
     expiresAt,
-  }: Omit<ILeaderboard, 'id' | 'position'>): Promise<ILeaderboardDocument> {
-    return await Leaderboard.create({
+  }: CreateLeaderboardAdapter): Promise<ILeaderboard> {
+    return Leaderboard.create({
       game,
       createdAt,
       expiresAt,

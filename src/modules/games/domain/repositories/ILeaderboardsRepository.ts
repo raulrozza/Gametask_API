@@ -1,7 +1,6 @@
-import { ILeaderboard } from '@modules/players/entities';
+import CreateLeaderboardAdapter from '@modules/games/domain/adapters/CreateLeaderboard';
+import { ILeaderboard } from '@modules/games/domain/entities';
 
-export default interface ILeaderboardsRepository<
-  T extends ILeaderboard = ILeaderboard
-> {
-  create(leaderboard: Omit<ILeaderboard, 'id' | 'position'>): Promise<T>;
+export default interface ILeaderboardsRepository {
+  create(leaderboard: CreateLeaderboardAdapter): Promise<ILeaderboard>;
 }

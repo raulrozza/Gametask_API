@@ -1,7 +1,7 @@
-import { v4 as uuid } from 'uuid';
-
-import { ILeaderboard } from '@modules/players/entities';
 import { ILeaderboardsRepository } from '@modules/games/domain/repositories';
+import CreateLeaderboardAdapter from '@modules/games/domain/adapters/CreateLeaderboard';
+import { ILeaderboard } from '@modules/games/domain/entities';
+import { FakeLeaderboard } from '@modules/games/domain/entities/fakes';
 
 export default class FakeLeaderboardsRepository
   implements ILeaderboardsRepository {
@@ -11,18 +11,13 @@ export default class FakeLeaderboardsRepository
     return this.leaderboards;
   }
 
-  public async create(
-    leaderboard: Omit<ILeaderboard, 'id'>,
-  ): Promise<ILeaderboard> {
-    const id = uuid();
+  public async create({
+    game,
+  }: CreateLeaderboardAdapter): Promise<ILeaderboard> {
+    const leaderboard = new FakeLeaderboard({ game });
 
-    const newLeaderboard = {
-      ...leaderboard,
-      id,
-    };
+    this.leaderboards.push(leaderboard);
 
-    this.leaderboards.push(newLeaderboard);
-
-    return newLeaderboard;
+    return leaderboard;
   }
 }

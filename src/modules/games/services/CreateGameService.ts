@@ -8,6 +8,7 @@ import {
 import { IGame } from '@modules/games/domain/entities';
 import ICreateGameDTO from '@modules/games/domain/dtos/ICreateGameDTO';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
+import CreateLeaderboardAdapter from '@modules/games/domain/adapters/CreateLeaderboard';
 
 @injectable()
 export default class CreateGameService {
@@ -28,10 +29,9 @@ export default class CreateGameService {
 
     const game = await this.gamesRepository.create(createGame);
 
-    await this.leaderboardsRepository.create({
-      game: game.id,
-      createdAt: new Date(),
-    });
+    const createLeaderboard = new CreateLeaderboardAdapter({ game: game.id });
+
+    await this.leaderboardsRepository.create(createLeaderboard);
 
     return game;
   }
