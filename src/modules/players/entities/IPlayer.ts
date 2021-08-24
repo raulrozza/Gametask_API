@@ -1,10 +1,5 @@
-import {
-  IAchievement,
-  IGame,
-  IRank,
-  ITitle,
-} from '@modules/games/domain/entities';
-import { IUser } from '@shared/domain/entities';
+import { IAchievement, IGame, ITitle } from '@modules/games/domain/entities';
+import { IRank, IUser } from '@shared/domain/entities';
 
 export default interface IPlayer {
   id: string;

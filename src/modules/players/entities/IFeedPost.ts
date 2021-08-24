@@ -3,9 +3,9 @@ import {
   IActivity,
   IGame,
   ILevelInfo,
-  IRank,
 } from '@modules/games/domain/entities';
 import { IPlayer } from '@modules/players/entities';
+import { IRank } from '@shared/domain/entities';
 
 export default interface IFeedPost {
   id: string;

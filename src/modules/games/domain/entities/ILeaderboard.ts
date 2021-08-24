@@ -1,5 +1,5 @@
-import { IRank, ITitle } from '@modules/games/domain/entities';
-import { IUser } from '@shared/domain/entities';
+import { ITitle } from '@modules/games/domain/entities';
+import { IRank, IUser } from '@shared/domain/entities';
 
 export interface IPositionedPlayer {
   id: string;

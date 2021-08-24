@@ -1,5 +1,5 @@
+import { IRank } from '@shared/domain/entities';
 import { Document, Schema } from 'mongoose';
-import { IRank } from '@modules/games/domain/entities';
 
 interface IRankDocument extends IRank, Document {}
 
