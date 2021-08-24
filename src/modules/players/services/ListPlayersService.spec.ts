@@ -1,9 +1,10 @@
 import { v4 as uuid } from 'uuid';
 
 import { IPlayer } from '@modules/players/domain/entities';
-import FakePlayer from '../fakes/FakePlayer';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import ListPlayersService from './ListPlayersService';
+import { FakePlayer } from '@modules/players/domain/entities/fakes';
+import { FakeUser } from '@shared/domain/entities/fakes';
 
 describe('ListPlayersService', () => {
   it('should list all games from the user', async () => {
@@ -11,7 +12,8 @@ describe('ListPlayersService', () => {
     const listPlayers = new ListPlayersService(playersRepository);
 
     const userId = uuid();
-    const player = new FakePlayer(userId, 'game');
+    const user = new FakeUser({ id: userId });
+    const player = new FakePlayer({ user });
 
     await playersRepository.create({ ...player, game: 'game-01' } as IPlayer);
     await playersRepository.create({

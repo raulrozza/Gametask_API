@@ -4,7 +4,6 @@ import { FakeActivity, FakeGame } from '@modules/games/domain/entities/fakes';
 import FakeActivitiesRepository from '@modules/games/domain/repositories/fakes/FakeActivitiesRepository';
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
-import FakePlayer from '../fakes/FakePlayer';
 import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCompleteActivityRequestRepository';
 import FakeFeedPostsRepository from '../repositories/fakes/FakeFeedPostsRepository';
 import FakeLeaderboardsRepository from '../repositories/fakes/FakeLeaderboardsRepository';
@@ -13,6 +12,8 @@ import CompleteActivityService from './CompleteActivityService';
 import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
 import { IPosition } from '../entities/ILeaderboard';
 import { RequestError } from '@shared/infra/errors';
+import { FakePlayer } from '@modules/players/domain/entities/fakes';
+import { FakeUser } from '@shared/domain/entities/fakes';
 
 const initService = async () => {
   const playersRepository = new FakePlayersRepository();
@@ -71,7 +72,8 @@ const initService = async () => {
   );
   const game = await gamesRepository.create(fakeGame);
 
-  const fakePlayer = new FakePlayer(userId, game.id);
+  const user = new FakeUser({ id: userId });
+  const fakePlayer = new FakePlayer({ user, game: game.id });
   fakePlayer.experience = 0;
   fakePlayer.level = 1;
   const player = await playersRepository.create(fakePlayer);

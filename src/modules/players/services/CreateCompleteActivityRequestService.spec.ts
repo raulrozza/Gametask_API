@@ -8,10 +8,11 @@ import CreateCompleteActivityRequestService from './CreateCompleteActivityReques
 import FakeActivitiesRepository from '@modules/games/domain/repositories/fakes/FakeActivitiesRepository';
 import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
-import FakePlayer from '../fakes/FakePlayer';
 import { IPlayer } from '@modules/players/domain/entities';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
+import { FakePlayer } from '@modules/players/domain/entities/fakes';
+import { FakeUser } from '@shared/domain/entities/fakes';
 
 const initService = async () => {
   const completeActivityRequestRepository = new FakeCompleteActivityRequestRepository();
@@ -36,7 +37,8 @@ const initService = async () => {
   const { id: __, ...fakeActivity } = new FakeActivity({ game: game.id });
   const activity = await activitiesRepository.create(fakeActivity as IActivity);
 
-  const { id: ___, ...fakePlayer } = new FakePlayer(userId, game.id);
+  const user = new FakeUser({ id: userId });
+  const { id: ___, ...fakePlayer } = new FakePlayer({ user, game: game.id });
   const player = await playersRepository.create(fakePlayer as IPlayer);
 
   return {

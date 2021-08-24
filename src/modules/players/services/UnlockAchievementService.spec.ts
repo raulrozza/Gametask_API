@@ -7,7 +7,6 @@ import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import FakeUnlockAchievementRequestRepository from '../repositories/fakes/FakeUnlockAchievementRequestRepository';
 import UnlockAchievementService from './UnlockAchievementService';
 import { FakeGame } from '@modules/games/domain/entities/fakes';
-import FakePlayer from '../fakes/FakePlayer';
 import { IUnlockAchievementRequest } from '../entities';
 import { IPlayer } from '@modules/players/domain/entities';
 import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest';
@@ -16,6 +15,7 @@ import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransact
 import { ITitle } from '@shared/domain/entities';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import { FakeAchievement, FakeUser } from '@shared/domain/entities/fakes';
+import { FakePlayer } from '@modules/players/domain/entities/fakes';
 
 const initService = async (title?: ITitle) => {
   const playersRepository = new FakePlayersRepository();
@@ -56,7 +56,10 @@ const initService = async (title?: ITitle) => {
   });
 
   const fakeUser = new FakeUser({ id: userId });
-  const { id: ___, ...fakePlayer } = new FakePlayer(fakeUser, game.id);
+  const { id: ___, ...fakePlayer } = new FakePlayer({
+    user: fakeUser,
+    game: game.id,
+  });
   const player = await playersRepository.create(fakePlayer as IPlayer);
 
   const { id: ____, ...fakeRequest } = new FakeUnlockAchievementRequest(

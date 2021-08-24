@@ -3,11 +3,11 @@ import { v4 as uuid } from 'uuid';
 import FakeTitlesRepository from '@modules/games/domain/repositories/fakes/FakeTitlesRepository';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import ChangeTitleService from './ChangeTitleService';
-import FakePlayer from '../fakes/FakePlayer';
 import { IPlayer } from '@modules/players/domain/entities';
 import { RequestError } from '@shared/infra/errors';
 import { ITitle } from '@shared/domain/entities';
 import { FakeTitle, FakeUser } from '@shared/domain/entities/fakes';
+import { FakePlayer } from '@modules/players/domain/entities/fakes';
 
 const initService = async () => {
   const titlesRepository = new FakeTitlesRepository();
@@ -21,7 +21,7 @@ const initService = async () => {
   const gameId = uuid();
   const { id: _, ...fakeTitle } = new FakeTitle({ game: gameId });
   const user = new FakeUser({ id: userId });
-  const { id: __, ...fakePlayer } = new FakePlayer(user, gameId);
+  const { id: __, ...fakePlayer } = new FakePlayer({ user, game: gameId });
 
   const title = await titlesRepository.create(fakeTitle as ITitle);
   const player = await playersRepository.create(fakePlayer as IPlayer);
