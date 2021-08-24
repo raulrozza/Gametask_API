@@ -7,7 +7,7 @@ import Player, {
   IPlayerDocument,
   IPlayerPopulatedDocument,
 } from '@modules/players/infra/mongoose/entities/Player';
-import { IPlayer } from '@modules/players/entities';
+import { IPlayer } from '@modules/players/domain/entities';
 
 export default class PlayersRepository
   implements IPlayersRepository<IPlayerDocument | IPlayerPopulatedDocument> {

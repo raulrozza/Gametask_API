@@ -9,7 +9,7 @@ import FakeActivitiesRepository from '@modules/games/domain/repositories/fakes/F
 import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import FakePlayer from '../fakes/FakePlayer';
-import { IPlayer } from '../entities';
+import { IPlayer } from '@modules/players/domain/entities';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 

@@ -1,4 +1,4 @@
-import { IPlayer } from '@modules/players/entities';
+import { IPlayer } from '@modules/players/domain/entities';
 
 export default interface IPlayersRepository<T extends IPlayer = IPlayer> {
   findAllFromUser(userId: string): Promise<T[]>;

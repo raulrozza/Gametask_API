@@ -1,5 +1,5 @@
 import { IActivity, IGame, ILevelInfo } from '@modules/games/domain/entities';
-import { IPlayer } from '@modules/players/entities';
+import { IPlayer } from '@modules/players/domain/entities';
 import { IAchievement, IRank } from '@shared/domain/entities';
 
 export default interface IFeedPost {

@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
 import { IPlayersRepository } from '@modules/players/repositories';
-import { IPlayer } from '@modules/players/entities';
+import { IPlayer } from '@modules/players/domain/entities';
 
 @injectable()
 export default class ListPlayersService {

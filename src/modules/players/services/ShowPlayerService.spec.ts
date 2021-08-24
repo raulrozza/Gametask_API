@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import { IPlayer } from '../entities';
+import { IPlayer } from '@modules/players/domain/entities';
 import FakePlayer from '../fakes/FakePlayer';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import ShowPlayerService from './ShowPlayerService';

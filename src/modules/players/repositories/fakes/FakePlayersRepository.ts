@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 
 import { IPlayersRepository } from '@modules/players/repositories';
-import { IPlayer } from '@modules/players/entities';
+import { IPlayer } from '@modules/players/domain/entities';
 
 export default class FakePlayersRepository implements IPlayersRepository {
   private readonly players: IPlayer[] = [];

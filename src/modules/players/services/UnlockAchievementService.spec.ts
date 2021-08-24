@@ -8,7 +8,8 @@ import FakeUnlockAchievementRequestRepository from '../repositories/fakes/FakeUn
 import UnlockAchievementService from './UnlockAchievementService';
 import { FakeGame } from '@modules/games/domain/entities/fakes';
 import FakePlayer from '../fakes/FakePlayer';
-import { IPlayer, IUnlockAchievementRequest } from '../entities';
+import { IUnlockAchievementRequest } from '../entities';
+import { IPlayer } from '@modules/players/domain/entities';
 import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';

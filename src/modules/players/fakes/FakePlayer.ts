@@ -1,6 +1,6 @@
 import faker from 'faker';
 
-import { IPlayer } from '@modules/players/entities';
+import { IPlayer } from '@modules/players/domain/entities';
 import { IAchievement, IRank, ITitle, IUser } from '@shared/domain/entities';
 
 export default class FakePlayer implements IPlayer {

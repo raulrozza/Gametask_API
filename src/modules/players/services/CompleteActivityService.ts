@@ -16,7 +16,7 @@ import ICompleteActivityDTO from '@modules/players/dtos/ICompleteActivityDTO';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import { IActivity, IGame, ILevelInfo } from '@modules/games/domain/entities';
-import { IPlayer } from '../entities';
+import { IPlayer } from '@modules/players/domain/entities';
 import { IRank } from '@shared/domain/entities';
 
 interface IAddCompletionToActivityHistory {

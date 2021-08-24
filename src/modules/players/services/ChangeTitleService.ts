@@ -3,7 +3,7 @@ import { inject, injectable } from 'tsyringe';
 
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
-import { IPlayer } from '@modules/players/entities';
+import { IPlayer } from '@modules/players/domain/entities';
 import IChangeTitleDTO from '@modules/players/dtos/IChangeTitleDTO';
 import { IPlayersRepository } from '@modules/players/repositories';
 import { ITitlesRepository } from '@modules/games/domain/repositories';

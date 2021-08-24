@@ -1,5 +1,5 @@
 import { IGame } from '@modules/games/domain/entities';
-import { IPlayer } from '@modules/players/entities';
+import { IPlayer } from '@modules/players/domain/entities';
 
 export interface IPosition {
   player: string | IPlayer;
