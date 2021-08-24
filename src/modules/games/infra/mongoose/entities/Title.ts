@@ -1,14 +1,10 @@
 import { ITitle } from '@modules/games/domain/entities';
 import { Schema, model, Document } from 'mongoose';
-import { IGameDocument, IGamePopulatedDocument } from './Game';
+import { IGameDocument } from './Game';
 
 export interface ITitleDocument extends ITitle, Document {
   id: NonNullable<Document['id']>;
   game: IGameDocument['_id'];
-}
-
-export interface ITitlePopulatedDocument extends ITitleDocument {
-  game: IGamePopulatedDocument;
 }
 
 const TitleSchema = new Schema({

@@ -1,6 +1,8 @@
-import { v4 as uuid } from 'uuid';
 import { ITitle } from '@modules/games/domain/entities';
 import { ITitlesRepository } from '@modules/games/domain/repositories';
+import ICreateTitleDTO from '@modules/games/domain/dtos/ICreateTitleDTO';
+import { FakeTitle } from '@modules/games/domain/entities/fakes';
+import UpdateTitleAdapter from '@modules/games/domain/adapters/UpdateTitle';
 
 export default class FakeTitlesRepository implements ITitlesRepository {
   private readonly titles: ITitle[] = [];
@@ -27,8 +29,8 @@ export default class FakeTitlesRepository implements ITitlesRepository {
     );
   }
 
-  public async create(title: ITitle): Promise<ITitle> {
-    title.id = uuid();
+  public async create({ name, game }: ICreateTitleDTO): Promise<ITitle> {
+    const title = new FakeTitle({ name, game });
 
     this.titles.push(title);
 
@@ -43,9 +45,9 @@ export default class FakeTitlesRepository implements ITitlesRepository {
     this.titles.splice(foundIndex, 1);
   }
 
-  public async update({ id, ...title }: ITitle): Promise<ITitle> {
+  public async update({ id, ...title }: UpdateTitleAdapter): Promise<ITitle> {
     const foundIndex = this.titles.findIndex(
-      storedTitle => storedTitle.id === id && storedTitle.game === title.game,
+      storedTitle => storedTitle.id === id,
     );
 
     const foundTitle = this.titles[foundIndex];

@@ -1,17 +1,24 @@
 import faker from 'faker';
 import { ITitle } from '@modules/games/domain/entities';
+import { v4 as uuid } from 'uuid';
 
 interface IConstructor {
   id?: string;
+  name?: string;
   game?: string;
 }
 
 export default class FakeTitle implements ITitle {
-  public id: string = '';
-  public name: string = faker.lorem.word();
-  public game: string = '';
-  constructor({ id, game }: IConstructor = {}) {
-    if (id) this.id = id;
-    if (game) this.game = game;
+  public id: string;
+  public name: string;
+  public game: string;
+  constructor({
+    id = uuid(),
+    name = faker.lorem.word(),
+    game = uuid(),
+  }: IConstructor = {}) {
+    this.id = id;
+    this.name = name;
+    this.game = game;
   }
 }

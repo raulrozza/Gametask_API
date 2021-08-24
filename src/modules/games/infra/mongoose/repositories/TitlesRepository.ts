@@ -3,14 +3,15 @@ import { ITitle } from '@modules/games/domain/entities';
 import { ITitlesRepository } from '@modules/games/domain/repositories';
 import { RequestError } from '@shared/infra/errors';
 import { isValidObjectId } from 'mongoose';
-import Title, { ITitleDocument } from '../entities/Title';
+import Title from '@modules/games/infra/mongoose/entities/Title';
+import ICreateTitleDTO from '@modules/games/domain/dtos/ICreateTitleDTO';
+import UpdateTitleAdapter from '@modules/games/domain/adapters/UpdateTitle';
 
-export default class TitlesRepository
-  implements ITitlesRepository<ITitleDocument> {
+export default class TitlesRepository implements ITitlesRepository {
   public async findAllFromGame(
     gameId: string,
     name?: string,
-  ): Promise<ITitleDocument[]> {
+  ): Promise<ITitle[]> {
     if (!name) return await Title.find({ game: gameId });
 
     return Title.find({
@@ -22,17 +23,16 @@ export default class TitlesRepository
   public async findOne(
     id: string,
     gameId: string,
-  ): Promise<ITitleDocument | undefined> {
+  ): Promise<ITitle | undefined> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return Title.findOne({ _id: id, game: gameId });
+    const title = await Title.findOne({ _id: id, game: gameId });
+
+    return title || undefined;
   }
 
-  public async create({
-    name,
-    game,
-  }: Omit<ITitle, 'id'>): Promise<ITitleDocument> {
+  public async create({ name, game }: ICreateTitleDTO): Promise<ITitle> {
     return Title.create({ name, game });
   }
 
@@ -43,12 +43,12 @@ export default class TitlesRepository
     return Title.deleteOne({ _id: titleId, game: gameId });
   }
 
-  public async update({ id, name }: ITitle): Promise<ITitle> {
+  public async update({ id, name }: UpdateTitleAdapter): Promise<ITitle> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return Title.findByIdAndUpdate(
-      id,
+    return Title.updateOne(
+      { _id: id },
       {
         $set: {
           name,

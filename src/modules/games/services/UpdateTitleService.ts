@@ -7,6 +7,7 @@ import { RequestError } from '@shared/infra/errors';
 import IUpdateTitleDTO from '@modules/games/domain/dtos/IUpdateTitleDTO';
 import { ITitle } from '@modules/games/domain/entities';
 import { ITitlesRepository } from '@modules/games/domain/repositories';
+import UpdateTitleAdapter from '@modules/games/domain/adapters/UpdateTitle';
 
 @injectable()
 export default class UpdateTitleService {
@@ -26,11 +27,9 @@ export default class UpdateTitleService {
           400,
         );
 
-      const updatedTitle = await this.titlesRepository.update({
-        id: title.id,
-        game: title.game,
-        name,
-      });
+      const updateTitle = new UpdateTitleAdapter({ id, name });
+
+      const updatedTitle = await this.titlesRepository.update(updateTitle);
 
       return updatedTitle;
     } catch (error) {
