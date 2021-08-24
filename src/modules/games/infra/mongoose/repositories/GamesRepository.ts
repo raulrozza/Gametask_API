@@ -4,13 +4,12 @@ import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 import { IGame } from '@modules/games/domain/entities';
 import { IGamesRepository } from '@modules/games/domain/repositories';
-import Game, {
-  IGameDocument,
-} from '@modules/games/infra/mongoose/entities/Game';
+import Game from '@modules/games/infra/mongoose/entities/Game';
+import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
+import UpdateGameAdapter from '@modules/games/domain/adapters/UpdateGameAdapter';
 
-export default class GamesRepository
-  implements IGamesRepository<IGameDocument> {
-  public async findAllFromUser(userId: string): Promise<IGameDocument[]> {
+export default class GamesRepository implements IGamesRepository {
+  public async findAllFromUser(userId: string): Promise<IGame[]> {
     return Game.find({
       administrators: userId,
     });
@@ -19,7 +18,7 @@ export default class GamesRepository
   public async findOne(
     id: string,
     userId?: string,
-  ): Promise<IGameDocument | undefined> {
+  ): Promise<IGame | undefined> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
@@ -34,7 +33,7 @@ export default class GamesRepository
     name,
     description,
     administrators,
-  }: IGame): Promise<IGameDocument> {
+  }: CreateGameAdapter): Promise<IGame> {
     return Game.create({
       name,
       description,
@@ -47,27 +46,36 @@ export default class GamesRepository
     name,
     description,
     theme,
-    image,
-    newRegisters,
     levelInfo,
-    administrators,
     ranks,
-  }: IGame): Promise<IGameDocument> {
+  }: UpdateGameAdapter): Promise<IGame> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return Game.findByIdAndUpdate(
-      id,
+    return Game.updateOne(
+      { _id: id },
       {
         $set: {
           name,
           description,
           theme,
-          image,
-          newRegisters,
           levelInfo,
           ranks,
-          administrators,
+        },
+      },
+      { new: true },
+    );
+  }
+
+  public async updateAvatar(id: string, image: string): Promise<IGame> {
+    if (!isValidObjectId(id))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
+    return Game.updateOne(
+      { _id: id },
+      {
+        $set: {
+          image,
         },
       },
       { new: true },
@@ -78,12 +86,12 @@ export default class GamesRepository
     id: string,
     increase: number,
     session?: ClientSession,
-  ): Promise<IGameDocument> {
+  ): Promise<IGame> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return Game.findByIdAndUpdate(
-      id,
+    return Game.updateOne(
+      { _id: id },
       {
         $inc: {
           newRegisters: increase,

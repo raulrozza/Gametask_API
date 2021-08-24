@@ -6,6 +6,7 @@ import {
   IHistory,
 } from '@modules/games/domain/entities';
 import FakeGame from '@modules/games/domain/entities/fakes/FakeGame';
+import { v4 as uuid } from 'uuid';
 
 interface IConstructor {
   id?: string;
@@ -28,19 +29,18 @@ export default class FakeActivity implements IActivity {
   public history: IHistory[] = [];
   public game: IGame;
   constructor({
-    id,
-    name,
-    description,
-    dmRules,
-    experience,
+    id = uuid(),
+    name = faker.lorem.word(),
+    description = faker.lorem.sentence(),
+    dmRules = { value: faker.lorem.sentence() },
+    experience = faker.random.number(1000),
     game,
   }: IConstructor) {
-    this.id = id || '';
-    this.name = name || faker.lorem.word();
-    this.experience =
-      experience !== undefined ? experience : faker.random.number(1000);
-    this.description = description || faker.lorem.sentence();
-    this.dmRules = dmRules ? dmRules.value : faker.lorem.sentence();
+    this.id = id;
+    this.name = name;
+    this.experience = experience;
+    this.description = description;
+    this.dmRules = dmRules?.value;
     this.game = new FakeGame({ id: game });
   }
 }

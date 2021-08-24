@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid';
 import {
   IActivity,
   IActivityLog,
@@ -39,10 +38,7 @@ export default class FakeActivitiesRepository implements IActivitiesRepository {
     experience,
     game,
   }: CreateActivityAdapter): Promise<IActivity> {
-    const id = uuid();
-
     const activity = new FakeActivity({
-      id,
       game,
       name,
       description,

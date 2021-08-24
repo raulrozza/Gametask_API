@@ -7,6 +7,7 @@ import { RequestError } from '@shared/infra/errors';
 import IUpdateGameDTO from '@modules/games/domain/dtos/IUpdateGameDTO';
 import { IGame } from '@modules/games/domain/entities';
 import { IGamesRepository } from '@modules/games/domain/repositories';
+import UpdateGameAdapter from '@modules/games/domain/adapters/UpdateGameAdapter';
 
 @injectable()
 export default class UpdateGameService {
@@ -34,17 +35,16 @@ export default class UpdateGameService {
           400,
         );
 
-      const updatedGame = await this.gamesRepository.update({
-        id: game.id,
+      const updateGame = new UpdateGameAdapter({
+        id,
         name,
         description,
         theme,
         levelInfo,
         ranks,
-        administrators: game.administrators,
-        image: game.image,
-        newRegisters: game.newRegisters,
       });
+
+      const updatedGame = await this.gamesRepository.update(updateGame);
 
       return updatedGame;
     } catch (error) {

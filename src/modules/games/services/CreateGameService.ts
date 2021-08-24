@@ -7,6 +7,7 @@ import {
 } from '@modules/games/domain/repositories';
 import { IGame } from '@modules/games/domain/entities';
 import ICreateGameDTO from '@modules/games/domain/dtos/ICreateGameDTO';
+import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 
 @injectable()
 export default class CreateGameService {
@@ -23,13 +24,9 @@ export default class CreateGameService {
     name,
     description,
   }: ICreateGameDTO): Promise<IGame> {
-    const game = await this.gamesRepository.create({
-      name,
-      description,
-      administrators: [creatorId],
-      levelInfo: [],
-      ranks: [],
-    });
+    const createGame = new CreateGameAdapter({ name, description, creatorId });
+
+    const game = await this.gamesRepository.create(createGame);
 
     await this.leaderboardsRepository.create({
       game: game.id,

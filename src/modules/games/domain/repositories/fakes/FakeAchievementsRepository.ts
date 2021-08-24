@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid';
 import { IAchievement } from '@modules/games/domain/entities';
 import { IAchievementsRepository } from '@modules/games/domain/repositories';
 import ICreateAchievementDTO from '@modules/games/domain/dtos/ICreateAchievementDTO';
@@ -35,10 +34,7 @@ export default class FakeAchievementsRepository
     description,
     gameId,
   }: ICreateAchievementDTO): Promise<IAchievement> {
-    const id = uuid();
-
     const achievement = new FakeAchievement({
-      id,
       name,
       description,
       game: gameId,

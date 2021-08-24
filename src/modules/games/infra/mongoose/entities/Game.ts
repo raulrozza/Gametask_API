@@ -1,12 +1,17 @@
 import { Schema, model, Document } from 'mongoose';
 import envs from '@config/environment';
 
-import { IGame, IRank } from '@modules/games/domain/entities';
+import { IGame } from '@modules/games/domain/entities';
 import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
 
 import ThemeSchema from './Theme';
 import LevelInfoSchema from './LevelInfoSchema';
 import RankSchema from './Rank';
+
+export interface IGameDocument extends IGame, Document {
+  id: NonNullable<Document['id']>;
+  administrators: IUserDocument['_id'][];
+}
 
 const GameSchema = new Schema(
   {
@@ -59,21 +64,6 @@ const GameSchema = new Schema(
     },
   },
 );
-
-interface IGameBaseDocument extends Omit<IGame, 'id'>, Document {
-  id: NonNullable<Document['id']>;
-  image_url: string;
-  ranks: IRank[];
-  newRegisters: number;
-}
-
-export interface IGameDocument extends IGameBaseDocument {
-  administrators: IUserDocument['_id'][];
-}
-
-export interface IGamePopulatedDocument extends IGameBaseDocument {
-  administrators: IUserDocument[];
-}
 
 GameSchema.virtual('image_url').get(function (this: IGame) {
   if (this.image) return `${envs.STORAGE_ADDRESS}/game/${this.image}`;

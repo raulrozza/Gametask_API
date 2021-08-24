@@ -1,10 +1,13 @@
+import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
+import UpdateGameAdapter from '@modules/games/domain/adapters/UpdateGameAdapter';
 import { IGame } from '@modules/games/domain/entities';
 
-export default interface IGamesRepository<T extends IGame = IGame> {
-  findAllFromUser(userId: string): Promise<T[]>;
-  findOne(id: string, userId?: string): Promise<T | undefined>;
-  create(game: Omit<IGame, 'id'>): Promise<T>;
-  update(game: IGame): Promise<IGame>;
+export default interface IGamesRepository {
+  findAllFromUser(userId: string): Promise<IGame[]>;
+  findOne(id: string, userId?: string): Promise<IGame | undefined>;
+  create(game: CreateGameAdapter): Promise<IGame>;
+  update(game: UpdateGameAdapter): Promise<IGame>;
+  updateAvatar(id: string, image: string): Promise<IGame>;
   updateRegisters(
     id: string,
     increase: number,

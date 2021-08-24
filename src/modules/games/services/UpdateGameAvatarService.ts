@@ -37,17 +37,7 @@ export default class UpdateGameAvatarService {
 
       await this.storageProvider.saveFile(filename, GAME_FOLDER);
 
-      const updatedGame = await this.gamesRepository.update({
-        id: game.id,
-        name: game.name,
-        description: game.description,
-        levelInfo: game.levelInfo,
-        ranks: game.ranks,
-        newRegisters: game.newRegisters,
-        theme: game.theme,
-        administrators: game.administrators,
-        image: filename,
-      });
+      const updatedGame = await this.gamesRepository.updateAvatar(id, filename);
 
       return updatedGame;
     } catch (error) {
