@@ -52,7 +52,7 @@ export default class GamesRepository implements IGamesRepository {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return Game.updateOne(
+    const game = await Game.findOneAndUpdate(
       { _id: id },
       {
         $set: {
@@ -65,13 +65,21 @@ export default class GamesRepository implements IGamesRepository {
       },
       { new: true },
     );
+
+    if (!game)
+      throw new RequestError(
+        'Game could not be found',
+        errorCodes.RESOURCE_NOT_FOUND,
+      );
+
+    return game;
   }
 
   public async updateAvatar(id: string, image: string): Promise<IGame> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return Game.updateOne(
+    const game = await Game.findOneAndUpdate(
       { _id: id },
       {
         $set: {
@@ -80,6 +88,14 @@ export default class GamesRepository implements IGamesRepository {
       },
       { new: true },
     );
+
+    if (!game)
+      throw new RequestError(
+        'Game could not be found',
+        errorCodes.RESOURCE_NOT_FOUND,
+      );
+
+    return game;
   }
 
   public async updateRegisters(
@@ -90,8 +106,8 @@ export default class GamesRepository implements IGamesRepository {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return Game.updateOne(
-      { _id: id },
+    const game = await Game.findByIdAndUpdate(
+      id,
       {
         $inc: {
           newRegisters: increase,
@@ -99,5 +115,13 @@ export default class GamesRepository implements IGamesRepository {
       },
       { new: true, session },
     );
+
+    if (!game)
+      throw new RequestError(
+        'Game could not be found',
+        errorCodes.RESOURCE_NOT_FOUND,
+      );
+
+    return game;
   }
 }

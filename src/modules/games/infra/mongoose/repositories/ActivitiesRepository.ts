@@ -63,7 +63,7 @@ export default class ActivitiesRepository implements IActivitiesRepository {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    const activity = await Activity.updateOne(
+    const activity = await Activity.findOneAndUpdate(
       { _id: id, game },
       {
         $set: {
@@ -82,6 +82,12 @@ export default class ActivitiesRepository implements IActivitiesRepository {
       { new: true },
     );
 
+    if (!activity)
+      throw new RequestError(
+        'Activity could not be found',
+        errorCodes.RESOURCE_NOT_FOUND,
+      );
+
     return activity || undefined;
   }
 
@@ -93,7 +99,7 @@ export default class ActivitiesRepository implements IActivitiesRepository {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return Activity.updateOne(
+    const activity = await Activity.findOneAndUpdate(
       { _id: id },
       {
         $push: {
@@ -105,5 +111,13 @@ export default class ActivitiesRepository implements IActivitiesRepository {
       },
       { new: true, session },
     );
+
+    if (!activity)
+      throw new RequestError(
+        'Activity could not be found',
+        errorCodes.RESOURCE_NOT_FOUND,
+      );
+
+    return activity;
   }
 }

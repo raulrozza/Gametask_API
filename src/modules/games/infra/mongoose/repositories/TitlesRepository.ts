@@ -47,7 +47,7 @@ export default class TitlesRepository implements ITitlesRepository {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return Title.updateOne(
+    const title = await Title.findOneAndUpdate(
       { _id: id },
       {
         $set: {
@@ -56,5 +56,13 @@ export default class TitlesRepository implements ITitlesRepository {
       },
       { new: true },
     );
+
+    if (!title)
+      throw new RequestError(
+        'Title could not be found',
+        errorCodes.RESOURCE_NOT_FOUND,
+      );
+
+    return title;
   }
 }

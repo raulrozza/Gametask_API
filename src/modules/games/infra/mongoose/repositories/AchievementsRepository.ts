@@ -60,25 +60,41 @@ export default class AchievementsRepository implements IAchievementsRepository {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return Achievement.updateOne(
+    const achievement = await Achievement.findOneAndUpdate(
       { _id: id },
       {
         $set: { name, description, title },
       },
       { new: true },
     );
+
+    if (!achievement)
+      throw new RequestError(
+        'Achievement could not be found',
+        errorCodes.RESOURCE_NOT_FOUND,
+      );
+
+    return achievement;
   }
 
   public async updateAvatar(id: string, image: string): Promise<IAchievement> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return Achievement.updateOne(
+    const achievement = await Achievement.findOneAndUpdate(
       { _id: id },
       {
         $set: { image },
       },
       { new: true },
     );
+
+    if (!achievement)
+      throw new RequestError(
+        'Achievement could not be found',
+        errorCodes.RESOURCE_NOT_FOUND,
+      );
+
+    return achievement;
   }
 }
