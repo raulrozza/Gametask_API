@@ -5,6 +5,7 @@ import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
 import { ILeaderboardsRepository } from '@modules/games/domain/repositories';
+import CreateLeaderboardAdapter from '@modules/games/domain/adapters/CreateLeaderboard';
 
 @injectable()
 export default class ResetLeaderboardsService {
@@ -15,10 +16,9 @@ export default class ResetLeaderboardsService {
 
   public async execute(gameId: string): Promise<void> {
     try {
-      await this.leaderboardsRepository.create({
-        createdAt: new Date(),
-        game: gameId,
-      });
+      const leaderboard = new CreateLeaderboardAdapter({ game: gameId });
+
+      await this.leaderboardsRepository.create(leaderboard);
     } catch (error) {
       if (error instanceof RequestError) throw error;
 

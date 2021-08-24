@@ -1,9 +1,19 @@
-import { IPosition } from '@modules/games/domain/entities/ILeaderboard';
-import { IPlayerDocument } from '@modules/players/infra/mongoose/entities/Player';
+import {
+  IPosition,
+  IPositionedPlayer,
+} from '@modules/games/domain/entities/ILeaderboard';
+import { ITitleDocument } from '@modules/games/infra/mongoose/entities/Title';
+import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
 import { Document, Schema } from 'mongoose';
 
+interface IPositionedPlayerDocument extends IPositionedPlayer, Document {
+  id: NonNullable<Document['id']>;
+  currentTitle?: ITitleDocument['_id'];
+  user: IUserDocument['_id'];
+}
+
 export interface IPositionDocument extends IPosition, Document {
-  player: IPlayerDocument['_id'];
+  player: IPositionedPlayerDocument['_id'];
 }
 
 const PositionSchema = new Schema<IPositionDocument>(

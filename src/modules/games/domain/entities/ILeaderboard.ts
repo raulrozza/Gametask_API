@@ -1,7 +1,16 @@
-import { IPlayer } from '@modules/players/entities';
+import { IRank, ITitle } from '@modules/games/domain/entities';
+import { IUser } from '@shared/domain/entities';
+
+export interface IPositionedPlayer {
+  id: string;
+  level: number;
+  currentTitle?: ITitle;
+  rank?: IRank;
+  user: IUser;
+}
 
 export interface IPosition {
-  player: IPlayer;
+  player: IPositionedPlayer;
   experience: number;
 }
 
