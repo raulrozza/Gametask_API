@@ -1,11 +1,6 @@
-import {
-  IAchievement,
-  IActivity,
-  IGame,
-  ILevelInfo,
-} from '@modules/games/domain/entities';
+import { IActivity, IGame, ILevelInfo } from '@modules/games/domain/entities';
 import { IPlayer } from '@modules/players/entities';
-import { IRank } from '@shared/domain/entities';
+import { IAchievement, IRank } from '@shared/domain/entities';
 
 export default interface IFeedPost {
   id: string;

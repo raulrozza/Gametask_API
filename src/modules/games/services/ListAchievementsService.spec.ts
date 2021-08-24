@@ -1,9 +1,8 @@
 import { v4 as uuid } from 'uuid';
-import FakeAchievement from '../fakes/FakeAchievement';
 
 import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
 import ListAchievementsService from './ListAchievementsService';
-import { IAchievement } from '@modules/games/domain/entities';
+import { FakeAchievement } from '@shared/domain/entities/fakes';
 
 describe('ListAchievementsService', () => {
   it('should list only the achievements of the selected game', async () => {
@@ -15,23 +14,23 @@ describe('ListAchievementsService', () => {
 
     const gameId = uuid();
 
-    const fakeAchievement = new FakeAchievement(gameId);
+    const fakeAchievement = new FakeAchievement({ game: gameId });
 
     await achievementsRepository.create({
-      game: fakeAchievement.game,
+      gameId: fakeAchievement.game.id,
       name: fakeAchievement.name,
       description: fakeAchievement.description,
-    } as IAchievement);
+    });
     await achievementsRepository.create({
-      game: fakeAchievement.game,
+      gameId: fakeAchievement.game.id,
       name: fakeAchievement.name,
       description: fakeAchievement.description,
-    } as IAchievement);
+    });
     await achievementsRepository.create({
-      game: 'another_game_id',
+      gameId: 'another_game_id',
       name: fakeAchievement.name,
       description: fakeAchievement.description,
-    } as IAchievement);
+    });
 
     const achievements = await listAchievements.execute(gameId);
 

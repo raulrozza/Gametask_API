@@ -1,11 +1,10 @@
 import { RequestError } from '@shared/infra/errors';
 import { v4 as uuid } from 'uuid';
-import FakeAchievement from '@modules/games/domain/entities/fakes/FakeAchievement';
 import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
 import FakeTitlesRepository from '@modules/games/domain/repositories/fakes/FakeTitlesRepository';
 import CreateAchievementService from './CreateAchievementService';
 import { ITitle } from '@shared/domain/entities';
-import { FakeTitle } from '@shared/domain/entities/fakes';
+import { FakeAchievement, FakeTitle } from '@shared/domain/entities/fakes';
 
 describe('CreateAchievementService', () => {
   it('should create the achievement with title', async () => {

@@ -6,17 +6,15 @@ import FakeFeedPostsRepository from '../repositories/fakes/FakeFeedPostsReposito
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import FakeUnlockAchievementRequestRepository from '../repositories/fakes/FakeUnlockAchievementRequestRepository';
 import UnlockAchievementService from './UnlockAchievementService';
-import {
-  FakeAchievement,
-  FakeGame,
-} from '@modules/games/domain/entities/fakes';
-import { IAchievement, IGame } from '@modules/games/domain/entities';
+import { FakeGame } from '@modules/games/domain/entities/fakes';
 import FakePlayer from '../fakes/FakePlayer';
 import { IPlayer, IUnlockAchievementRequest } from '../entities';
 import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 import { ITitle } from '@shared/domain/entities';
+import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
+import { FakeAchievement, FakeUser } from '@shared/domain/entities/fakes';
 
 const initService = async (title?: ITitle) => {
   const playersRepository = new FakePlayersRepository();
@@ -37,18 +35,27 @@ const initService = async (title?: ITitle) => {
 
   const userId = uuid();
 
-  const { id: _, ...fakeGame } = new FakeGame();
-  const game = await gamesRepository.create(fakeGame as IGame);
+  const fakeGame = new FakeGame();
+  const createGame = new CreateGameAdapter({
+    name: fakeGame.name,
+    description: fakeGame.description,
+    creatorId: userId,
+  });
+  const game = await gamesRepository.create(createGame);
 
-  const { id: __, ...fakeAchievement } = new FakeAchievement({
+  const fakeAchievement = new FakeAchievement({
     game: game.id,
     title,
   });
-  const achievement = await achievementsRepository.create(
-    fakeAchievement as IAchievement,
-  );
+  const achievement = await achievementsRepository.create({
+    name: fakeAchievement.name,
+    description: fakeAchievement.description,
+    title: fakeAchievement.title?.id,
+    gameId: fakeAchievement.game.id,
+  });
 
-  const { id: ___, ...fakePlayer } = new FakePlayer(userId, game.id);
+  const fakeUser = new FakeUser({ id: userId });
+  const { id: ___, ...fakePlayer } = new FakePlayer(fakeUser, game.id);
   const player = await playersRepository.create(fakePlayer as IPlayer);
 
   const { id: ____, ...fakeRequest } = new FakeUnlockAchievementRequest(

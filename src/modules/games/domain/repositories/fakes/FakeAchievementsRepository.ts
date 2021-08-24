@@ -1,9 +1,8 @@
-import { IAchievement } from '@modules/games/domain/entities';
 import { IAchievementsRepository } from '@modules/games/domain/repositories';
 import ICreateAchievementDTO from '@modules/games/domain/dtos/ICreateAchievementDTO';
-import { FakeAchievement } from '@modules/games/domain/entities/fakes';
 import IUpdateAchievementDTO from '@modules/games/domain/dtos/IUpdateAchievementDTO';
-import { FakeTitle } from '@shared/domain/entities/fakes';
+import { FakeAchievement, FakeTitle } from '@shared/domain/entities/fakes';
+import { IAchievement } from '@shared/domain/entities';
 
 export default class FakeAchievementsRepository
   implements IAchievementsRepository {

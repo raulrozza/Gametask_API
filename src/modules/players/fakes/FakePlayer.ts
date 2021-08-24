@@ -1,16 +1,15 @@
 import faker from 'faker';
 
 import { IPlayer } from '@modules/players/entities';
-import { IAchievement, IGame } from '@modules/games/domain/entities';
-import { IRank, ITitle, IUser } from '@shared/domain/entities';
+import { IAchievement, IRank, ITitle, IUser } from '@shared/domain/entities';
 
 export default class FakePlayer implements IPlayer {
   public id: string = '';
   public experience: number = faker.random.number(10000);
   public level: number = faker.random.number(10);
-  public titles: string[] | ITitle[] = [];
-  public currentTitle?: string | ITitle;
+  public titles: ITitle[] = [];
+  public currentTitle?: ITitle;
   public rank?: IRank;
-  public achievements: string[] | IAchievement[] = [];
-  constructor(public user: string | IUser, public game: string | IGame) {}
+  public achievements: IAchievement[] = [];
+  constructor(public user: IUser, public game: string) {}
 }

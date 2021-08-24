@@ -1,4 +1,3 @@
-export { default as IAchievement } from './IAchievement';
 export { default as IActivity } from './IActivity';
 export { default as IActivityLog } from './IActivityLog';
 export { default as IGame } from './IGame';

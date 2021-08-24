@@ -1,9 +1,8 @@
 import { v4 as uuid } from 'uuid';
 
-import { IAchievement } from '@modules/games/domain/entities';
-import FakeAchievement from '../fakes/FakeAchievement';
 import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
 import ShowAchievementService from './ShowAchievementService';
+import { FakeAchievement } from '@shared/domain/entities/fakes';
 
 describe('ShowAchievementService', () => {
   it('should return the correct achievement', async () => {
@@ -11,12 +10,12 @@ describe('ShowAchievementService', () => {
     const showAchievement = new ShowAchievementService(achievementsRepository);
 
     const gameId = uuid();
-    const fakeAchievement = new FakeAchievement(gameId);
+    const fakeAchievement = new FakeAchievement({ game: gameId });
     const achievement = await achievementsRepository.create({
       name: fakeAchievement.name,
       description: fakeAchievement.description,
-      game: fakeAchievement.game,
-    } as IAchievement);
+      gameId: fakeAchievement.game.id,
+    });
 
     const fetchedAchievement = await showAchievement.execute({
       achievementId: achievement.id,
@@ -31,12 +30,12 @@ describe('ShowAchievementService', () => {
     const showAchievement = new ShowAchievementService(achievementsRepository);
 
     const gameId = uuid();
-    const fakeAchievement = new FakeAchievement(gameId);
+    const fakeAchievement = new FakeAchievement({ game: gameId });
     const achievement = await achievementsRepository.create({
       name: fakeAchievement.name,
       description: fakeAchievement.description,
-      game: 'random-game-id',
-    } as IAchievement);
+      gameId: 'random-game-id',
+    });
 
     const fetchedAchievement = await showAchievement.execute({
       achievementId: achievement.id,

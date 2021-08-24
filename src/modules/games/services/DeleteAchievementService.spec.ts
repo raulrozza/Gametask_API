@@ -1,9 +1,8 @@
 import { v4 as uuid } from 'uuid';
 
-import { FakeAchievement } from '@modules/games/domain/entities/fakes';
-import { IAchievement } from '@modules/games/domain/entities';
 import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
 import DeleteAchievementService from './DeleteAchievementService';
+import { FakeAchievement } from '@shared/domain/entities/fakes';
 
 describe('DeleteAchievementService', () => {
   it('should delete the right achievement', async () => {
@@ -16,20 +15,20 @@ describe('DeleteAchievementService', () => {
     const fakeAchievement = new FakeAchievement({ game: gameId });
 
     await achievementsRepository.create({
-      game: fakeAchievement.game,
+      gameId: fakeAchievement.game.id,
       name: fakeAchievement.name,
       description: fakeAchievement.description,
-    } as IAchievement);
+    });
     const achievementToBeDeleted = await achievementsRepository.create({
-      game: fakeAchievement.game,
+      gameId: fakeAchievement.game.id,
       name: fakeAchievement.name,
       description: fakeAchievement.description,
-    } as IAchievement);
+    });
     await achievementsRepository.create({
-      game: fakeAchievement.game,
+      gameId: fakeAchievement.game.id,
       name: fakeAchievement.name,
       description: fakeAchievement.description,
-    } as IAchievement);
+    });
 
     await deleteAchievement.execute({ gameId, id: achievementToBeDeleted.id });
 

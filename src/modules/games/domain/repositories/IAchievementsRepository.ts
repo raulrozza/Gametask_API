@@ -1,6 +1,6 @@
 import ICreateAchievementDTO from '@modules/games/domain/dtos/ICreateAchievementDTO';
 import IUpdateAchievementDTO from '@modules/games/domain/dtos/IUpdateAchievementDTO';
-import { IAchievement } from '@modules/games/domain/entities';
+import { IAchievement } from '@shared/domain/entities';
 
 export default interface IAchievementsRepository {
   findAllFromGame(gameId: string): Promise<IAchievement[]>;
