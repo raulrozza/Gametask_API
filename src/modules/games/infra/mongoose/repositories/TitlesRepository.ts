@@ -1,11 +1,11 @@
 import errorCodes from '@config/errorCodes';
-import { ITitle } from '@modules/games/domain/entities';
 import { ITitlesRepository } from '@modules/games/domain/repositories';
 import { RequestError } from '@shared/infra/errors';
 import { isValidObjectId } from 'mongoose';
 import Title from '@modules/games/infra/mongoose/entities/Title';
 import ICreateTitleDTO from '@modules/games/domain/dtos/ICreateTitleDTO';
 import UpdateTitleAdapter from '@modules/games/domain/adapters/UpdateTitle';
+import { ITitle } from '@shared/domain/entities';
 
 export default class TitlesRepository implements ITitlesRepository {
   public async findAllFromGame(

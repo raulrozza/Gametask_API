@@ -1,9 +1,9 @@
 import { v4 as uuid } from 'uuid';
-import FakeTitle from '../fakes/FakeTitle';
 
 import FakeTitlesRepository from '@modules/games/domain/repositories/fakes/FakeTitlesRepository';
 import ListTitlesService from './ListTitlesService';
-import { ITitle } from '@modules/games/domain/entities';
+import { ITitle } from '@shared/domain/entities';
+import { FakeTitle } from '@shared/domain/entities/fakes';
 
 describe('ListTitlesService', () => {
   it('should list only the titles in a of a given game', async () => {
@@ -13,7 +13,7 @@ describe('ListTitlesService', () => {
 
     const gameId = uuid();
 
-    const fakeTitle = new FakeTitle(gameId);
+    const fakeTitle = new FakeTitle({ game: gameId });
 
     await titlesRepository.create({
       game: fakeTitle.game,
@@ -40,8 +40,8 @@ describe('ListTitlesService', () => {
 
     const gameId = uuid();
 
-    const fakeTitle1 = new FakeTitle(gameId);
-    const fakeTitle2 = new FakeTitle(gameId);
+    const fakeTitle1 = new FakeTitle({ game: gameId });
+    const fakeTitle2 = new FakeTitle({ game: gameId });
 
     const title1 = await titlesRepository.create({
       game: fakeTitle1.game,

@@ -2,8 +2,8 @@ import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
 import { ITitlesRepository } from '@modules/games/domain/repositories';
-import { ITitle } from '@modules/games/domain/entities';
 import IListTitlesDTO from '@modules/games/domain/dtos/IListTitlesDTO';
+import { ITitle } from '@shared/domain/entities';
 
 @injectable()
 export default class ListGamesService {

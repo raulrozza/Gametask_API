@@ -5,9 +5,9 @@ import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
 import IUpdateTitleDTO from '@modules/games/domain/dtos/IUpdateTitleDTO';
-import { ITitle } from '@modules/games/domain/entities';
 import { ITitlesRepository } from '@modules/games/domain/repositories';
 import UpdateTitleAdapter from '@modules/games/domain/adapters/UpdateTitle';
+import { ITitle } from '@shared/domain/entities';
 
 @injectable()
 export default class UpdateTitleService {

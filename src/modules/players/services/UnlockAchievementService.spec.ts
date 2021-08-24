@@ -10,12 +10,13 @@ import {
   FakeAchievement,
   FakeGame,
 } from '@modules/games/domain/entities/fakes';
-import { IAchievement, IGame, ITitle } from '@modules/games/domain/entities';
+import { IAchievement, IGame } from '@modules/games/domain/entities';
 import FakePlayer from '../fakes/FakePlayer';
 import { IPlayer, IUnlockAchievementRequest } from '../entities';
 import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
+import { ITitle } from '@shared/domain/entities';
 
 const initService = async (title?: ITitle) => {
   const playersRepository = new FakePlayersRepository();

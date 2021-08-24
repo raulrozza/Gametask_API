@@ -5,7 +5,7 @@ import { setEnvToTest } from '../helpers/setEnvToTest';
 
 import app from '@shared/infra/http/app';
 import * as mongoEntities from '@modules/users/infra/mongoose/entities';
-import FakeUser from '@shared/domain/entities/fakes/FakeUser';
+import { FakeUser } from '@shared/domain/entities/fakes';
 
 describe('Users', () => {
   beforeAll(async () => {

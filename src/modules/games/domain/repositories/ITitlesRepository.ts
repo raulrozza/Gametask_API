@@ -1,6 +1,6 @@
 import UpdateTitleAdapter from '@modules/games/domain/adapters/UpdateTitle';
 import ICreateTitleDTO from '@modules/games/domain/dtos/ICreateTitleDTO';
-import { ITitle } from '@modules/games/domain/entities';
+import { ITitle } from '@shared/domain/entities';
 
 export default interface ITitlesRepository {
   findAllFromGame(gameId: string, name?: string): Promise<ITitle[]>;

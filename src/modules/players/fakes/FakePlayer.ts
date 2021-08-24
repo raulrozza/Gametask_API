@@ -1,8 +1,8 @@
 import faker from 'faker';
 
 import { IPlayer } from '@modules/players/entities';
-import { IAchievement, IGame, ITitle } from '@modules/games/domain/entities';
-import { IRank, IUser } from '@shared/domain/entities';
+import { IAchievement, IGame } from '@modules/games/domain/entities';
+import { IRank, ITitle, IUser } from '@shared/domain/entities';
 
 export default class FakePlayer implements IPlayer {
   public id: string = '';

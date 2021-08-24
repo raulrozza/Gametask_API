@@ -2,7 +2,7 @@ import { IGame } from '@modules/games/domain/entities';
 import { IGamesRepository } from '@modules/games/domain/repositories';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import { FakeGame } from '@modules/games/domain/entities/fakes';
-import FakeUser from '@shared/domain/entities/fakes/FakeUser';
+import { FakeUser } from '@shared/domain/entities/fakes';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import UpdateGameAdapter from '@modules/games/domain/adapters/UpdateGameAdapter';

@@ -1,11 +1,11 @@
 import { RequestError } from '@shared/infra/errors';
 import { v4 as uuid } from 'uuid';
-import { ITitle } from '@modules/games/domain/entities';
-import { FakeTitle } from '@modules/games/domain/entities/fakes';
-import FakeAchievement from '../fakes/FakeAchievement';
+import FakeAchievement from '@modules/games/domain/entities/fakes/FakeAchievement';
 import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
 import FakeTitlesRepository from '@modules/games/domain/repositories/fakes/FakeTitlesRepository';
 import CreateAchievementService from './CreateAchievementService';
+import { ITitle } from '@shared/domain/entities';
+import { FakeTitle } from '@shared/domain/entities/fakes';
 
 describe('CreateAchievementService', () => {
   it('should create the achievement with title', async () => {
@@ -17,7 +17,7 @@ describe('CreateAchievementService', () => {
     );
 
     const gameId = uuid();
-    const fakeAchievement = new FakeAchievement(gameId);
+    const fakeAchievement = new FakeAchievement({ game: gameId });
     const fakeTitle = new FakeTitle({ game: gameId });
 
     const title = await titlesRepository.create({
@@ -49,7 +49,7 @@ describe('CreateAchievementService', () => {
     );
 
     const gameId = uuid();
-    const fakeAchievement = new FakeAchievement(gameId);
+    const fakeAchievement = new FakeAchievement({ game: gameId });
 
     const payload = {
       gameId,
@@ -73,7 +73,7 @@ describe('CreateAchievementService', () => {
     );
 
     const gameId = uuid();
-    const fakeAchievement = new FakeAchievement(gameId);
+    const fakeAchievement = new FakeAchievement({ game: gameId });
 
     const payload = {
       gameId,

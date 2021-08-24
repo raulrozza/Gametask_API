@@ -1,9 +1,9 @@
 import { v4 as uuid } from 'uuid';
 
-import { FakeTitle } from '@modules/games/domain/entities/fakes';
-import { ITitle } from '@modules/games/domain/entities';
 import FakeTitlesRepository from '@modules/games/domain/repositories/fakes/FakeTitlesRepository';
 import DeleteTitleService from './DeleteTitleService';
+import { ITitle } from '@shared/domain/entities';
+import { FakeTitle } from '@shared/domain/entities/fakes';
 
 describe('DeleteTitleService', () => {
   it('should delete the right title', async () => {

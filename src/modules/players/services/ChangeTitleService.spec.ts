@@ -1,13 +1,13 @@
 import { v4 as uuid } from 'uuid';
 
-import { FakeTitle } from '@modules/games/domain/entities/fakes';
 import FakeTitlesRepository from '@modules/games/domain/repositories/fakes/FakeTitlesRepository';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import ChangeTitleService from './ChangeTitleService';
 import FakePlayer from '../fakes/FakePlayer';
-import { ITitle } from '@modules/games/domain/entities';
 import { IPlayer } from '../entities';
 import { RequestError } from '@shared/infra/errors';
+import { ITitle } from '@shared/domain/entities';
+import { FakeTitle } from '@shared/domain/entities/fakes';
 
 const initService = async () => {
   const titlesRepository = new FakeTitlesRepository();

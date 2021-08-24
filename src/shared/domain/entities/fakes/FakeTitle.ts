@@ -1,5 +1,5 @@
+import { ITitle } from '@shared/domain/entities';
 import faker from 'faker';
-import { ITitle } from '@modules/games/domain/entities';
 import { v4 as uuid } from 'uuid';
 
 interface IConstructor {

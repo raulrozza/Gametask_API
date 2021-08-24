@@ -1,4 +1,4 @@
-import { ITitle } from '@modules/games/domain/entities';
+import { ITitle } from '@shared/domain/entities';
 import { Schema, model, Document } from 'mongoose';
 import { IGameDocument } from './Game';
 

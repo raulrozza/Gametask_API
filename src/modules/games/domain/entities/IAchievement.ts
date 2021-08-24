@@ -1,4 +1,5 @@
-import { IGame, ITitle } from '.';
+import { ITitle } from '@shared/domain/entities';
+import { IGame } from '.';
 
 export default interface IAchievement {
   id: string;

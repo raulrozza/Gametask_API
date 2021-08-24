@@ -1,5 +1,5 @@
 import { IRank, IUser } from '@shared/domain/entities';
-import FakeUser from '@shared/domain/entities/fakes/FakeUser';
+import { FakeUser } from '@shared/domain/entities/fakes';
 import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
 import { FakeGame } from '@modules/games/domain/entities/fakes';
 import { IGame } from '@modules/games/domain/entities';
@@ -52,7 +52,7 @@ const initService = async (addRanks: boolean | IRank[] = false) => {
           ]
         : addRanks;
   }
-  const game = await gamesRepository.create(fakeGame as IGame);
+  const game = await gamesRepository.create(fakeGame);
 
   return { createPlayers, gameId: game.id, userId: user.id };
 };
