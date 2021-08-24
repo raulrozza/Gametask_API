@@ -25,7 +25,9 @@ export default class AchievementsRepository implements IAchievementsRepository {
     const achievement = await Achievement.findOne({
       _id: id,
       game: gameId,
-    }).populate('title');
+    })
+      .populate('title')
+      .populate('game');
 
     return achievement || undefined;
   }
@@ -66,7 +68,9 @@ export default class AchievementsRepository implements IAchievementsRepository {
         $set: { name, description, title },
       },
       { new: true },
-    );
+    )
+      .populate('title')
+      .populate('game');
 
     if (!achievement)
       throw new RequestError(
@@ -87,7 +91,9 @@ export default class AchievementsRepository implements IAchievementsRepository {
         $set: { image },
       },
       { new: true },
-    );
+    )
+      .populate('title')
+      .populate('game');
 
     if (!achievement)
       throw new RequestError(
