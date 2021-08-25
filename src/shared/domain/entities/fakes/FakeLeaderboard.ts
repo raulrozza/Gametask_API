@@ -1,4 +1,4 @@
-import ILeaderboard from '@modules/games/domain/entities/ILeaderboard';
+import { ILeaderboard } from '@shared/domain/entities';
 import { v4 as uuid } from 'uuid';
 
 interface IConstructor {

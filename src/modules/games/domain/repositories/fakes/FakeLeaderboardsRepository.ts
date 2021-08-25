@@ -1,7 +1,7 @@
 import { ILeaderboardsRepository } from '@modules/games/domain/repositories';
 import CreateLeaderboardAdapter from '@modules/games/domain/adapters/CreateLeaderboard';
-import { ILeaderboard } from '@modules/games/domain/entities';
-import { FakeLeaderboard } from '@modules/games/domain/entities/fakes';
+import { ILeaderboard } from '@shared/domain/entities';
+import { FakeLeaderboard } from '@shared/domain/entities/fakes';
 
 export default class FakeLeaderboardsRepository
   implements ILeaderboardsRepository {

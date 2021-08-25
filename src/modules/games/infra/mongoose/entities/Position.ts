@@ -1,9 +1,9 @@
+import { ITitleDocument } from '@modules/games/infra/mongoose/entities/Title';
+import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
 import {
   IPosition,
   IPositionedPlayer,
-} from '@modules/games/domain/entities/ILeaderboard';
-import { ITitleDocument } from '@modules/games/infra/mongoose/entities/Title';
-import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
+} from '@shared/domain/entities/ILeaderboard';
 import { Document, Schema } from 'mongoose';
 
 interface IPositionedPlayerDocument extends IPositionedPlayer, Document {
