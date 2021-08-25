@@ -1,5 +1,4 @@
-import { IRank, IUser } from '@shared/domain/entities';
-import { ILevelInfo, ITheme } from '.';
+import { ILevelInfo, IRank, ITheme, IUser } from '@shared/domain/entities';
 
 export default interface IGame {
   id: string;

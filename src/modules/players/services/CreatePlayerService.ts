@@ -5,12 +5,11 @@ import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
 import { IGamesRepository } from '@modules/games/domain/repositories';
-import { IGame, ILevelInfo } from '@modules/games/domain/entities';
 import { IUsersRepository } from '@modules/users/domain/repositories';
 import { IPlayersRepository } from '@modules/players/repositories';
 import { IPlayer } from '@modules/players/domain/entities';
 import ICreatePlayerDTO from '@modules/players/dtos/ICreatePlayerDTO';
-import { IRank } from '@shared/domain/entities';
+import { IGame, ILevelInfo, IRank } from '@shared/domain/entities';
 
 @injectable()
 export default class CreatePlayerService {

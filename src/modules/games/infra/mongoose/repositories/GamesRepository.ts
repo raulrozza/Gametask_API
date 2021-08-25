@@ -2,11 +2,11 @@ import { ClientSession, isValidObjectId } from 'mongoose';
 
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
-import { IGame } from '@modules/games/domain/entities';
 import { IGamesRepository } from '@modules/games/domain/repositories';
 import Game from '@modules/games/infra/mongoose/entities/Game';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import UpdateGameAdapter from '@modules/games/domain/adapters/UpdateGameAdapter';
+import { IGame } from '@shared/domain/entities';
 
 export default class GamesRepository implements IGamesRepository {
   public async findAllFromUser(userId: string): Promise<IGame[]> {

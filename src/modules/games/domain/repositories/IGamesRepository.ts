@@ -1,6 +1,6 @@
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import UpdateGameAdapter from '@modules/games/domain/adapters/UpdateGameAdapter';
-import { IGame } from '@modules/games/domain/entities';
+import { IGame } from '@shared/domain/entities';
 
 export default interface IGamesRepository {
   findAllFromUser(userId: string): Promise<IGame[]>;

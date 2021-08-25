@@ -1,9 +1,9 @@
 import { v4 as uuid } from 'uuid';
-import FakeGame from '../fakes/FakeGame';
 
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import ListGamesService from './ListGamesService';
-import { IGame } from '@modules/games/domain/entities';
+import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
+import { FakeGame } from '@shared/domain/entities/fakes';
 
 describe('ListGamesService', () => {
   it('should list only the user owned games', async () => {
@@ -15,21 +15,27 @@ describe('ListGamesService', () => {
 
     const fakeGame = new FakeGame();
 
-    await gamesRepository.create({
-      administrators: [userId],
-      name: fakeGame.name,
-      description: fakeGame.description,
-    } as IGame);
-    await gamesRepository.create({
-      administrators: [userId],
-      name: fakeGame.name,
-      description: fakeGame.description,
-    } as IGame);
-    await gamesRepository.create({
-      administrators: ['not-my-game-id'],
-      name: fakeGame.name,
-      description: fakeGame.description,
-    } as IGame);
+    await gamesRepository.create(
+      new CreateGameAdapter({
+        name: fakeGame.name,
+        description: fakeGame.description,
+        creatorId: userId,
+      }),
+    );
+    await gamesRepository.create(
+      new CreateGameAdapter({
+        name: fakeGame.name,
+        description: fakeGame.description,
+        creatorId: userId,
+      }),
+    );
+    await gamesRepository.create(
+      new CreateGameAdapter({
+        name: 'not-my-game-id',
+        description: fakeGame.description,
+        creatorId: userId,
+      }),
+    );
 
     const games = await listGames.execute(userId);
 

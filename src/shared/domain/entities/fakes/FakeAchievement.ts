@@ -1,10 +1,10 @@
 import faker from 'faker';
-import { IGame } from '@modules/games/domain/entities';
-import FakeGame from '@modules/games/domain/entities/fakes/FakeGame';
 import { v4 as uuid } from 'uuid';
 import { ITitle } from '@shared/domain/entities';
 import { FakeTitle } from '@shared/domain/entities/fakes';
 import IAchievement from '@shared/domain/entities/IAchievement';
+import IGame from '@shared/domain/entities/IGame';
+import FakeGame from '@shared/domain/entities/fakes/FakeGame';
 
 interface IConstructor {
   id?: string;

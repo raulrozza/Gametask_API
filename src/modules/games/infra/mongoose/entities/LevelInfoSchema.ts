@@ -1,5 +1,5 @@
+import { ILevelInfo } from '@shared/domain/entities';
 import mongoose, { Document } from 'mongoose';
-import { ILevelInfo } from '@modules/games/domain/entities';
 
 interface ILevelInfoDocument extends ILevelInfo, Document {}
 

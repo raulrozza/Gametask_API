@@ -5,9 +5,9 @@ import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
 import IUpdateGameDTO from '@modules/games/domain/dtos/IUpdateGameDTO';
-import { IGame } from '@modules/games/domain/entities';
 import { IGamesRepository } from '@modules/games/domain/repositories';
 import UpdateGameAdapter from '@modules/games/domain/adapters/UpdateGameAdapter';
+import { IGame } from '@shared/domain/entities';
 
 @injectable()
 export default class UpdateGameService {

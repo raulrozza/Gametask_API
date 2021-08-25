@@ -5,10 +5,10 @@ import {
   IGamesRepository,
   ILeaderboardsRepository,
 } from '@modules/games/domain/repositories';
-import { IGame } from '@modules/games/domain/entities';
 import ICreateGameDTO from '@modules/games/domain/dtos/ICreateGameDTO';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import CreateLeaderboardAdapter from '@modules/games/domain/adapters/CreateLeaderboard';
+import { IGame } from '@shared/domain/entities';
 
 @injectable()
 export default class CreateGameService {

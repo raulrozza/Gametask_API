@@ -6,7 +6,6 @@ import FakeFeedPostsRepository from '../repositories/fakes/FakeFeedPostsReposito
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import FakeUnlockAchievementRequestRepository from '../repositories/fakes/FakeUnlockAchievementRequestRepository';
 import UnlockAchievementService from './UnlockAchievementService';
-import { FakeGame } from '@modules/games/domain/entities/fakes';
 import { IUnlockAchievementRequest } from '../entities';
 import { IPlayer } from '@modules/players/domain/entities';
 import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest';
@@ -14,7 +13,11 @@ import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 import { ITitle } from '@shared/domain/entities';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
-import { FakeAchievement, FakeUser } from '@shared/domain/entities/fakes';
+import {
+  FakeAchievement,
+  FakeGame,
+  FakeUser,
+} from '@shared/domain/entities/fakes';
 import { FakePlayer } from '@modules/players/domain/entities/fakes';
 
 const initService = async (title?: ITitle) => {

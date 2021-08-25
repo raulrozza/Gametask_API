@@ -1,5 +1,5 @@
-import { IGame } from '@modules/games/domain/entities';
 import { ILeaderboard } from '@modules/players/entities';
+import { IGame } from '@shared/domain/entities';
 import { IPosition } from '../entities/ILeaderboard';
 
 export default class FakeLeaderboard implements ILeaderboard {

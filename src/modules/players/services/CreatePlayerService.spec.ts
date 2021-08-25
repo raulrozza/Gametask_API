@@ -1,12 +1,11 @@
 import { IRank, IUser } from '@shared/domain/entities';
-import { FakeUser } from '@shared/domain/entities/fakes';
+import { FakeGame, FakeUser } from '@shared/domain/entities/fakes';
 import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
-import { FakeGame } from '@modules/games/domain/entities/fakes';
-import { IGame } from '@modules/games/domain/entities';
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import { CreatePlayerService } from '.';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import { RequestError } from '@shared/infra/errors';
+import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 
 const initService = async (addRanks: boolean | IRank[] = false) => {
   const playersRepository = new FakePlayersRepository();
@@ -52,7 +51,13 @@ const initService = async (addRanks: boolean | IRank[] = false) => {
           ]
         : addRanks;
   }
-  const game = await gamesRepository.create(fakeGame);
+  const game = await gamesRepository.create(
+    new CreateGameAdapter({
+      name: fakeGame.name,
+      description: fakeGame.description,
+      creatorId: user.id,
+    }),
+  );
 
   return { createPlayers, gameId: game.id, userId: user.id };
 };

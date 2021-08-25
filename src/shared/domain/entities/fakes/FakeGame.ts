@@ -1,8 +1,7 @@
 import faker from 'faker';
-import { FakeTheme } from '.';
-import { IGame, ILevelInfo } from '@modules/games/domain/entities';
-import { IRank, IUser } from '@shared/domain/entities';
+import { IGame, ILevelInfo, IRank, IUser } from '@shared/domain/entities';
 import { v4 as uuid } from 'uuid';
+import { FakeTheme } from '@shared/domain/entities/fakes';
 
 interface IConstructor {
   id?: string;

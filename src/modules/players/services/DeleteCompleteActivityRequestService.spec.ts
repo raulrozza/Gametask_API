@@ -5,8 +5,9 @@ import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCom
 import DeleteCompleteActivityRequestService from './DeleteCompleteActivityRequestService';
 import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
 import { RequestError } from '@shared/infra/errors';
-import { FakeGame } from '@modules/games/domain/entities/fakes';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
+import { FakeGame } from '@shared/domain/entities/fakes';
+import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 
 describe('DeleteCompleteActivityRequest', () => {
   it('should successfully delete the request', async () => {
@@ -20,7 +21,12 @@ describe('DeleteCompleteActivityRequest', () => {
     );
 
     const fakeGame = new FakeGame();
-    const game = await gamesRepository.create(fakeGame);
+    const createGame = new CreateGameAdapter({
+      creatorId: uuid(),
+      name: fakeGame.name,
+      description: fakeGame.description,
+    });
+    const game = await gamesRepository.create(createGame);
 
     const requesterId = uuid();
     const achievementId = uuid();
@@ -79,7 +85,12 @@ describe('DeleteCompleteActivityRequest', () => {
     );
 
     const fakeGame = new FakeGame();
-    const game = await gamesRepository.create(fakeGame);
+    const createGame = new CreateGameAdapter({
+      creatorId: uuid(),
+      name: fakeGame.name,
+      description: fakeGame.description,
+    });
+    const game = await gamesRepository.create(createGame);
 
     await expect(
       deleteUnlockAchievementRequest.execute({

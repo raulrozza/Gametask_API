@@ -1,6 +1,5 @@
 import { v4 as uuid } from 'uuid';
 
-import { FakeGame } from '@modules/games/domain/entities/fakes';
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCompleteActivityRequestRepository';
 import CreateCompleteActivityRequestService from './CreateCompleteActivityRequestService';
@@ -11,7 +10,11 @@ import { IPlayer } from '@modules/players/domain/entities';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 import { FakePlayer } from '@modules/players/domain/entities/fakes';
-import { FakeActivity, FakeUser } from '@shared/domain/entities/fakes';
+import {
+  FakeActivity,
+  FakeGame,
+  FakeUser,
+} from '@shared/domain/entities/fakes';
 import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 

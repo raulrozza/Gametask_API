@@ -15,9 +15,8 @@ import ITransactionProvider from '@shared/domain/providers/ITransactionProvider'
 import ICompleteActivityDTO from '@modules/players/dtos/ICompleteActivityDTO';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
-import { IGame, ILevelInfo } from '@modules/games/domain/entities';
 import { IPlayer } from '@modules/players/domain/entities';
-import { IRank } from '@shared/domain/entities';
+import { IGame, ILevelInfo, IRank } from '@shared/domain/entities';
 
 interface IAddCompletionToActivityHistory {
   userId: string;
@@ -109,6 +108,12 @@ export default class CompleteActivityService {
       activityId,
       gameId,
     );
+
+    if (!activity)
+      throw new RequestError(
+        'The activity does not exist',
+        errorCodes.RESOURCE_NOT_FOUND,
+      );
 
     await this.transactionProvider.startSession(async session => {
       await this.addCompletionToActivityHistory(
