@@ -2,8 +2,8 @@ import { IFeedPostsRepository } from '@modules/players/repositories';
 import FeedPost, {
   IFeedPostDocument,
 } from '@modules/players/infra/mongoose/entities/FeedPost';
-import { IFeedPost } from '@modules/players/entities';
 import { ClientSession } from 'mongoose';
+import { IFeedPost } from '@modules/players/domain/entities';
 
 export default class FeedPostsRepository
   implements IFeedPostsRepository<IFeedPostDocument> {

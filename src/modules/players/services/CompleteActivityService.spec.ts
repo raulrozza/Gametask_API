@@ -14,11 +14,7 @@ import {
   FakeCompleteActivityRequest,
   FakePlayer,
 } from '@modules/players/domain/entities/fakes';
-import {
-  FakeActivity,
-  FakeGame,
-  FakeUser,
-} from '@shared/domain/entities/fakes';
+import { FakeActivity, FakeGame } from '@shared/domain/entities/fakes';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
 
@@ -84,8 +80,7 @@ const initService = async () => {
   });
   const game = await gamesRepository.create(createGame);
 
-  const user = new FakeUser({ id: userId });
-  const fakePlayer = new FakePlayer({ user, game: game.id });
+  const fakePlayer = new FakePlayer({ user: userId, game: game.id });
   fakePlayer.experience = 0;
   fakePlayer.level = 1;
   const player = await playersRepository.create(fakePlayer);

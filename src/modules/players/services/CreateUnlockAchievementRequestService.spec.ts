@@ -10,11 +10,7 @@ import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest'
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
-import {
-  FakeAchievement,
-  FakeGame,
-  FakeUser,
-} from '@shared/domain/entities/fakes';
+import { FakeAchievement, FakeGame } from '@shared/domain/entities/fakes';
 import { FakePlayer } from '@modules/players/domain/entities/fakes';
 
 const initService = async () => {
@@ -42,9 +38,8 @@ const initService = async () => {
   });
   const game = await gamesRepository.create(createGame);
 
-  const fakeUser = new FakeUser({ id: userId });
   const { id: __, ...fakePlayer } = new FakePlayer({
-    user: fakeUser,
+    user: userId,
     game: game.id,
   });
   const player = await playersRepository.create(fakePlayer as IPlayer);

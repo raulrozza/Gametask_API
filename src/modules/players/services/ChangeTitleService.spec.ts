@@ -6,7 +6,7 @@ import ChangeTitleService from './ChangeTitleService';
 import { IPlayer } from '@modules/players/domain/entities';
 import { RequestError } from '@shared/infra/errors';
 import { ITitle } from '@shared/domain/entities';
-import { FakeTitle, FakeUser } from '@shared/domain/entities/fakes';
+import { FakeTitle } from '@shared/domain/entities/fakes';
 import { FakePlayer } from '@modules/players/domain/entities/fakes';
 
 const initService = async () => {
@@ -20,8 +20,10 @@ const initService = async () => {
   const userId = uuid();
   const gameId = uuid();
   const { id: _, ...fakeTitle } = new FakeTitle({ game: gameId });
-  const user = new FakeUser({ id: userId });
-  const { id: __, ...fakePlayer } = new FakePlayer({ user, game: gameId });
+  const { id: __, ...fakePlayer } = new FakePlayer({
+    user: userId,
+    game: gameId,
+  });
 
   const title = await titlesRepository.create(fakeTitle as ITitle);
   const player = await playersRepository.create(fakePlayer as IPlayer);

@@ -13,11 +13,7 @@ import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 import { ITitle } from '@shared/domain/entities';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
-import {
-  FakeAchievement,
-  FakeGame,
-  FakeUser,
-} from '@shared/domain/entities/fakes';
+import { FakeAchievement, FakeGame } from '@shared/domain/entities/fakes';
 import { FakePlayer } from '@modules/players/domain/entities/fakes';
 
 const initService = async (title?: ITitle) => {
@@ -58,9 +54,8 @@ const initService = async (title?: ITitle) => {
     gameId: fakeAchievement.game.id,
   });
 
-  const fakeUser = new FakeUser({ id: userId });
   const { id: ___, ...fakePlayer } = new FakePlayer({
-    user: fakeUser,
+    user: userId,
     game: game.id,
   });
   const player = await playersRepository.create(fakePlayer as IPlayer);

@@ -1,4 +1,4 @@
-import { IFeedPost } from '@modules/players/entities';
+import { IFeedPost } from '@modules/players/domain/entities';
 
 export default interface IFeedPostsRepository<T extends IFeedPost = IFeedPost> {
   findAllFromGame(gameId: string): Promise<T[]>;

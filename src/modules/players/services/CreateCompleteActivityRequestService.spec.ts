@@ -12,11 +12,7 @@ import {
   FakeCompleteActivityRequest,
   FakePlayer,
 } from '@modules/players/domain/entities/fakes';
-import {
-  FakeActivity,
-  FakeGame,
-  FakeUser,
-} from '@shared/domain/entities/fakes';
+import { FakeActivity, FakeGame } from '@shared/domain/entities/fakes';
 import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 
@@ -55,8 +51,10 @@ const initService = async () => {
     }),
   );
 
-  const user = new FakeUser({ id: userId });
-  const { id: ___, ...fakePlayer } = new FakePlayer({ user, game: game.id });
+  const { id: ___, ...fakePlayer } = new FakePlayer({
+    user: userId,
+    game: game.id,
+  });
   const player = await playersRepository.create(fakePlayer as IPlayer);
 
   return {

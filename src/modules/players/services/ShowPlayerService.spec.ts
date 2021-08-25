@@ -4,7 +4,6 @@ import { IPlayer } from '@modules/players/domain/entities';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import ShowPlayerService from './ShowPlayerService';
 import { FakePlayer } from '@modules/players/domain/entities/fakes';
-import { FakeUser } from '@shared/domain/entities/fakes';
 
 describe('ShowPlayerService', () => {
   it('should return the players information', async () => {
@@ -13,8 +12,7 @@ describe('ShowPlayerService', () => {
 
     const userId = uuid();
     const gameId = uuid();
-    const user = new FakeUser({ id: userId });
-    const fakePlayer = new FakePlayer({ user, game: gameId });
+    const fakePlayer = new FakePlayer({ user: userId, game: gameId });
     const createdPlayer = await playersRepository.create(fakePlayer as IPlayer);
 
     const player = await showPlayer.execute({

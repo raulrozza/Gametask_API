@@ -1,6 +1,6 @@
+import { FakeFeedPost } from '@modules/players/domain/entities/fakes';
 import { v4 as uuid } from 'uuid';
 
-import FakeFeedPost from '../fakes/FakeFeedPost';
 import FakeFeedPostsRepository from '../repositories/fakes/FakeFeedPostsRepository';
 import ListFeedPostsService from './ListFeedPostsService';
 
@@ -10,7 +10,7 @@ describe('ListFeedPostsService', () => {
     const listFeedPosts = new ListFeedPostsService(feedPostsRepository);
 
     const id = uuid();
-    const fakeFeedPost = new FakeFeedPost(id, id, 'activity');
+    const fakeFeedPost = new FakeFeedPost();
 
     await feedPostsRepository.create({ ...fakeFeedPost });
     await feedPostsRepository.create({

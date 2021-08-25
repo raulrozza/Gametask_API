@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 
-import { IFeedPost } from '@modules/players/entities';
 import { IFeedPostsRepository } from '@modules/players/repositories';
+import { IFeedPost } from '@modules/players/domain/entities';
 
 export default class FakeFeedPostsRepository
   implements IFeedPostsRepository<IFeedPost> {
