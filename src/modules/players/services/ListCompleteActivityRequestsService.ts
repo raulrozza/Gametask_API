@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 import { ICompleteActivityRequestRepository } from '@modules/players/repositories';
-import { ICompleteActivityRequest } from '../entities';
+import { ICompleteActivityRequest } from '@modules/players/domain/entities';
 
 @injectable()
 export default class ListCompleteActivityRequestsService {

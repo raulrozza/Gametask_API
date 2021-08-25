@@ -1,4 +1,4 @@
-import { ICompleteActivityRequest } from '@modules/players/entities';
+import { ICompleteActivityRequest } from '@modules/players/domain/entities';
 
 export default interface ICompleteActivityRequestRepository<
   T extends ICompleteActivityRequest = ICompleteActivityRequest

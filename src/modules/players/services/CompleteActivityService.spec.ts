@@ -8,10 +8,12 @@ import FakeFeedPostsRepository from '../repositories/fakes/FakeFeedPostsReposito
 import FakeLeaderboardsRepository from '../repositories/fakes/FakeLeaderboardsRepository';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import CompleteActivityService from './CompleteActivityService';
-import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
 import { IPosition } from '../entities/ILeaderboard';
 import { RequestError } from '@shared/infra/errors';
-import { FakePlayer } from '@modules/players/domain/entities/fakes';
+import {
+  FakeCompleteActivityRequest,
+  FakePlayer,
+} from '@modules/players/domain/entities/fakes';
 import {
   FakeActivity,
   FakeGame,
@@ -123,11 +125,11 @@ describe('CompleteActivityService', () => {
     });
     const activity = await activitiesRepository.create(createActivity);
 
-    const fakeRequest = new FakeCompleteActivityRequest(
-      player.id,
-      activity.id,
-      game.id,
-    );
+    const fakeRequest = new FakeCompleteActivityRequest({
+      requester: player.id,
+      activity: activity.id,
+      game: game.id,
+    });
     const request = await completeActivityRequestRepository.create(fakeRequest);
 
     await completeActivity.execute({ requestId: request.id, userId });
@@ -179,11 +181,11 @@ describe('CompleteActivityService', () => {
     });
     const activity = await activitiesRepository.create(createActivity);
 
-    const fakeRequest = new FakeCompleteActivityRequest(
-      player.id,
-      activity.id,
-      game.id,
-    );
+    const fakeRequest = new FakeCompleteActivityRequest({
+      requester: player.id,
+      activity: activity.id,
+      game: game.id,
+    });
     const firstRequest = await completeActivityRequestRepository.create(
       fakeRequest,
     );

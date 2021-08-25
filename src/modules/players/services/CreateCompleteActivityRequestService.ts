@@ -9,7 +9,7 @@ import {
   ICompleteActivityRequestRepository,
   IPlayersRepository,
 } from '@modules/players/repositories';
-import { ICompleteActivityRequest } from '@modules/players/entities';
+import { ICompleteActivityRequest } from '@modules/players/domain/entities';
 import ICreateCompleteActivityRequestDTO from '@modules/players/dtos/ICreateCompleteActivityRequestDTO';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';

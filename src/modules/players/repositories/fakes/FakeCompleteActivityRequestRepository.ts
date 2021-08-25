@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import { ICompleteActivityRequest } from '@modules/players/entities';
+import { ICompleteActivityRequest } from '@modules/players/domain/entities';
 import { ICompleteActivityRequestRepository } from '@modules/players/repositories';
 
 export default class FakeCompleteActivityRequestRepository

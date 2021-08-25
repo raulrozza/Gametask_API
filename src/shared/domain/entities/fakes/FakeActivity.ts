@@ -12,7 +12,7 @@ interface IConstructor {
   dmRules?: {
     value?: string;
   };
-  game: string;
+  game?: string;
 }
 
 export default class FakeActivity implements IActivity {
@@ -30,7 +30,7 @@ export default class FakeActivity implements IActivity {
     description = faker.lorem.sentence(),
     dmRules = { value: faker.lorem.sentence() },
     experience = faker.random.number(1000),
-    game,
+    game = uuid(),
   }: IConstructor) {
     this.id = id;
     this.name = name;

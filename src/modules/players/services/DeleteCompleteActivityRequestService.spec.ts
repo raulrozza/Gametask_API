@@ -3,18 +3,18 @@ import { v4 as uuid } from 'uuid';
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCompleteActivityRequestRepository';
 import DeleteCompleteActivityRequestService from './DeleteCompleteActivityRequestService';
-import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 import { FakeGame } from '@shared/domain/entities/fakes';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
+import { FakeCompleteActivityRequest } from '@modules/players/domain/entities/fakes';
 
 describe('DeleteCompleteActivityRequest', () => {
   it('should successfully delete the request', async () => {
     const completeActivityRequestRepository = new FakeCompleteActivityRequestRepository();
     const gamesRepository = new FakeGamesRepository();
     const transactionProvider = new FakeTransactionProvider();
-    const deleteUnlockAchievementRequest = new DeleteCompleteActivityRequestService(
+    const deleteUnlockActivityRequest = new DeleteCompleteActivityRequestService(
       completeActivityRequestRepository,
       gamesRepository,
       transactionProvider,
@@ -29,18 +29,18 @@ describe('DeleteCompleteActivityRequest', () => {
     const game = await gamesRepository.create(createGame);
 
     const requesterId = uuid();
-    const achievementId = uuid();
+    const activityId = uuid();
 
-    const fakeActivityRequest = new FakeCompleteActivityRequest(
-      game.id,
-      requesterId,
-      achievementId,
-    );
+    const fakeActivityRequest = new FakeCompleteActivityRequest({
+      requester: requesterId,
+      activity: activityId,
+      game: game.id,
+    });
     const request = await completeActivityRequestRepository.create(
       fakeActivityRequest,
     );
 
-    await deleteUnlockAchievementRequest.execute({
+    await deleteUnlockActivityRequest.execute({
       gameId: game.id,
       requestId: request.id,
     });
@@ -62,8 +62,7 @@ describe('DeleteCompleteActivityRequest', () => {
       transactionProvider,
     );
 
-    const id = uuid();
-    const fakeRequest = new FakeCompleteActivityRequest(id, id, id);
+    const fakeRequest = new FakeCompleteActivityRequest();
     const request = await completeActivityRequestRepository.create(fakeRequest);
 
     await expect(

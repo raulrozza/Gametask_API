@@ -3,7 +3,7 @@ import { ClientSession, isValidObjectId } from 'mongoose';
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 import { ICompleteActivityRequestRepository } from '@modules/players/repositories';
-import { ICompleteActivityRequest } from '@modules/players/entities';
+import { ICompleteActivityRequest } from '@modules/players/domain/entities';
 import CompleteActivityRequest, {
   ICompleteActivityRequestDocument,
 } from '@modules/players/infra/mongoose/entities/CompleteActivityRequest';

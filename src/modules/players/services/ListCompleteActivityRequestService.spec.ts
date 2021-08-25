@@ -1,6 +1,6 @@
+import { FakeCompleteActivityRequest } from '@modules/players/domain/entities/fakes';
 import { v4 as uuid } from 'uuid';
 
-import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
 import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCompleteActivityRequestRepository';
 import ListCompleteActivityRequestsService from './ListCompleteActivityRequestsService';
 
@@ -15,11 +15,11 @@ describe('ListCompleteActivityRequestsService', () => {
     const gameId = uuid();
     const activityId = uuid();
 
-    const { id: _, ...fakeRequest } = new FakeCompleteActivityRequest(
-      playerId,
-      activityId,
-      gameId,
-    );
+    const fakeRequest = new FakeCompleteActivityRequest({
+      requester: playerId,
+      activity: activityId,
+      game: gameId,
+    });
 
     await completeActivityRequestRepository.create({ ...fakeRequest });
     await completeActivityRequestRepository.create({
@@ -28,7 +28,7 @@ describe('ListCompleteActivityRequestsService', () => {
     });
     await completeActivityRequestRepository.create({
       ...fakeRequest,
-      activity: 'another-achievement',
+      activity: 'another-activity',
     });
 
     const requests = await listCompleteActivityRequests.execute(gameId);

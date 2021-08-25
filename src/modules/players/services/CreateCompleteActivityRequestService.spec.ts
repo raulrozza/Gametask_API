@@ -4,12 +4,14 @@ import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGa
 import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCompleteActivityRequestRepository';
 import CreateCompleteActivityRequestService from './CreateCompleteActivityRequestService';
 import FakeActivitiesRepository from '@modules/games/domain/repositories/fakes/FakeActivitiesRepository';
-import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import { IPlayer } from '@modules/players/domain/entities';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
-import { FakePlayer } from '@modules/players/domain/entities/fakes';
+import {
+  FakeCompleteActivityRequest,
+  FakePlayer,
+} from '@modules/players/domain/entities/fakes';
 import {
   FakeActivity,
   FakeGame,
@@ -76,17 +78,17 @@ describe('CreateCompleteActivityRequestService', () => {
       player,
     } = await initService();
 
-    const fakeCompleteActivity = new FakeCompleteActivityRequest(
-      player.id,
-      activity.id,
-      game.id,
-    );
+    const fakeCompleteActivity = new FakeCompleteActivityRequest({
+      requester: player.id,
+      activity: activity.id,
+      game: game.id,
+    });
 
     const request = await createCompleteActivity.execute({
       userId,
-      activity: fakeCompleteActivity.activity,
+      activity: fakeCompleteActivity.activity.id,
       gameId: fakeCompleteActivity.game,
-      requester: fakeCompleteActivity.requester,
+      requester: fakeCompleteActivity.requester.id,
       completionDate: fakeCompleteActivity.completionDate,
       information: fakeCompleteActivity.information,
       requestDate: fakeCompleteActivity.requestDate,
@@ -106,18 +108,18 @@ describe('CreateCompleteActivityRequestService', () => {
       player,
     } = await initService();
 
-    const fakeCompleteActivity = new FakeCompleteActivityRequest(
-      player.id,
-      activity.id,
-      'invalid game',
-    );
+    const fakeCompleteActivity = new FakeCompleteActivityRequest({
+      requester: player.id,
+      activity: activity.id,
+      game: 'invalid game',
+    });
 
     await expect(
       createCompleteActivity.execute({
         userId,
-        activity: fakeCompleteActivity.activity,
+        activity: fakeCompleteActivity.activity.id,
         gameId: fakeCompleteActivity.game,
-        requester: fakeCompleteActivity.requester,
+        requester: fakeCompleteActivity.requester.id,
         completionDate: fakeCompleteActivity.completionDate,
         information: fakeCompleteActivity.information,
         requestDate: fakeCompleteActivity.requestDate,
@@ -133,18 +135,18 @@ describe('CreateCompleteActivityRequestService', () => {
       player,
     } = await initService();
 
-    const fakeCompleteActivity = new FakeCompleteActivityRequest(
-      player.id,
-      'invalid activity',
-      game.id,
-    );
+    const fakeCompleteActivity = new FakeCompleteActivityRequest({
+      requester: player.id,
+      activity: 'invalid activity',
+      game: game.id,
+    });
 
     await expect(
       createCompleteActivity.execute({
         userId,
-        activity: fakeCompleteActivity.activity,
+        activity: fakeCompleteActivity.activity.id,
         gameId: fakeCompleteActivity.game,
-        requester: fakeCompleteActivity.requester,
+        requester: fakeCompleteActivity.requester.id,
         completionDate: fakeCompleteActivity.completionDate,
         information: fakeCompleteActivity.information,
         requestDate: fakeCompleteActivity.requestDate,
@@ -160,18 +162,18 @@ describe('CreateCompleteActivityRequestService', () => {
       game,
     } = await initService();
 
-    const fakeCompleteActivity = new FakeCompleteActivityRequest(
-      'invalid player',
-      activity.id,
-      game.id,
-    );
+    const fakeCompleteActivity = new FakeCompleteActivityRequest({
+      requester: 'invalid player',
+      activity: activity.id,
+      game: game.id,
+    });
 
     await expect(
       createCompleteActivity.execute({
         userId,
-        activity: fakeCompleteActivity.activity,
+        activity: fakeCompleteActivity.activity.id,
         gameId: fakeCompleteActivity.game,
-        requester: fakeCompleteActivity.requester,
+        requester: fakeCompleteActivity.requester.id,
         completionDate: fakeCompleteActivity.completionDate,
         information: fakeCompleteActivity.information,
         requestDate: fakeCompleteActivity.requestDate,
