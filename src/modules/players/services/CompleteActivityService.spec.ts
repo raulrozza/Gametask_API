@@ -5,7 +5,6 @@ import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGa
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCompleteActivityRequestRepository';
 import FakeFeedPostsRepository from '../repositories/fakes/FakeFeedPostsRepository';
-import FakeLeaderboardsRepository from '../repositories/fakes/FakeLeaderboardsRepository';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import CompleteActivityService from './CompleteActivityService';
 import { RequestError } from '@shared/infra/errors';
@@ -17,6 +16,7 @@ import { FakeActivity, FakeGame } from '@shared/domain/entities/fakes';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
 import { IPosition } from '@shared/domain/entities/ILeaderboard';
+import { FakeLeaderboardsRepository } from '@shared/domain/repositories/fakes';
 
 const initService = async () => {
   const playersRepository = new FakePlayersRepository();

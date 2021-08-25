@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
-import { ILeaderboardsRepository } from '@modules/players/repositories';
 import { ILeaderboard } from '@shared/domain/entities';
+import { ILeaderboardsRepository } from '@shared/domain/repositories';
 
 @injectable()
 export default class ShowCurrentLeaderboardService {

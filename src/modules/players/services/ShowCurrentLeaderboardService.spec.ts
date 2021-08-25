@@ -1,7 +1,7 @@
-import { FakeLeaderboard } from '@shared/domain/entities/fakes';
+import CreateLeaderboardAdapter from '@shared/domain/adapters/CreateLeaderboard';
+import { FakeLeaderboardsRepository } from '@shared/domain/repositories/fakes';
 import { v4 as uuid } from 'uuid';
 
-import FakeLeaderboardsRepository from '../repositories/fakes/FakeLeaderboardsRepository';
 import ShowCurrentLeaderboardService from './ShowCurrentLeaderboardService';
 
 describe('ShowCurrentLeaderboardService', () => {
@@ -13,9 +13,8 @@ describe('ShowCurrentLeaderboardService', () => {
 
     const gameId = uuid();
 
-    const fakeLeaderboard = new FakeLeaderboard({ game: gameId });
-
-    await leaderboardsRepository.create(fakeLeaderboard);
+    const createLeaderboard = new CreateLeaderboardAdapter({ game: gameId });
+    await leaderboardsRepository.create(createLeaderboard);
 
     const leaderboard = await showCurrentLeaderboardService.execute(gameId);
 

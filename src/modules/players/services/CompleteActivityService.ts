@@ -4,7 +4,6 @@ import { inject, injectable } from 'tsyringe';
 import {
   ICompleteActivityRequestRepository,
   IFeedPostsRepository,
-  ILeaderboardsRepository,
   IPlayersRepository,
 } from '@modules/players/repositories';
 import {
@@ -17,6 +16,9 @@ import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import { IPlayer } from '@modules/players/domain/entities';
 import { IGame, ILevelInfo, IRank } from '@shared/domain/entities';
+import { ILeaderboardsRepository } from '@shared/domain/repositories';
+import CreateLeaderboardAdapter from '@shared/domain/adapters/CreateLeaderboard';
+import UpdatePositionAdapter from '@shared/domain/adapters/UpdatePositionAdapter';
 
 interface IAddCompletionToActivityHistory {
   userId: string;
@@ -311,16 +313,21 @@ export default class CompleteActivityService {
       gameId,
     );
 
-    if (!leaderboard)
-      leaderboard = await this.leaderboardsRepository.create({
-        game: gameId,
-        createdAt: new Date(),
-      });
+    if (!leaderboard) {
+      const createLeaderboard = new CreateLeaderboardAdapter({ game: gameId });
+      leaderboard = await this.leaderboardsRepository.create(createLeaderboard);
+    }
 
+    const updatePosition = new UpdatePositionAdapter({
+      leaderboardId: leaderboard.id,
+      currentPositions: leaderboard.position,
+      newPosition: {
+        player: playerId,
+        experience,
+      },
+    });
     await this.leaderboardsRepository.createOrUpdatePosition(
-      leaderboard.id,
-      playerId,
-      experience,
+      updatePosition,
       session,
     );
   }
