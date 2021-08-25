@@ -9,11 +9,11 @@ import {
   IGamesRepository,
 } from '@modules/games/domain/repositories';
 import ICreateUnlockAchievementRequestDTO from '@modules/players/dtos/ICreateUnlockAchievementRequestDTO';
-import { IUnlockAchievementRequest } from '@modules/players/entities';
 import {
   IPlayersRepository,
   IUnlockAchievementRequestRepository,
 } from '@modules/players/repositories';
+import { IUnlockAchievementRequest } from '@modules/players/domain/entities';
 
 interface ValidadeInputParams {
   gameId: string;

@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 
-import { IUnlockAchievementRequest } from '@modules/players/entities';
 import { IUnlockAchievementRequestRepository } from '@modules/players/repositories';
+import { IUnlockAchievementRequest } from '@modules/players/domain/entities';
 
 export default class FakeUnlockAchievementRequestRepository
   implements IUnlockAchievementRequestRepository<IUnlockAchievementRequest> {

@@ -1,6 +1,6 @@
+import { FakeUnlockAchievementRequest } from '@modules/players/domain/entities/fakes';
 import { v4 as uuid } from 'uuid';
 
-import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest';
 import FakeUnlockAchievementRequestRepository from '../repositories/fakes/FakeUnlockAchievementRequestRepository';
 import ListUnlockAchievementRequestsService from './ListUnlockAchievementRequestsService';
 
@@ -11,15 +11,9 @@ describe('ListUnlockAchievementRequestsService', () => {
       unlockAchievementRequestRepository,
     );
 
-    const playerId = uuid();
     const gameId = uuid();
-    const achievementId = uuid();
 
-    const fakeRequest = new FakeUnlockAchievementRequest(
-      gameId,
-      playerId,
-      achievementId,
-    );
+    const fakeRequest = new FakeUnlockAchievementRequest({ game: gameId });
 
     await unlockAchievementRequestRepository.create({ ...fakeRequest });
     await unlockAchievementRequestRepository.create({

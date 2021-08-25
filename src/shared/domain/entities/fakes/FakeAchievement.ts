@@ -10,7 +10,7 @@ interface IConstructor {
   id?: string;
   name?: string;
   description?: string;
-  game: string;
+  game?: string;
   title?: string | ITitle;
 }
 

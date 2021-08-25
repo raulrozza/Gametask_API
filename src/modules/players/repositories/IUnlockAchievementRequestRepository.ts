@@ -1,4 +1,4 @@
-import { IUnlockAchievementRequest } from '@modules/players/entities';
+import { IUnlockAchievementRequest } from '@modules/players/domain/entities';
 
 export default interface IUnlockAchievementRequestRepository<
   T extends IUnlockAchievementRequest = IUnlockAchievementRequest

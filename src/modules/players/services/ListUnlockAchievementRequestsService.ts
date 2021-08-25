@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 import { IUnlockAchievementRequestRepository } from '@modules/players/repositories';
-import { IUnlockAchievementRequest } from '../entities';
+import { IUnlockAchievementRequest } from '@modules/players/domain/entities';
 
 @injectable()
 export default class ListUnlockAchievementRequestsService {

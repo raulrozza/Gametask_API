@@ -2,11 +2,11 @@ import { ClientSession, isValidObjectId } from 'mongoose';
 
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
-import { IUnlockAchievementRequest } from '@modules/players/entities';
 import { IUnlockAchievementRequestRepository } from '@modules/players/repositories';
 import UnlockAchievementRequest, {
   IUnlockAchievementRequestDocument,
 } from '@modules/players/infra/mongoose/entities/UnlockAchievementRequest';
+import { IUnlockAchievementRequest } from '@modules/players/domain/entities';
 
 export default class UnlockAchievementRequestRepository
   implements

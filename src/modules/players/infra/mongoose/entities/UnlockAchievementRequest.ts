@@ -1,6 +1,6 @@
 import { IAchievementDocument } from '@modules/games/infra/mongoose/entities/Achievement';
 import { IGameDocument } from '@modules/games/infra/mongoose/entities/Game';
-import { IUnlockAchievementRequest } from '@modules/players/entities';
+import { IUnlockAchievementRequest } from '@modules/players/domain/entities';
 import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
 import { Schema, model, Document } from 'mongoose';
 
