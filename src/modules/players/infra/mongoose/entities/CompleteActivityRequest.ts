@@ -1,8 +1,8 @@
 import { Schema, model, Document } from 'mongoose';
 import { IActivityDocument } from '@modules/games/infra/mongoose/entities/Activity';
-import { IGameDocument } from '@modules/games/infra/mongoose/entities/Game';
+import { IGameDocument } from '@shared/infra/mongoose/entities/Game';
 import { ICompleteActivityRequest } from '@modules/players/domain/entities';
-import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
+import { IUserDocument } from '@shared/infra/mongoose/entities/User';
 
 const CompleteActivityRequestSchema = new Schema(
   {

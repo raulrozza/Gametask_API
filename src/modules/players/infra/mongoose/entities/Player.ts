@@ -1,10 +1,10 @@
 import { Schema, model, Document, Types } from 'mongoose';
 
-import RankSchema from '@modules/games/infra/mongoose/entities/Rank';
 import { IPlayer } from '@modules/players/domain/entities';
-import { ITitleDocument } from '@modules/games/infra/mongoose/entities/Title';
 import { IAchievementDocument } from '@modules/games/infra/mongoose/entities/Achievement';
-import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
+import { IUserDocument } from '@shared/infra/mongoose/entities/User';
+import { ITitleDocument } from '@shared/infra/mongoose/entities/Title';
+import RankSchema from '@shared/infra/mongoose/entities/Rank';
 
 export interface IPlayerDocument extends Omit<IPlayer, 'id'>, Document {
   id: NonNullable<Document['id']>;

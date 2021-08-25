@@ -1,9 +1,9 @@
-import { ITitleDocument } from '@modules/games/infra/mongoose/entities/Title';
-import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
+import { IUserDocument } from '@shared/infra/mongoose/entities/User';
 import {
   IPosition,
   IPositionedPlayer,
 } from '@shared/domain/entities/ILeaderboard';
+import { ITitleDocument } from '@shared/infra/mongoose/entities/Title';
 import { Document, Schema } from 'mongoose';
 
 interface IPositionedPlayerDocument extends IPositionedPlayer, Document {

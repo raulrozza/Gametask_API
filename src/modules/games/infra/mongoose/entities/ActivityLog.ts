@@ -1,6 +1,6 @@
 import mongoose, { Document } from 'mongoose';
-import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
 import { IActivityLog } from '@shared/domain/entities';
+import { IUserDocument } from '@shared/infra/mongoose/entities/User';
 
 export interface IActivityLogDocument extends IActivityLog, Document {
   user: IUserDocument['_id'];

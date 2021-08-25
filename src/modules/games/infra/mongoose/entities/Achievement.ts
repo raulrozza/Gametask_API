@@ -1,8 +1,8 @@
 import { Schema, model, Document } from 'mongoose';
 import envs from '@config/environment';
-import { IGameDocument } from './Game';
-import { ITitleDocument } from './Title';
 import { IAchievement } from '@shared/domain/entities';
+import { ITitleDocument } from '@shared/infra/mongoose/entities/Title';
+import { IGameDocument } from '@shared/infra/mongoose/entities/Game';
 
 export interface IAchievementDocument extends IAchievement, Document {
   id: NonNullable<Document['id']>;

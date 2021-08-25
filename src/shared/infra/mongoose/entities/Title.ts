@@ -1,6 +1,6 @@
+import { IGameDocument } from '@shared/infra/mongoose/entities/Game';
 import { ITitle } from '@shared/domain/entities';
 import { Schema, model, Document } from 'mongoose';
-import { IGameDocument } from './Game';
 
 export interface ITitleDocument extends ITitle, Document {
   id: NonNullable<Document['id']>;

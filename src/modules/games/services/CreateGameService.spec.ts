@@ -1,8 +1,8 @@
 import { v4 as uuid } from 'uuid';
-import FakeGame from '../fakes/FakeGame';
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import CreateGameService from '@modules/games/services/CreateGameService';
-import FakeLeaderboardsRepository from '@modules/games/domain/repositories/fakes/FakeLeaderboardsRepository';
+import { FakeLeaderboardsRepository } from '@shared/domain/repositories/fakes';
+import { FakeGame } from '@shared/domain/entities/fakes';
 
 describe('CreateGameService', () => {
   it('should create the game', async () => {

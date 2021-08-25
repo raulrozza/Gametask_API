@@ -1,12 +1,12 @@
 import { Schema, model, Document } from 'mongoose';
 import envs from '@config/environment';
 
-import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
+import { IUserDocument } from '@shared/infra/mongoose/entities/User';
 
-import ThemeSchema from './Theme';
-import LevelInfoSchema from './LevelInfoSchema';
-import RankSchema from './Rank';
 import { IGame } from '@shared/domain/entities';
+import ThemeSchema from '@shared/infra/mongoose/entities/Theme';
+import RankSchema from '@shared/infra/mongoose/entities/Rank';
+import LevelInfoSchema from '@shared/infra/mongoose/entities/LevelInfoSchema';
 
 export interface IGameDocument extends IGame, Document {
   id: NonNullable<Document['id']>;

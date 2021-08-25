@@ -1,7 +1,7 @@
-import { ILeaderboardsRepository } from '@modules/games/domain/repositories';
-import CreateLeaderboardAdapter from '@modules/games/domain/adapters/CreateLeaderboard';
-import Leaderboard from '@modules/games/infra/mongoose/entities/Leaderboard';
+import CreateLeaderboardAdapter from '@shared/domain/adapters/CreateLeaderboard';
 import { ILeaderboard } from '@shared/domain/entities';
+import { ILeaderboardsRepository } from '@shared/domain/repositories';
+import Leaderboard from '@shared/infra/mongoose/entities/Leaderboard';
 
 export default class LeaderboardsRepository implements ILeaderboardsRepository {
   public async create({

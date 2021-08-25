@@ -1,12 +1,12 @@
 import { Schema, model, Document } from 'mongoose';
-import LevelInfoSchema from '@modules/games/infra/mongoose/entities/LevelInfoSchema';
-import RankSchema from '@modules/games/infra/mongoose/entities/Rank';
 import { IActivityDocument } from '@modules/games/infra/mongoose/entities/Activity';
 import { IAchievementDocument } from '@modules/games/infra/mongoose/entities/Achievement';
-import { IGameDocument } from '@modules/games/infra/mongoose/entities/Game';
+import { IGameDocument } from '@shared/infra/mongoose/entities/Game';
 import { IPlayerDocument } from '@modules/players/infra/mongoose/entities/Player';
 import { ILevelInfo, IRank } from '@shared/domain/entities';
 import { IFeedPost } from '@modules/players/domain/entities';
+import RankSchema from '@shared/infra/mongoose/entities/Rank';
+import LevelInfoSchema from '@shared/infra/mongoose/entities/LevelInfoSchema';
 
 const typeEnum: IFeedPost['type'][] = [
   'achievement',

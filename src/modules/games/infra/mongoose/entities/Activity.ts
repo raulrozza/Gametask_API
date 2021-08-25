@@ -2,7 +2,7 @@ import { Schema, model, Document } from 'mongoose';
 
 import ActivityLogSchema, { IActivityLogDocument } from './ActivityLog';
 import HistorySchema from './History';
-import { IGameDocument } from './Game';
+import { IGameDocument } from '@shared/infra/mongoose/entities/Game';
 import { IActivity } from '@shared/domain/entities';
 
 export interface IActivityDocument extends IActivity, Document {

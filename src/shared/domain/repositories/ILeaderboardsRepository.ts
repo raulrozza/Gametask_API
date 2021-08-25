@@ -1,4 +1,4 @@
-import CreateLeaderboardAdapter from '@modules/games/domain/adapters/CreateLeaderboard';
+import CreateLeaderboardAdapter from '@shared/domain/adapters/CreateLeaderboard';
 import { ILeaderboard } from '@shared/domain/entities';
 
 export default interface ILeaderboardsRepository {
