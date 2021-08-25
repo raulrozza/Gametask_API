@@ -8,7 +8,7 @@ import {
   IAchievementsRepository,
   IGamesRepository,
 } from '@modules/games/domain/repositories';
-import ICreateUnlockAchievementRequestDTO from '@modules/players/dtos/ICreateUnlockAchievementRequestDTO';
+import ICreateUnlockAchievementRequestDTO from '@modules/players/domain/dtos/ICreateUnlockAchievementRequestDTO';
 import {
   IPlayersRepository,
   IUnlockAchievementRequestRepository,

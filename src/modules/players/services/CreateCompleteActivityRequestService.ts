@@ -10,7 +10,7 @@ import {
   IPlayersRepository,
 } from '@modules/players/repositories';
 import { ICompleteActivityRequest } from '@modules/players/domain/entities';
-import ICreateCompleteActivityRequestDTO from '@modules/players/dtos/ICreateCompleteActivityRequestDTO';
+import ICreateCompleteActivityRequestDTO from '@modules/players/domain/dtos/ICreateCompleteActivityRequestDTO';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';

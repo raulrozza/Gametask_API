@@ -12,7 +12,7 @@ import {
   IGamesRepository,
 } from '@modules/games/domain/repositories';
 import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
-import ICompleteActivityDTO from '@modules/players/dtos/ICompleteActivityDTO';
+import ICompleteActivityDTO from '@modules/players/domain/dtos/ICompleteActivityDTO';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import { IPlayer } from '@modules/players/domain/entities';

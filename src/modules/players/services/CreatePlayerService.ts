@@ -8,7 +8,7 @@ import { IGamesRepository } from '@modules/games/domain/repositories';
 import { IUsersRepository } from '@modules/users/domain/repositories';
 import { IPlayersRepository } from '@modules/players/repositories';
 import { IPlayer } from '@modules/players/domain/entities';
-import ICreatePlayerDTO from '@modules/players/dtos/ICreatePlayerDTO';
+import ICreatePlayerDTO from '@modules/players/domain/dtos/ICreatePlayerDTO';
 import { IGame, ILevelInfo, IRank } from '@shared/domain/entities';
 
 @injectable()
