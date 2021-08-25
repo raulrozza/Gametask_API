@@ -1,9 +1,9 @@
 import { v4 as uuid } from 'uuid';
 
-import { FakeActivity } from '@modules/games/domain/entities/fakes';
-import { IActivity } from '@modules/games/domain/entities';
 import FakeActivitiesRepository from '@modules/games/domain/repositories/fakes/FakeActivitiesRepository';
 import DeleteActivityService from './DeleteActivityService';
+import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
+import { FakeActivity } from '@shared/domain/entities/fakes';
 
 describe('DeleteActivityService', () => {
   it('should delete the right achievement', async () => {
@@ -13,24 +13,30 @@ describe('DeleteActivityService', () => {
     const gameId = uuid();
     const fakeActivity = new FakeActivity({ game: gameId });
 
-    await activitiesRepository.create({
-      game: fakeActivity.game,
-      name: fakeActivity.name,
-      description: fakeActivity.description,
-      experience: fakeActivity.experience,
-    } as IActivity);
-    const activityToBeDeleted = await activitiesRepository.create({
-      game: fakeActivity.game,
-      name: fakeActivity.name,
-      description: fakeActivity.description,
-      experience: fakeActivity.experience,
-    } as IActivity);
-    await activitiesRepository.create({
-      game: fakeActivity.game,
-      name: fakeActivity.name,
-      description: fakeActivity.description,
-      experience: fakeActivity.experience,
-    } as IActivity);
+    await activitiesRepository.create(
+      new CreateActivityAdapter({
+        gameId,
+        name: fakeActivity.name,
+        description: fakeActivity.description,
+        experience: fakeActivity.experience,
+      }),
+    );
+    const activityToBeDeleted = await activitiesRepository.create(
+      new CreateActivityAdapter({
+        gameId,
+        name: fakeActivity.name,
+        description: fakeActivity.description,
+        experience: fakeActivity.experience,
+      }),
+    );
+    await activitiesRepository.create(
+      new CreateActivityAdapter({
+        gameId,
+        name: fakeActivity.name,
+        description: fakeActivity.description,
+        experience: fakeActivity.experience,
+      }),
+    );
 
     await deleteActivity.execute({
       gameId,

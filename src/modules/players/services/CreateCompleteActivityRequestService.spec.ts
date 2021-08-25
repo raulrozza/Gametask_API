@@ -1,7 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import { IActivity, IGame } from '@modules/games/domain/entities';
-import { FakeActivity, FakeGame } from '@modules/games/domain/entities/fakes';
+import { FakeGame } from '@modules/games/domain/entities/fakes';
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCompleteActivityRequestRepository';
 import CreateCompleteActivityRequestService from './CreateCompleteActivityRequestService';
@@ -12,7 +11,9 @@ import { IPlayer } from '@modules/players/domain/entities';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 import { FakePlayer } from '@modules/players/domain/entities/fakes';
-import { FakeUser } from '@shared/domain/entities/fakes';
+import { FakeActivity, FakeUser } from '@shared/domain/entities/fakes';
+import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
+import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 
 const initService = async () => {
   const completeActivityRequestRepository = new FakeCompleteActivityRequestRepository();
@@ -31,11 +32,23 @@ const initService = async () => {
 
   const userId = uuid();
 
-  const { id: _, ...fakeGame } = new FakeGame();
-  const game = await gamesRepository.create(fakeGame as IGame);
+  const fakeGame = new FakeGame();
+  const createGame = new CreateGameAdapter({
+    name: fakeGame.name,
+    description: fakeGame.description,
+    creatorId: userId,
+  });
+  const game = await gamesRepository.create(createGame);
 
-  const { id: __, ...fakeActivity } = new FakeActivity({ game: game.id });
-  const activity = await activitiesRepository.create(fakeActivity as IActivity);
+  const fakeActivity = new FakeActivity({ game: game.id });
+  const activity = await activitiesRepository.create(
+    new CreateActivityAdapter({
+      gameId: game.id,
+      name: fakeActivity.name,
+      description: fakeActivity.description,
+      experience: fakeActivity.experience,
+    }),
+  );
 
   const user = new FakeUser({ id: userId });
   const { id: ___, ...fakePlayer } = new FakePlayer({ user, game: game.id });

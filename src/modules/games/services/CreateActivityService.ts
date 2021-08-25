@@ -2,9 +2,9 @@ import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
 import { IActivitiesRepository } from '@modules/games/domain/repositories';
-import { IActivity } from '@modules/games/domain/entities';
 import ICreateActivityDTO from '@modules/games/domain/dtos/ICreateActivityDTO';
 import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
+import { IActivity } from '@shared/domain/entities';
 
 @injectable()
 export default class CreateActivityService {

@@ -1,4 +1,4 @@
-import { IActivity } from '@modules/games/domain/entities';
+import { IActivity } from '@shared/domain/entities';
 
 interface IPossibleChanges {
   name: string;

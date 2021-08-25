@@ -1,4 +1,5 @@
-import { IGame, IHistory, IActivityLog } from '.';
+import { IGame } from '@modules/games/domain/entities';
+import { IActivityLog, IHistory } from '@shared/domain/entities';
 
 export default interface IActivity {
   id: string;

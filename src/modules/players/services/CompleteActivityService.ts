@@ -15,7 +15,7 @@ import ITransactionProvider from '@shared/domain/providers/ITransactionProvider'
 import ICompleteActivityDTO from '@modules/players/dtos/ICompleteActivityDTO';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
-import { IActivity, IGame, ILevelInfo } from '@modules/games/domain/entities';
+import { IGame, ILevelInfo } from '@modules/games/domain/entities';
 import { IPlayer } from '@modules/players/domain/entities';
 import { IRank } from '@shared/domain/entities';
 
@@ -101,14 +101,14 @@ export default class CompleteActivityService {
       );
     }
 
-    const activityId = request.activity as string;
-    const gameId = request.game as string;
-    const playerId = request.requester as string;
+    const activityId = request.activity.id;
+    const gameId = request.game;
+    const playerId = request.requester.id;
 
-    const activity = (await this.activitiesRepository.findOne(
+    const activity = await this.activitiesRepository.findOne(
       activityId,
       gameId,
-    )) as IActivity;
+    );
 
     await this.transactionProvider.startSession(async session => {
       await this.addCompletionToActivityHistory(

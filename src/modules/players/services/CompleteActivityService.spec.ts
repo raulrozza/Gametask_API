@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import { FakeActivity, FakeGame } from '@modules/games/domain/entities/fakes';
+import { FakeGame } from '@modules/games/domain/entities/fakes';
 import FakeActivitiesRepository from '@modules/games/domain/repositories/fakes/FakeActivitiesRepository';
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
@@ -13,7 +13,9 @@ import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
 import { IPosition } from '../entities/ILeaderboard';
 import { RequestError } from '@shared/infra/errors';
 import { FakePlayer } from '@modules/players/domain/entities/fakes';
-import { FakeUser } from '@shared/domain/entities/fakes';
+import { FakeActivity, FakeUser } from '@shared/domain/entities/fakes';
+import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
+import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
 
 const initService = async () => {
   const playersRepository = new FakePlayersRepository();
@@ -70,7 +72,12 @@ const initService = async () => {
       tag: 'RNK',
     },
   );
-  const game = await gamesRepository.create(fakeGame);
+  const createGame = new CreateGameAdapter({
+    name: fakeGame.name,
+    description: fakeGame.description,
+    creatorId: userId,
+  });
+  const game = await gamesRepository.create(createGame);
 
   const user = new FakeUser({ id: userId });
   const fakePlayer = new FakePlayer({ user, game: game.id });
@@ -104,8 +111,14 @@ describe('CompleteActivityService', () => {
     } = await initService();
 
     const fakeActivity = new FakeActivity({ game: game.id });
-    fakeActivity.experience = 200;
-    const activity = await activitiesRepository.create(fakeActivity);
+    const createActivity = new CreateActivityAdapter({
+      gameId: game.id,
+      name: fakeActivity.name,
+      experience: 200,
+      description: fakeActivity.description,
+      dmRules: fakeActivity.dmRules,
+    });
+    const activity = await activitiesRepository.create(createActivity);
 
     const fakeRequest = new FakeCompleteActivityRequest(
       player.id,
@@ -154,8 +167,14 @@ describe('CompleteActivityService', () => {
     } = await initService();
 
     const fakeActivity = new FakeActivity({ game: game.id });
-    fakeActivity.experience = 350;
-    const activity = await activitiesRepository.create(fakeActivity);
+    const createActivity = new CreateActivityAdapter({
+      gameId: game.id,
+      name: fakeActivity.name,
+      experience: 350,
+      description: fakeActivity.description,
+      dmRules: fakeActivity.dmRules,
+    });
+    const activity = await activitiesRepository.create(createActivity);
 
     const fakeRequest = new FakeCompleteActivityRequest(
       player.id,

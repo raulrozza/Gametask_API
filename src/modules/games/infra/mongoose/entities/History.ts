@@ -1,5 +1,5 @@
+import { IHistory } from '@shared/domain/entities';
 import mongoose, { Document } from 'mongoose';
-import { IHistory } from '@modules/games/domain/entities';
 
 interface IHistoryDocument extends IHistory, Document {}
 

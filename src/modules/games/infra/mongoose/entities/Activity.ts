@@ -1,9 +1,9 @@
 import { Schema, model, Document } from 'mongoose';
 
-import { IActivity } from '@modules/games/domain/entities';
 import ActivityLogSchema, { IActivityLogDocument } from './ActivityLog';
 import HistorySchema from './History';
 import { IGameDocument } from './Game';
+import { IActivity } from '@shared/domain/entities';
 
 export interface IActivityDocument extends IActivity, Document {
   id: NonNullable<Document['id']>;

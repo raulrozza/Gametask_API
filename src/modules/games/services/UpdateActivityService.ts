@@ -5,10 +5,10 @@ import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
 import IUpdateActivityDTO from '@modules/games/domain/dtos/IUpdateActivityDTO';
-import { IActivity } from '@modules/games/domain/entities';
 import { IActivitiesRepository } from '@modules/games/domain/repositories';
 import ActivityLog from '@modules/games/domain/adapters/ActivityLog';
 import UpdateActivityAdapter from '@modules/games/domain/adapters/UpdateActivity';
+import { IActivity } from '@shared/domain/entities';
 
 @injectable()
 export default class UpdateActivityService {
