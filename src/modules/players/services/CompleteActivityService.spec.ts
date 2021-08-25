@@ -8,7 +8,6 @@ import FakeFeedPostsRepository from '../repositories/fakes/FakeFeedPostsReposito
 import FakeLeaderboardsRepository from '../repositories/fakes/FakeLeaderboardsRepository';
 import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import CompleteActivityService from './CompleteActivityService';
-import { IPosition } from '../entities/ILeaderboard';
 import { RequestError } from '@shared/infra/errors';
 import {
   FakeCompleteActivityRequest,
@@ -17,6 +16,7 @@ import {
 import { FakeActivity, FakeGame } from '@shared/domain/entities/fakes';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
+import { IPosition } from '@shared/domain/entities/ILeaderboard';
 
 const initService = async () => {
   const playersRepository = new FakePlayersRepository();

@@ -1,10 +1,11 @@
 import { ILeaderboardsRepository } from '@modules/players/repositories';
-import { ILeaderboardDocument } from '@modules/players/infra/mongoose/entities/Leaderboard';
-import { ILeaderboard } from '@modules/players/entities';
 import { ClientSession, isValidObjectId } from 'mongoose';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
-import Leaderboard from '@modules/games/infra/mongoose/entities/Leaderboard';
+import Leaderboard, {
+  ILeaderboardDocument,
+} from '@modules/games/infra/mongoose/entities/Leaderboard';
+import { ILeaderboard } from '@shared/domain/entities';
 
 export default class LeaderboardsRepository
   implements ILeaderboardsRepository<ILeaderboardDocument> {

@@ -1,9 +1,9 @@
 import { Document, model, Schema } from 'mongoose';
-import { ILeaderboard } from '@modules/players/entities';
 import { IGameDocument } from '@modules/games/infra/mongoose/entities/Game';
 import PositionSchema, {
   IPositionDocument,
 } from '@modules/games/infra/mongoose/entities/Position';
+import { ILeaderboard } from '@shared/domain/entities';
 
 export interface ILeaderboardDocument extends ILeaderboard, Document {
   id: NonNullable<Document['id']>;

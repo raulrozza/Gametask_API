@@ -1,4 +1,4 @@
-import { ILeaderboard } from '@modules/players/entities';
+import { ILeaderboard } from '@shared/domain/entities';
 
 export default interface ILeaderboardsRepository<
   T extends ILeaderboard = ILeaderboard

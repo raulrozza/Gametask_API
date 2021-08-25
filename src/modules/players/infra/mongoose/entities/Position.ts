@@ -1,5 +1,5 @@
+import { IPosition } from '@shared/domain/entities/ILeaderboard';
 import { Document, Schema } from 'mongoose';
-import { IPosition } from '@modules/players/entities/ILeaderboard';
 
 interface IPositionDocument extends IPosition, Document {}
 
