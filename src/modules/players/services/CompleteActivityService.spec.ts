@@ -71,12 +71,14 @@ const initService = async () => {
       tag: 'RNK',
     },
   );
-  const createGame = new CreateGameAdapter({
-    name: fakeGame.name,
-    description: fakeGame.description,
-    creatorId: userId,
-  });
-  const game = await gamesRepository.create(createGame);
+
+  const game = await gamesRepository.create(
+    new CreateGameAdapter({
+      name: fakeGame.name,
+      description: fakeGame.description,
+      creatorId: userId,
+    }),
+  );
 
   const player = await playersRepository.create(
     new CreatePlayerAdapter({
@@ -113,14 +115,15 @@ describe('CompleteActivityService', () => {
     } = await initService();
 
     const fakeActivity = new FakeActivity({ game: game.id });
-    const createActivity = new CreateActivityAdapter({
-      gameId: game.id,
-      name: fakeActivity.name,
-      experience: 200,
-      description: fakeActivity.description,
-      dmRules: fakeActivity.dmRules,
-    });
-    const activity = await activitiesRepository.create(createActivity);
+    const activity = await activitiesRepository.create(
+      new CreateActivityAdapter({
+        gameId: game.id,
+        name: fakeActivity.name,
+        experience: 200,
+        description: fakeActivity.description,
+        dmRules: fakeActivity.dmRules,
+      }),
+    );
 
     const fakeRequest = new FakeCompleteActivityRequest({
       requester: player.id,
@@ -169,14 +172,15 @@ describe('CompleteActivityService', () => {
     } = await initService();
 
     const fakeActivity = new FakeActivity({ game: game.id });
-    const createActivity = new CreateActivityAdapter({
-      gameId: game.id,
-      name: fakeActivity.name,
-      experience: 350,
-      description: fakeActivity.description,
-      dmRules: fakeActivity.dmRules,
-    });
-    const activity = await activitiesRepository.create(createActivity);
+    const activity = await activitiesRepository.create(
+      new CreateActivityAdapter({
+        gameId: game.id,
+        name: fakeActivity.name,
+        experience: 350,
+        description: fakeActivity.description,
+        dmRules: fakeActivity.dmRules,
+      }),
+    );
 
     const fakeRequest = new FakeCompleteActivityRequest({
       requester: player.id,

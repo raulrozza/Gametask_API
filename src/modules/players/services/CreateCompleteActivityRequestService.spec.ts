@@ -31,12 +31,13 @@ const initService = async () => {
   const userId = uuid();
 
   const fakeGame = new FakeGame();
-  const createGame = new CreateGameAdapter({
-    name: fakeGame.name,
-    description: fakeGame.description,
-    creatorId: userId,
-  });
-  const game = await gamesRepository.create(createGame);
+  const game = await gamesRepository.create(
+    new CreateGameAdapter({
+      name: fakeGame.name,
+      description: fakeGame.description,
+      creatorId: userId,
+    }),
+  );
 
   const fakeActivity = new FakeActivity({ game: game.id });
   const activity = await activitiesRepository.create(

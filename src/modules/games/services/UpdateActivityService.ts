@@ -44,17 +44,17 @@ export default class UpdateActivityService {
         dmRules,
       });
 
-      const activity = new UpdateActivityAdapter({
-        id,
-        name,
-        experience,
-        description,
-        dmRules,
-        gameId,
-        activityLog,
-      });
-
-      const updatedActivity = await this.activitiesRepository.update(activity);
+      const updatedActivity = await this.activitiesRepository.update(
+        new UpdateActivityAdapter({
+          id,
+          name,
+          experience,
+          description,
+          dmRules,
+          gameId,
+          activityLog,
+        }),
+      );
 
       return updatedActivity;
     } catch (error) {

@@ -35,16 +35,16 @@ export default class UpdateGameService {
           400,
         );
 
-      const updateGame = new UpdateGameAdapter({
-        id,
-        name,
-        description,
-        theme,
-        levelInfo,
-        ranks,
-      });
-
-      const updatedGame = await this.gamesRepository.update(updateGame);
+      const updatedGame = await this.gamesRepository.update(
+        new UpdateGameAdapter({
+          id,
+          name,
+          description,
+          theme,
+          levelInfo,
+          ranks,
+        }),
+      );
 
       return updatedGame;
     } catch (error) {

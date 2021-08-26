@@ -20,14 +20,14 @@ export default class CreateActivityService {
     description,
     dmRules,
   }: ICreateActivityDTO): Promise<IActivity> {
-    const activity = new CreateActivityAdapter({
-      gameId,
-      name,
-      experience,
-      description,
-      dmRules,
-    });
-
-    return this.activitiesRepository.create(activity);
+    return this.activitiesRepository.create(
+      new CreateActivityAdapter({
+        gameId,
+        name,
+        experience,
+        description,
+        dmRules,
+      }),
+    );
   }
 }

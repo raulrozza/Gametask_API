@@ -23,9 +23,9 @@ export default class CreateGameService {
     name,
     description,
   }: ICreateGameDTO): Promise<IGame> {
-    const createGame = new CreateGameAdapter({ name, description, creatorId });
-
-    const game = await this.gamesRepository.create(createGame);
+    const game = await this.gamesRepository.create(
+      new CreateGameAdapter({ name, description, creatorId }),
+    );
 
     const createLeaderboard = new CreateLeaderboardAdapter({ game: game.id });
 

@@ -27,9 +27,9 @@ export default class UpdateTitleService {
           400,
         );
 
-      const updateTitle = new UpdateTitleAdapter({ id, name });
-
-      const updatedTitle = await this.titlesRepository.update(updateTitle);
+      const updatedTitle = await this.titlesRepository.update(
+        new UpdateTitleAdapter({ id, name }),
+      );
 
       return updatedTitle;
     } catch (error) {

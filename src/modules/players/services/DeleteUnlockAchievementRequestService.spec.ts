@@ -21,12 +21,13 @@ describe('DeleteUnlockAchievementRequestService', () => {
     );
 
     const fakeGame = new FakeGame();
-    const createGame = new CreateGameAdapter({
-      creatorId: uuid(),
-      name: fakeGame.name,
-      description: fakeGame.description,
-    });
-    const game = await gamesRepository.create(createGame);
+    const game = await gamesRepository.create(
+      new CreateGameAdapter({
+        creatorId: uuid(),
+        name: fakeGame.name,
+        description: fakeGame.description,
+      }),
+    );
 
     const requesterId = uuid();
     const achievementId = uuid();
@@ -86,12 +87,13 @@ describe('DeleteUnlockAchievementRequestService', () => {
     );
 
     const fakeGame = new FakeGame();
-    const createGame = new CreateGameAdapter({
-      creatorId: uuid(),
-      name: fakeGame.name,
-      description: fakeGame.description,
-    });
-    const game = await gamesRepository.create(createGame);
+    const game = await gamesRepository.create(
+      new CreateGameAdapter({
+        creatorId: uuid(),
+        name: fakeGame.name,
+        description: fakeGame.description,
+      }),
+    );
 
     await expect(
       deleteUnlockAchievementRequest.execute({
