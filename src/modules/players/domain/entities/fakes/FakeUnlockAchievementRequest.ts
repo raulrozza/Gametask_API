@@ -8,19 +8,29 @@ interface IConstructor {
   game?: string;
   requester?: string;
   achievement?: string;
+  requestDate?: Date;
+  information?: string;
 }
 
 export default class FakeUnlockAchievementRequest
   implements IUnlockAchievementRequest {
   public id: string = uuid();
-  public requestDate: Date = new Date();
-  public information: string = faker.random.words();
+  public requestDate: Date;
+  public information: string;
   public game: string;
   public requester: IUser;
   public achievement: IAchievement;
-  constructor({ game = uuid(), requester, achievement }: IConstructor = {}) {
+  constructor({
+    game = uuid(),
+    requester,
+    achievement,
+    requestDate = new Date(),
+    information = faker.random.words(),
+  }: IConstructor = {}) {
     this.game = game;
     this.requester = new FakeUser({ id: requester });
     this.achievement = new FakeAchievement({ id: achievement });
+    this.requestDate = requestDate;
+    this.information = information;
   }
 }

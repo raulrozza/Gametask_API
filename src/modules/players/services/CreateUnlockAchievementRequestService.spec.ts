@@ -3,7 +3,6 @@ import { v4 as uuid } from 'uuid';
 import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
-import FakeUnlockAchievementRequestRepository from '../repositories/fakes/FakeUnlockAchievementRequestRepository';
 import CreateUnlockAchievementRequestService from './CreateUnlockAchievementRequestService';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
@@ -12,6 +11,7 @@ import { FakeAchievement, FakeGame } from '@shared/domain/entities/fakes';
 import { FakeUnlockAchievementRequest } from '@modules/players/domain/entities/fakes';
 import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
 import AddAchievementToPlayerAdapter from '@modules/players/domain/adapters/AddAchievementToPlayer';
+import FakeUnlockAchievementRequestRepository from '@modules/players/domain/repositories/fakes/FakeUnlockAchievementRequestRepository';
 
 const initService = async () => {
   const unlockAchievementRequestRepository = new FakeUnlockAchievementRequestRepository();

@@ -9,9 +9,13 @@ import {
   IGamesRepository,
 } from '@modules/games/domain/repositories';
 import ICreateUnlockAchievementRequestDTO from '@modules/players/domain/dtos/ICreateUnlockAchievementRequestDTO';
-import { IUnlockAchievementRequestRepository } from '@modules/players/repositories';
-import { IPlayersRepository } from '@modules/players/domain/repositories';
+import {
+  IUnlockAchievementRequestRepository,
+  IPlayersRepository,
+} from '@modules/players/domain/repositories';
+
 import { IUnlockAchievementRequest } from '@modules/players/domain/entities';
+import CreateUnlockAchievementAdapter from '@modules/players/domain/adapters/CreateUnlockAchievement';
 
 interface ValidadeInputParams {
   gameId: string;
@@ -57,13 +61,13 @@ export default class CreateUnlockAchievementRequestService {
     return await this.transactionProvider.startSession<IUnlockAchievementRequest>(
       async session => {
         const request = await this.unlockAchievementRequestRepository.create(
-          {
+          new CreateUnlockAchievementAdapter({
             achievement,
             game: gameId,
             requestDate,
             information,
             requester,
-          },
+          }),
           session,
         );
 
@@ -111,10 +115,8 @@ export default class CreateUnlockAchievementRequestService {
         404,
       );
 
-    const alreadyRequested = await this.unlockAchievementRequestRepository.checkIfRequested(
-      requester,
-      gameId,
-      achievement,
+    const alreadyRequested = await this.unlockAchievementRequestRepository.findOne(
+      { requester, gameId, achievementId: achievement },
     );
     if (alreadyRequested)
       throw new RequestError(
@@ -122,7 +124,11 @@ export default class CreateUnlockAchievementRequestService {
         errorCodes.ACHIEVEMENT_REGISTER_ALREADY_EXISTS,
       );
 
-    if ((player.achievements as string[]).includes(achievement))
+    if (
+      player.achievements.find(
+        playerAchievement => playerAchievement.id === achievement,
+      )
+    )
       throw new RequestError(
         'This player already has this achievement',
         errorCodes.ACHIEVEMENT_BELONGS_TO_PLAYER,

@@ -2,15 +2,14 @@ import { ClientSession, isValidObjectId } from 'mongoose';
 
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
-import { IUnlockAchievementRequestRepository } from '@modules/players/repositories';
-import UnlockAchievementRequest, {
-  IUnlockAchievementRequestDocument,
-} from '@modules/players/infra/mongoose/entities/UnlockAchievementRequest';
+import UnlockAchievementRequest from '@modules/players/infra/mongoose/entities/UnlockAchievementRequest';
 import { IUnlockAchievementRequest } from '@modules/players/domain/entities';
+import { IUnlockAchievementRequestRepository } from '@modules/players/domain/repositories';
+import { IFindOneAchievemementRequestParams } from '@modules/players/domain/repositories/IUnlockAchievementRequestRepository';
+import CreateUnlockAchievementAdapter from '@modules/players/domain/adapters/CreateUnlockAchievement';
 
 export default class UnlockAchievementRequestRepository
-  implements
-    IUnlockAchievementRequestRepository<IUnlockAchievementRequestDocument> {
+  implements IUnlockAchievementRequestRepository {
   public async checkIfRequested(
     requester: string,
     gameId: string,
@@ -33,7 +32,7 @@ export default class UnlockAchievementRequestRepository
 
   public async findAllFromGame(
     gameId: string,
-  ): Promise<IUnlockAchievementRequestDocument[]> {
+  ): Promise<IUnlockAchievementRequest[]> {
     return UnlockAchievementRequest.find({ game: gameId })
       .populate({
         path: 'achievement',
@@ -50,13 +49,31 @@ export default class UnlockAchievementRequestRepository
       .sort({ requestDate: -1 });
   }
 
-  public async findOne(
-    id: string,
-  ): Promise<IUnlockAchievementRequestDocument | undefined> {
-    if (!isValidObjectId(id))
+  public async findOne({
+    id,
+    gameId,
+    requester,
+    achievementId,
+  }: IFindOneAchievemementRequestParams): Promise<
+    IUnlockAchievementRequest | undefined
+  > {
+    if (id && !isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return await UnlockAchievementRequest.findById(id);
+    if (requester && !isValidObjectId(requester))
+      throw new RequestError('Requester is invalid!', errorCodes.INVALID_ID);
+
+    if (achievementId && !isValidObjectId(achievementId))
+      throw new RequestError('Achievement is invalid!', errorCodes.INVALID_ID);
+
+    const request = await UnlockAchievementRequest.findOne({
+      _id: id,
+      game: gameId,
+      achievement: achievementId,
+      requester,
+    });
+
+    return request || undefined;
   }
 
   public async create(
@@ -66,9 +83,9 @@ export default class UnlockAchievementRequestRepository
       requestDate,
       information,
       game,
-    }: Omit<IUnlockAchievementRequest, 'id'>,
+    }: CreateUnlockAchievementAdapter,
     session?: ClientSession,
-  ): Promise<IUnlockAchievementRequestDocument> {
+  ): Promise<IUnlockAchievementRequest> {
     const [result] = await UnlockAchievementRequest.create(
       [
         {

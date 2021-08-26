@@ -6,13 +6,11 @@ import {
   PlayersRepository,
   UnlockAchievementRequestRepository,
 } from '@modules/players/infra/mongoose/repositories';
-import {
-  IFeedPostsRepository,
-  IUnlockAchievementRequestRepository,
-} from '@modules/players/repositories';
+import { IFeedPostsRepository } from '@modules/players/repositories';
 import {
   ICompleteActivityRequestRepository,
   IPlayersRepository,
+  IUnlockAchievementRequestRepository,
 } from '@modules/players/domain/repositories';
 
 container.registerSingleton<IFeedPostsRepository>(

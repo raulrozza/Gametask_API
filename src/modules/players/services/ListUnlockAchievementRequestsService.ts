@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
-import { IUnlockAchievementRequestRepository } from '@modules/players/repositories';
+import { IUnlockAchievementRequestRepository } from '@modules/players/domain/repositories';
 import { IUnlockAchievementRequest } from '@modules/players/domain/entities';
 
 @injectable()

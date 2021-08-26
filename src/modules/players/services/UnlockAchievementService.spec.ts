@@ -4,12 +4,9 @@ import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import FakeFeedPostsRepository from '../repositories/fakes/FakeFeedPostsRepository';
 import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
-import FakeUnlockAchievementRequestRepository from '../repositories/fakes/FakeUnlockAchievementRequestRepository';
+import FakeUnlockAchievementRequestRepository from '@modules/players/domain/repositories/fakes/FakeUnlockAchievementRequestRepository';
 import UnlockAchievementService from './UnlockAchievementService';
-import {
-  IPlayer,
-  IUnlockAchievementRequest,
-} from '@modules/players/domain/entities';
+import { IPlayer } from '@modules/players/domain/entities';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 import { ITitle } from '@shared/domain/entities';
@@ -17,6 +14,7 @@ import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import { FakeAchievement, FakeGame } from '@shared/domain/entities/fakes';
 import { FakeUnlockAchievementRequest } from '@modules/players/domain/entities/fakes';
 import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
+import CreateUnlockAchievementAdapter from '@modules/players/domain/adapters/CreateUnlockAchievement';
 
 const initService = async (title?: ITitle) => {
   const playersRepository = new FakePlayersRepository();
@@ -66,13 +64,17 @@ const initService = async (title?: ITitle) => {
     }),
   );
 
-  const { id: ____, ...fakeRequest } = new FakeUnlockAchievementRequest({
+  const fakeRequest = new FakeUnlockAchievementRequest({
     game: game.id,
     requester: player.id,
     achievement: achievement.id,
   });
   const request = await unlockAchievementRequestRepository.create(
-    fakeRequest as IUnlockAchievementRequest,
+    new CreateUnlockAchievementAdapter({
+      ...fakeRequest,
+      requester: fakeRequest.requester.id,
+      achievement: fakeRequest.achievement.id,
+    }),
   );
 
   return {
@@ -116,9 +118,9 @@ describe('UnlockAchievementService', () => {
 
     expect(updatedPlayer.achievements).toContain(achievement.id);
 
-    const deletedRequest = await unlockAchievementRequestRepository.findOne(
-      request.id,
-    );
+    const deletedRequest = await unlockAchievementRequestRepository.findOne({
+      id: request.id,
+    });
 
     expect(deletedRequest).toBeUndefined();
   });
