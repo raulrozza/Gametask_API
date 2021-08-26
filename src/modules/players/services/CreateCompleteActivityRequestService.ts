@@ -5,13 +5,16 @@ import {
   IActivitiesRepository,
   IGamesRepository,
 } from '@modules/games/domain/repositories';
-import { ICompleteActivityRequestRepository } from '@modules/players/repositories';
-import { IPlayersRepository } from '@modules/players/domain/repositories';
+import {
+  ICompleteActivityRequestRepository,
+  IPlayersRepository,
+} from '@modules/players/domain/repositories';
 import { ICompleteActivityRequest } from '@modules/players/domain/entities';
 import ICreateCompleteActivityRequestDTO from '@modules/players/domain/dtos/ICreateCompleteActivityRequestDTO';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
+import CreateCompleteActivityRequestAdapter from '@modules/players/domain/adapters/CreateCompleteActivityRequest';
 
 interface IValidateInputParams {
   activity: string;
@@ -52,14 +55,14 @@ export default class CreateCompleteActivityRequestService {
 
     return await this.transactionProvider.startSession(async session => {
       const request = await this.completeActivityRequestRepository.create(
-        {
+        new CreateCompleteActivityRequestAdapter({
           activity,
           game: gameId,
           requester,
           completionDate,
           information,
           requestDate,
-        },
+        }),
         session,
       );
 

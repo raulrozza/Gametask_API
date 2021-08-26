@@ -3,7 +3,6 @@ import { v4 as uuid } from 'uuid';
 import FakeActivitiesRepository from '@modules/games/domain/repositories/fakes/FakeActivitiesRepository';
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
-import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCompleteActivityRequestRepository';
 import FakeFeedPostsRepository from '../repositories/fakes/FakeFeedPostsRepository';
 import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import CompleteActivityService from './CompleteActivityService';
@@ -15,6 +14,8 @@ import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity
 import { IPosition } from '@shared/domain/entities/ILeaderboard';
 import { FakeLeaderboardsRepository } from '@shared/domain/repositories/fakes';
 import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
+import FakeCompleteActivityRequestRepository from '@modules/players/domain/repositories/fakes/FakeCompleteActivityRequestRepository';
+import CreateCompleteActivityRequestAdapter from '@modules/players/domain/adapters/CreateCompleteActivityRequest';
 
 const initService = async () => {
   const playersRepository = new FakePlayersRepository();
@@ -130,7 +131,13 @@ describe('CompleteActivityService', () => {
       activity: activity.id,
       game: game.id,
     });
-    const request = await completeActivityRequestRepository.create(fakeRequest);
+    const request = await completeActivityRequestRepository.create(
+      new CreateCompleteActivityRequestAdapter({
+        ...fakeRequest,
+        requester: player.id,
+        activity: activity.id,
+      }),
+    );
 
     await completeActivity.execute({ requestId: request.id, userId });
 
@@ -188,10 +195,18 @@ describe('CompleteActivityService', () => {
       game: game.id,
     });
     const firstRequest = await completeActivityRequestRepository.create(
-      fakeRequest,
+      new CreateCompleteActivityRequestAdapter({
+        ...fakeRequest,
+        requester: player.id,
+        activity: activity.id,
+      }),
     );
     const secondRequest = await completeActivityRequestRepository.create(
-      fakeRequest,
+      new CreateCompleteActivityRequestAdapter({
+        ...fakeRequest,
+        requester: player.id,
+        activity: activity.id,
+      }),
     );
 
     await completeActivity.execute({ requestId: firstRequest.id, userId });

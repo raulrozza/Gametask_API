@@ -7,11 +7,13 @@ import {
   UnlockAchievementRequestRepository,
 } from '@modules/players/infra/mongoose/repositories';
 import {
-  ICompleteActivityRequestRepository,
   IFeedPostsRepository,
   IUnlockAchievementRequestRepository,
 } from '@modules/players/repositories';
-import { IPlayersRepository } from '@modules/players/domain/repositories';
+import {
+  ICompleteActivityRequestRepository,
+  IPlayersRepository,
+} from '@modules/players/domain/repositories';
 
 container.registerSingleton<IFeedPostsRepository>(
   'FeedPostsRepository',

@@ -4,6 +4,15 @@ import { IGameDocument } from '@shared/infra/mongoose/entities/Game';
 import { ICompleteActivityRequest } from '@modules/players/domain/entities';
 import { IUserDocument } from '@shared/infra/mongoose/entities/User';
 
+export interface ICompleteActivityRequestDocument
+  extends ICompleteActivityRequest,
+    Document {
+  id: NonNullable<Document['id']>;
+  requester: IUserDocument['_id'];
+  activity: IActivityDocument['_id'];
+  game: IGameDocument['_id'];
+}
+
 const CompleteActivityRequestSchema = new Schema(
   {
     requester: {
@@ -33,26 +42,6 @@ const CompleteActivityRequestSchema = new Schema(
   },
   { toJSON: { virtuals: true } },
 );
-
-interface ICompleteActivityRequestBaseDocument
-  extends ICompleteActivityRequest,
-    Document {
-  id: NonNullable<Document['id']>;
-}
-
-export interface ICompleteActivityRequestDocument
-  extends ICompleteActivityRequestBaseDocument {
-  requester: IUserDocument['_id'];
-  activity: IActivityDocument['_id'];
-  game: IGameDocument['_id'];
-}
-
-export interface ICompleteActivityRequestPopulatedDocument
-  extends ICompleteActivityRequestBaseDocument {
-  requester: IUserDocument;
-  activity: IActivityDocument;
-  game: IGameDocument;
-}
 
 export default model<ICompleteActivityRequestDocument>(
   'CompleteActivityRequest',

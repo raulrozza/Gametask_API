@@ -1,13 +1,14 @@
 import { v4 as uuid } from 'uuid';
 
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
-import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCompleteActivityRequestRepository';
+import FakeCompleteActivityRequestRepository from '@modules/players/domain/repositories/fakes/FakeCompleteActivityRequestRepository';
 import DeleteCompleteActivityRequestService from './DeleteCompleteActivityRequestService';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 import { FakeGame } from '@shared/domain/entities/fakes';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import { FakeCompleteActivityRequest } from '@modules/players/domain/entities/fakes';
+import CreateCompleteActivityRequestAdapter from '@modules/players/domain/adapters/CreateCompleteActivityRequest';
 
 describe('DeleteCompleteActivityRequest', () => {
   it('should successfully delete the request', async () => {
@@ -38,7 +39,11 @@ describe('DeleteCompleteActivityRequest', () => {
       game: game.id,
     });
     const request = await completeActivityRequestRepository.create(
-      fakeActivityRequest,
+      new CreateCompleteActivityRequestAdapter({
+        ...fakeActivityRequest,
+        requester: requesterId,
+        activity: activityId,
+      }),
     );
 
     await deleteUnlockActivityRequest.execute({
@@ -64,7 +69,13 @@ describe('DeleteCompleteActivityRequest', () => {
     );
 
     const fakeRequest = new FakeCompleteActivityRequest();
-    const request = await completeActivityRequestRepository.create(fakeRequest);
+    const request = await completeActivityRequestRepository.create(
+      new CreateCompleteActivityRequestAdapter({
+        ...fakeRequest,
+        requester: fakeRequest.requester.id,
+        activity: fakeRequest.activity.id,
+      }),
+    );
 
     await expect(
       deleteUnlockAchievementRequest.execute({

@@ -1,10 +1,10 @@
-import { v4 as uuid } from 'uuid';
-
 import { ICompleteActivityRequest } from '@modules/players/domain/entities';
-import { ICompleteActivityRequestRepository } from '@modules/players/repositories';
+import { ICompleteActivityRequestRepository } from '@modules/players/domain/repositories';
+import CreateCompleteActivityRequestAdapter from '@modules/players/domain/adapters/CreateCompleteActivityRequest';
+import { FakeCompleteActivityRequest } from '@modules/players/domain/entities/fakes';
 
 export default class FakeCompleteActivityRequestRepository
-  implements ICompleteActivityRequestRepository<ICompleteActivityRequest> {
+  implements ICompleteActivityRequestRepository {
   private completeActivityRequests: ICompleteActivityRequest[] = [];
 
   public async findAllFromGame(
@@ -21,13 +21,22 @@ export default class FakeCompleteActivityRequestRepository
     return this.completeActivityRequests.find(request => request.id === id);
   }
 
-  public async create(
-    request: Omit<ICompleteActivityRequest, 'id'>,
-  ): Promise<ICompleteActivityRequest> {
-    const newRequest = {
-      id: uuid(),
-      ...request,
-    };
+  public async create({
+    activity,
+    completionDate,
+    game,
+    information,
+    requestDate,
+    requester,
+  }: CreateCompleteActivityRequestAdapter): Promise<ICompleteActivityRequest> {
+    const newRequest = new FakeCompleteActivityRequest({
+      requester,
+      activity,
+      game,
+      completionDate,
+      requestDate,
+      information,
+    });
 
     this.completeActivityRequests.push(newRequest);
 

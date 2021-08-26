@@ -1,11 +1,11 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
+import { IFeedPostsRepository } from '@modules/players/repositories';
 import {
   ICompleteActivityRequestRepository,
-  IFeedPostsRepository,
-} from '@modules/players/repositories';
-import { IPlayersRepository } from '@modules/players/domain/repositories';
+  IPlayersRepository,
+} from '@modules/players/domain/repositories';
 import {
   IActivitiesRepository,
   IGamesRepository,

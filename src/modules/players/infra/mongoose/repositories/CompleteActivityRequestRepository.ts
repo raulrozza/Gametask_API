@@ -2,19 +2,17 @@ import { ClientSession, isValidObjectId } from 'mongoose';
 
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
-import { ICompleteActivityRequestRepository } from '@modules/players/repositories';
 import { ICompleteActivityRequest } from '@modules/players/domain/entities';
-import CompleteActivityRequest, {
-  ICompleteActivityRequestDocument,
-} from '@modules/players/infra/mongoose/entities/CompleteActivityRequest';
+import CompleteActivityRequest from '@modules/players/infra/mongoose/entities/CompleteActivityRequest';
+import { ICompleteActivityRequestRepository } from '@modules/players/domain/repositories';
+import CreateCompleteActivityRequestAdapter from '@modules/players/domain/adapters/CreateCompleteActivityRequest';
 
 export default class CompleteActivityRequestRepository
-  implements
-    ICompleteActivityRequestRepository<ICompleteActivityRequestDocument> {
+  implements ICompleteActivityRequestRepository {
   public async findAllFromGame(
     gameId: string,
-  ): Promise<ICompleteActivityRequestDocument[]> {
-    return await CompleteActivityRequest.find({ game: gameId })
+  ): Promise<ICompleteActivityRequest[]> {
+    return CompleteActivityRequest.find({ game: gameId })
       .populate('activity')
       .populate({
         path: 'requester',
@@ -27,11 +25,13 @@ export default class CompleteActivityRequestRepository
 
   public async findOne(
     id: string,
-  ): Promise<ICompleteActivityRequestDocument | undefined> {
+  ): Promise<ICompleteActivityRequest | undefined> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return await CompleteActivityRequest.findById(id);
+    const request = await CompleteActivityRequest.findById(id);
+
+    return request || undefined;
   }
 
   public async create(
@@ -42,9 +42,9 @@ export default class CompleteActivityRequestRepository
       completionDate,
       information,
       game,
-    }: Omit<ICompleteActivityRequest, 'id'>,
+    }: CreateCompleteActivityRequestAdapter,
     session?: ClientSession,
-  ): Promise<ICompleteActivityRequestDocument> {
+  ): Promise<ICompleteActivityRequest> {
     const [result] = await CompleteActivityRequest.create(
       [
         {

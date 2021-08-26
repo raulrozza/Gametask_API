@@ -1,12 +1,12 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import { ICompleteActivityRequestRepository } from '@modules/players/repositories';
 import { IGamesRepository } from '@modules/games/domain/repositories';
-import IRequestExecutionDTO from '../dtos/IRequestExecutionDTO';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
+import { ICompleteActivityRequestRepository } from '@modules/players/domain/repositories';
+import IRequestExecutionDTO from '@modules/players/domain/dtos/IRequestExecutionDTO';
 
 @injectable()
 export default class DeleteCompleteActivityRequestService {
