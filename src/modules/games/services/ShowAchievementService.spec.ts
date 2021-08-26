@@ -1,25 +1,23 @@
-import { v4 as uuid } from 'uuid';
-
-import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
+import { FakeAchievementsRepository } from '@shared/domain/repositories/fakes';
 import ShowAchievementService from './ShowAchievementService';
-import { FakeAchievement } from '@shared/domain/entities/fakes';
+import { FakeAchievement, FakeGame } from '@shared/domain/entities/fakes';
 
 describe('ShowAchievementService', () => {
   it('should return the correct achievement', async () => {
     const achievementsRepository = new FakeAchievementsRepository();
     const showAchievement = new ShowAchievementService(achievementsRepository);
 
-    const gameId = uuid();
-    const fakeAchievement = new FakeAchievement({ game: gameId });
+    const game = new FakeGame();
+    const fakeAchievement = new FakeAchievement({ game: game.id });
     const achievement = await achievementsRepository.create({
       name: fakeAchievement.name,
       description: fakeAchievement.description,
-      gameId: fakeAchievement.game.id,
+      gameId: game.id,
     });
 
     const fetchedAchievement = await showAchievement.execute({
       achievementId: achievement.id,
-      gameId,
+      gameId: game.id,
     });
 
     expect(fetchedAchievement).toEqual(achievement);
@@ -29,8 +27,8 @@ describe('ShowAchievementService', () => {
     const achievementsRepository = new FakeAchievementsRepository();
     const showAchievement = new ShowAchievementService(achievementsRepository);
 
-    const gameId = uuid();
-    const fakeAchievement = new FakeAchievement({ game: gameId });
+    const game = new FakeGame();
+    const fakeAchievement = new FakeAchievement({ game: game.id });
     const achievement = await achievementsRepository.create({
       name: fakeAchievement.name,
       description: fakeAchievement.description,
@@ -39,7 +37,7 @@ describe('ShowAchievementService', () => {
 
     const fetchedAchievement = await showAchievement.execute({
       achievementId: achievement.id,
-      gameId,
+      gameId: game.id,
     });
 
     expect(fetchedAchievement).toBeUndefined();

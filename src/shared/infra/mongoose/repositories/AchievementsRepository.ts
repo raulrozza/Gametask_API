@@ -2,7 +2,7 @@ import { isValidObjectId } from 'mongoose';
 
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
-import { IAchievementsRepository } from '@modules/games/domain/repositories';
+import { IAchievementsRepository } from '@shared/domain/repositories';
 import ICreateAchievementDTO from '@modules/games/domain/dtos/ICreateAchievementDTO';
 import IUpdateAchievementDTO from '@modules/games/domain/dtos/IUpdateAchievementDTO';
 import { IAchievement } from '@shared/domain/entities';

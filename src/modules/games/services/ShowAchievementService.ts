@@ -2,7 +2,7 @@ import 'reflect-metadata';
 
 import { inject, injectable } from 'tsyringe';
 
-import { IAchievementsRepository } from '@modules/games/domain/repositories';
+import { IAchievementsRepository } from '@shared/domain/repositories';
 import IShowAchievementDTO from '@modules/games/domain/dtos/IShowAchievementDTO';
 
 @injectable()

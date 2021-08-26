@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import { IAchievementsRepository } from '@modules/games/domain/repositories';
+import { IAchievementsRepository } from '@shared/domain/repositories';
 import { IAchievement } from '@shared/domain/entities';
 
 @injectable()

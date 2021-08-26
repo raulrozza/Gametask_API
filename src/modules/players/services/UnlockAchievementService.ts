@@ -6,8 +6,11 @@ import {
   IUnlockAchievementRequestRepository,
 } from '@modules/players/domain/repositories';
 
-import { IAchievementsRepository } from '@modules/games/domain/repositories';
-import { IGamesRepository } from '@shared/domain/repositories';
+import {
+  IAchievementsRepository,
+  IGamesRepository,
+} from '@shared/domain/repositories';
+
 import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';

@@ -1,5 +1,8 @@
-import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
-import { FakeGamesRepository } from '@shared/domain/repositories/fakes';
+import {
+  FakeAchievementsRepository,
+  FakeGamesRepository,
+} from '@shared/domain/repositories/fakes';
+
 import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import CreateUnlockAchievementRequestService from './CreateUnlockAchievementRequestService';
 import { RequestError } from '@shared/infra/errors';

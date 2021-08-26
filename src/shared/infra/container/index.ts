@@ -1,4 +1,5 @@
 import {
+  IAchievementsRepository,
   IActivitiesRepository,
   IGamesRepository,
   ILeaderboardsRepository,
@@ -6,6 +7,7 @@ import {
   IUsersRepository,
 } from '@shared/domain/repositories';
 import {
+  AchievementsRepository,
   ActivitiesRepository,
   GamesRepository,
   LeaderboardsRepository,
@@ -14,10 +16,14 @@ import {
 } from '@shared/infra/mongoose/repositories';
 import { container } from 'tsyringe';
 
-import '@modules/games/infra/container';
 import '@modules/players/infra/container';
 import '@modules/users/infra/container';
 import '@shared/infra/container/providers';
+
+container.registerSingleton<IAchievementsRepository>(
+  'AchievementsRepository',
+  AchievementsRepository,
+);
 
 container.registerSingleton<IActivitiesRepository>(
   'ActivitiesRepository',
