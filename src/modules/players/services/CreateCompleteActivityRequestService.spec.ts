@@ -1,14 +1,19 @@
-import { v4 as uuid } from 'uuid';
-
-import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
+import {
+  FakeGamesRepository,
+  FakeActivitiesRepository,
+} from '@shared/domain/repositories/fakes';
 import FakeCompleteActivityRequestRepository from '@modules/players/domain/repositories/fakes/FakeCompleteActivityRequestRepository';
 import CreateCompleteActivityRequestService from './CreateCompleteActivityRequestService';
-import { FakeActivitiesRepository } from '@shared/domain/repositories/fakes';
+
 import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 import { FakeCompleteActivityRequest } from '@modules/players/domain/entities/fakes';
-import { FakeActivity, FakeGame } from '@shared/domain/entities/fakes';
+import {
+  FakeActivity,
+  FakeGame,
+  FakeUser,
+} from '@shared/domain/entities/fakes';
 import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
@@ -28,14 +33,14 @@ const initService = async () => {
     transactionProvider,
   );
 
-  const userId = uuid();
+  const user = new FakeUser();
 
   const fakeGame = new FakeGame();
   const game = await gamesRepository.create(
     new CreateGameAdapter({
       name: fakeGame.name,
       description: fakeGame.description,
-      creatorId: userId,
+      creatorId: user.id,
     }),
   );
 
@@ -51,7 +56,7 @@ const initService = async () => {
 
   const player = await playersRepository.create(
     new CreatePlayerAdapter({
-      userId,
+      userId: user.id,
       gameId: game.id,
       gameRanks: game.ranks,
       gameLevels: game.levelInfo,
@@ -59,7 +64,7 @@ const initService = async () => {
   );
 
   return {
-    userId,
+    userId: user.id,
     createCompleteActivity,
     game,
     activity,

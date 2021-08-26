@@ -1,13 +1,15 @@
-import { v4 as uuid } from 'uuid';
-
 import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
-import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
+import { FakeGamesRepository } from '@shared/domain/repositories/fakes';
 import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import CreateUnlockAchievementRequestService from './CreateUnlockAchievementRequestService';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
-import { FakeAchievement, FakeGame } from '@shared/domain/entities/fakes';
+import {
+  FakeAchievement,
+  FakeGame,
+  FakeUser,
+} from '@shared/domain/entities/fakes';
 import { FakeUnlockAchievementRequest } from '@modules/players/domain/entities/fakes';
 import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
 import AddAchievementToPlayerAdapter from '@modules/players/domain/adapters/AddAchievementToPlayer';
@@ -28,20 +30,20 @@ const initService = async () => {
     transactionProvider,
   );
 
-  const userId = uuid();
+  const user = new FakeUser();
 
   const fakeGame = new FakeGame();
   const game = await gamesRepository.create(
     new CreateGameAdapter({
       name: fakeGame.name,
       description: fakeGame.description,
-      creatorId: userId,
+      creatorId: user.id,
     }),
   );
 
   const player = await playersRepository.create(
     new CreatePlayerAdapter({
-      userId,
+      userId: user.id,
       gameId: game.id,
       gameLevels: game.levelInfo,
       gameRanks: game.ranks,
@@ -59,7 +61,7 @@ const initService = async () => {
   });
 
   return {
-    userId,
+    userId: user.id,
     createUnlockAchievementRequest,
     game,
     player,

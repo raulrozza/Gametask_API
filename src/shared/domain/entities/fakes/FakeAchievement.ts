@@ -26,7 +26,7 @@ export default class FakeAchievement implements IAchievement {
     description = faker.lorem.sentence(),
     game,
     title,
-  }: IConstructor) {
+  }: IConstructor = {}) {
     this.id = id;
     this.name = name;
     this.description = description;

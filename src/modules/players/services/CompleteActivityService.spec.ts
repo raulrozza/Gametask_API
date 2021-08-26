@@ -1,16 +1,19 @@
-import { v4 as uuid } from 'uuid';
-
 import {
   FakeActivitiesRepository,
   FakeLeaderboardsRepository,
+  FakeGamesRepository,
 } from '@shared/domain/repositories/fakes';
-import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
+
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import CompleteActivityService from './CompleteActivityService';
 import { RequestError } from '@shared/infra/errors';
 import { FakeCompleteActivityRequest } from '@modules/players/domain/entities/fakes';
-import { FakeActivity, FakeGame } from '@shared/domain/entities/fakes';
+import {
+  FakeActivity,
+  FakeGame,
+  FakeUser,
+} from '@shared/domain/entities/fakes';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
 import { IPosition } from '@shared/domain/entities/ILeaderboard';
@@ -40,7 +43,7 @@ const initService = async () => {
     transactionProvider,
   );
 
-  const userId = uuid();
+  const user = new FakeUser();
 
   const fakeGame = new FakeGame();
   fakeGame.levelInfo.push(
@@ -80,13 +83,13 @@ const initService = async () => {
     new CreateGameAdapter({
       name: fakeGame.name,
       description: fakeGame.description,
-      creatorId: userId,
+      creatorId: user.id,
     }),
   );
 
   const player = await playersRepository.create(
     new CreatePlayerAdapter({
-      userId,
+      userId: user.id,
       gameId: game.id,
       gameRanks: game.ranks,
       gameLevels: game.levelInfo,
@@ -94,7 +97,7 @@ const initService = async () => {
   );
 
   return {
-    userId,
+    userId: user.id,
     completeActivity,
     game,
     player,

@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import { IGamesRepository } from '@modules/games/domain/repositories';
+import { IGamesRepository } from '@shared/domain/repositories';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';

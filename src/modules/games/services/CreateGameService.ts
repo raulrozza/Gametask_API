@@ -1,12 +1,14 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import { IGamesRepository } from '@modules/games/domain/repositories';
+import {
+  IGamesRepository,
+  ILeaderboardsRepository,
+} from '@shared/domain/repositories';
 import ICreateGameDTO from '@modules/games/domain/dtos/ICreateGameDTO';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import { IGame } from '@shared/domain/entities';
 import CreateLeaderboardAdapter from '@shared/domain/adapters/CreateLeaderboard';
-import { ILeaderboardsRepository } from '@shared/domain/repositories';
 
 @injectable()
 export default class CreateGameService {

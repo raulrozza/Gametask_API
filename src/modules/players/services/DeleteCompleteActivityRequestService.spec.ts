@@ -1,11 +1,15 @@
 import { v4 as uuid } from 'uuid';
 
-import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
+import { FakeGamesRepository } from '@shared/domain/repositories/fakes';
 import FakeCompleteActivityRequestRepository from '@modules/players/domain/repositories/fakes/FakeCompleteActivityRequestRepository';
 import DeleteCompleteActivityRequestService from './DeleteCompleteActivityRequestService';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
-import { FakeGame } from '@shared/domain/entities/fakes';
+import {
+  FakeActivity,
+  FakeGame,
+  FakeUser,
+} from '@shared/domain/entities/fakes';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import { FakeCompleteActivityRequest } from '@modules/players/domain/entities/fakes';
 import CreateCompleteActivityRequestAdapter from '@modules/players/domain/adapters/CreateCompleteActivityRequest';
@@ -30,19 +34,19 @@ describe('DeleteCompleteActivityRequest', () => {
       }),
     );
 
-    const requesterId = uuid();
-    const activityId = uuid();
+    const requester = new FakeUser();
+    const activity = new FakeActivity();
 
     const fakeActivityRequest = new FakeCompleteActivityRequest({
-      requester: requesterId,
-      activity: activityId,
+      requester: requester.id,
+      activity: activity.id,
       game: game.id,
     });
     const request = await completeActivityRequestRepository.create(
       new CreateCompleteActivityRequestAdapter({
         ...fakeActivityRequest,
-        requester: requesterId,
-        activity: activityId,
+        requester: requester.id,
+        activity: activity.id,
       }),
     );
 

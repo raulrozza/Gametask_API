@@ -1,23 +1,28 @@
 import { RequestError } from '@shared/infra/errors';
-import { v4 as uuid } from 'uuid';
 
-import FakeGame from '../fakes/FakeGame';
-import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
+import { FakeGamesRepository } from '@shared/domain/repositories/fakes';
 import UpdateGameService from './UpdateGameService';
+import { FakeGame, FakeUser } from '@shared/domain/entities/fakes';
+import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 
 describe('UpdateGameService', () => {
   it('should update the game correctly', async () => {
     const gamesRepository = new FakeGamesRepository();
     const updateGame = new UpdateGameService(gamesRepository);
 
-    const adminId = uuid();
+    const admin = new FakeUser();
     const fakeGame = new FakeGame();
-    fakeGame.administrators = [adminId];
 
-    const game = await gamesRepository.create(fakeGame);
+    const game = await gamesRepository.create(
+      new CreateGameAdapter({
+        creatorId: admin.id,
+        name: fakeGame.name,
+        description: fakeGame.description,
+      }),
+    );
 
     const updatedGame = await updateGame.execute({
-      adminId,
+      adminId: admin.id,
       id: game.id,
       name: 'New name',
       description: 'New description',
@@ -33,12 +38,12 @@ describe('UpdateGameService', () => {
     const gamesRepository = new FakeGamesRepository();
     const updateGame = new UpdateGameService(gamesRepository);
 
-    const adminId = uuid();
+    const admin = new FakeUser();
     const fakeGame = new FakeGame();
 
     await expect(
       updateGame.execute({
-        adminId,
+        adminId: admin.id,
         ...fakeGame,
         id: 'invalid id',
       }),

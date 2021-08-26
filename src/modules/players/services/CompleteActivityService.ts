@@ -7,11 +7,12 @@ import {
   IPlayersRepository,
 } from '@modules/players/domain/repositories';
 
-import { IGamesRepository } from '@modules/games/domain/repositories';
 import {
+  IGamesRepository,
   IActivitiesRepository,
   ILeaderboardsRepository,
 } from '@shared/domain/repositories';
+
 import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
 import ICompleteActivityDTO from '@modules/players/domain/dtos/ICompleteActivityDTO';
 import { RequestError } from '@shared/infra/errors';

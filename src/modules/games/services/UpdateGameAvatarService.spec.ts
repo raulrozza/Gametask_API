@@ -1,8 +1,9 @@
 import FakeStorageProvider from '@shared/domain/providers/fakes/FakeStorageProvider';
 import { RequestError } from '@shared/infra/errors';
-import FakeGame from '../fakes/FakeGame';
-import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
+import { FakeGamesRepository } from '@shared/domain/repositories/fakes';
 import UpdateGameAvatarService from './UpdateGameAvatarService';
+import { FakeGame, FakeUser } from '@shared/domain/entities/fakes';
+import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 
 const getService = () => {
   const gamesRepository = new FakeGamesRepository();
@@ -20,10 +21,16 @@ describe('UpdateGameAvatar', () => {
   it('should upload the game avatar', async () => {
     const { updateGameAvatar, gamesRepository } = getService();
 
+    const fakeUser = new FakeUser();
     const fakeGame = new FakeGame();
-    fakeGame.administrators = ['fake_id'];
 
-    const game = await gamesRepository.create(fakeGame);
+    const game = await gamesRepository.create(
+      new CreateGameAdapter({
+        creatorId: fakeUser.id,
+        name: fakeGame.name,
+        description: fakeGame.description,
+      }),
+    );
     const filename = 'avatar.jpg';
 
     const updatedGame = await updateGameAvatar.execute({
@@ -40,9 +47,15 @@ describe('UpdateGameAvatar', () => {
     const deleteFile = jest.spyOn(storageProvider, 'deleteFile');
 
     const fakeGame = new FakeGame();
-    fakeGame.administrators = ['fake_id'];
+    const fakeUser = new FakeUser();
 
-    const game = await gamesRepository.create(fakeGame);
+    const game = await gamesRepository.create(
+      new CreateGameAdapter({
+        creatorId: fakeUser.id,
+        name: fakeGame.name,
+        description: fakeGame.description,
+      }),
+    );
     const filename = 'avatar.jpg';
 
     await updateGameAvatar.execute({

@@ -7,7 +7,7 @@ import IStorageProvider from '@shared/domain/providers/IStorageProvider';
 import { RequestError } from '@shared/infra/errors';
 
 import IUpdateGameAvatarDTO from '@modules/games/domain/dtos/IUpdateGameAvatarDTO';
-import { IGamesRepository } from '@modules/games/domain/repositories';
+import { IGamesRepository } from '@shared/domain/repositories';
 
 const GAME_FOLDER = 'game';
 

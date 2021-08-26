@@ -31,7 +31,7 @@ export default class FakeActivity implements IActivity {
     dmRules = { value: faker.lorem.sentence() },
     experience = faker.random.number(1000),
     game = uuid(),
-  }: IConstructor) {
+  }: IConstructor = {}) {
     this.id = id;
     this.name = name;
     this.experience = experience;

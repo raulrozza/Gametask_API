@@ -4,10 +4,8 @@ import { inject, injectable } from 'tsyringe';
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
-import {
-  IAchievementsRepository,
-  IGamesRepository,
-} from '@modules/games/domain/repositories';
+import { IGamesRepository } from '@shared/domain/repositories';
+import { IAchievementsRepository } from '@modules/games/domain/repositories';
 import ICreateUnlockAchievementRequestDTO from '@modules/players/domain/dtos/ICreateUnlockAchievementRequestDTO';
 import {
   IUnlockAchievementRequestRepository,

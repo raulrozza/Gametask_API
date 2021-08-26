@@ -1,10 +1,10 @@
-import { IGamesRepository } from '@modules/games/domain/repositories';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import { FakeGame, FakeUser } from '@shared/domain/entities/fakes';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import UpdateGameAdapter from '@modules/games/domain/adapters/UpdateGameAdapter';
 import { IGame } from '@shared/domain/entities';
+import { IGamesRepository } from '@shared/domain/repositories';
 
 export default class FakeGamesRepository implements IGamesRepository {
   private readonly games: IGame[] = [];

@@ -1,7 +1,7 @@
-import { IRank, IUser } from '@shared/domain/entities';
+import { IRank } from '@shared/domain/entities';
 import { FakeGame, FakeUser } from '@shared/domain/entities/fakes';
 import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
-import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
+import { FakeGamesRepository } from '@shared/domain/repositories/fakes';
 import { CreatePlayerService } from '.';
 import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import { RequestError } from '@shared/infra/errors';
@@ -18,9 +18,14 @@ const initService = async (addRanks: boolean | IRank[] = false) => {
     usersRepository,
   );
 
-  const { id: _, ...fakeUser } = new FakeUser();
-  const user = await usersRepository.create(fakeUser as IUser);
-  const { id: __, ...fakeGame } = new FakeGame();
+  const fakeUser = new FakeUser();
+  const user = await usersRepository.create({
+    email: fakeUser.email,
+    firstname: fakeUser.firstname,
+    lastname: fakeUser.lastname,
+    password: fakeUser.password,
+  });
+  const fakeGame = new FakeGame();
   if (addRanks) {
     fakeGame.levelInfo = [
       {
