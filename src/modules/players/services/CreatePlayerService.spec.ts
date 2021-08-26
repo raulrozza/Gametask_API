@@ -3,7 +3,7 @@ import { FakeGame, FakeUser } from '@shared/domain/entities/fakes';
 import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import { CreatePlayerService } from '.';
-import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
+import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import { RequestError } from '@shared/infra/errors';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 

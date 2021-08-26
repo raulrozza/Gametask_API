@@ -1,13 +1,11 @@
 import { v4 as uuid } from 'uuid';
 
 import FakeTitlesRepository from '@modules/games/domain/repositories/fakes/FakeTitlesRepository';
-import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
 import ChangeTitleService from './ChangeTitleService';
-import { IPlayer } from '@modules/players/domain/entities';
 import { RequestError } from '@shared/infra/errors';
-import { ITitle } from '@shared/domain/entities';
-import { FakeTitle } from '@shared/domain/entities/fakes';
-import { FakePlayer } from '@modules/players/domain/entities/fakes';
+import { FakeGame, FakeTitle } from '@shared/domain/entities/fakes';
+import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
+import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
 
 const initService = async () => {
   const titlesRepository = new FakeTitlesRepository();
@@ -18,21 +16,24 @@ const initService = async () => {
   );
 
   const userId = uuid();
-  const gameId = uuid();
-  const { id: _, ...fakeTitle } = new FakeTitle({ game: gameId });
-  const { id: __, ...fakePlayer } = new FakePlayer({
-    user: userId,
-    game: gameId,
-  });
+  const game = new FakeGame();
+  const fakeTitle = new FakeTitle({ game: game.id });
 
-  const title = await titlesRepository.create(fakeTitle as ITitle);
-  const player = await playersRepository.create(fakePlayer as IPlayer);
+  const title = await titlesRepository.create(fakeTitle);
+  const player = await playersRepository.create(
+    new CreatePlayerAdapter({
+      userId,
+      gameId: game.id,
+      gameLevels: game.levelInfo,
+      gameRanks: game.ranks,
+    }),
+  );
 
   return {
     changeTitle,
     title,
     player,
-    gameId,
+    gameId: game.id,
     userId,
   };
 };

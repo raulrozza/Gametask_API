@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
-import { IPlayersRepository } from '@modules/players/repositories';
+import { IPlayersRepository } from '@modules/players/domain/repositories';
 import IShowPlayerDTO from '@modules/players/domain/dtos/IShowPlayerDTO';
 import { IPlayer } from '@modules/players/domain/entities';
 
@@ -16,6 +16,6 @@ export default class ShowPlayerService {
     userId,
     gameId,
   }: IShowPlayerDTO): Promise<IPlayer | undefined> {
-    return await this.playersRepository.findOne(id, userId, gameId);
+    return this.playersRepository.findOne({ id, userId, gameId });
   }
 }

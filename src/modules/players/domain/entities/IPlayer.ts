@@ -1,4 +1,10 @@
-import { IAchievement, IRank, ITitle, IUser } from '@shared/domain/entities';
+import {
+  IAchievement,
+  IGame,
+  IRank,
+  ITitle,
+  IUser,
+} from '@shared/domain/entities';
 
 export default interface IPlayer {
   id: string;
@@ -9,5 +15,5 @@ export default interface IPlayer {
   rank?: IRank;
   achievements: IAchievement[];
   user: IUser;
-  game: string;
+  game: IGame;
 }

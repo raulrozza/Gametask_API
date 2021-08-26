@@ -2,17 +2,18 @@ import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 import {
   IFeedPostsRepository,
-  IPlayersRepository,
   IUnlockAchievementRequestRepository,
 } from '@modules/players/repositories';
+import { IPlayersRepository } from '@modules/players/domain/repositories';
 import {
   IAchievementsRepository,
   IGamesRepository,
 } from '@modules/games/domain/repositories';
-import IUnlockAchievementDTO from '../dtos/IUnlockAchievementDTO';
 import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
+import IUnlockAchievementDTO from '@modules/players/domain/dtos/IUnlockAchievementDTO';
+import AddAchievementToPlayerAdapter from '@modules/players/domain/adapters/AddAchievementToPlayer';
 
 interface IValidateInput {
   userId: string;
@@ -68,10 +69,12 @@ export default class UnlockAchievementService {
     });
 
     await this.transactionProvider.startSession(async session => {
-      await this.playersRepository.unlockAchievement(
-        playerId,
-        achievementId,
-        achievementTitle,
+      await this.playersRepository.addAchievement(
+        new AddAchievementToPlayerAdapter({
+          id: playerId,
+          achievement: achievementId,
+          title: achievementTitle,
+        }),
         session,
       );
 
@@ -98,11 +101,11 @@ export default class UnlockAchievementService {
     playerId,
     gameId,
   }: IValidateInput): Promise<void> {
-    const player = await this.playersRepository.findOne(
-      playerId,
+    const player = await this.playersRepository.findOne({
+      id: playerId,
       userId,
       gameId,
-    );
+    });
     if (!player)
       throw new RequestError(
         'This player does not exist',

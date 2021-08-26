@@ -5,10 +5,8 @@ import {
   IActivitiesRepository,
   IGamesRepository,
 } from '@modules/games/domain/repositories';
-import {
-  ICompleteActivityRequestRepository,
-  IPlayersRepository,
-} from '@modules/players/repositories';
+import { ICompleteActivityRequestRepository } from '@modules/players/repositories';
+import { IPlayersRepository } from '@modules/players/domain/repositories';
 import { ICompleteActivityRequest } from '@modules/players/domain/entities';
 import ICreateCompleteActivityRequestDTO from '@modules/players/domain/dtos/ICreateCompleteActivityRequestDTO';
 import { RequestError } from '@shared/infra/errors';
@@ -94,11 +92,11 @@ export default class CreateCompleteActivityRequestService {
         errorCodes.BAD_REQUEST_ERROR,
       );
 
-    const player = await this.playersRepository.findOne(
-      requester,
+    const player = await this.playersRepository.findOne({
+      id: requester,
       userId,
       gameId,
-    );
+    });
     if (!player)
       throw new RequestError(
         'This player does not exist',

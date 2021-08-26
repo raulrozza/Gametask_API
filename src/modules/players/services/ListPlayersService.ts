@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import { IPlayersRepository } from '@modules/players/repositories';
+import { IPlayersRepository } from '@modules/players/domain/repositories';
 import { IPlayer } from '@modules/players/domain/entities';
 
 @injectable()

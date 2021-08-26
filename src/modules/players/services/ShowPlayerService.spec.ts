@@ -1,9 +1,9 @@
 import { v4 as uuid } from 'uuid';
 
-import { IPlayer } from '@modules/players/domain/entities';
-import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
+import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import ShowPlayerService from './ShowPlayerService';
-import { FakePlayer } from '@modules/players/domain/entities/fakes';
+import { FakeGame } from '@shared/domain/entities/fakes';
+import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
 
 describe('ShowPlayerService', () => {
   it('should return the players information', async () => {
@@ -11,14 +11,20 @@ describe('ShowPlayerService', () => {
     const showPlayer = new ShowPlayerService(playersRepository);
 
     const userId = uuid();
-    const gameId = uuid();
-    const fakePlayer = new FakePlayer({ user: userId, game: gameId });
-    const createdPlayer = await playersRepository.create(fakePlayer as IPlayer);
+    const game = new FakeGame();
+    const createdPlayer = await playersRepository.create(
+      new CreatePlayerAdapter({
+        userId,
+        gameId: game.id,
+        gameRanks: game.ranks,
+        gameLevels: game.levelInfo,
+      }),
+    );
 
     const player = await showPlayer.execute({
       id: createdPlayer.id,
       userId,
-      gameId,
+      gameId: game.id,
     });
 
     expect(player).toBe(createdPlayer);

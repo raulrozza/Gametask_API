@@ -9,10 +9,8 @@ import {
   IGamesRepository,
 } from '@modules/games/domain/repositories';
 import ICreateUnlockAchievementRequestDTO from '@modules/players/domain/dtos/ICreateUnlockAchievementRequestDTO';
-import {
-  IPlayersRepository,
-  IUnlockAchievementRequestRepository,
-} from '@modules/players/repositories';
+import { IUnlockAchievementRequestRepository } from '@modules/players/repositories';
+import { IPlayersRepository } from '@modules/players/domain/repositories';
 import { IUnlockAchievementRequest } from '@modules/players/domain/entities';
 
 interface ValidadeInputParams {
@@ -90,11 +88,11 @@ export default class CreateUnlockAchievementRequestService {
         404,
       );
 
-    const player = await this.playersRepository.findOne(
-      requester,
+    const player = await this.playersRepository.findOne({
+      id: requester,
       userId,
       gameId,
-    );
+    });
     if (!player)
       throw new RequestError(
         'This player does not exist',

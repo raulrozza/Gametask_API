@@ -5,18 +5,16 @@ import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGa
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCompleteActivityRequestRepository';
 import FakeFeedPostsRepository from '../repositories/fakes/FakeFeedPostsRepository';
-import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
+import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import CompleteActivityService from './CompleteActivityService';
 import { RequestError } from '@shared/infra/errors';
-import {
-  FakeCompleteActivityRequest,
-  FakePlayer,
-} from '@modules/players/domain/entities/fakes';
+import { FakeCompleteActivityRequest } from '@modules/players/domain/entities/fakes';
 import { FakeActivity, FakeGame } from '@shared/domain/entities/fakes';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
 import { IPosition } from '@shared/domain/entities/ILeaderboard';
 import { FakeLeaderboardsRepository } from '@shared/domain/repositories/fakes';
+import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
 
 const initService = async () => {
   const playersRepository = new FakePlayersRepository();
@@ -80,10 +78,14 @@ const initService = async () => {
   });
   const game = await gamesRepository.create(createGame);
 
-  const fakePlayer = new FakePlayer({ user: userId, game: game.id });
-  fakePlayer.experience = 0;
-  fakePlayer.level = 1;
-  const player = await playersRepository.create(fakePlayer);
+  const player = await playersRepository.create(
+    new CreatePlayerAdapter({
+      userId,
+      gameId: game.id,
+      gameRanks: game.ranks,
+      gameLevels: game.levelInfo,
+    }),
+  );
 
   return {
     userId,
@@ -129,11 +131,11 @@ describe('CompleteActivityService', () => {
 
     await completeActivity.execute({ requestId: request.id, userId });
 
-    const updatedPlayer = await playersRepository.findOne(
-      player.id,
+    const updatedPlayer = await playersRepository.findOne({
+      id: player.id,
       userId,
-      game.id,
-    );
+      gameId: game.id,
+    });
 
     expect(updatedPlayer?.experience).toBe(activity.experience);
 
@@ -144,7 +146,7 @@ describe('CompleteActivityService', () => {
     expect(leaderboard?.position).toHaveLength(1);
     expect(leaderboard?.position).toContainEqual<IPosition>({
       experience: activity.experience,
-      player: player.id,
+      player: player,
     });
 
     const deletedRequest = await completeActivityRequestRepository.findOne(
@@ -191,11 +193,11 @@ describe('CompleteActivityService', () => {
     await completeActivity.execute({ requestId: firstRequest.id, userId });
     await completeActivity.execute({ requestId: secondRequest.id, userId });
 
-    const updatedPlayer = await playersRepository.findOne(
-      player.id,
+    const updatedPlayer = await playersRepository.findOne({
+      id: player.id,
       userId,
-      game.id,
-    );
+      gameId: game.id,
+    });
 
     expect(updatedPlayer?.experience).toBe(activity.experience * 2);
     expect(updatedPlayer?.level).toBe(game.levelInfo[0].level);
@@ -208,7 +210,7 @@ describe('CompleteActivityService', () => {
     expect(leaderboard?.position).toHaveLength(1);
     expect(leaderboard?.position).toContainEqual<IPosition>({
       experience: activity.experience * 2,
-      player: player.id,
+      player: player,
     });
   });
 

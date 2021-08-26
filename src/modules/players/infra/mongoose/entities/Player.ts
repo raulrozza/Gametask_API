@@ -5,13 +5,15 @@ import { IAchievementDocument } from '@modules/games/infra/mongoose/entities/Ach
 import { IUserDocument } from '@shared/infra/mongoose/entities/User';
 import { ITitleDocument } from '@shared/infra/mongoose/entities/Title';
 import RankSchema from '@shared/infra/mongoose/entities/Rank';
+import { IGameDocument } from '@shared/infra/mongoose/entities/Game';
 
-export interface IPlayerDocument extends Omit<IPlayer, 'id'>, Document {
+export interface IPlayerDocument extends IPlayer, Document {
   id: NonNullable<Document['id']>;
   titles: Types.Array<ITitleDocument['_id']>;
   currentTitle?: ITitleDocument['_id'];
   achievements: Types.Array<IAchievementDocument['_id']>;
   user: IUserDocument['_id'];
+  game: IGameDocument['_id'];
 }
 
 const PlayerSchema = new Schema(

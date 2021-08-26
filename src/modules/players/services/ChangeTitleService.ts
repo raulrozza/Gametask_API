@@ -5,8 +5,9 @@ import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 import { IPlayer } from '@modules/players/domain/entities';
 import IChangeTitleDTO from '@modules/players/domain/dtos/IChangeTitleDTO';
-import { IPlayersRepository } from '@modules/players/repositories';
+import { IPlayersRepository } from '@modules/players/domain/repositories';
 import { ITitlesRepository } from '@modules/games/domain/repositories';
+import UpdatePlayerAdapter from '@modules/players/domain/adapters/UpdatePlayer';
 
 @injectable()
 export default class ChangeTitleService {
@@ -35,11 +36,11 @@ export default class ChangeTitleService {
         );
     }
 
-    const player = await this.playersRepository.findOne(
-      playerId,
-      userId,
+    const player = await this.playersRepository.findOne({
+      id: playerId,
       gameId,
-    );
+      userId,
+    });
     if (!player)
       throw new RequestError(
         'This player does not exists',
@@ -47,17 +48,23 @@ export default class ChangeTitleService {
         404,
       );
 
-    const updatedPlayer = await this.playersRepository.update({
-      id: player.id,
-      achievements: player.achievements,
-      experience: player.experience,
-      game: player.game,
-      level: player.level,
-      titles: player.titles,
-      user: player.user,
-      rank: player.rank,
-      currentTitle: titleId,
-    });
+    const playerHasTitle = player.titles.find(title => title.id === titleId);
+    if (!playerHasTitle)
+      throw new RequestError(
+        'You dont have that title',
+        errorCodes.BAD_REQUEST_ERROR,
+        400,
+      );
+
+    const updatedPlayer = await this.playersRepository.update(
+      new UpdatePlayerAdapter({
+        id: player.id,
+        experience: player.experience,
+        level: player.level,
+        rank: player.rank,
+        currentTitle: titleId,
+      }),
+    );
 
     return updatedPlayer;
   }

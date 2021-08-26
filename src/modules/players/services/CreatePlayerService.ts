@@ -6,10 +6,10 @@ import { RequestError } from '@shared/infra/errors';
 
 import { IGamesRepository } from '@modules/games/domain/repositories';
 import { IUsersRepository } from '@modules/users/domain/repositories';
-import { IPlayersRepository } from '@modules/players/repositories';
+import { IPlayersRepository } from '@modules/players/domain/repositories';
 import { IPlayer } from '@modules/players/domain/entities';
 import ICreatePlayerDTO from '@modules/players/domain/dtos/ICreatePlayerDTO';
-import { IGame, ILevelInfo, IRank } from '@shared/domain/entities';
+import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
 
 @injectable()
 export default class CreatePlayerService {
@@ -36,10 +36,10 @@ export default class CreatePlayerService {
         errorCodes.BAD_REQUEST_ERROR,
       );
 
-    const playerAlreadyExists = await this.playersRepository.isThereAPlayerAssociatedWith(
+    const playerAlreadyExists = await this.playersRepository.findOne({
       userId,
       gameId,
-    );
+    });
 
     if (playerAlreadyExists)
       throw new RequestError(
@@ -47,54 +47,15 @@ export default class CreatePlayerService {
         errorCodes.PLAYER_ALREADY_EXISTS,
       );
 
-    const [initialRank, initialLevel] = await this.getInitialRankAndLevel(game);
-
-    const player = await this.playersRepository.create({
-      experience: 0,
-      level: initialLevel,
-      rank: initialRank,
-      achievements: [],
-      game: gameId,
-      user: userId,
-      titles: [],
-    });
-
-    return player;
-  }
-
-  private async getInitialRankAndLevel(
-    game: IGame,
-  ): Promise<[IRank | undefined, number]> {
-    const initialLevel = await this.getInitialLevel(game.levelInfo);
-    const initialRank = await this.getInitialRank(game.ranks, initialLevel);
-
-    return [initialRank, initialLevel];
-  }
-
-  private async getInitialLevel(levelInfo: ILevelInfo[]): Promise<number> {
-    const sortedLevels = levelInfo.sort(
-      (a, b) => a.requiredExperience - b.requiredExperience,
+    const player = await this.playersRepository.create(
+      new CreatePlayerAdapter({
+        gameId,
+        userId,
+        gameRanks: game.ranks,
+        gameLevels: game.levelInfo,
+      }),
     );
 
-    const firstLevel = sortedLevels[0];
-
-    if (!firstLevel) return 0;
-
-    return firstLevel.level;
-  }
-
-  private async getInitialRank(
-    ranks: IRank[],
-    initialLevel: number,
-  ): Promise<IRank | undefined> {
-    if (!ranks.length) return;
-
-    const sortedRanks = ranks.sort((a, b) => a.level - b.level);
-
-    for (let i = 0; i < sortedRanks.length; i++) {
-      const actualRank = sortedRanks[i];
-
-      if (actualRank.level <= initialLevel) return actualRank;
-    }
+    return player;
   }
 }

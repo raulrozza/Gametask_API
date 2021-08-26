@@ -9,9 +9,9 @@ import {
 import {
   ICompleteActivityRequestRepository,
   IFeedPostsRepository,
-  IPlayersRepository,
   IUnlockAchievementRequestRepository,
 } from '@modules/players/repositories';
+import { IPlayersRepository } from '@modules/players/domain/repositories';
 
 container.registerSingleton<IFeedPostsRepository>(
   'FeedPostsRepository',

@@ -4,8 +4,8 @@ import { inject, injectable } from 'tsyringe';
 import {
   ICompleteActivityRequestRepository,
   IFeedPostsRepository,
-  IPlayersRepository,
 } from '@modules/players/repositories';
+import { IPlayersRepository } from '@modules/players/domain/repositories';
 import {
   IActivitiesRepository,
   IGamesRepository,
@@ -19,6 +19,7 @@ import { IGame, ILevelInfo, IRank } from '@shared/domain/entities';
 import { ILeaderboardsRepository } from '@shared/domain/repositories';
 import CreateLeaderboardAdapter from '@shared/domain/adapters/CreateLeaderboard';
 import UpdatePositionAdapter from '@shared/domain/adapters/UpdatePositionAdapter';
+import UpdatePlayerAdapter from '@modules/players/domain/adapters/UpdatePlayer';
 
 interface IAddCompletionToActivityHistory {
   userId: string;
@@ -203,7 +204,7 @@ export default class CompleteActivityService {
     session: object,
   ): Promise<void> {
     const [player, game] = await Promise.all([
-      this.playersRepository.findById(playerId) as Promise<IPlayer>,
+      this.playersRepository.findOne({ id: playerId }) as Promise<IPlayer>,
       this.gamesRepository.findOne(gameId) as Promise<IGame>,
     ]);
 
@@ -215,7 +216,7 @@ export default class CompleteActivityService {
     );
 
     if (!playerNextLevel || playerNextLevel.level <= player.level)
-      return await this.updatePlayer(player, session);
+      return this.updatePlayer(player, session);
 
     player.level = playerNextLevel.level;
     await this.postNewLevel(
@@ -229,7 +230,7 @@ export default class CompleteActivityService {
       await this.postNewRank({ playerId, rank: newRank, gameId }, session);
     }
 
-    return await this.updatePlayer(player, session);
+    return this.updatePlayer(player, session);
   }
 
   private getNextLevel(
@@ -291,16 +292,13 @@ export default class CompleteActivityService {
 
   private async updatePlayer(player: IPlayer, session: object): Promise<void> {
     await this.playersRepository.update(
-      {
+      new UpdatePlayerAdapter({
         id: player.id,
-        achievements: player.achievements,
-        experience: player.experience,
-        game: player.game,
-        level: player.level,
-        titles: player.titles,
-        user: player.user,
+        currentTitle: player.currentTitle?.id,
         rank: player.rank,
-      },
+        experience: player.experience,
+        level: player.level,
+      }),
       session,
     );
   }

@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import FakeAchievementsRepository from '@modules/games/domain/repositories/fakes/FakeAchievementsRepository';
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import FakeFeedPostsRepository from '../repositories/fakes/FakeFeedPostsRepository';
-import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
+import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import FakeUnlockAchievementRequestRepository from '../repositories/fakes/FakeUnlockAchievementRequestRepository';
 import UnlockAchievementService from './UnlockAchievementService';
 import {
@@ -15,10 +15,8 @@ import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransact
 import { ITitle } from '@shared/domain/entities';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import { FakeAchievement, FakeGame } from '@shared/domain/entities/fakes';
-import {
-  FakePlayer,
-  FakeUnlockAchievementRequest,
-} from '@modules/players/domain/entities/fakes';
+import { FakeUnlockAchievementRequest } from '@modules/players/domain/entities/fakes';
+import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
 
 const initService = async (title?: ITitle) => {
   const playersRepository = new FakePlayersRepository();
@@ -58,11 +56,14 @@ const initService = async (title?: ITitle) => {
     gameId: fakeAchievement.game.id,
   });
 
-  const { id: ___, ...fakePlayer } = new FakePlayer({
-    user: userId,
-    game: game.id,
-  });
-  const player = await playersRepository.create(fakePlayer as IPlayer);
+  const player = await playersRepository.create(
+    new CreatePlayerAdapter({
+      gameId: game.id,
+      userId,
+      gameLevels: game.levelInfo,
+      gameRanks: game.ranks,
+    }),
+  );
 
   const { id: ____, ...fakeRequest } = new FakeUnlockAchievementRequest({
     game: game.id,
@@ -106,11 +107,11 @@ describe('UnlockAchievementService', () => {
       userId: userId,
     });
 
-    const updatedPlayer = (await playersRepository.findOne(
-      player.id,
+    const updatedPlayer = (await playersRepository.findOne({
+      id: player.id,
       userId,
-      game.id,
-    )) as IPlayer;
+      gameId: game.id,
+    })) as IPlayer;
 
     expect(updatedPlayer.achievements).toContain(achievement.id);
 
