@@ -1,8 +1,17 @@
-import { IAchievementDocument } from '@modules/games/infra/mongoose/entities/Achievement';
 import { IGameDocument } from '@shared/infra/mongoose/entities/Game';
 import { IUnlockAchievementRequest } from '@modules/players/domain/entities';
 import { IUserDocument } from '@shared/infra/mongoose/entities/User';
 import { Schema, model, Document } from 'mongoose';
+import { IAchievementDocument } from '@shared/infra/mongoose/entities/Achievement';
+
+export interface IUnlockAchievementRequestDocument
+  extends IUnlockAchievementRequest,
+    Document {
+  id: NonNullable<Document['id']>;
+  requester: IUserDocument['_id'];
+  achievement: IAchievementDocument['_id'];
+  game: IGameDocument['_id'];
+}
 
 const UnlockAchievementRequestSchema = new Schema(
   {
@@ -32,26 +41,6 @@ const UnlockAchievementRequestSchema = new Schema(
   },
   { toJSON: { virtuals: true } },
 );
-
-interface IUnlockAchievementRequestBaseDocument
-  extends IUnlockAchievementRequest,
-    Document {
-  id: NonNullable<Document['id']>;
-}
-
-export interface IUnlockAchievementRequestDocument
-  extends IUnlockAchievementRequestBaseDocument {
-  requester: IUserDocument['_id'];
-  achievement: IAchievementDocument['_id'];
-  game: IGameDocument['_id'];
-}
-
-export interface IUnlockAchievementRequestPopulatedDocument
-  extends IUnlockAchievementRequestBaseDocument {
-  requester: IUserDocument;
-  achievement: IAchievementDocument;
-  game: IGameDocument;
-}
 
 export default model<IUnlockAchievementRequestDocument>(
   'UnlockAchievementRequest',

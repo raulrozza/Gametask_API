@@ -3,10 +3,10 @@ import { isValidObjectId } from 'mongoose';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import { IAchievementsRepository } from '@modules/games/domain/repositories';
-import Achievement from '@modules/games/infra/mongoose/entities/Achievement';
 import ICreateAchievementDTO from '@modules/games/domain/dtos/ICreateAchievementDTO';
 import IUpdateAchievementDTO from '@modules/games/domain/dtos/IUpdateAchievementDTO';
 import { IAchievement } from '@shared/domain/entities';
+import Achievement from '@shared/infra/mongoose/entities/Achievement';
 
 export default class AchievementsRepository implements IAchievementsRepository {
   public async findAllFromGame(gameId: string): Promise<IAchievement[]> {
