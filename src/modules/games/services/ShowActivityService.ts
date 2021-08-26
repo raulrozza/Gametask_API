@@ -2,7 +2,7 @@ import 'reflect-metadata';
 
 import { inject, injectable } from 'tsyringe';
 
-import { IActivitiesRepository } from '@modules/games/domain/repositories';
+import { IActivitiesRepository } from '@shared/domain/repositories';
 import ISelectActivityDTO from '@modules/games/domain/dtos/ISelectActivityDTO';
 
 @injectable()

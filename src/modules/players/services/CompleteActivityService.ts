@@ -7,17 +7,18 @@ import {
   IPlayersRepository,
 } from '@modules/players/domain/repositories';
 
+import { IGamesRepository } from '@modules/games/domain/repositories';
 import {
   IActivitiesRepository,
-  IGamesRepository,
-} from '@modules/games/domain/repositories';
+  ILeaderboardsRepository,
+} from '@shared/domain/repositories';
 import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
 import ICompleteActivityDTO from '@modules/players/domain/dtos/ICompleteActivityDTO';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import { IPlayer } from '@modules/players/domain/entities';
 import { IGame, ILevelInfo, IRank } from '@shared/domain/entities';
-import { ILeaderboardsRepository } from '@shared/domain/repositories';
+
 import CreateLeaderboardAdapter from '@shared/domain/adapters/CreateLeaderboard';
 import UpdatePositionAdapter from '@shared/domain/adapters/UpdatePositionAdapter';
 import UpdatePlayerAdapter from '@modules/players/domain/adapters/UpdatePlayer';

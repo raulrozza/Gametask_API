@@ -1,19 +1,17 @@
-import { v4 as uuid } from 'uuid';
-
-import FakeActivity from '../fakes/FakeActivity';
-import FakeActivitiesRepository from '@modules/games/domain/repositories/fakes/FakeActivitiesRepository';
+import { FakeActivitiesRepository } from '@shared/domain/repositories/fakes';
 import CreateActivityService from './CreateActivityService';
+import { FakeActivity, FakeGame } from '@shared/domain/entities/fakes';
 
 describe('CreateActivityService', () => {
   it('should create the activity', async () => {
     const activitiesRepository = new FakeActivitiesRepository();
     const createActivity = new CreateActivityService(activitiesRepository);
 
-    const gameId = uuid();
-    const fakeActivity = new FakeActivity(gameId);
+    const game = new FakeGame();
+    const fakeActivity = new FakeActivity({ game: game.id });
 
     const payload = {
-      gameId,
+      gameId: game.id,
       name: fakeActivity.name,
       description: fakeActivity.description,
       experience: fakeActivity.experience,

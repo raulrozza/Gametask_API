@@ -2,7 +2,7 @@ import { ClientSession, isValidObjectId } from 'mongoose';
 
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
-import { IActivitiesRepository } from '@modules/games/domain/repositories';
+import { IActivitiesRepository } from '@shared/domain/repositories';
 import UpdateActivityAdapter from '@modules/games/domain/adapters/UpdateActivity';
 import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
 import { IActivity, IHistory } from '@shared/domain/entities';

@@ -1,21 +1,19 @@
-import { v4 as uuid } from 'uuid';
-
-import FakeActivitiesRepository from '@modules/games/domain/repositories/fakes/FakeActivitiesRepository';
+import { FakeActivitiesRepository } from '@shared/domain/repositories/fakes';
 import ShowActivityService from './ShowActivityService';
 import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
-import { FakeActivity } from '@shared/domain/entities/fakes';
+import { FakeActivity, FakeGame } from '@shared/domain/entities/fakes';
 
 describe('ShowActivityService', () => {
   it('should return the correct activity', async () => {
     const activitiesRepository = new FakeActivitiesRepository();
     const showActivity = new ShowActivityService(activitiesRepository);
 
-    const gameId = uuid();
-    const fakeActivity = new FakeActivity({ game: gameId });
+    const game = new FakeGame();
+    const fakeActivity = new FakeActivity({ game: game.id });
 
     const activity = await activitiesRepository.create(
       new CreateActivityAdapter({
-        gameId,
+        gameId: game.id,
         name: fakeActivity.name,
         description: fakeActivity.description,
         experience: fakeActivity.experience,
@@ -24,7 +22,7 @@ describe('ShowActivityService', () => {
 
     const fetchedActivity = await showActivity.execute({
       activityId: activity.id,
-      gameId,
+      gameId: game.id,
     });
 
     expect(fetchedActivity).toEqual(activity);
@@ -34,8 +32,8 @@ describe('ShowActivityService', () => {
     const activitiesRepository = new FakeActivitiesRepository();
     const showActivity = new ShowActivityService(activitiesRepository);
 
-    const gameId = uuid();
-    const fakeActivity = new FakeActivity({ game: gameId });
+    const game = new FakeGame();
+    const fakeActivity = new FakeActivity({ game: game.id });
 
     const activity = await activitiesRepository.create(
       new CreateActivityAdapter({
@@ -48,7 +46,7 @@ describe('ShowActivityService', () => {
 
     const fetchedActivity = await showActivity.execute({
       activityId: activity.id,
-      gameId,
+      gameId: game.id,
     });
 
     expect(fetchedActivity).toBeUndefined();

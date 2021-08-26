@@ -1,6 +1,9 @@
 import { v4 as uuid } from 'uuid';
 
-import FakeActivitiesRepository from '@modules/games/domain/repositories/fakes/FakeActivitiesRepository';
+import {
+  FakeActivitiesRepository,
+  FakeLeaderboardsRepository,
+} from '@shared/domain/repositories/fakes';
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
 import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
@@ -11,7 +14,7 @@ import { FakeActivity, FakeGame } from '@shared/domain/entities/fakes';
 import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
 import { IPosition } from '@shared/domain/entities/ILeaderboard';
-import { FakeLeaderboardsRepository } from '@shared/domain/repositories/fakes';
+
 import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
 import FakeCompleteActivityRequestRepository from '@modules/players/domain/repositories/fakes/FakeCompleteActivityRequestRepository';
 import CreateCompleteActivityRequestAdapter from '@modules/players/domain/adapters/CreateCompleteActivityRequest';

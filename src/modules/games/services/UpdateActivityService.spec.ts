@@ -1,24 +1,36 @@
 import { RequestError } from '@shared/infra/errors';
-import { v4 as uuid } from 'uuid';
 
-import FakeActivity from '../fakes/FakeActivity';
-import FakeActivitiesRepository from '@modules/games/domain/repositories/fakes/FakeActivitiesRepository';
+import { FakeActivitiesRepository } from '@shared/domain/repositories/fakes';
 import UpdateActivityService from './UpdateActivityService';
+import {
+  FakeActivity,
+  FakeGame,
+  FakeUser,
+} from '@shared/domain/entities/fakes';
+import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
 
 describe('UpdateActivityService', () => {
   it('should update the activity correctly, both the times', async () => {
     const activitiesRepository = new FakeActivitiesRepository();
     const updateActivity = new UpdateActivityService(activitiesRepository);
 
-    const gameId = uuid();
-    const userId = uuid();
-    const fakeActivity = new FakeActivity(gameId);
+    const game = new FakeGame();
+    const user = new FakeUser();
+    const fakeActivity = new FakeActivity({ game: game.id });
 
-    const activity = await activitiesRepository.create(fakeActivity);
+    const activity = await activitiesRepository.create(
+      new CreateActivityAdapter({
+        gameId: game.id,
+        experience: fakeActivity.experience,
+        name: fakeActivity.name,
+        description: fakeActivity.description,
+        dmRules: fakeActivity.dmRules,
+      }),
+    );
 
     const updatedActivity = await updateActivity.execute({
-      gameId,
-      userId,
+      gameId: game.id,
+      userId: user.id,
       id: activity.id,
       name: 'New name',
       description: 'New description',
@@ -30,14 +42,14 @@ describe('UpdateActivityService', () => {
 
     const activityLog = updatedActivity.changelog[0];
 
-    expect(activityLog.userId).toBe(userId);
+    expect(activityLog.user.id).toBe(user.id);
     expect(activityLog.changes).toHaveProperty('name');
     expect(activityLog.changes).toHaveProperty('description');
     expect(activityLog.changes).not.toHaveProperty('experience');
 
     const newlyUpdatedActivity = await updateActivity.execute({
-      gameId,
-      userId,
+      gameId: game.id,
+      userId: user.id,
       id: activity.id,
       name: updatedActivity.name,
       description: updatedActivity.description,
@@ -52,14 +64,14 @@ describe('UpdateActivityService', () => {
     const activitiesRepository = new FakeActivitiesRepository();
     const updateActivity = new UpdateActivityService(activitiesRepository);
 
-    const gameId = uuid();
-    const userId = uuid();
-    const fakeActivity = new FakeActivity(gameId);
+    const game = new FakeGame();
+    const user = new FakeUser();
+    const fakeActivity = new FakeActivity({ game: game.id });
 
     await expect(
       updateActivity.execute({
-        gameId,
-        userId,
+        gameId: game.id,
+        userId: user.id,
         ...fakeActivity,
         id: 'invalid id',
       }),

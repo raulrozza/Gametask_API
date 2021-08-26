@@ -1,10 +1,10 @@
-import { IActivitiesRepository } from '@modules/games/domain/repositories';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
 import UpdateActivityAdapter from '@modules/games/domain/adapters/UpdateActivity';
 import { FakeActivity, FakeUser } from '@shared/domain/entities/fakes';
 import { IActivity, IActivityLog, IHistory } from '@shared/domain/entities';
+import { IActivitiesRepository } from '@shared/domain/repositories';
 
 export default class FakeActivitiesRepository implements IActivitiesRepository {
   private readonly activities: IActivity[] = [];
