@@ -1,9 +1,7 @@
-import { v4 as uuid } from 'uuid';
-
-import FakeTitlesRepository from '@modules/games/domain/repositories/fakes/FakeTitlesRepository';
+import { FakeTitlesRepository } from '@shared/domain/repositories/fakes';
 import ChangeTitleService from './ChangeTitleService';
 import { RequestError } from '@shared/infra/errors';
-import { FakeGame, FakeTitle } from '@shared/domain/entities/fakes';
+import { FakeGame, FakeTitle, FakeUser } from '@shared/domain/entities/fakes';
 import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
 
@@ -15,14 +13,14 @@ const initService = async () => {
     titlesRepository,
   );
 
-  const userId = uuid();
+  const user = new FakeUser();
   const game = new FakeGame();
   const fakeTitle = new FakeTitle({ game: game.id });
 
   const title = await titlesRepository.create(fakeTitle);
   const player = await playersRepository.create(
     new CreatePlayerAdapter({
-      userId,
+      userId: user.id,
       gameId: game.id,
       gameLevels: game.levelInfo,
       gameRanks: game.ranks,
@@ -34,7 +32,7 @@ const initService = async () => {
     title,
     player,
     gameId: game.id,
-    userId,
+    userId: user.id,
   };
 };
 

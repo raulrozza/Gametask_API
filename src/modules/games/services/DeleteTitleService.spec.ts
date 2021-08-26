@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import FakeTitlesRepository from '@modules/games/domain/repositories/fakes/FakeTitlesRepository';
+import { FakeTitlesRepository } from '@shared/domain/repositories/fakes';
 import DeleteTitleService from './DeleteTitleService';
 import { ITitle } from '@shared/domain/entities';
 import { FakeTitle } from '@shared/domain/entities/fakes';

@@ -4,13 +4,11 @@ import {
   AchievementsRepository,
   ActivitiesRepository,
   GamesRepository,
-  TitlesRepository,
 } from '@modules/games/infra/mongoose/repositories';
 import {
   IAchievementsRepository,
   IActivitiesRepository,
   IGamesRepository,
-  ITitlesRepository,
 } from '@modules/games/domain/repositories';
 
 container.registerSingleton<IAchievementsRepository>(
@@ -26,9 +24,4 @@ container.registerSingleton<IActivitiesRepository>(
 container.registerSingleton<IGamesRepository>(
   'GamesRepository',
   GamesRepository,
-);
-
-container.registerSingleton<ITitlesRepository>(
-  'TitlesRepository',
-  TitlesRepository,
 );

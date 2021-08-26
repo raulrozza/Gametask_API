@@ -1,10 +1,8 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import {
-  IAchievementsRepository,
-  ITitlesRepository,
-} from '@modules/games/domain/repositories';
+import { IAchievementsRepository } from '@modules/games/domain/repositories';
+import { ITitlesRepository } from '@shared/domain/repositories';
 import ICreateAchievementDTO from '@modules/games/domain/dtos/ICreateAchievementDTO';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';

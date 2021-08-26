@@ -5,7 +5,7 @@ import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
 import IUpdateTitleDTO from '@modules/games/domain/dtos/IUpdateTitleDTO';
-import { ITitlesRepository } from '@modules/games/domain/repositories';
+import { ITitlesRepository } from '@shared/domain/repositories';
 import UpdateTitleAdapter from '@modules/games/domain/adapters/UpdateTitle';
 import { ITitle } from '@shared/domain/entities';
 

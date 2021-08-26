@@ -1,8 +1,8 @@
-import { ITitlesRepository } from '@modules/games/domain/repositories';
 import ICreateTitleDTO from '@modules/games/domain/dtos/ICreateTitleDTO';
 import UpdateTitleAdapter from '@modules/games/domain/adapters/UpdateTitle';
 import { ITitle } from '@shared/domain/entities';
 import { FakeTitle } from '@shared/domain/entities/fakes';
+import { ITitlesRepository } from '@shared/domain/repositories';
 
 export default class FakeTitlesRepository implements ITitlesRepository {
   private readonly titles: ITitle[] = [];

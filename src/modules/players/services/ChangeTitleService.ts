@@ -6,7 +6,7 @@ import { RequestError } from '@shared/infra/errors';
 import { IPlayer } from '@modules/players/domain/entities';
 import IChangeTitleDTO from '@modules/players/domain/dtos/IChangeTitleDTO';
 import { IPlayersRepository } from '@modules/players/domain/repositories';
-import { ITitlesRepository } from '@modules/games/domain/repositories';
+import { ITitlesRepository } from '@shared/domain/repositories';
 import UpdatePlayerAdapter from '@modules/players/domain/adapters/UpdatePlayer';
 
 @injectable()

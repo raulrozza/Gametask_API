@@ -1,9 +1,9 @@
 import { RequestError } from '@shared/infra/errors';
 import { v4 as uuid } from 'uuid';
 
-import FakeTitle from '../fakes/FakeTitle';
-import FakeTitlesRepository from '@modules/games/domain/repositories/fakes/FakeTitlesRepository';
+import { FakeTitlesRepository } from '@shared/domain/repositories/fakes';
 import UpdateTitleService from './UpdateTitleService';
+import { FakeTitle } from '@shared/domain/entities/fakes';
 
 describe('UpdateTitleService', () => {
   it('should update the title correctly', async () => {
@@ -11,7 +11,7 @@ describe('UpdateTitleService', () => {
     const updateTitle = new UpdateTitleService(titlesRepository);
 
     const gameId = uuid();
-    const fakeTitle = new FakeTitle(gameId);
+    const fakeTitle = new FakeTitle({ game: gameId });
 
     const title = await titlesRepository.create(fakeTitle);
 
@@ -29,7 +29,7 @@ describe('UpdateTitleService', () => {
     const updateTitle = new UpdateTitleService(titlesRepository);
 
     const gameId = uuid();
-    const fakeTitle = new FakeTitle(gameId);
+    const fakeTitle = new FakeTitle({ game: gameId });
 
     await expect(
       updateTitle.execute({
