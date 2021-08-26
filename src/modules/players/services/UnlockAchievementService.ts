@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
-import { IFeedPostsRepository } from '@modules/players/repositories';
 import {
+  IFeedPostsRepository,
   IPlayersRepository,
   IUnlockAchievementRequestRepository,
 } from '@modules/players/domain/repositories';
@@ -15,6 +15,7 @@ import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import IUnlockAchievementDTO from '@modules/players/domain/dtos/IUnlockAchievementDTO';
 import AddAchievementToPlayerAdapter from '@modules/players/domain/adapters/AddAchievementToPlayer';
+import CreateFeedPostAdapter from '@modules/players/domain/adapters/CreateFeedPost';
 
 interface IValidateInput {
   userId: string;
@@ -87,12 +88,14 @@ export default class UnlockAchievementService {
 
       await this.gamesRepository.updateRegisters(gameId, -1, session);
 
-      await this.feedPostsRepository.create({
-        game: gameId,
-        player: playerId,
-        type: 'achievement',
-        achievement: achievementId,
-      });
+      await this.feedPostsRepository.create(
+        new CreateFeedPostAdapter({
+          game: gameId,
+          player: playerId,
+          type: 'achievement',
+          achievement: achievementId,
+        }),
+      );
     });
   }
 
@@ -113,9 +116,9 @@ export default class UnlockAchievementService {
         errorCodes.BAD_REQUEST_ERROR,
       );
 
-    const request = await this.unlockAchievementRequestRepository.findOne(
-      requestId,
-    );
+    const request = await this.unlockAchievementRequestRepository.findOne({
+      id: requestId,
+    });
     if (!request)
       throw new RequestError(
         'You should first request this achievement to be unlocked',

@@ -3,7 +3,6 @@ import { v4 as uuid } from 'uuid';
 import FakeActivitiesRepository from '@modules/games/domain/repositories/fakes/FakeActivitiesRepository';
 import FakeGamesRepository from '@modules/games/domain/repositories/fakes/FakeGamesRepository';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
-import FakeFeedPostsRepository from '../repositories/fakes/FakeFeedPostsRepository';
 import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import CompleteActivityService from './CompleteActivityService';
 import { RequestError } from '@shared/infra/errors';
@@ -16,6 +15,7 @@ import { FakeLeaderboardsRepository } from '@shared/domain/repositories/fakes';
 import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
 import FakeCompleteActivityRequestRepository from '@modules/players/domain/repositories/fakes/FakeCompleteActivityRequestRepository';
 import CreateCompleteActivityRequestAdapter from '@modules/players/domain/adapters/CreateCompleteActivityRequest';
+import FakeFeedPostsRepository from '@modules/players/domain/repositories/fakes/FakeFeedPostsRepository';
 
 const initService = async () => {
   const playersRepository = new FakePlayersRepository();

@@ -1,10 +1,5 @@
 import { IPlayer } from '@modules/players/domain/entities';
-import {
-  IAchievement,
-  IActivity,
-  ILevelInfo,
-  IRank,
-} from '@shared/domain/entities';
+import { IAchievement, IActivity } from '@shared/domain/entities';
 
 export default interface IFeedPost {
   id: string;
@@ -13,7 +8,5 @@ export default interface IFeedPost {
   activity?: IActivity;
   achievement?: IAchievement;
   game: string;
-  level?: ILevelInfo;
-  rank?: IRank;
   date: Date;
 }

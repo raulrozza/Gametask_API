@@ -1,11 +1,12 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import { IFeedPostsRepository } from '@modules/players/repositories';
 import {
+  IFeedPostsRepository,
   ICompleteActivityRequestRepository,
   IPlayersRepository,
 } from '@modules/players/domain/repositories';
+
 import {
   IActivitiesRepository,
   IGamesRepository,
@@ -20,6 +21,7 @@ import { ILeaderboardsRepository } from '@shared/domain/repositories';
 import CreateLeaderboardAdapter from '@shared/domain/adapters/CreateLeaderboard';
 import UpdatePositionAdapter from '@shared/domain/adapters/UpdatePositionAdapter';
 import UpdatePlayerAdapter from '@modules/players/domain/adapters/UpdatePlayer';
+import CreateFeedPostAdapter from '@modules/players/domain/adapters/CreateFeedPost';
 
 interface IAddCompletionToActivityHistory {
   userId: string;
@@ -189,12 +191,12 @@ export default class CompleteActivityService {
     session: object,
   ): Promise<void> {
     await this.feedPostsRepository.create(
-      {
+      new CreateFeedPostAdapter({
         game: gameId,
         player: playerId,
         activity: activityId,
         type: 'activity',
-      },
+      }),
       session,
     );
   }
@@ -265,12 +267,12 @@ export default class CompleteActivityService {
     session: object,
   ): Promise<void> {
     await this.feedPostsRepository.create(
-      {
+      new CreateFeedPostAdapter({
         player: playerId,
         type: 'level',
         level,
         game: gameId,
-      },
+      }),
       session,
     );
   }
@@ -280,12 +282,12 @@ export default class CompleteActivityService {
     session: object,
   ): Promise<void> {
     await this.feedPostsRepository.create(
-      {
+      new CreateFeedPostAdapter({
         player: playerId,
         type: 'rank',
         rank,
         game: gameId,
-      },
+      }),
       session,
     );
   }

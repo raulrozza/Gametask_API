@@ -6,8 +6,8 @@ import {
   PlayersRepository,
   UnlockAchievementRequestRepository,
 } from '@modules/players/infra/mongoose/repositories';
-import { IFeedPostsRepository } from '@modules/players/repositories';
 import {
+  IFeedPostsRepository,
   ICompleteActivityRequestRepository,
   IPlayersRepository,
   IUnlockAchievementRequestRepository,

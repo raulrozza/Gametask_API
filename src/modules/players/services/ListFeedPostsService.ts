@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import { IFeedPostsRepository } from '@modules/players/repositories';
+import { IFeedPostsRepository } from '@modules/players/domain/repositories';
 
 @injectable()
 export default class ListFeedPostsService {
