@@ -311,21 +311,20 @@ export default class CompleteActivityService {
       gameId,
     );
 
-    if (!leaderboard) {
-      const createLeaderboard = new CreateLeaderboardAdapter({ game: gameId });
-      leaderboard = await this.leaderboardsRepository.create(createLeaderboard);
-    }
+    if (!leaderboard)
+      leaderboard = await this.leaderboardsRepository.create(
+        new CreateLeaderboardAdapter({ game: gameId }),
+      );
 
-    const updatePosition = new UpdatePositionAdapter({
-      leaderboardId: leaderboard.id,
-      currentPositions: leaderboard.position,
-      newPosition: {
-        player: playerId,
-        experience,
-      },
-    });
     await this.leaderboardsRepository.createOrUpdatePosition(
-      updatePosition,
+      new UpdatePositionAdapter({
+        leaderboardId: leaderboard.id,
+        currentPositions: leaderboard.position,
+        newPosition: {
+          player: playerId,
+          experience,
+        },
+      }),
       session,
     );
   }

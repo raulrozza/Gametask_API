@@ -16,9 +16,9 @@ export default class ResetLeaderboardsService {
 
   public async execute(gameId: string): Promise<void> {
     try {
-      const leaderboard = new CreateLeaderboardAdapter({ game: gameId });
-
-      await this.leaderboardsRepository.create(leaderboard);
+      await this.leaderboardsRepository.create(
+        new CreateLeaderboardAdapter({ game: gameId }),
+      );
     } catch (error) {
       if (error instanceof RequestError) throw error;
 

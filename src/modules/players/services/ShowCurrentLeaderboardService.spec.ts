@@ -13,8 +13,9 @@ describe('ShowCurrentLeaderboardService', () => {
 
     const gameId = uuid();
 
-    const createLeaderboard = new CreateLeaderboardAdapter({ game: gameId });
-    await leaderboardsRepository.create(createLeaderboard);
+    await leaderboardsRepository.create(
+      new CreateLeaderboardAdapter({ game: gameId }),
+    );
 
     const leaderboard = await showCurrentLeaderboardService.execute(gameId);
 

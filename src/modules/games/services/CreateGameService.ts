@@ -27,9 +27,9 @@ export default class CreateGameService {
       new CreateGameAdapter({ name, description, creatorId }),
     );
 
-    const createLeaderboard = new CreateLeaderboardAdapter({ game: game.id });
-
-    await this.leaderboardsRepository.create(createLeaderboard);
+    await this.leaderboardsRepository.create(
+      new CreateLeaderboardAdapter({ game: game.id }),
+    );
 
     return game;
   }
