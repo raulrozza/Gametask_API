@@ -10,7 +10,7 @@ import {
   FakeGame,
   FakeUser,
 } from '@shared/domain/entities/fakes';
-import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
+import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
 import { FakeUnlockAchievementRequest } from '@modules/players/domain/entities/fakes';
 import CreateUnlockAchievementAdapter from '@modules/players/domain/adapters/CreateUnlockAchievement';
 

@@ -3,7 +3,7 @@ import { ClientSession, isValidObjectId } from 'mongoose';
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 import { IGamesRepository } from '@shared/domain/repositories';
-import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
+import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
 import UpdateGameAdapter from '@modules/games/domain/adapters/UpdateGameAdapter';
 import { IGame } from '@shared/domain/entities';
 import Game from '@shared/infra/mongoose/entities/Game';

@@ -3,8 +3,8 @@ import { inject, injectable } from 'tsyringe';
 
 import { IActivitiesRepository } from '@shared/domain/repositories';
 import ICreateActivityDTO from '@modules/games/domain/dtos/ICreateActivityDTO';
-import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
 import { IActivity } from '@shared/domain/entities';
+import CreateActivityAdapter from '@shared/domain/adapters/CreateActivity';
 
 @injectable()
 export default class CreateActivityService {

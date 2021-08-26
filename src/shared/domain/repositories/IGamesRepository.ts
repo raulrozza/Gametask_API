@@ -1,4 +1,4 @@
-import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
+import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
 import UpdateGameAdapter from '@modules/games/domain/adapters/UpdateGameAdapter';
 import { IGame } from '@shared/domain/entities';
 

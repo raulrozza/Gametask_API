@@ -3,7 +3,7 @@ import { RequestError } from '@shared/infra/errors';
 import { FakeGamesRepository } from '@shared/domain/repositories/fakes';
 import UpdateGameService from './UpdateGameService';
 import { FakeGame, FakeUser } from '@shared/domain/entities/fakes';
-import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
+import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
 
 describe('UpdateGameService', () => {
   it('should update the game correctly', async () => {

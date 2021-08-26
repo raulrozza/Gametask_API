@@ -1,4 +1,4 @@
-import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
+import CreateActivityAdapter from '@shared/domain/adapters/CreateActivity';
 import UpdateActivityAdapter from '@modules/games/domain/adapters/UpdateActivity';
 import { IActivity, IHistory } from '@shared/domain/entities';
 

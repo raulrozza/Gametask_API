@@ -7,7 +7,7 @@ import {
   FakeGame,
   FakeUser,
 } from '@shared/domain/entities/fakes';
-import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
+import CreateActivityAdapter from '@shared/domain/adapters/CreateActivity';
 
 describe('UpdateActivityService', () => {
   it('should update the activity correctly, both the times', async () => {

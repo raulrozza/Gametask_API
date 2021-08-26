@@ -1,4 +1,4 @@
-import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
+import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
 import { FakeGame, FakeUser } from '@shared/domain/entities/fakes';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';

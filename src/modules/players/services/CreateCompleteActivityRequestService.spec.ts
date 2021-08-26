@@ -14,8 +14,8 @@ import {
   FakeGame,
   FakeUser,
 } from '@shared/domain/entities/fakes';
-import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
-import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
+import CreateActivityAdapter from '@shared/domain/adapters/CreateActivity';
+import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
 import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
 
 const initService = async () => {

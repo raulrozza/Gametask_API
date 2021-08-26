@@ -3,7 +3,7 @@ import { RequestError } from '@shared/infra/errors';
 import { FakeGamesRepository } from '@shared/domain/repositories/fakes';
 import UpdateGameAvatarService from './UpdateGameAvatarService';
 import { FakeGame, FakeUser } from '@shared/domain/entities/fakes';
-import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
+import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
 
 const getService = () => {
   const gamesRepository = new FakeGamesRepository();

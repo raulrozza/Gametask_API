@@ -1,6 +1,6 @@
 import { FakeActivitiesRepository } from '@shared/domain/repositories/fakes';
 import ShowActivityService from './ShowActivityService';
-import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
+import CreateActivityAdapter from '@shared/domain/adapters/CreateActivity';
 import { FakeActivity, FakeGame } from '@shared/domain/entities/fakes';
 
 describe('ShowActivityService', () => {

@@ -6,9 +6,9 @@ import {
   ILeaderboardsRepository,
 } from '@shared/domain/repositories';
 import ICreateGameDTO from '@modules/games/domain/dtos/ICreateGameDTO';
-import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
 import { IGame } from '@shared/domain/entities';
 import CreateLeaderboardAdapter from '@shared/domain/adapters/CreateLeaderboard';
+import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
 
 @injectable()
 export default class CreateGameService {

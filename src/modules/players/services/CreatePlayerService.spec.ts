@@ -5,7 +5,7 @@ import { FakeGamesRepository } from '@shared/domain/repositories/fakes';
 import { CreatePlayerService } from '.';
 import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import { RequestError } from '@shared/infra/errors';
-import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
+import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
 
 const initService = async (addRanks: boolean | IRank[] = false) => {
   const playersRepository = new FakePlayersRepository();

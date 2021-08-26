@@ -4,7 +4,7 @@ import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 import { IActivitiesRepository } from '@shared/domain/repositories';
 import UpdateActivityAdapter from '@modules/games/domain/adapters/UpdateActivity';
-import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
+import CreateActivityAdapter from '@shared/domain/adapters/CreateActivity';
 import { IActivity, IHistory } from '@shared/domain/entities';
 import Activity from '@shared/infra/mongoose/entities/Activity';
 

@@ -4,7 +4,7 @@ import FakePlayersRepository from '@modules/players/domain/repositories/fakes/Fa
 import CreateUnlockAchievementRequestService from './CreateUnlockAchievementRequestService';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
-import CreateGameAdapter from '@modules/games/domain/adapters/CreateGame';
+import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
 import {
   FakeAchievement,
   FakeGame,

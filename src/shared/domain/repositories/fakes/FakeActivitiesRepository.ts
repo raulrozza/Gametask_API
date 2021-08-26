@@ -1,6 +1,6 @@
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
-import CreateActivityAdapter from '@modules/games/domain/adapters/CreateActivity';
+import CreateActivityAdapter from '@shared/domain/adapters/CreateActivity';
 import UpdateActivityAdapter from '@modules/games/domain/adapters/UpdateActivity';
 import { FakeActivity, FakeUser } from '@shared/domain/entities/fakes';
 import { IActivity, IActivityLog, IHistory } from '@shared/domain/entities';
