@@ -1,7 +1,9 @@
 import { IRank } from '@shared/domain/entities';
 import { FakeGame, FakeUser } from '@shared/domain/entities/fakes';
-import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
-import { FakeGamesRepository } from '@shared/domain/repositories/fakes';
+import {
+  FakeGamesRepository,
+  FakeUsersRepository,
+} from '@shared/domain/repositories/fakes';
 import { CreatePlayerService } from '.';
 import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import { RequestError } from '@shared/infra/errors';

@@ -4,8 +4,10 @@ import { inject, injectable } from 'tsyringe';
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
-import { IGamesRepository } from '@shared/domain/repositories';
-import { IUsersRepository } from '@modules/users/domain/repositories';
+import {
+  IGamesRepository,
+  IUsersRepository,
+} from '@shared/domain/repositories';
 import { IPlayersRepository } from '@modules/players/domain/repositories';
 import { IPlayer } from '@modules/players/domain/entities';
 import ICreatePlayerDTO from '@modules/players/domain/dtos/ICreatePlayerDTO';

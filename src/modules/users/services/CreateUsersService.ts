@@ -4,7 +4,7 @@ import { inject, injectable } from 'tsyringe';
 import errorCodes from '@config/errorCodes';
 import { ICreateUserDTO } from '@modules/users/domain/dtos';
 import IHashProvider from '@modules/users/domain/providers/IHashProvider';
-import { IUsersRepository } from '@modules/users/domain/repositories';
+import { IUsersRepository } from '@shared/domain/repositories';
 import { RequestError } from '@shared/infra/errors';
 
 @injectable()

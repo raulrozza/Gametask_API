@@ -2,8 +2,8 @@ import { RequestError } from '@shared/infra/errors';
 import { FakeUser } from '@shared/domain/entities/fakes';
 import FakeHashProvider from '@modules/users/domain/providers/fakes/FakeHashProvider';
 import FakeTokenProvider from '@modules/users/domain/providers/fakes/FakeTokenProvider';
-import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
 import AuthenticateUserService from './AuthenticateUserService';
+import { FakeUsersRepository } from '@shared/domain/repositories/fakes';
 
 const getService = () => {
   const usersRepository = new FakeUsersRepository();

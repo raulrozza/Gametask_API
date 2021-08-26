@@ -2,7 +2,7 @@ import { RequestError } from '@shared/infra/errors';
 import faker from 'faker';
 
 import FakeHashProvider from '@modules/users/domain/providers/fakes/FakeHashProvider';
-import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
+import { FakeUsersRepository } from '@shared/domain/repositories/fakes';
 import CreateUsersService from './CreateUsersService';
 
 const getService = () => {

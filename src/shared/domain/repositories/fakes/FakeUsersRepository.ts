@@ -2,8 +2,7 @@ import { v4 as uuid } from 'uuid';
 
 import { ICreateUserDTO, IUpdateUserDTO } from '@modules/users/domain/dtos';
 import { IUser } from '@shared/domain/entities';
-
-import { IUsersRepository } from '..';
+import { IUsersRepository } from '@shared/domain/repositories';
 
 export default class FakeUsersRepository implements IUsersRepository {
   private readonly users: IUser[] = [];
