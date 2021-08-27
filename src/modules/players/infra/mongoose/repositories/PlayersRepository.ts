@@ -2,19 +2,17 @@ import { ClientSession, isValidObjectId } from 'mongoose';
 
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
-import { IPlayersRepository } from '@modules/players/repositories';
-import Player, {
-  IPlayerDocument,
-  IPlayerPopulatedDocument,
-} from '@modules/players/infra/mongoose/entities/Player';
-import { IPlayer } from '@modules/players/entities';
+import Player from '@modules/players/infra/mongoose/entities/Player';
+import { IPlayer } from '@modules/players/domain/entities';
+import { IPlayersRepository } from '@modules/players/domain/repositories';
+import { IFindOnePlayerParams } from '@modules/players/domain/repositories/IPlayersRepository';
+import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
+import UpdatePlayerAdapter from '@modules/players/domain/adapters/UpdatePlayer';
+import AddAchievementToPlayerAdapter from '@modules/players/domain/adapters/AddAchievementToPlayer';
 
-export default class PlayersRepository
-  implements IPlayersRepository<IPlayerDocument | IPlayerPopulatedDocument> {
-  public async findAllFromUser(
-    userId: string,
-  ): Promise<IPlayerPopulatedDocument[]> {
-    return await Player.find({ user: userId })
+export default class PlayersRepository implements IPlayersRepository {
+  public async findAllFromUser(userId: string): Promise<IPlayer[]> {
+    return Player.find({ user: userId })
       .populate('user', {
         firstname: 1,
         lastname: 1,
@@ -31,19 +29,20 @@ export default class PlayersRepository
       });
   }
 
-  public async findOne(
-    id: string,
-    userId: string,
-    gameId: string,
-  ): Promise<IPlayerPopulatedDocument | undefined> {
+  public async findOne({
+    id,
+    userId,
+    gameId,
+  }: IFindOnePlayerParams): Promise<IPlayer | undefined> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    return await Player.findOne({
-      _id: id,
-      user: userId,
-      game: gameId,
-    })
+    const params: { _id?: string; user?: string; game?: string } = {};
+    if (id) params._id = id;
+    if (userId) params.user = userId;
+    if (gameId) params.game = gameId;
+
+    const player = await Player.findOne(params)
       .populate('user', {
         firstname: 1,
         lastname: 1,
@@ -58,32 +57,11 @@ export default class PlayersRepository
         image: 1,
         image_url: 1,
         levelInfo: 1,
-      });
-  }
-
-  public async findById(
-    id: string,
-  ): Promise<IPlayerPopulatedDocument | undefined> {
-    if (!isValidObjectId(id))
-      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
-
-    return await Player.findOne({
-      _id: id,
-    })
-      .populate('user', {
-        firstname: 1,
-        lastname: 1,
-        image: 1,
-        profile_url: 1,
       })
-      .populate('game', {
-        theme: 1,
-        name: 1,
-        description: 1,
-        id: 1,
-        image: 1,
-        image_url: 1,
-      });
+      .populate('titles')
+      .populate('currentTitle');
+
+    return player || undefined;
   }
 
   public async create({
@@ -91,8 +69,8 @@ export default class PlayersRepository
     game,
     rank,
     level,
-  }: Omit<IPlayer, 'id'>): Promise<IPlayerDocument> {
-    return await Player.create({
+  }: CreatePlayerAdapter): Promise<IPlayer> {
+    return Player.create({
       user,
       game,
       rank,
@@ -100,29 +78,19 @@ export default class PlayersRepository
     });
   }
 
-  public async isThereAPlayerAssociatedWith(
-    userId: string,
-    gameId: string,
-  ): Promise<boolean> {
-    const player = await Player.findOne({ user: userId, game: gameId });
-
-    return Boolean(player);
-  }
-
   public async update(
-    { id, experience, level, achievements, currentTitle, rank }: IPlayer,
+    { id, experience, level, currentTitle, rank }: UpdatePlayerAdapter,
     session?: ClientSession,
   ): Promise<IPlayer> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    const updatedPlayer = await Player.findByIdAndUpdate(
+    const player = await Player.findByIdAndUpdate(
       id,
       {
         $set: {
           experience,
           level,
-          achievements,
           currentTitle,
           rank,
         },
@@ -130,38 +98,45 @@ export default class PlayersRepository
       { new: true, session },
     );
 
-    return updatedPlayer;
+    if (!player)
+      throw new RequestError(
+        'Player could not be found',
+        errorCodes.RESOURCE_NOT_FOUND,
+      );
+
+    return player;
   }
 
-  public async unlockAchievement(
-    id: string,
-    achievement: string,
-    title: string | undefined,
+  public async addAchievement(
+    { id, achievement, title }: AddAchievementToPlayerAdapter,
     session?: ClientSession,
   ): Promise<IPlayer> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    if (title)
-      return await Player.findByIdAndUpdate(
-        id,
-        {
-          $push: {
-            achievements: achievement,
-            titles: title,
-          },
-        },
-        { new: true, session },
-      );
+    const pushDocument = title
+      ? {
+          achievements: achievement,
+          titles: title,
+        }
+      : {
+          achievements: achievement,
+        };
 
-    return await Player.findByIdAndUpdate(
+    const player = await Player.findByIdAndUpdate(
       id,
       {
-        $push: {
-          achievements: achievement,
-        },
+        $push: pushDocument,
       },
       { new: true, session },
     );
+
+    if (!player)
+      throw new RequestError(
+        'Could not find player',
+        errorCodes.RESOURCE_NOT_FOUND,
+      );
+
+    return player;
   }
 }

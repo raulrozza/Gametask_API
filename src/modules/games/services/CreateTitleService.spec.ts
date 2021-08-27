@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
-import FakeTitle from '../fakes/FakeTitle';
-import FakeTitlesRepository from '../repositories/fakes/FakeTitlesRepository';
+import { FakeTitlesRepository } from '@shared/domain/repositories/fakes';
 import CreateTitleService from './CreateTitleService';
+import { FakeTitle } from '@shared/domain/entities/fakes';
 
 describe('CreateTitleService', () => {
   it('should create the title', async () => {
@@ -10,7 +10,7 @@ describe('CreateTitleService', () => {
 
     const gameId = uuid();
 
-    const fakeTitle = new FakeTitle(gameId);
+    const fakeTitle = new FakeTitle({ game: gameId });
 
     const payload = {
       name: fakeTitle.name,

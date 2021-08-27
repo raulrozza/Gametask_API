@@ -1,17 +1,22 @@
-import { v4 as uuid } from 'uuid';
+import {
+  FakeAchievementsRepository,
+  FakeGamesRepository,
+} from '@shared/domain/repositories/fakes';
 
-import { IAchievement, IGame } from '@modules/games/entities';
-import { FakeAchievement, FakeGame } from '@modules/games/fakes';
-import FakeAchievementsRepository from '@modules/games/repositories/fakes/FakeAchievementsRepository';
-import FakeGamesRepository from '@modules/games/repositories/fakes/FakeGamesRepository';
-import FakePlayer from '../fakes/FakePlayer';
-import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
-import FakeUnlockAchievementRequestRepository from '../repositories/fakes/FakeUnlockAchievementRequestRepository';
+import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import CreateUnlockAchievementRequestService from './CreateUnlockAchievementRequestService';
-import { IPlayer } from '../entities';
-import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
+import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
+import {
+  FakeAchievement,
+  FakeGame,
+  FakeUser,
+} from '@shared/domain/entities/fakes';
+import { FakeUnlockAchievementRequest } from '@modules/players/domain/entities/fakes';
+import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
+import AddAchievementToPlayerAdapter from '@modules/players/domain/adapters/AddAchievementToPlayer';
+import FakeUnlockAchievementRequestRepository from '@modules/players/domain/repositories/fakes/FakeUnlockAchievementRequestRepository';
 
 const initService = async () => {
   const unlockAchievementRequestRepository = new FakeUnlockAchievementRequestRepository();
@@ -28,21 +33,38 @@ const initService = async () => {
     transactionProvider,
   );
 
-  const userId = uuid();
+  const user = new FakeUser();
 
-  const { id: _, ...fakeGame } = new FakeGame();
-  const game = await gamesRepository.create(fakeGame as IGame);
-
-  const { id: __, ...fakePlayer } = new FakePlayer(userId, game.id);
-  const player = await playersRepository.create(fakePlayer as IPlayer);
-
-  const { id: ___, ...fakeAchievement } = new FakeAchievement(game.id);
-  const achievement = await achievementsRepository.create(
-    fakeAchievement as IAchievement,
+  const fakeGame = new FakeGame();
+  const game = await gamesRepository.create(
+    new CreateGameAdapter({
+      name: fakeGame.name,
+      description: fakeGame.description,
+      creatorId: user.id,
+    }),
   );
 
+  const player = await playersRepository.create(
+    new CreatePlayerAdapter({
+      userId: user.id,
+      gameId: game.id,
+      gameLevels: game.levelInfo,
+      gameRanks: game.ranks,
+    }),
+  );
+
+  const fakeAchievement = new FakeAchievement({
+    game: game.id,
+  });
+  const achievement = await achievementsRepository.create({
+    name: fakeAchievement.name,
+    description: fakeAchievement.description,
+    title: fakeAchievement.title?.id,
+    gameId: fakeAchievement.game.id,
+  });
+
   return {
-    userId,
+    userId: user.id,
     createUnlockAchievementRequest,
     game,
     player,
@@ -61,25 +83,25 @@ describe('CreateUnlockAchievementRequestService', () => {
       achievement,
     } = await initService();
 
-    const fakeRequest = new FakeUnlockAchievementRequest(
-      game.id,
-      player.id,
-      achievement.id,
-    );
+    const fakeRequest = new FakeUnlockAchievementRequest({
+      game: game.id,
+      requester: player.id,
+      achievement: achievement.id,
+    });
 
     const request = await createUnlockAchievementRequest.execute({
       userId,
-      achievement: fakeRequest.achievement,
+      achievement: fakeRequest.achievement.id,
       gameId: fakeRequest.game,
       requestDate: fakeRequest.requestDate,
-      requester: fakeRequest.requester,
+      requester: fakeRequest.requester.id,
       information: fakeRequest.information,
     });
 
     expect(request).toHaveProperty('id');
     expect(request.game).toBe(fakeRequest.game);
-    expect(request.requester).toBe(fakeRequest.requester);
-    expect(request.achievement).toBe(fakeRequest.achievement);
+    expect(request.requester.id).toBe(fakeRequest.requester.id);
+    expect(request.achievement.id).toBe(fakeRequest.achievement.id);
   });
 
   it('should not be able to request the unlock of the same achievement twice', async () => {
@@ -91,28 +113,28 @@ describe('CreateUnlockAchievementRequestService', () => {
       achievement,
     } = await initService();
 
-    const fakeRequest = new FakeUnlockAchievementRequest(
-      game.id,
-      player.id,
-      achievement.id,
-    );
+    const fakeRequest = new FakeUnlockAchievementRequest({
+      game: game.id,
+      requester: player.id,
+      achievement: achievement.id,
+    });
 
     await createUnlockAchievementRequest.execute({
       userId,
-      achievement: fakeRequest.achievement,
+      achievement: fakeRequest.achievement.id,
       gameId: fakeRequest.game,
       requestDate: fakeRequest.requestDate,
-      requester: fakeRequest.requester,
+      requester: fakeRequest.requester.id,
       information: fakeRequest.information,
     });
 
     await expect(
       createUnlockAchievementRequest.execute({
         userId,
-        achievement: fakeRequest.achievement,
+        achievement: fakeRequest.achievement.id,
         gameId: fakeRequest.game,
         requestDate: fakeRequest.requestDate,
-        requester: fakeRequest.requester,
+        requester: fakeRequest.requester.id,
         information: fakeRequest.information,
       }),
     ).rejects.toBeInstanceOf(RequestError);
@@ -128,22 +150,26 @@ describe('CreateUnlockAchievementRequestService', () => {
       playersRepository,
     } = await initService();
 
-    (player.achievements as string[]).push(achievement.id);
-    await playersRepository.update(player);
-
-    const fakeRequest = new FakeUnlockAchievementRequest(
-      game.id,
-      player.id,
-      achievement.id,
+    await playersRepository.addAchievement(
+      new AddAchievementToPlayerAdapter({
+        id: player.id,
+        achievement: achievement.id,
+      }),
     );
+
+    const fakeRequest = new FakeUnlockAchievementRequest({
+      game: game.id,
+      requester: player.id,
+      achievement: achievement.id,
+    });
 
     await expect(
       createUnlockAchievementRequest.execute({
         userId,
-        achievement: fakeRequest.achievement,
+        achievement: fakeRequest.achievement.id,
         gameId: fakeRequest.game,
         requestDate: fakeRequest.requestDate,
-        requester: fakeRequest.requester,
+        requester: fakeRequest.requester.id,
         information: fakeRequest.information,
       }),
     ).rejects.toBeInstanceOf(RequestError);
@@ -157,19 +183,19 @@ describe('CreateUnlockAchievementRequestService', () => {
       player,
     } = await initService();
 
-    const fakeRequest = new FakeUnlockAchievementRequest(
-      game.id,
-      player.id,
-      'invalid achievement id',
-    );
+    const fakeRequest = new FakeUnlockAchievementRequest({
+      game: game.id,
+      requester: player.id,
+      achievement: 'invalid achievement id',
+    });
 
     await expect(
       createUnlockAchievementRequest.execute({
         userId,
-        achievement: fakeRequest.achievement,
+        achievement: fakeRequest.achievement.id,
         gameId: fakeRequest.game,
         requestDate: fakeRequest.requestDate,
-        requester: fakeRequest.requester,
+        requester: fakeRequest.requester.id,
         information: fakeRequest.information,
       }),
     ).rejects.toBeInstanceOf(RequestError);
@@ -183,19 +209,19 @@ describe('CreateUnlockAchievementRequestService', () => {
       achievement,
     } = await initService();
 
-    const fakeRequest = new FakeUnlockAchievementRequest(
-      game.id,
-      'invalid player id',
-      achievement.id,
-    );
+    const fakeRequest = new FakeUnlockAchievementRequest({
+      game: game.id,
+      requester: 'invalid player id',
+      achievement: achievement.id,
+    });
 
     await expect(
       createUnlockAchievementRequest.execute({
         userId,
-        achievement: fakeRequest.achievement,
+        achievement: fakeRequest.achievement.id,
         gameId: fakeRequest.game,
         requestDate: fakeRequest.requestDate,
-        requester: fakeRequest.requester,
+        requester: fakeRequest.requester.id,
         information: fakeRequest.information,
       }),
     ).rejects.toBeInstanceOf(RequestError);
@@ -209,19 +235,19 @@ describe('CreateUnlockAchievementRequestService', () => {
       achievement,
     } = await initService();
 
-    const fakeRequest = new FakeUnlockAchievementRequest(
-      'invalid game id',
-      player.id,
-      achievement.id,
-    );
+    const fakeRequest = new FakeUnlockAchievementRequest({
+      game: 'invalid game id',
+      requester: player.id,
+      achievement: achievement.id,
+    });
 
     await expect(
       createUnlockAchievementRequest.execute({
         userId,
-        achievement: fakeRequest.achievement,
+        achievement: fakeRequest.achievement.id,
         gameId: fakeRequest.game,
         requestDate: fakeRequest.requestDate,
-        requester: fakeRequest.requester,
+        requester: fakeRequest.requester.id,
         information: fakeRequest.information,
       }),
     ).rejects.toBeInstanceOf(RequestError);

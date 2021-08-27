@@ -1,12 +1,14 @@
-import { IUser } from '@modules/users/domain/entities';
-import FakeUser from '@modules/users/domain/entities/fakes/FakeUser';
-import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
-import { FakeGame } from '@modules/games/fakes';
-import { IGame, IRank } from '@modules/games/entities';
-import FakeGamesRepository from '@modules/games/repositories/fakes/FakeGamesRepository';
+import { IRank } from '@shared/domain/entities';
+import { FakeGame, FakeUser } from '@shared/domain/entities/fakes';
+import {
+  FakeGamesRepository,
+  FakeUsersRepository,
+} from '@shared/domain/repositories/fakes';
 import { CreatePlayerService } from '.';
-import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
+import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import { RequestError } from '@shared/infra/errors';
+import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
+import UpdateGameAdapter from '@modules/games/domain/adapters/UpdateGameAdapter';
 
 const initService = async (addRanks: boolean | IRank[] = false) => {
   const playersRepository = new FakePlayersRepository();
@@ -19,40 +21,56 @@ const initService = async (addRanks: boolean | IRank[] = false) => {
     usersRepository,
   );
 
-  const { id: _, ...fakeUser } = new FakeUser();
-  const user = await usersRepository.create(fakeUser as IUser);
-  const { id: __, ...fakeGame } = new FakeGame();
-  if (addRanks) {
-    fakeGame.levelInfo = [
-      {
-        level: 1,
-        requiredExperience: 300,
-      },
-      {
-        level: 2,
-        requiredExperience: 500,
-      },
-    ];
+  const fakeUser = new FakeUser();
+  const user = await usersRepository.create({
+    email: fakeUser.email,
+    firstname: fakeUser.firstname,
+    lastname: fakeUser.lastname,
+    password: fakeUser.password,
+  });
+  const fakeGame = new FakeGame();
 
-    fakeGame.ranks =
-      typeof addRanks === 'boolean'
+  const game = await gamesRepository.create(
+    new CreateGameAdapter({
+      name: fakeGame.name,
+      description: fakeGame.description,
+      creatorId: user.id,
+    }),
+  );
+  await gamesRepository.update(
+    new UpdateGameAdapter({
+      ...game,
+      levelInfo: addRanks
         ? [
             {
-              color: '#000',
               level: 1,
-              name: 'Rank1',
-              tag: 'RNK',
+              requiredExperience: 300,
             },
             {
-              color: '#000',
               level: 2,
-              name: 'Rank2',
-              tag: 'RNK',
+              requiredExperience: 500,
             },
           ]
-        : addRanks;
-  }
-  const game = await gamesRepository.create(fakeGame as IGame);
+        : [],
+      ranks:
+        typeof addRanks === 'boolean'
+          ? [
+              {
+                color: '#000',
+                level: 1,
+                name: 'Rank1',
+                tag: 'RNK',
+              },
+              {
+                color: '#000',
+                level: 2,
+                name: 'Rank2',
+                tag: 'RNK',
+              },
+            ]
+          : addRanks,
+    }),
+  );
 
   return { createPlayers, gameId: game.id, userId: user.id };
 };
@@ -63,8 +81,8 @@ describe('CreatePlayerService', () => {
 
     const player = await createPlayers.execute({ userId, gameId });
 
-    expect(player.game).toBe(gameId);
-    expect(player.user).toBe(userId);
+    expect(player.game.id).toBe(gameId);
+    expect(player.user.id).toBe(userId);
     expect(player.level).toBe(0);
   });
 

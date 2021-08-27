@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import { IAchievementsRepository } from '@modules/games/repositories';
-import { IAchievement } from '@modules/games/entities';
+import { IAchievementsRepository } from '@shared/domain/repositories';
+import { IAchievement } from '@shared/domain/entities';
 
 @injectable()
 export default class ListGamesService {

@@ -1,18 +1,27 @@
-import { v4 as uuid } from 'uuid';
+import {
+  FakeActivitiesRepository,
+  FakeLeaderboardsRepository,
+  FakeGamesRepository,
+} from '@shared/domain/repositories/fakes';
 
-import { FakeActivity, FakeGame } from '@modules/games/fakes';
-import FakeActivitiesRepository from '@modules/games/repositories/fakes/FakeActivitiesRepository';
-import FakeGamesRepository from '@modules/games/repositories/fakes/FakeGamesRepository';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
-import FakePlayer from '../fakes/FakePlayer';
-import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCompleteActivityRequestRepository';
-import FakeFeedPostsRepository from '../repositories/fakes/FakeFeedPostsRepository';
-import FakeLeaderboardsRepository from '../repositories/fakes/FakeLeaderboardsRepository';
-import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
+import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import CompleteActivityService from './CompleteActivityService';
-import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
-import { IPosition } from '../entities/ILeaderboard';
 import { RequestError } from '@shared/infra/errors';
+import { FakeCompleteActivityRequest } from '@modules/players/domain/entities/fakes';
+import {
+  FakeActivity,
+  FakeGame,
+  FakeUser,
+} from '@shared/domain/entities/fakes';
+import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
+import CreateActivityAdapter from '@shared/domain/adapters/CreateActivity';
+
+import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
+import FakeCompleteActivityRequestRepository from '@modules/players/domain/repositories/fakes/FakeCompleteActivityRequestRepository';
+import CreateCompleteActivityRequestAdapter from '@modules/players/domain/adapters/CreateCompleteActivityRequest';
+import FakeFeedPostsRepository from '@modules/players/domain/repositories/fakes/FakeFeedPostsRepository';
+import UpdateGameAdapter from '@modules/games/domain/adapters/UpdateGameAdapter';
 
 const initService = async () => {
   const playersRepository = new FakePlayersRepository();
@@ -34,50 +43,68 @@ const initService = async () => {
     transactionProvider,
   );
 
-  const userId = uuid();
+  const user = new FakeUser();
 
   const fakeGame = new FakeGame();
-  fakeGame.levelInfo.push(
-    {
-      level: 1,
-      requiredExperience: 0,
-    },
-    {
-      level: 2,
-      requiredExperience: 300,
-    },
-    {
-      level: 3,
-      requiredExperience: 400,
-    },
-    {
-      level: 4,
-      requiredExperience: 600,
-    },
-  );
-  fakeGame.ranks.push(
-    {
-      level: 4,
-      color: '#000',
-      name: 'Rank',
-      tag: 'RNK',
-    },
-    {
-      level: 3,
-      color: '#000',
-      name: 'Rank',
-      tag: 'RNK',
-    },
-  );
-  const game = await gamesRepository.create(fakeGame);
 
-  const fakePlayer = new FakePlayer(userId, game.id);
-  fakePlayer.experience = 0;
-  fakePlayer.level = 1;
-  const player = await playersRepository.create(fakePlayer);
+  const createdGame = await gamesRepository.create(
+    new CreateGameAdapter({
+      name: fakeGame.name,
+      description: fakeGame.description,
+      creatorId: user.id,
+    }),
+  );
+  const game = await gamesRepository.update(
+    new UpdateGameAdapter({
+      ...createdGame,
+      levelInfo: [
+        {
+          level: 1,
+          requiredExperience: 0,
+        },
+        {
+          level: 2,
+          requiredExperience: 300,
+        },
+        {
+          level: 3,
+          requiredExperience: 400,
+        },
+        {
+          level: 4,
+          requiredExperience: 600,
+        },
+      ],
+      ranks: [
+        {
+          level: 4,
+          color: '#000',
+          name: 'Rank',
+          tag: 'RNK',
+        },
+        {
+          level: 3,
+          color: '#000',
+          name: 'Rank',
+          tag: 'RNK',
+        },
+      ],
+    }),
+  );
+
+  //
+
+  const player = await playersRepository.create(
+    new CreatePlayerAdapter({
+      userId: user.id,
+      gameId: game.id,
+      gameRanks: game.ranks,
+      gameLevels: game.levelInfo,
+    }),
+  );
 
   return {
-    userId,
+    userId: user.id,
     completeActivity,
     game,
     player,
@@ -101,35 +128,51 @@ describe('CompleteActivityService', () => {
       leaderboardsRepository,
     } = await initService();
 
-    const fakeActivity = new FakeActivity(game.id);
-    fakeActivity.experience = 200;
-    const activity = await activitiesRepository.create(fakeActivity);
-
-    const fakeRequest = new FakeCompleteActivityRequest(
-      player.id,
-      activity.id,
-      game.id,
+    const fakeActivity = new FakeActivity({ game: game.id });
+    const activity = await activitiesRepository.create(
+      new CreateActivityAdapter({
+        gameId: game.id,
+        name: fakeActivity.name,
+        experience: fakeActivity.experience,
+        description: fakeActivity.description,
+        dmRules: fakeActivity.dmRules,
+      }),
     );
-    const request = await completeActivityRequestRepository.create(fakeRequest);
+
+    const fakeRequest = new FakeCompleteActivityRequest({
+      requester: player.id,
+      activity: activity.id,
+      game: game.id,
+    });
+    const request = await completeActivityRequestRepository.create(
+      new CreateCompleteActivityRequestAdapter({
+        ...fakeRequest,
+        requester: player.id,
+        activity: activity.id,
+      }),
+    );
 
     await completeActivity.execute({ requestId: request.id, userId });
 
-    const updatedPlayer = await playersRepository.findOne(
-      player.id,
-      userId,
-      game.id,
-    );
+    const updatedPlayer = await playersRepository.findOne({
+      id: player.id,
+    });
 
-    expect(updatedPlayer?.experience).toBe(activity.experience);
+    const expectedExperience = player.experience + activity.experience;
+    expect(updatedPlayer?.experience).toBe(expectedExperience);
 
     const leaderboard = await leaderboardsRepository.getGameCurrentRanking(
       game.id,
     );
 
-    expect(leaderboard?.position).toHaveLength(1);
-    expect(leaderboard?.position).toContainEqual<IPosition>({
+    const positions = leaderboard?.position.map(position => ({
+      experience: position.experience,
+      playerId: position.player.id,
+    }));
+    expect(positions).toHaveLength(1);
+    expect(positions).toContainEqual({
       experience: activity.experience,
-      player: player.id,
+      playerId: player.id,
     });
 
     const deletedRequest = await completeActivityRequestRepository.findOne(
@@ -151,43 +194,69 @@ describe('CompleteActivityService', () => {
       leaderboardsRepository,
     } = await initService();
 
-    const fakeActivity = new FakeActivity(game.id);
-    fakeActivity.experience = 350;
-    const activity = await activitiesRepository.create(fakeActivity);
-
-    const fakeRequest = new FakeCompleteActivityRequest(
-      player.id,
-      activity.id,
-      game.id,
+    const fakeActivity = new FakeActivity({ game: game.id });
+    const activity = await activitiesRepository.create(
+      new CreateActivityAdapter({
+        gameId: game.id,
+        name: fakeActivity.name,
+        experience: 350,
+        description: fakeActivity.description,
+        dmRules: fakeActivity.dmRules,
+      }),
     );
+
+    const fakeRequest = new FakeCompleteActivityRequest({
+      requester: player.id,
+      activity: activity.id,
+      game: game.id,
+    });
     const firstRequest = await completeActivityRequestRepository.create(
-      fakeRequest,
+      new CreateCompleteActivityRequestAdapter({
+        ...fakeRequest,
+        requester: player.id,
+        activity: activity.id,
+      }),
     );
     const secondRequest = await completeActivityRequestRepository.create(
-      fakeRequest,
+      new CreateCompleteActivityRequestAdapter({
+        ...fakeRequest,
+        requester: player.id,
+        activity: activity.id,
+      }),
     );
 
     await completeActivity.execute({ requestId: firstRequest.id, userId });
     await completeActivity.execute({ requestId: secondRequest.id, userId });
 
-    const updatedPlayer = await playersRepository.findOne(
-      player.id,
+    const updatedPlayer = await playersRepository.findOne({
+      id: player.id,
       userId,
-      game.id,
+      gameId: game.id,
+    });
+
+    const expectedLevel = 4;
+    const expectedRank = game.ranks.find(rank => rank.level === expectedLevel);
+    const expectedLevelInfo = game.levelInfo.find(
+      info => info.level === expectedLevel,
     );
 
-    expect(updatedPlayer?.experience).toBe(activity.experience * 2);
-    expect(updatedPlayer?.level).toBe(game.levelInfo[0].level);
-    expect(updatedPlayer?.rank).toEqual(game.ranks[0]);
+    const expectedExperience = player.experience + activity.experience * 2;
+    expect(updatedPlayer?.experience).toBe(expectedExperience);
+    expect(updatedPlayer?.level).toBe(expectedLevelInfo?.level);
+    expect(updatedPlayer?.rank).toEqual(expectedRank);
 
     const leaderboard = await leaderboardsRepository.getGameCurrentRanking(
       game.id,
     );
 
-    expect(leaderboard?.position).toHaveLength(1);
-    expect(leaderboard?.position).toContainEqual<IPosition>({
+    const positions = leaderboard?.position.map(position => ({
+      experience: position.experience,
+      playerId: position.player.id,
+    }));
+    expect(positions).toHaveLength(1);
+    expect(positions).toContainEqual({
       experience: activity.experience * 2,
-      player: player.id,
+      playerId: player.id,
     });
   });
 

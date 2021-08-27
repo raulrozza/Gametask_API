@@ -5,15 +5,18 @@ import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
 import {
-  IAchievementsRepository,
   IGamesRepository,
-} from '@modules/games/repositories';
-import ICreateUnlockAchievementRequestDTO from '@modules/players/dtos/ICreateUnlockAchievementRequestDTO';
-import { IUnlockAchievementRequest } from '@modules/players/entities';
+  IAchievementsRepository,
+} from '@shared/domain/repositories';
+
+import ICreateUnlockAchievementRequestDTO from '@modules/players/domain/dtos/ICreateUnlockAchievementRequestDTO';
 import {
-  IPlayersRepository,
   IUnlockAchievementRequestRepository,
-} from '@modules/players/repositories';
+  IPlayersRepository,
+} from '@modules/players/domain/repositories';
+
+import { IUnlockAchievementRequest } from '@modules/players/domain/entities';
+import CreateUnlockAchievementAdapter from '@modules/players/domain/adapters/CreateUnlockAchievement';
 
 interface ValidadeInputParams {
   gameId: string;
@@ -21,6 +24,8 @@ interface ValidadeInputParams {
   requester: string;
   achievement: string;
 }
+
+const GAME_REGISTERS_INCREASE_COUNT = 1;
 
 @injectable()
 export default class CreateUnlockAchievementRequestService {
@@ -56,20 +61,24 @@ export default class CreateUnlockAchievementRequestService {
       achievement,
     });
 
-    return await this.transactionProvider.startSession<IUnlockAchievementRequest>(
+    return this.transactionProvider.startSession<IUnlockAchievementRequest>(
       async session => {
         const request = await this.unlockAchievementRequestRepository.create(
-          {
+          new CreateUnlockAchievementAdapter({
             achievement,
             game: gameId,
             requestDate,
             information,
             requester,
-          },
+          }),
           session,
         );
 
-        await this.gamesRepository.updateRegisters(gameId, 1, session);
+        await this.gamesRepository.updateRegisters(
+          gameId,
+          GAME_REGISTERS_INCREASE_COUNT,
+          session,
+        );
 
         return request;
       },
@@ -90,11 +99,11 @@ export default class CreateUnlockAchievementRequestService {
         404,
       );
 
-    const player = await this.playersRepository.findOne(
-      requester,
+    const player = await this.playersRepository.findOne({
+      id: requester,
       userId,
       gameId,
-    );
+    });
     if (!player)
       throw new RequestError(
         'This player does not exist',
@@ -113,10 +122,8 @@ export default class CreateUnlockAchievementRequestService {
         404,
       );
 
-    const alreadyRequested = await this.unlockAchievementRequestRepository.checkIfRequested(
-      requester,
-      gameId,
-      achievement,
+    const alreadyRequested = await this.unlockAchievementRequestRepository.findOne(
+      { requester, gameId, achievementId: achievement },
     );
     if (alreadyRequested)
       throw new RequestError(
@@ -124,7 +131,11 @@ export default class CreateUnlockAchievementRequestService {
         errorCodes.ACHIEVEMENT_REGISTER_ALREADY_EXISTS,
       );
 
-    if ((player.achievements as string[]).includes(achievement))
+    if (
+      player.achievements.find(
+        playerAchievement => playerAchievement.id === achievement,
+      )
+    )
       throw new RequestError(
         'This player already has this achievement',
         errorCodes.ACHIEVEMENT_BELONGS_TO_PLAYER,

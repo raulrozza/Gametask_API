@@ -6,6 +6,7 @@
   "scripts": {
     "start": "tsnd -r tsconfig-paths/register --transpile-only src/server.ts",
     "dev": "tsnd -r tsconfig-paths/register --transpile-only --respawn --inspect --ignore-watch node_modules --no-notify src/server.ts",
+    "dev:compile": "tsnd -r tsconfig-paths/register --files --respawn --inspect --ignore-watch node_modules --no-notify src/server.ts",
     "test": "jest --watch",
     "coverage": "jest"
   },

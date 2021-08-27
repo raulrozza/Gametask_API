@@ -1,12 +1,20 @@
 import { Schema, model, Document, Types } from 'mongoose';
 
-import RankSchema from '@modules/games/infra/mongoose/entities/Rank';
-import { IPlayer } from '@modules/players/entities';
-import { IRank } from '@modules/games/entities';
-import { ITitleDocument } from '@modules/games/infra/mongoose/entities/Title';
-import { IAchievementDocument } from '@modules/games/infra/mongoose/entities/Achievement';
-import { IUserDocument } from '@modules/users/infra/mongoose/entities/User';
-import { IGameDocument } from '@modules/games/infra/mongoose/entities/Game';
+import { IPlayer } from '@modules/players/domain/entities';
+import { IUserDocument } from '@shared/infra/mongoose/entities/User';
+import { ITitleDocument } from '@shared/infra/mongoose/entities/Title';
+import RankSchema from '@shared/infra/mongoose/entities/Rank';
+import { IGameDocument } from '@shared/infra/mongoose/entities/Game';
+import { IAchievementDocument } from '@shared/infra/mongoose/entities/Achievement';
+
+export interface IPlayerDocument extends IPlayer, Document {
+  id: NonNullable<Document['id']>;
+  titles: Types.Array<ITitleDocument['_id']>;
+  currentTitle?: ITitleDocument['_id'];
+  achievements: Types.Array<IAchievementDocument['_id']>;
+  user: IUserDocument['_id'];
+  game: IGameDocument['_id'];
+}
 
 const PlayerSchema = new Schema(
   {
@@ -63,28 +71,5 @@ const PlayerSchema = new Schema(
     },
   },
 );
-
-interface IPlayerBaseDocument extends Omit<IPlayer, 'id'>, Document {
-  id: NonNullable<Document['id']>;
-  experience: number;
-  level: number;
-  rank: IRank;
-}
-
-export interface IPlayerDocument extends IPlayerBaseDocument {
-  titles: Types.Array<ITitleDocument['_id']>;
-  currentTitle?: ITitleDocument['_id'];
-  achievements: Types.Array<IAchievementDocument['_id']>;
-  user: IUserDocument['_id'];
-  game: IGameDocument['_id'];
-}
-
-export interface IPlayerPopulatedDocument extends IPlayerBaseDocument {
-  titles: Types.Array<ITitleDocument>;
-  currentTitle?: ITitleDocument;
-  achievements: Types.Array<IAchievementDocument>;
-  user: IUserDocument;
-  game: IGameDocument;
-}
 
 export default model<IPlayerDocument>('Player', PlayerSchema);

@@ -4,9 +4,10 @@ import { inject, injectable } from 'tsyringe';
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
-import IUpdateTitleDTO from '@modules/games/dtos/IUpdateTitleDTO';
-import { ITitle } from '@modules/games/entities';
-import { ITitlesRepository } from '@modules/games/repositories';
+import IUpdateTitleDTO from '@modules/games/domain/dtos/IUpdateTitleDTO';
+import { ITitlesRepository } from '@shared/domain/repositories';
+import UpdateTitleAdapter from '@modules/games/domain/adapters/UpdateTitle';
+import { ITitle } from '@shared/domain/entities';
 
 @injectable()
 export default class UpdateTitleService {
@@ -26,11 +27,9 @@ export default class UpdateTitleService {
           400,
         );
 
-      const updatedTitle = await this.titlesRepository.update({
-        id: title.id,
-        game: title.game,
-        name,
-      });
+      const updatedTitle = await this.titlesRepository.update(
+        new UpdateTitleAdapter({ id, name }),
+      );
 
       return updatedTitle;
     } catch (error) {

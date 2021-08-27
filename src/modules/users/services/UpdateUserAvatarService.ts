@@ -6,7 +6,7 @@ import errorCodes from '@config/errorCodes';
 import IStorageProvider from '@shared/domain/providers/IStorageProvider';
 import { RequestError } from '@shared/infra/errors';
 
-import { IUsersRepository } from '@modules/users/domain/repositories';
+import { IUsersRepository } from '@shared/domain/repositories';
 import { IUpdateUserAvatarDTO } from '@modules/users/domain/dtos';
 
 const USER_FOLDER = 'user';
@@ -36,14 +36,10 @@ export default class UpdateUserAvatarService {
 
     await this.storageProvider.saveFile(filename, USER_FOLDER);
 
-    const updatedUser = await this.usersRepository.update({
-      id: user.id,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      email: user.email,
-      password: user.password,
-      image: filename,
-    });
+    const updatedUser = await this.usersRepository.updateAvatar(
+      user.id,
+      filename,
+    );
 
     return updatedUser;
   }

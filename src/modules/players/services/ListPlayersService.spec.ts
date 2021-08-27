@@ -1,9 +1,9 @@
 import { v4 as uuid } from 'uuid';
 
-import { IPlayer } from '../entities';
-import FakePlayer from '../fakes/FakePlayer';
-import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
+import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import ListPlayersService from './ListPlayersService';
+import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
+import { FakeGame } from '@shared/domain/entities/fakes';
 
 describe('ListPlayersService', () => {
   it('should list all games from the user', async () => {
@@ -11,15 +11,32 @@ describe('ListPlayersService', () => {
     const listPlayers = new ListPlayersService(playersRepository);
 
     const userId = uuid();
-    const player = new FakePlayer(userId, 'game');
+    const game = new FakeGame();
 
-    await playersRepository.create({ ...player, game: 'game-01' } as IPlayer);
-    await playersRepository.create({
-      ...player,
-      game: 'game-02',
-      user: 'user-id',
-    } as IPlayer);
-    await playersRepository.create({ ...player, game: 'game-03' } as IPlayer);
+    await playersRepository.create(
+      new CreatePlayerAdapter({
+        userId,
+        gameId: uuid(),
+        gameRanks: game.ranks,
+        gameLevels: game.levelInfo,
+      }),
+    );
+    await playersRepository.create(
+      new CreatePlayerAdapter({
+        userId: uuid(),
+        gameId: uuid(),
+        gameRanks: game.ranks,
+        gameLevels: game.levelInfo,
+      }),
+    );
+    await playersRepository.create(
+      new CreatePlayerAdapter({
+        userId,
+        gameId: uuid(),
+        gameRanks: game.ranks,
+        gameLevels: game.levelInfo,
+      }),
+    );
 
     const players = await listPlayers.execute(userId);
 

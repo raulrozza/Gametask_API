@@ -1,27 +1,28 @@
-import { v4 as uuid } from 'uuid';
-
-import { IActivity } from '../entities';
-import FakeActivity from '../fakes/FakeActivity';
-import FakeActivitiesRepository from '../repositories/fakes/FakeActivitiesRepository';
+import { FakeActivitiesRepository } from '@shared/domain/repositories/fakes';
 import ShowActivityService from './ShowActivityService';
+import CreateActivityAdapter from '@shared/domain/adapters/CreateActivity';
+import { FakeActivity, FakeGame } from '@shared/domain/entities/fakes';
 
 describe('ShowActivityService', () => {
   it('should return the correct activity', async () => {
     const activitiesRepository = new FakeActivitiesRepository();
     const showActivity = new ShowActivityService(activitiesRepository);
 
-    const gameId = uuid();
-    const fakeActivity = new FakeActivity(gameId);
+    const game = new FakeGame();
+    const fakeActivity = new FakeActivity({ game: game.id });
 
-    const activity = await activitiesRepository.create({
-      name: fakeActivity.name,
-      description: fakeActivity.description,
-      game: fakeActivity.game,
-    } as IActivity);
+    const activity = await activitiesRepository.create(
+      new CreateActivityAdapter({
+        gameId: game.id,
+        name: fakeActivity.name,
+        description: fakeActivity.description,
+        experience: fakeActivity.experience,
+      }),
+    );
 
     const fetchedActivity = await showActivity.execute({
       activityId: activity.id,
-      gameId,
+      gameId: game.id,
     });
 
     expect(fetchedActivity).toEqual(activity);
@@ -31,18 +32,21 @@ describe('ShowActivityService', () => {
     const activitiesRepository = new FakeActivitiesRepository();
     const showActivity = new ShowActivityService(activitiesRepository);
 
-    const gameId = uuid();
-    const fakeActivity = new FakeActivity(gameId);
+    const game = new FakeGame();
+    const fakeActivity = new FakeActivity({ game: game.id });
 
-    const activity = await activitiesRepository.create({
-      name: fakeActivity.name,
-      description: fakeActivity.description,
-      game: 'random-game-id',
-    } as IActivity);
+    const activity = await activitiesRepository.create(
+      new CreateActivityAdapter({
+        gameId: 'random=game-id',
+        name: fakeActivity.name,
+        description: fakeActivity.description,
+        experience: fakeActivity.experience,
+      }),
+    );
 
     const fetchedActivity = await showActivity.execute({
       activityId: activity.id,
-      gameId,
+      gameId: game.id,
     });
 
     expect(fetchedActivity).toBeUndefined();

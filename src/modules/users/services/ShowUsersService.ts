@@ -2,7 +2,7 @@ import 'reflect-metadata';
 
 import { inject, injectable } from 'tsyringe';
 
-import { IUsersRepository } from '@modules/users/domain/repositories';
+import { IUsersRepository } from '@shared/domain/repositories';
 
 @injectable()
 export default class ShowUsersService {

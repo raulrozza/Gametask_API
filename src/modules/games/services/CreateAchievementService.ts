@@ -4,11 +4,12 @@ import { inject, injectable } from 'tsyringe';
 import {
   IAchievementsRepository,
   ITitlesRepository,
-} from '@modules/games/repositories';
-import { IAchievement } from '@modules/games/entities';
-import ICreateAchievementDTO from '@modules/games/dtos/ICreateAchievementDTO';
+} from '@shared/domain/repositories';
+
+import ICreateAchievementDTO from '@modules/games/domain/dtos/ICreateAchievementDTO';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
+import { IAchievement } from '@shared/domain/entities';
 
 @injectable()
 export default class CreateAchievementService {
@@ -41,7 +42,7 @@ export default class CreateAchievementService {
       const createdAchievement = await this.achievementsRepository.create({
         name,
         description,
-        game: gameId,
+        gameId,
         title,
       });
 

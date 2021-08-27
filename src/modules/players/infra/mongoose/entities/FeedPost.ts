@@ -1,12 +1,11 @@
 import { Schema, model, Document } from 'mongoose';
-import LevelInfoSchema from '@modules/games/infra/mongoose/entities/LevelInfoSchema';
-import RankSchema from '@modules/games/infra/mongoose/entities/Rank';
-import { IFeedPost } from '@modules/players/entities';
-import { ILevelInfo, IRank } from '@modules/games/entities';
-import { IActivityDocument } from '@modules/games/infra/mongoose/entities/Activity';
-import { IAchievementDocument } from '@modules/games/infra/mongoose/entities/Achievement';
-import { IGameDocument } from '@modules/games/infra/mongoose/entities/Game';
+import { IGameDocument } from '@shared/infra/mongoose/entities/Game';
 import { IPlayerDocument } from '@modules/players/infra/mongoose/entities/Player';
+import { IFeedPost } from '@modules/players/domain/entities';
+import RankSchema from '@shared/infra/mongoose/entities/Rank';
+import LevelInfoSchema from '@shared/infra/mongoose/entities/LevelInfoSchema';
+import { IActivityDocument } from '@shared/infra/mongoose/entities/Activity';
+import { IAchievementDocument } from '@shared/infra/mongoose/entities/Achievement';
 
 const typeEnum: IFeedPost['type'][] = [
   'achievement',
@@ -14,6 +13,14 @@ const typeEnum: IFeedPost['type'][] = [
   'level',
   'rank',
 ];
+
+export interface IFeedPostDocument extends IFeedPost, Document {
+  id: NonNullable<Document['id']>;
+  player: IPlayerDocument['_id'];
+  activity?: IActivityDocument['_id'];
+  achievement?: IAchievementDocument['_id'];
+  game: IGameDocument['_id'];
+}
 
 const FeedPostSchema = new Schema(
   {
@@ -44,17 +51,9 @@ const FeedPostSchema = new Schema(
     },
     level: {
       type: LevelInfoSchema,
-      default: {
-        level: 0,
-        requiredExperience: 0,
-      },
     },
     rank: {
       type: RankSchema,
-      default: {
-        name: ' ',
-        tag: ' ',
-      },
     },
     date: {
       type: Date,
@@ -63,25 +62,5 @@ const FeedPostSchema = new Schema(
   },
   { toJSON: { virtuals: true } },
 );
-
-interface IFeedPostBaseDocument extends IFeedPost, Document {
-  id: NonNullable<Document['id']>;
-  level: ILevelInfo;
-  rank?: IRank;
-}
-
-export interface IFeedPostDocument extends IFeedPostBaseDocument {
-  player: IPlayerDocument['_id'];
-  activity?: IActivityDocument['_id'];
-  achievement?: IAchievementDocument['_id'];
-  game: IGameDocument['_id'];
-}
-
-export interface IFeedPostPopulatedDocument extends IFeedPostBaseDocument {
-  player: IPlayerDocument;
-  activity?: IActivityDocument;
-  achievement?: IAchievementDocument;
-  game: IGameDocument;
-}
 
 export default model<IFeedPostDocument>('FeedPost', FeedPostSchema);

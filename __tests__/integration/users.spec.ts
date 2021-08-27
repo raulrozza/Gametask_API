@@ -4,13 +4,16 @@ import resetMongoDatabase from '../helpers/resetMongoDatabase';
 import { setEnvToTest } from '../helpers/setEnvToTest';
 
 import app from '@shared/infra/http/app';
-import * as mongoEntities from '@modules/users/infra/mongoose/entities';
-import FakeUser from '@modules/users/domain/entities/fakes/FakeUser';
+import * as mongoEntities from '@shared/infra/mongoose/entities';
+import { FakeUser } from '@shared/domain/entities/fakes';
+import { Model } from 'mongoose';
 
 describe('Users', () => {
   beforeAll(async () => {
     setEnvToTest();
-    const entitiesArray = Object.values(mongoEntities);
+    const entitiesArray = Object.values(mongoEntities).filter(
+      entity => entity instanceof Model,
+    ) as Model<any>[];
     await resetMongoDatabase(entitiesArray);
   });
 

@@ -1,7 +1,7 @@
 import FakeStorageProvider from '@shared/domain/providers/fakes/FakeStorageProvider';
 import { UpdateUserAvatarService } from '.';
-import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
-import FakeUser from '@modules/users/domain/entities/fakes/FakeUser';
+import { FakeUsersRepository } from '@shared/domain/repositories/fakes';
+import { FakeUser } from '@shared/domain/entities/fakes';
 import { RequestError } from '@shared/infra/errors';
 
 const getService = () => {

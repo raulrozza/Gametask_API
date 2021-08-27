@@ -1,22 +1,22 @@
-import { v4 as uuid } from 'uuid';
-
-import { IGame } from '../entities';
-import FakeGame from '../fakes/FakeGame';
-import FakeGamesRepository from '../repositories/fakes/FakeGamesRepository';
+import { FakeGamesRepository } from '@shared/domain/repositories/fakes';
 import ShowGameService from './ShowGameService';
+import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
+import { FakeGame, FakeUser } from '@shared/domain/entities/fakes';
 
 describe('ShowGameService', () => {
   it('should return the correct game', async () => {
     const gamesRepository = new FakeGamesRepository();
     const showGames = new ShowGameService(gamesRepository);
-    const userId = uuid();
+    const user = new FakeUser();
 
     const fakeGame = new FakeGame();
-    const game = await gamesRepository.create({
-      name: fakeGame.name,
-      description: fakeGame.description,
-      administrators: [userId],
-    } as IGame);
+    const game = await gamesRepository.create(
+      new CreateGameAdapter({
+        name: fakeGame.name,
+        description: fakeGame.description,
+        creatorId: user.id,
+      }),
+    );
 
     const fetchedGame = await showGames.execute({
       gameId: game.id,

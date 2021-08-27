@@ -1,27 +1,37 @@
-import { v4 as uuid } from 'uuid';
-import FakeGame from '../fakes/FakeGame';
-import FakeGamesRepository from '../repositories/fakes/FakeGamesRepository';
-import CreateGameService from './CreateGameService';
+import CreateGameService from '@modules/games/services/CreateGameService';
+import {
+  FakeGamesRepository,
+  FakeLeaderboardsRepository,
+} from '@shared/domain/repositories/fakes';
+import { FakeGame, FakeUser } from '@shared/domain/entities/fakes';
 
 describe('CreateGameService', () => {
   it('should create the game', async () => {
     const gamesRepository = new FakeGamesRepository();
-    const createGame = new CreateGameService(gamesRepository);
+    const leaderboardsRepository = new FakeLeaderboardsRepository();
+    const createGame = new CreateGameService(
+      gamesRepository,
+      leaderboardsRepository,
+    );
 
     const fakeGame = new FakeGame();
-    const creatorId = uuid();
+    const creator = new FakeUser();
 
     const payload = {
-      creatorId,
+      creatorId: creator.id,
       name: fakeGame.name,
       description: fakeGame.description,
     };
 
     const game = await createGame.execute(payload);
 
+    const administrator = game.administrators.find(
+      adm => adm.id === creator.id,
+    );
+
     expect(game).toHaveProperty('id');
     expect(game.name).toBe(fakeGame.name);
     expect(game.description).toBe(fakeGame.description);
-    expect(game.administrators).toContain(creatorId);
+    expect(administrator).toBeDefined();
   });
 });

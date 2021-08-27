@@ -1,9 +1,6 @@
-import { v4 as uuid } from 'uuid';
-import FakeAchievement from '../fakes/FakeAchievement';
-
-import FakeAchievementsRepository from '../repositories/fakes/FakeAchievementsRepository';
+import { FakeAchievementsRepository } from '@shared/domain/repositories/fakes';
 import ListAchievementsService from './ListAchievementsService';
-import { IAchievement } from '../entities';
+import { FakeAchievement, FakeGame } from '@shared/domain/entities/fakes';
 
 describe('ListAchievementsService', () => {
   it('should list only the achievements of the selected game', async () => {
@@ -13,27 +10,27 @@ describe('ListAchievementsService', () => {
       achievementsRepository,
     );
 
-    const gameId = uuid();
+    const game = new FakeGame();
 
-    const fakeAchievement = new FakeAchievement(gameId);
+    const fakeAchievement = new FakeAchievement({ game: game.id });
 
     await achievementsRepository.create({
-      game: fakeAchievement.game,
+      gameId: game.id,
       name: fakeAchievement.name,
       description: fakeAchievement.description,
-    } as IAchievement);
+    });
     await achievementsRepository.create({
-      game: fakeAchievement.game,
+      gameId: game.id,
       name: fakeAchievement.name,
       description: fakeAchievement.description,
-    } as IAchievement);
+    });
     await achievementsRepository.create({
-      game: 'another_game_id',
+      gameId: 'another_game_id',
       name: fakeAchievement.name,
       description: fakeAchievement.description,
-    } as IAchievement);
+    });
 
-    const achievements = await listAchievements.execute(gameId);
+    const achievements = await listAchievements.execute(game.id);
 
     expect(achievements).toHaveLength(2);
   });

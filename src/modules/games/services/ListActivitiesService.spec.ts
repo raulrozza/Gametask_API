@@ -1,9 +1,9 @@
 import { v4 as uuid } from 'uuid';
-import FakeActivity from '../fakes/FakeActivity';
 
-import FakeActivitiesRepository from '../repositories/fakes/FakeActivitiesRepository';
+import { FakeActivitiesRepository } from '@shared/domain/repositories/fakes';
 import ListActivitiesService from './ListActivitiesService';
-import { IActivity } from '../entities';
+import CreateActivityAdapter from '@shared/domain/adapters/CreateActivity';
+import { FakeActivity } from '@shared/domain/entities/fakes';
 
 describe('ListActivitiesService', () => {
   it('should list only the activites of the selected game', async () => {
@@ -13,23 +13,32 @@ describe('ListActivitiesService', () => {
 
     const gameId = uuid();
 
-    const activity = new FakeActivity(gameId);
+    const activity = new FakeActivity({ game: gameId });
 
-    await activitiesRepository.create({
-      game: activity.game,
-      name: activity.name,
-      description: activity.description,
-    } as IActivity);
-    await activitiesRepository.create({
-      game: activity.game,
-      name: activity.name,
-      description: activity.description,
-    } as IActivity);
-    await activitiesRepository.create({
-      game: 'another_game_id',
-      name: activity.name,
-      description: activity.description,
-    } as IActivity);
+    await activitiesRepository.create(
+      new CreateActivityAdapter({
+        gameId,
+        name: activity.name,
+        description: activity.description,
+        experience: activity.experience,
+      }),
+    );
+    await activitiesRepository.create(
+      new CreateActivityAdapter({
+        gameId,
+        name: activity.name,
+        description: activity.description,
+        experience: activity.experience,
+      }),
+    );
+    await activitiesRepository.create(
+      new CreateActivityAdapter({
+        gameId: 'another_game_id',
+        name: activity.name,
+        description: activity.description,
+        experience: activity.experience,
+      }),
+    );
 
     const activities = await listActivities.execute(gameId);
 

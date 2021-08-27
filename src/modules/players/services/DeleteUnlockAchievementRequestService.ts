@@ -2,11 +2,13 @@ import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
 import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
-import { IUnlockAchievementRequestRepository } from '@modules/players/repositories';
-import { IGamesRepository } from '@modules/games/repositories';
-import IRequestExecutionDTO from '@modules/players/dtos/IRequestExecutionDTO';
+import { IUnlockAchievementRequestRepository } from '@modules/players/domain/repositories';
+import { IGamesRepository } from '@shared/domain/repositories';
+import IRequestExecutionDTO from '@modules/players/domain/dtos/IRequestExecutionDTO';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
+
+const REGISTER_DECREASE_COUNT = -1;
 
 @injectable()
 export default class DeleteUnlockAchievementRequestService {
@@ -33,7 +35,7 @@ export default class DeleteUnlockAchievementRequestService {
       );
 
     const requestExists = await this.unlockAchievementRequestRepository.findOne(
-      requestId,
+      { id: requestId },
     );
     if (!requestExists)
       throw new RequestError(
@@ -41,14 +43,18 @@ export default class DeleteUnlockAchievementRequestService {
         errorCodes.BAD_REQUEST_ERROR,
       );
 
-    await this.transactionProvider.startSession(async session => {
+    return this.transactionProvider.startSession(async session => {
       await this.unlockAchievementRequestRepository.delete(
         requestId,
         gameId,
         session,
       );
 
-      await this.gamesRepository.updateRegisters(game.id, -1, session);
+      await this.gamesRepository.updateRegisters(
+        game.id,
+        REGISTER_DECREASE_COUNT,
+        session,
+      );
     });
   }
 }
