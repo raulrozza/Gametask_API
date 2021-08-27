@@ -8,8 +8,8 @@ describe('UpdateUserService', () => {
     const usersRepository = new FakeUsersRepository();
     const updateUser = new UpdateUserService(usersRepository);
 
-    const user = new FakeUser();
-    await usersRepository.create(user);
+    const fakeUser = new FakeUser();
+    const user = await usersRepository.create(fakeUser);
 
     const payload = {
       id: user.id,
