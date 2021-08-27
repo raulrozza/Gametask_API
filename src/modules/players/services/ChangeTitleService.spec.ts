@@ -9,7 +9,6 @@ import {
 } from '@shared/domain/entities/fakes';
 import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
-
 const initService = async () => {
   const titlesRepository = new FakeTitlesRepository();
   const playersRepository = new FakePlayersRepository();
@@ -67,17 +66,31 @@ describe('ChangeTitleService', () => {
       titleId: title.id,
     });
 
-    expect(updatedPlayer.currentTitle).toBe(title.id);
+    expect(updatedPlayer.currentTitle?.id).toBe(title.id);
   });
 
   it('should remove the current title when sending an empty titleId', async () => {
-    const { changeTitle, gameId, userId, title, player } = await initService();
+    const {
+      changeTitle,
+      gameId,
+      userId,
+      title,
+      player,
+      playersRepository,
+    } = await initService();
+
+    const achievement = new FakeAchievement();
+    await playersRepository.addAchievement({
+      id: player.id,
+      achievement: achievement.id,
+      title: title.id,
+    });
 
     await changeTitle.execute({
       gameId,
       userId,
       playerId: player.id,
-      titleId: title.id,
+      titleId: undefined,
     });
 
     const updatedPlayer = await changeTitle.execute({
@@ -98,6 +111,19 @@ describe('ChangeTitleService', () => {
         userId,
         playerId: player.id,
         titleId: 'invalid id',
+      }),
+    ).rejects.toBeInstanceOf(RequestError);
+  });
+
+  it('should throw changing a title you dont own', async () => {
+    const { changeTitle, gameId, userId, player, title } = await initService();
+
+    await expect(
+      changeTitle.execute({
+        gameId,
+        userId,
+        playerId: player.id,
+        titleId: title.id,
       }),
     ).rejects.toBeInstanceOf(RequestError);
   });

@@ -67,7 +67,9 @@ export default class FakePlayersRepository implements IPlayersRepository {
       experience,
       level,
       rank,
-      currentTitle: new FakeTitle({ id: currentTitle }),
+      currentTitle: currentTitle
+        ? new FakeTitle({ id: currentTitle })
+        : undefined,
     };
 
     this.players[foundIndex] = updatedPlayer;

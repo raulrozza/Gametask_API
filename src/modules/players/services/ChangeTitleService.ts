@@ -48,13 +48,15 @@ export default class ChangeTitleService {
         404,
       );
 
-    const playerHasTitle = player.titles.find(title => title.id === titleId);
-    if (!playerHasTitle)
-      throw new RequestError(
-        'You dont have that title',
-        errorCodes.BAD_REQUEST_ERROR,
-        400,
-      );
+    if (titleId) {
+      const playerHasTitle = player.titles.find(title => title.id === titleId);
+      if (!playerHasTitle)
+        throw new RequestError(
+          'You dont have that title',
+          errorCodes.BAD_REQUEST_ERROR,
+          400,
+        );
+    }
 
     const updatedPlayer = await this.playersRepository.update(
       new UpdatePlayerAdapter({
