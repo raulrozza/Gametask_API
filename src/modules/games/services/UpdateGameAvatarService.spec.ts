@@ -36,7 +36,7 @@ describe('UpdateGameAvatar', () => {
     const updatedGame = await updateGameAvatar.execute({
       filename,
       id: game.id,
-      userId: 'fake_id',
+      userId: fakeUser.id,
     });
 
     expect(updatedGame.image).toBe(filename);
@@ -61,12 +61,12 @@ describe('UpdateGameAvatar', () => {
     await updateGameAvatar.execute({
       filename: 'first_file',
       id: game.id,
-      userId: 'fake_id',
+      userId: fakeUser.id,
     });
     const updatedGame = await updateGameAvatar.execute({
       filename,
       id: game.id,
-      userId: 'fake_id',
+      userId: fakeUser.id,
     });
 
     expect(deleteFile).toHaveBeenCalledWith('first_file', 'game');
