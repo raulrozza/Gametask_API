@@ -67,7 +67,7 @@ export default class UpdatePositionAdapter {
       experience: position.experience,
     }));
 
-    positions[index].experience += newExperience;
+    updatedPositions[index].experience += newExperience;
 
     return updatedPositions;
   }

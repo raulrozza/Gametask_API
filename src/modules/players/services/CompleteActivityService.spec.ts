@@ -92,6 +92,8 @@ const initService = async () => {
     }),
   );
 
+  //
+
   const player = await playersRepository.create(
     new CreatePlayerAdapter({
       userId: user.id,
@@ -232,12 +234,16 @@ describe('CompleteActivityService', () => {
       gameId: game.id,
     });
 
-    console.log(player, updatedPlayer);
+    const expectedLevel = 4;
+    const expectedRank = game.ranks.find(rank => rank.level === expectedLevel);
+    const expectedLevelInfo = game.levelInfo.find(
+      info => info.level === expectedLevel,
+    );
 
     const expectedExperience = player.experience + activity.experience * 2;
     expect(updatedPlayer?.experience).toBe(expectedExperience);
-    expect(updatedPlayer?.level).toBe(game.levelInfo[0].level);
-    expect(updatedPlayer?.rank).toEqual(game.ranks[0]);
+    expect(updatedPlayer?.level).toBe(expectedLevelInfo?.level);
+    expect(updatedPlayer?.rank).toEqual(expectedRank);
 
     const leaderboard = await leaderboardsRepository.getGameCurrentRanking(
       game.id,
