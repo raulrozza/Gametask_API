@@ -25,6 +25,8 @@ interface ValidadeInputParams {
   achievement: string;
 }
 
+const GAME_REGISTERS_INCREASE_COUNT = 1;
+
 @injectable()
 export default class CreateUnlockAchievementRequestService {
   constructor(
@@ -59,7 +61,7 @@ export default class CreateUnlockAchievementRequestService {
       achievement,
     });
 
-    return await this.transactionProvider.startSession<IUnlockAchievementRequest>(
+    return this.transactionProvider.startSession<IUnlockAchievementRequest>(
       async session => {
         const request = await this.unlockAchievementRequestRepository.create(
           new CreateUnlockAchievementAdapter({
@@ -72,7 +74,11 @@ export default class CreateUnlockAchievementRequestService {
           session,
         );
 
-        await this.gamesRepository.updateRegisters(gameId, 1, session);
+        await this.gamesRepository.updateRegisters(
+          gameId,
+          GAME_REGISTERS_INCREASE_COUNT,
+          session,
+        );
 
         return request;
       },

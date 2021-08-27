@@ -12,6 +12,6 @@ export default class ListPlayersService {
   ) {}
 
   public async execute(userId: string): Promise<IPlayer[]> {
-    return await this.playersRepository.findAllFromUser(userId);
+    return this.playersRepository.findAllFromUser(userId);
   }
 }

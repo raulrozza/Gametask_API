@@ -11,6 +11,6 @@ export default class ListFeedPostsService {
   ) {}
 
   public async execute(gameId: string) {
-    return await this.feedPostsRepository.findAllFromGame(gameId);
+    return this.feedPostsRepository.findAllFromGame(gameId);
   }
 }

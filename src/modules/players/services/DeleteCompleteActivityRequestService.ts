@@ -8,6 +8,8 @@ import ITransactionProvider from '@shared/domain/providers/ITransactionProvider'
 import { ICompleteActivityRequestRepository } from '@modules/players/domain/repositories';
 import IRequestExecutionDTO from '@modules/players/domain/dtos/IRequestExecutionDTO';
 
+const REGISTER_DECREASE_COUNT = -1;
+
 @injectable()
 export default class DeleteCompleteActivityRequestService {
   constructor(
@@ -41,14 +43,18 @@ export default class DeleteCompleteActivityRequestService {
         errorCodes.BAD_REQUEST_ERROR,
       );
 
-    await this.transactionProvider.startSession(async session => {
+    return this.transactionProvider.startSession(async session => {
       await this.completeActivityRequestRepository.delete(
         requestId,
         gameId,
         session,
       );
 
-      await this.gamesRepository.updateRegisters(game.id, -1, session);
+      await this.gamesRepository.updateRegisters(
+        game.id,
+        REGISTER_DECREASE_COUNT,
+        session,
+      );
     });
   }
 }

@@ -24,6 +24,8 @@ interface IValidateInputParams {
   requester: string;
 }
 
+const GAME_REGISTERS_INCREASE_COUNT = 1;
+
 @injectable()
 export default class CreateCompleteActivityRequestService {
   constructor(
@@ -67,7 +69,11 @@ export default class CreateCompleteActivityRequestService {
         session,
       );
 
-      await this.gamesRepository.updateRegisters(gameId, 1, session);
+      await this.gamesRepository.updateRegisters(
+        gameId,
+        GAME_REGISTERS_INCREASE_COUNT,
+        session,
+      );
 
       return request;
     });

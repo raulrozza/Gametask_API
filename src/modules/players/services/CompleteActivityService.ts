@@ -54,6 +54,8 @@ interface IPositionPlayerOnLeaderboard {
   experience: number;
 }
 
+const REGISTER_DECREASE_COUNT = -1;
+
 @injectable()
 export default class CompleteActivityService {
   constructor(
@@ -157,8 +159,6 @@ export default class CompleteActivityService {
       gameId,
       session,
     );
-
-    const REGISTER_DECREASE_COUNT = -1;
 
     await this.gamesRepository.updateRegisters(
       gameId,
