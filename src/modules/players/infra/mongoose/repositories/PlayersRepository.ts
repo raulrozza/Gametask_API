@@ -37,11 +37,12 @@ export default class PlayersRepository implements IPlayersRepository {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    const player = await Player.findOne({
-      _id: id,
-      user: userId,
-      game: gameId,
-    })
+    const params: { _id?: string; user?: string; game?: string } = {};
+    if (id) params._id = id;
+    if (userId) params.user = userId;
+    if (gameId) params.game = gameId;
+
+    const player = await Player.findOne(params)
       .populate('user', {
         firstname: 1,
         lastname: 1,

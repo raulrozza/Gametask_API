@@ -10,26 +10,6 @@ import CreateUnlockAchievementAdapter from '@modules/players/domain/adapters/Cre
 
 export default class UnlockAchievementRequestRepository
   implements IUnlockAchievementRequestRepository {
-  public async checkIfRequested(
-    requester: string,
-    gameId: string,
-    achievementId: string,
-  ): Promise<boolean> {
-    if (!isValidObjectId(requester))
-      throw new RequestError('Requester is invalid!', errorCodes.INVALID_ID);
-
-    if (!isValidObjectId(achievementId))
-      throw new RequestError('Achievement is invalid!', errorCodes.INVALID_ID);
-
-    const request = await UnlockAchievementRequest.findOne({
-      game: gameId,
-      achievement: achievementId,
-      requester,
-    });
-
-    return Boolean(request);
-  }
-
   public async findAllFromGame(
     gameId: string,
   ): Promise<IUnlockAchievementRequest[]> {
@@ -66,12 +46,18 @@ export default class UnlockAchievementRequestRepository
     if (achievementId && !isValidObjectId(achievementId))
       throw new RequestError('Achievement is invalid!', errorCodes.INVALID_ID);
 
-    const request = await UnlockAchievementRequest.findOne({
-      _id: id,
-      game: gameId,
-      achievement: achievementId,
-      requester,
-    });
+    const params: {
+      _id?: string;
+      game?: string;
+      achievement?: string;
+      requester?: string;
+    } = {};
+    if (id) params._id = id;
+    if (gameId) params.game = gameId;
+    if (achievementId) params.achievement = achievementId;
+    if (requester) params.requester = requester;
+
+    const request = await UnlockAchievementRequest.findOne(params);
 
     return request || undefined;
   }

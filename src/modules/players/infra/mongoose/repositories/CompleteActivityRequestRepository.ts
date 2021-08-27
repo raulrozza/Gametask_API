@@ -29,7 +29,14 @@ export default class CompleteActivityRequestRepository
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
-    const request = await CompleteActivityRequest.findById(id);
+    const request = await CompleteActivityRequest.findById(id)
+      .populate('activity')
+      .populate({
+        path: 'requester',
+        populate: {
+          path: 'user',
+        },
+      });
 
     return request || undefined;
   }
