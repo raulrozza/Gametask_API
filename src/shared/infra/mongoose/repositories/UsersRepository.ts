@@ -5,6 +5,7 @@ import { RequestError } from '@shared/infra/errors';
 import { IUser } from '@shared/domain/entities';
 import { IUsersRepository } from '@shared/domain/repositories';
 import User, { IUserDocument } from '@shared/infra/mongoose/entities/User';
+import { ICreateUserDTO, IUpdateUserDTO } from '@modules/users/domain/dtos';
 
 export default class UsersRepository implements IUsersRepository {
   public async findAll(): Promise<IUser[]> {
@@ -33,7 +34,7 @@ export default class UsersRepository implements IUsersRepository {
     lastname,
     email,
     password,
-  }: IUser): Promise<IUserDocument> {
+  }: ICreateUserDTO): Promise<IUserDocument> {
     const createdUser = await User.create({
       firstname,
       lastname,
@@ -48,8 +49,7 @@ export default class UsersRepository implements IUsersRepository {
     id,
     firstname,
     lastname,
-    image,
-  }: IUser): Promise<IUser> {
+  }: IUpdateUserDTO): Promise<IUser> {
     if (!isValidObjectId(id))
       throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
 
@@ -59,6 +59,25 @@ export default class UsersRepository implements IUsersRepository {
         $set: {
           firstname,
           lastname,
+        },
+      },
+      { new: true },
+    );
+
+    if (!updatedUser)
+      throw new RequestError('User not found', errorCodes.COULD_NOT_FIND_USER);
+
+    return updatedUser;
+  }
+
+  public async updateAvatar(id: string, image: string): Promise<IUser> {
+    if (!isValidObjectId(id))
+      throw new RequestError('Id is invalid!', errorCodes.INVALID_ID);
+
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      {
+        $set: {
           image,
         },
       },

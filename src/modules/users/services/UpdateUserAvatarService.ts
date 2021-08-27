@@ -36,14 +36,10 @@ export default class UpdateUserAvatarService {
 
     await this.storageProvider.saveFile(filename, USER_FOLDER);
 
-    const updatedUser = await this.usersRepository.update({
-      id: user.id,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      email: user.email,
-      password: user.password,
-      image: filename,
-    });
+    const updatedUser = await this.usersRepository.updateAvatar(
+      user.id,
+      filename,
+    );
 
     return updatedUser;
   }

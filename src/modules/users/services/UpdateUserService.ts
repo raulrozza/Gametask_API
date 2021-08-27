@@ -29,9 +29,6 @@ export default class UpdateUserService {
       id: foundUser.id,
       firstname,
       lastname,
-      email: foundUser.email,
-      password: foundUser.password,
-      image: foundUser.image,
     });
 
     return updatedUser;

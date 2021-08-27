@@ -56,4 +56,19 @@ export default class FakeUsersRepository implements IUsersRepository {
 
     return updatedUser;
   }
+
+  public async updateAvatar(id: string, image: string): Promise<IUser> {
+    const foundIndex = this.users.findIndex(storedUser => storedUser.id === id);
+
+    const foundUser = this.users[foundIndex];
+
+    const updatedUser = {
+      ...foundUser,
+      image,
+    };
+
+    this.users[foundIndex] = updatedUser;
+
+    return updatedUser;
+  }
 }
