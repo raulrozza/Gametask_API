@@ -1,8 +1,10 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
 
 import { IGameDocument } from '@shared/infra/mongoose/entities/Game';
 import { IActivity } from '@shared/domain/entities';
-import HistorySchema from '@shared/infra/mongoose/entities/History';
+import HistorySchema, {
+  IHistoryDocument,
+} from '@shared/infra/mongoose/entities/History';
 import ActivityLogSchema, {
   IActivityLogDocument,
 } from '@shared/infra/mongoose/entities/ActivityLog';
@@ -11,6 +13,7 @@ export interface IActivityDocument extends IActivity, Document {
   id: NonNullable<Document['id']>;
   game: IGameDocument['_id'];
   changelog: IActivityLogDocument[];
+  history: Types.Array<IHistoryDocument>;
 }
 
 const ActivitySchema = new Schema(

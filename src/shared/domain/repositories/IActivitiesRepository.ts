@@ -1,6 +1,7 @@
 import CreateActivityAdapter from '@shared/domain/adapters/CreateActivity';
 import UpdateActivityAdapter from '@modules/games/domain/adapters/UpdateActivity';
-import { IActivity, IHistory } from '@shared/domain/entities';
+import { IActivity } from '@shared/domain/entities';
+import ActivityHistoryAdapter from '@shared/domain/adapters/ActivityHistory';
 
 export default interface IActivitiesRepository {
   findAllFromGame(gameId: string): Promise<IActivity[]>;
@@ -10,7 +11,7 @@ export default interface IActivitiesRepository {
   update(activity: UpdateActivityAdapter): Promise<IActivity>;
   updateHistory(
     id: string,
-    history: IHistory,
+    history: ActivityHistoryAdapter,
     session?: object,
   ): Promise<IActivity>;
 }

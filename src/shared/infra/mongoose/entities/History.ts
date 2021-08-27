@@ -1,7 +1,10 @@
 import { IHistory } from '@shared/domain/entities';
+import { IUserDocument } from '@shared/infra/mongoose/entities/User';
 import mongoose, { Document } from 'mongoose';
 
-interface IHistoryDocument extends IHistory, Document {}
+export interface IHistoryDocument extends IHistory, Document {
+  user: IUserDocument['_id'];
+}
 
 const HistorySchema = new mongoose.Schema<IHistoryDocument>(
   {

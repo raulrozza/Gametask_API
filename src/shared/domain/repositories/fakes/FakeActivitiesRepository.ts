@@ -3,8 +3,9 @@ import errorCodes from '@config/errorCodes';
 import CreateActivityAdapter from '@shared/domain/adapters/CreateActivity';
 import UpdateActivityAdapter from '@modules/games/domain/adapters/UpdateActivity';
 import { FakeActivity, FakeUser } from '@shared/domain/entities/fakes';
-import { IActivity, IActivityLog, IHistory } from '@shared/domain/entities';
+import { IActivity, IActivityLog } from '@shared/domain/entities';
 import { IActivitiesRepository } from '@shared/domain/repositories';
+import ActivityHistoryAdapter from '@shared/domain/adapters/ActivityHistory';
 
 export default class FakeActivitiesRepository implements IActivitiesRepository {
   private readonly activities: IActivity[] = [];
@@ -93,7 +94,7 @@ export default class FakeActivitiesRepository implements IActivitiesRepository {
 
   public async updateHistory(
     id: string,
-    history: IHistory,
+    history: ActivityHistoryAdapter,
   ): Promise<IActivity> {
     const foundIndex = this.activities.findIndex(
       storedActivity => storedActivity.id === id,
@@ -106,7 +107,10 @@ export default class FakeActivitiesRepository implements IActivitiesRepository {
       );
 
     const foundActivity = this.activities[foundIndex];
-    foundActivity.history.unshift(history);
+    foundActivity.history.unshift({
+      log: history.log,
+      user: new FakeUser({ id: history.user }),
+    });
     this.activities[foundIndex] = foundActivity;
 
     return foundActivity;

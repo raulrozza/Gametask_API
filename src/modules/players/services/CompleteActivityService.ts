@@ -15,29 +15,18 @@ import ITransactionProvider from '@shared/domain/providers/ITransactionProvider'
 import ICompleteActivityDTO from '@modules/players/domain/dtos/ICompleteActivityDTO';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
-import { IPlayer } from '@modules/players/domain/entities';
-import { IGame, ILevelInfo, IRank } from '@shared/domain/entities';
+import { ILevelInfo, IRank } from '@shared/domain/entities';
 
 import CreateLeaderboardAdapter from '@shared/domain/adapters/CreateLeaderboard';
 import UpdatePositionAdapter from '@shared/domain/adapters/UpdatePositionAdapter';
 import UpdatePlayerAdapter from '@modules/players/domain/adapters/UpdatePlayer';
 import CreateFeedPostAdapter from '@modules/players/domain/adapters/CreateFeedPost';
-
-interface IAddCompletionToActivityHistory {
-  userId: string;
-  activityId: string;
-  completionDate: Date;
-}
+import ActivityHistoryAdapter from '@shared/domain/adapters/ActivityHistory';
+import PlayerLevelUp from '@modules/players/domain/rules/PlayerLevelUp';
 
 interface IFinishRequest {
   requestId: string;
   gameId: string;
-}
-
-interface IPostActivityCompletion {
-  activityId: string;
-  gameId: string;
-  playerId: string;
 }
 
 interface IGiveExperienceToPlayer {
@@ -121,23 +110,24 @@ export default class CompleteActivityService {
       );
 
     await this.transactionProvider.startSession(async session => {
-      await this.addCompletionToActivityHistory(
-        {
-          userId,
-          completionDate: request.completionDate,
-          activityId: activity.id,
-        },
+      await this.activitiesRepository.updateHistory(
+        activityId,
+        new ActivityHistoryAdapter({
+          log: request.completionDate,
+          user: userId,
+        }),
         session,
       );
 
       await this.finishRequest({ requestId: request.id, gameId }, session);
 
-      await this.postActivityCompletion(
-        {
-          activityId,
-          gameId,
-          playerId,
-        },
+      await this.feedPostsRepository.create(
+        new CreateFeedPostAdapter({
+          game: gameId,
+          player: playerId,
+          activity: activityId,
+          type: 'activity',
+        }),
         session,
       );
 
@@ -158,21 +148,6 @@ export default class CompleteActivityService {
     });
   }
 
-  private async addCompletionToActivityHistory(
-    { userId, activityId, completionDate }: IAddCompletionToActivityHistory,
-    session: object,
-  ): Promise<void> {
-    const newHistory = {
-      user: userId,
-      log: completionDate,
-    };
-    await this.activitiesRepository.updateHistory(
-      activityId,
-      newHistory,
-      session,
-    );
-  }
-
   private async finishRequest(
     { requestId, gameId }: IFinishRequest,
     session: object,
@@ -183,83 +158,55 @@ export default class CompleteActivityService {
       session,
     );
 
-    await this.gamesRepository.updateRegisters(gameId, -1, session);
-  }
+    const REGISTER_DECREASE_COUNT = -1;
 
-  private async postActivityCompletion(
-    { activityId, gameId, playerId }: IPostActivityCompletion,
-    session: object,
-  ): Promise<void> {
-    await this.feedPostsRepository.create(
-      new CreateFeedPostAdapter({
-        game: gameId,
-        player: playerId,
-        activity: activityId,
-        type: 'activity',
-      }),
+    await this.gamesRepository.updateRegisters(
+      gameId,
+      REGISTER_DECREASE_COUNT,
       session,
     );
   }
 
   private async giveExperienceToPlayer(
-    { gameId, playerId, userId, experience }: IGiveExperienceToPlayer,
+    { gameId, playerId, experience }: IGiveExperienceToPlayer,
     session: object,
   ): Promise<void> {
     const [player, game] = await Promise.all([
-      this.playersRepository.findOne({ id: playerId }) as Promise<IPlayer>,
-      this.gamesRepository.findOne(gameId) as Promise<IGame>,
+      this.playersRepository.findOne({ id: playerId }),
+      this.gamesRepository.findOne(gameId),
     ]);
 
-    player.experience += experience;
+    if (!player || !game)
+      throw new RequestError('Bad request', errorCodes.BAD_REQUEST_ERROR);
 
-    const playerNextLevel = this.getNextLevel(
-      game.levelInfo,
-      player.experience,
-    );
+    const leveledPlayer = new PlayerLevelUp({
+      player,
+      game,
+      activity: { experience },
+    });
 
-    if (!playerNextLevel || playerNextLevel.level <= player.level)
-      return this.updatePlayer(player, session);
+    if (leveledPlayer.hasLeveledUp)
+      await this.postNewLevel(
+        { playerId, level: leveledPlayer.nextLevel!, gameId },
+        session,
+      );
 
-    player.level = playerNextLevel.level;
-    await this.postNewLevel(
-      { playerId, level: playerNextLevel, gameId },
+    if (leveledPlayer.gotNewRank)
+      await this.postNewRank(
+        { playerId, rank: leveledPlayer.rank!, gameId },
+        session,
+      );
+
+    await this.playersRepository.update(
+      new UpdatePlayerAdapter({
+        id: player.id,
+        currentTitle: player.currentTitle?.id,
+        rank: leveledPlayer.rank,
+        experience: leveledPlayer.experience,
+        level: leveledPlayer.level,
+      }),
       session,
     );
-
-    const newRank = this.getNewRank(game.ranks, player.level);
-    if (newRank) {
-      player.rank = newRank;
-      await this.postNewRank({ playerId, rank: newRank, gameId }, session);
-    }
-
-    return this.updatePlayer(player, session);
-  }
-
-  private getNextLevel(
-    levelInfo: ILevelInfo[],
-    playerCurrentExperience: number,
-  ): ILevelInfo | undefined {
-    const levelsSortedByHigherExperience = levelInfo.sort(
-      (a, b) => b.requiredExperience - a.requiredExperience,
-    );
-
-    const nextObtainableLevel = levelsSortedByHigherExperience.find(
-      level => level.requiredExperience <= playerCurrentExperience,
-    );
-
-    return nextObtainableLevel;
-  }
-
-  private getNewRank(
-    gameRanks: IRank[],
-    playerLevel: number,
-  ): IRank | undefined {
-    const obtainableRanks = gameRanks.filter(rank => rank.level <= playerLevel);
-    const ranksSortedByHigherLevel = obtainableRanks.sort(
-      (a, b) => b.level - a.level,
-    );
-
-    return ranksSortedByHigherLevel[0];
   }
 
   private async postNewLevel(
@@ -287,19 +234,6 @@ export default class CompleteActivityService {
         type: 'rank',
         rank,
         game: gameId,
-      }),
-      session,
-    );
-  }
-
-  private async updatePlayer(player: IPlayer, session: object): Promise<void> {
-    await this.playersRepository.update(
-      new UpdatePlayerAdapter({
-        id: player.id,
-        currentTitle: player.currentTitle?.id,
-        rank: player.rank,
-        experience: player.experience,
-        level: player.level,
       }),
       session,
     );
