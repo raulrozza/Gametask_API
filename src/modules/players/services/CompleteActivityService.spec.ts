@@ -16,7 +16,6 @@ import {
 } from '@shared/domain/entities/fakes';
 import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
 import CreateActivityAdapter from '@shared/domain/adapters/CreateActivity';
-import { IPosition } from '@shared/domain/entities/ILeaderboard';
 
 import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
 import FakeCompleteActivityRequestRepository from '@modules/players/domain/repositories/fakes/FakeCompleteActivityRequestRepository';
@@ -48,16 +47,16 @@ const initService = async () => {
 
   const fakeGame = new FakeGame();
 
-  const game = await gamesRepository.create(
+  const createdGame = await gamesRepository.create(
     new CreateGameAdapter({
       name: fakeGame.name,
       description: fakeGame.description,
       creatorId: user.id,
     }),
   );
-  await gamesRepository.update(
+  const game = await gamesRepository.update(
     new UpdateGameAdapter({
-      ...game,
+      ...createdGame,
       levelInfo: [
         {
           level: 1,
@@ -132,7 +131,7 @@ describe('CompleteActivityService', () => {
       new CreateActivityAdapter({
         gameId: game.id,
         name: fakeActivity.name,
-        experience: 200,
+        experience: fakeActivity.experience,
         description: fakeActivity.description,
         dmRules: fakeActivity.dmRules,
       }),
@@ -157,16 +156,21 @@ describe('CompleteActivityService', () => {
       id: player.id,
     });
 
-    expect(updatedPlayer?.experience).toBe(activity.experience);
+    const expectedExperience = player.experience + activity.experience;
+    expect(updatedPlayer?.experience).toBe(expectedExperience);
 
     const leaderboard = await leaderboardsRepository.getGameCurrentRanking(
       game.id,
     );
 
-    expect(leaderboard?.position).toHaveLength(1);
-    expect(leaderboard?.position).toContainEqual<IPosition>({
+    const positions = leaderboard?.position.map(position => ({
+      experience: position.experience,
+      playerId: position.player.id,
+    }));
+    expect(positions).toHaveLength(1);
+    expect(positions).toContainEqual({
       experience: activity.experience,
-      player: player,
+      playerId: player.id,
     });
 
     const deletedRequest = await completeActivityRequestRepository.findOne(
@@ -228,7 +232,10 @@ describe('CompleteActivityService', () => {
       gameId: game.id,
     });
 
-    expect(updatedPlayer?.experience).toBe(activity.experience * 2);
+    console.log(player, updatedPlayer);
+
+    const expectedExperience = player.experience + activity.experience * 2;
+    expect(updatedPlayer?.experience).toBe(expectedExperience);
     expect(updatedPlayer?.level).toBe(game.levelInfo[0].level);
     expect(updatedPlayer?.rank).toEqual(game.ranks[0]);
 
@@ -236,10 +243,14 @@ describe('CompleteActivityService', () => {
       game.id,
     );
 
-    expect(leaderboard?.position).toHaveLength(1);
-    expect(leaderboard?.position).toContainEqual<IPosition>({
+    const positions = leaderboard?.position.map(position => ({
+      experience: position.experience,
+      playerId: position.player.id,
+    }));
+    expect(positions).toHaveLength(1);
+    expect(positions).toContainEqual({
       experience: activity.experience * 2,
-      player: player,
+      playerId: player.id,
     });
   });
 

@@ -1,7 +1,12 @@
 import { FakeTitlesRepository } from '@shared/domain/repositories/fakes';
 import ChangeTitleService from './ChangeTitleService';
 import { RequestError } from '@shared/infra/errors';
-import { FakeGame, FakeTitle, FakeUser } from '@shared/domain/entities/fakes';
+import {
+  FakeAchievement,
+  FakeGame,
+  FakeTitle,
+  FakeUser,
+} from '@shared/domain/entities/fakes';
 import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
 
@@ -33,12 +38,27 @@ const initService = async () => {
     player,
     gameId: game.id,
     userId: user.id,
+    playersRepository,
   };
 };
 
 describe('ChangeTitleService', () => {
   it('should successfully change the title to a new one', async () => {
-    const { changeTitle, gameId, userId, title, player } = await initService();
+    const {
+      changeTitle,
+      gameId,
+      userId,
+      title,
+      player,
+      playersRepository,
+    } = await initService();
+
+    const achievement = new FakeAchievement();
+    await playersRepository.addAchievement({
+      id: player.id,
+      achievement: achievement.id,
+      title: title.id,
+    });
 
     const updatedPlayer = await changeTitle.execute({
       gameId,

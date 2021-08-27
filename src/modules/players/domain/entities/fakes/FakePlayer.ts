@@ -17,11 +17,12 @@ interface IConstructor {
   game?: string;
   level?: number;
   rank?: IRank;
+  experience?: number;
 }
 
 export default class FakePlayer implements IPlayer {
   public id: string;
-  public experience: number = faker.random.number(10000);
+  public experience: number;
   public level: number;
   public titles: ITitle[] = [];
   public currentTitle?: ITitle;
@@ -35,11 +36,13 @@ export default class FakePlayer implements IPlayer {
     id = uuid(),
     level = faker.random.number(10),
     rank,
+    experience = faker.random.number(10000),
   }: IConstructor) {
     this.id = id;
     this.user = new FakeUser({ id: user });
     this.game = new FakeGame({ id: game });
     this.level = level;
     this.rank = rank;
+    this.experience = experience;
   }
 }

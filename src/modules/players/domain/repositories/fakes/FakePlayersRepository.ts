@@ -42,7 +42,7 @@ export default class FakePlayersRepository implements IPlayersRepository {
     level,
     rank,
   }: CreatePlayerAdapter): Promise<IPlayer> {
-    const player = new FakePlayer({ game, user, level, rank });
+    const player = new FakePlayer({ game, user, level, rank, experience: 0 });
 
     this.players.push(player);
 
