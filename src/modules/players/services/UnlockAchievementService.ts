@@ -18,6 +18,8 @@ import IUnlockAchievementDTO from '@modules/players/domain/dtos/IUnlockAchieveme
 import AddAchievementToPlayerAdapter from '@modules/players/domain/adapters/AddAchievementToPlayer';
 import CreateFeedPostAdapter from '@modules/players/domain/adapters/CreateFeedPost';
 
+const REGISTER_DECREASE_COUNT = -1;
+
 interface IValidateInput {
   userId: string;
   requestId: string;
@@ -66,17 +68,17 @@ export default class UnlockAchievementService {
       gameId,
     });
 
-    const achievementTitle = await this.retrieveAchievementTitleId({
+    const achievementTitleId = await this.retrieveAchievementTitleId({
       achievementId,
       gameId,
     });
 
-    await this.transactionProvider.startSession(async session => {
+    return this.transactionProvider.startSession(async session => {
       await this.playersRepository.addAchievement(
         new AddAchievementToPlayerAdapter({
           id: playerId,
           achievement: achievementId,
-          title: achievementTitle,
+          title: achievementTitleId,
         }),
         session,
       );
@@ -87,7 +89,11 @@ export default class UnlockAchievementService {
         session,
       );
 
-      await this.gamesRepository.updateRegisters(gameId, -1, session);
+      await this.gamesRepository.updateRegisters(
+        gameId,
+        REGISTER_DECREASE_COUNT,
+        session,
+      );
 
       await this.feedPostsRepository.create(
         new CreateFeedPostAdapter({
@@ -141,9 +147,6 @@ export default class UnlockAchievementService {
         errorCodes.BAD_REQUEST_ERROR,
       );
 
-    const title = achievement.title;
-
-    if (typeof title === 'string') return title;
-    return title?.id;
+    return achievement.title?.id;
   }
 }
