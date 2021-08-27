@@ -22,6 +22,7 @@ import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
 import FakeCompleteActivityRequestRepository from '@modules/players/domain/repositories/fakes/FakeCompleteActivityRequestRepository';
 import CreateCompleteActivityRequestAdapter from '@modules/players/domain/adapters/CreateCompleteActivityRequest';
 import FakeFeedPostsRepository from '@modules/players/domain/repositories/fakes/FakeFeedPostsRepository';
+import UpdateGameAdapter from '@modules/games/domain/adapters/UpdateGameAdapter';
 
 const initService = async () => {
   const playersRepository = new FakePlayersRepository();
@@ -46,44 +47,49 @@ const initService = async () => {
   const user = new FakeUser();
 
   const fakeGame = new FakeGame();
-  fakeGame.levelInfo.push(
-    {
-      level: 1,
-      requiredExperience: 0,
-    },
-    {
-      level: 2,
-      requiredExperience: 300,
-    },
-    {
-      level: 3,
-      requiredExperience: 400,
-    },
-    {
-      level: 4,
-      requiredExperience: 600,
-    },
-  );
-  fakeGame.ranks.push(
-    {
-      level: 4,
-      color: '#000',
-      name: 'Rank',
-      tag: 'RNK',
-    },
-    {
-      level: 3,
-      color: '#000',
-      name: 'Rank',
-      tag: 'RNK',
-    },
-  );
 
   const game = await gamesRepository.create(
     new CreateGameAdapter({
       name: fakeGame.name,
       description: fakeGame.description,
       creatorId: user.id,
+    }),
+  );
+  await gamesRepository.update(
+    new UpdateGameAdapter({
+      ...game,
+      levelInfo: [
+        {
+          level: 1,
+          requiredExperience: 0,
+        },
+        {
+          level: 2,
+          requiredExperience: 300,
+        },
+        {
+          level: 3,
+          requiredExperience: 400,
+        },
+        {
+          level: 4,
+          requiredExperience: 600,
+        },
+      ],
+      ranks: [
+        {
+          level: 4,
+          color: '#000',
+          name: 'Rank',
+          tag: 'RNK',
+        },
+        {
+          level: 3,
+          color: '#000',
+          name: 'Rank',
+          tag: 'RNK',
+        },
+      ],
     }),
   );
 
@@ -149,8 +155,6 @@ describe('CompleteActivityService', () => {
 
     const updatedPlayer = await playersRepository.findOne({
       id: player.id,
-      userId,
-      gameId: game.id,
     });
 
     expect(updatedPlayer?.experience).toBe(activity.experience);

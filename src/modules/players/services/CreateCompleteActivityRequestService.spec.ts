@@ -100,8 +100,8 @@ describe('CreateCompleteActivityRequestService', () => {
 
     expect(request).toHaveProperty('id');
     expect(request.game).toBe(fakeCompleteActivity.game);
-    expect(request.activity).toBe(fakeCompleteActivity.activity);
-    expect(request.requester).toBe(fakeCompleteActivity.requester);
+    expect(request.activity.id).toBe(fakeCompleteActivity.activity.id);
+    expect(request.requester.id).toBe(fakeCompleteActivity.requester.id);
   });
 
   it('should throw when trying to make a request to a non existing game', async () => {

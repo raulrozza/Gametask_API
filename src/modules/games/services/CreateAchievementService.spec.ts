@@ -42,7 +42,7 @@ describe('CreateAchievementService', () => {
     expect(achievement).toHaveProperty('id');
     expect(achievement.name).toBe(fakeAchievement.name);
     expect(achievement.description).toBe(fakeAchievement.description);
-    expect(achievement.title).toBe(title.id);
+    expect(achievement.title).toHaveProperty('id', title.id);
   });
 
   it('should create the achievement without a title', async () => {

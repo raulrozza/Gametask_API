@@ -100,8 +100,8 @@ describe('CreateUnlockAchievementRequestService', () => {
 
     expect(request).toHaveProperty('id');
     expect(request.game).toBe(fakeRequest.game);
-    expect(request.requester).toBe(fakeRequest.requester);
-    expect(request.achievement).toBe(fakeRequest.achievement);
+    expect(request.requester.id).toBe(fakeRequest.requester.id);
+    expect(request.achievement.id).toBe(fakeRequest.achievement.id);
   });
 
   it('should not be able to request the unlock of the same achievement twice', async () => {

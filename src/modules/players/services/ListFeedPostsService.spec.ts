@@ -10,7 +10,7 @@ describe('ListFeedPostsService', () => {
     const feedPostsRepository = new FakeFeedPostsRepository();
     const listFeedPosts = new ListFeedPostsService(feedPostsRepository);
 
-    const id = uuid();
+    const gameId = uuid();
     const fakeFeedPost = new FakeFeedPost();
 
     await feedPostsRepository.create(
@@ -20,6 +20,7 @@ describe('ListFeedPostsService', () => {
         type: 'achievement',
         achievement: uuid(),
         activity: undefined,
+        game: gameId,
       }),
     );
     await feedPostsRepository.create(
@@ -39,10 +40,11 @@ describe('ListFeedPostsService', () => {
         type: 'achievement',
         achievement: uuid(),
         activity: undefined,
+        game: gameId,
       }),
     );
 
-    const posts = await listFeedPosts.execute(id);
+    const posts = await listFeedPosts.execute(gameId);
 
     expect(posts).toHaveLength(2);
   });

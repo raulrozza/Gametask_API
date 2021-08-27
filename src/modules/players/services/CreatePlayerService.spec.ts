@@ -8,6 +8,7 @@ import { CreatePlayerService } from '.';
 import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
 import { RequestError } from '@shared/infra/errors';
 import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
+import UpdateGameAdapter from '@modules/games/domain/adapters/UpdateGameAdapter';
 
 const initService = async (addRanks: boolean | IRank[] = false) => {
   const playersRepository = new FakePlayersRepository();
@@ -28,41 +29,46 @@ const initService = async (addRanks: boolean | IRank[] = false) => {
     password: fakeUser.password,
   });
   const fakeGame = new FakeGame();
-  if (addRanks) {
-    fakeGame.levelInfo = [
-      {
-        level: 1,
-        requiredExperience: 300,
-      },
-      {
-        level: 2,
-        requiredExperience: 500,
-      },
-    ];
 
-    fakeGame.ranks =
-      typeof addRanks === 'boolean'
-        ? [
-            {
-              color: '#000',
-              level: 1,
-              name: 'Rank1',
-              tag: 'RNK',
-            },
-            {
-              color: '#000',
-              level: 2,
-              name: 'Rank2',
-              tag: 'RNK',
-            },
-          ]
-        : addRanks;
-  }
   const game = await gamesRepository.create(
     new CreateGameAdapter({
       name: fakeGame.name,
       description: fakeGame.description,
       creatorId: user.id,
+    }),
+  );
+  await gamesRepository.update(
+    new UpdateGameAdapter({
+      ...game,
+      levelInfo: addRanks
+        ? [
+            {
+              level: 1,
+              requiredExperience: 300,
+            },
+            {
+              level: 2,
+              requiredExperience: 500,
+            },
+          ]
+        : [],
+      ranks:
+        typeof addRanks === 'boolean'
+          ? [
+              {
+                color: '#000',
+                level: 1,
+                name: 'Rank1',
+                tag: 'RNK',
+              },
+              {
+                color: '#000',
+                level: 2,
+                name: 'Rank2',
+                tag: 'RNK',
+              },
+            ]
+          : addRanks,
     }),
   );
 
@@ -75,8 +81,8 @@ describe('CreatePlayerService', () => {
 
     const player = await createPlayers.execute({ userId, gameId });
 
-    expect(player.game).toBe(gameId);
-    expect(player.user).toBe(userId);
+    expect(player.game.id).toBe(gameId);
+    expect(player.user.id).toBe(userId);
     expect(player.level).toBe(0);
   });
 

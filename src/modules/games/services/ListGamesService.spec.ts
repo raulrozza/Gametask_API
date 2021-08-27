@@ -29,9 +29,9 @@ describe('ListGamesService', () => {
     );
     await gamesRepository.create(
       new CreateGameAdapter({
-        name: 'not-my-game-id',
+        name: fakeGame.name,
         description: fakeGame.description,
-        creatorId: user.id,
+        creatorId: 'not-my-game-id',
       }),
     );
 

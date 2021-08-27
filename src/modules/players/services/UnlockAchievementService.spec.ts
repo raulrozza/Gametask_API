@@ -121,7 +121,10 @@ describe('UnlockAchievementService', () => {
       gameId: game.id,
     })) as IPlayer;
 
-    expect(updatedPlayer.achievements).toContain(achievement.id);
+    const achievementsIds = updatedPlayer.achievements.map(
+      achievement => achievement.id,
+    );
+    expect(achievementsIds).toContain(achievement.id);
 
     const deletedRequest = await unlockAchievementRequestRepository.findOne({
       id: request.id,
