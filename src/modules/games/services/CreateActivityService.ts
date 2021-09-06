@@ -1,9 +1,10 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import { IActivitiesRepository } from '@modules/games/repositories';
-import { IActivity } from '@modules/games/entities';
-import ICreateActivityDTO from '@modules/games/dtos/ICreateActivityDTO';
+import { IActivitiesRepository } from '@shared/domain/repositories';
+import ICreateActivityDTO from '@modules/games/domain/dtos/ICreateActivityDTO';
+import { IActivity } from '@shared/domain/entities';
+import CreateActivityAdapter from '@shared/domain/adapters/CreateActivity';
 
 @injectable()
 export default class CreateActivityService {
@@ -19,14 +20,14 @@ export default class CreateActivityService {
     description,
     dmRules,
   }: ICreateActivityDTO): Promise<IActivity> {
-    return this.activitiesRepository.create({
-      name,
-      experience,
-      game: gameId,
-      dmRules,
-      description,
-      changelog: [],
-      history: [],
-    });
+    return this.activitiesRepository.create(
+      new CreateActivityAdapter({
+        gameId,
+        name,
+        experience,
+        description,
+        dmRules,
+      }),
+    );
   }
 }

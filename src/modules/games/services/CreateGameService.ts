@@ -4,9 +4,11 @@ import { inject, injectable } from 'tsyringe';
 import {
   IGamesRepository,
   ILeaderboardsRepository,
-} from '@modules/games/repositories';
-import { IGame } from '@modules/games/entities';
-import ICreateGameDTO from '@modules/games/dtos/ICreateGameDTO';
+} from '@shared/domain/repositories';
+import ICreateGameDTO from '@modules/games/domain/dtos/ICreateGameDTO';
+import { IGame } from '@shared/domain/entities';
+import CreateLeaderboardAdapter from '@shared/domain/adapters/CreateLeaderboard';
+import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
 
 @injectable()
 export default class CreateGameService {
@@ -23,18 +25,13 @@ export default class CreateGameService {
     name,
     description,
   }: ICreateGameDTO): Promise<IGame> {
-    const game = await this.gamesRepository.create({
-      name,
-      description,
-      administrators: [creatorId],
-      levelInfo: [],
-      ranks: [],
-    });
+    const game = await this.gamesRepository.create(
+      new CreateGameAdapter({ name, description, creatorId }),
+    );
 
-    await this.leaderboardsRepository.create({
-      game: game.id,
-      createdAt: new Date(),
-    });
+    await this.leaderboardsRepository.create(
+      new CreateLeaderboardAdapter({ game: game.id }),
+    );
 
     return game;
   }

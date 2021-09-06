@@ -4,15 +4,21 @@ import {
   IFeedPostsRepository,
   IPlayersRepository,
   IUnlockAchievementRequestRepository,
-} from '@modules/players/repositories';
+} from '@modules/players/domain/repositories';
+
 import {
   IAchievementsRepository,
   IGamesRepository,
-} from '@modules/games/repositories';
-import IUnlockAchievementDTO from '../dtos/IUnlockAchievementDTO';
+} from '@shared/domain/repositories';
+
 import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
+import IUnlockAchievementDTO from '@modules/players/domain/dtos/IUnlockAchievementDTO';
+import AddAchievementToPlayerAdapter from '@modules/players/domain/adapters/AddAchievementToPlayer';
+import CreateFeedPostAdapter from '@modules/players/domain/adapters/CreateFeedPost';
+
+const REGISTER_DECREASE_COUNT = -1;
 
 interface IValidateInput {
   userId: string;
@@ -62,16 +68,18 @@ export default class UnlockAchievementService {
       gameId,
     });
 
-    const achievementTitle = await this.retrieveAchievementTitleId({
+    const achievementTitleId = await this.retrieveAchievementTitleId({
       achievementId,
       gameId,
     });
 
-    await this.transactionProvider.startSession(async session => {
-      await this.playersRepository.unlockAchievement(
-        playerId,
-        achievementId,
-        achievementTitle,
+    return this.transactionProvider.startSession(async session => {
+      await this.playersRepository.addAchievement(
+        new AddAchievementToPlayerAdapter({
+          id: playerId,
+          achievement: achievementId,
+          title: achievementTitleId,
+        }),
         session,
       );
 
@@ -81,14 +89,20 @@ export default class UnlockAchievementService {
         session,
       );
 
-      await this.gamesRepository.updateRegisters(gameId, -1, session);
+      await this.gamesRepository.updateRegisters(
+        gameId,
+        REGISTER_DECREASE_COUNT,
+        session,
+      );
 
-      await this.feedPostsRepository.create({
-        game: gameId,
-        player: playerId,
-        type: 'achievement',
-        achievement: achievementId,
-      });
+      await this.feedPostsRepository.create(
+        new CreateFeedPostAdapter({
+          game: gameId,
+          player: playerId,
+          type: 'achievement',
+          achievement: achievementId,
+        }),
+      );
     });
   }
 
@@ -98,20 +112,20 @@ export default class UnlockAchievementService {
     playerId,
     gameId,
   }: IValidateInput): Promise<void> {
-    const player = await this.playersRepository.findOne(
-      playerId,
+    const player = await this.playersRepository.findOne({
+      id: playerId,
       userId,
       gameId,
-    );
+    });
     if (!player)
       throw new RequestError(
         'This player does not exist',
         errorCodes.BAD_REQUEST_ERROR,
       );
 
-    const request = await this.unlockAchievementRequestRepository.findOne(
-      requestId,
-    );
+    const request = await this.unlockAchievementRequestRepository.findOne({
+      id: requestId,
+    });
     if (!request)
       throw new RequestError(
         'You should first request this achievement to be unlocked',
@@ -133,9 +147,6 @@ export default class UnlockAchievementService {
         errorCodes.BAD_REQUEST_ERROR,
       );
 
-    const title = achievement.title;
-
-    if (typeof title === 'string') return title;
-    return title?.id;
+    return achievement.title?.id;
   }
 }

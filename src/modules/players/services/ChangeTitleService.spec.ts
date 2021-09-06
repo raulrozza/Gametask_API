@@ -1,14 +1,14 @@
-import { v4 as uuid } from 'uuid';
-
-import { FakeTitle } from '@modules/games/fakes';
-import FakeTitlesRepository from '@modules/games/repositories/fakes/FakeTitlesRepository';
-import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
+import { FakeTitlesRepository } from '@shared/domain/repositories/fakes';
 import ChangeTitleService from './ChangeTitleService';
-import FakePlayer from '../fakes/FakePlayer';
-import { ITitle } from '@modules/games/entities';
-import { IPlayer } from '../entities';
 import { RequestError } from '@shared/infra/errors';
-
+import {
+  FakeAchievement,
+  FakeGame,
+  FakeTitle,
+  FakeUser,
+} from '@shared/domain/entities/fakes';
+import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
+import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
 const initService = async () => {
   const titlesRepository = new FakeTitlesRepository();
   const playersRepository = new FakePlayersRepository();
@@ -17,26 +17,47 @@ const initService = async () => {
     titlesRepository,
   );
 
-  const userId = uuid();
-  const gameId = uuid();
-  const { id: _, ...fakeTitle } = new FakeTitle(gameId);
-  const { id: __, ...fakePlayer } = new FakePlayer(userId, gameId);
+  const user = new FakeUser();
+  const game = new FakeGame();
+  const fakeTitle = new FakeTitle({ game: game.id });
 
-  const title = await titlesRepository.create(fakeTitle as ITitle);
-  const player = await playersRepository.create(fakePlayer as IPlayer);
+  const title = await titlesRepository.create(fakeTitle);
+  const player = await playersRepository.create(
+    new CreatePlayerAdapter({
+      userId: user.id,
+      gameId: game.id,
+      gameLevels: game.levelInfo,
+      gameRanks: game.ranks,
+    }),
+  );
 
   return {
     changeTitle,
     title,
     player,
-    gameId,
-    userId,
+    gameId: game.id,
+    userId: user.id,
+    playersRepository,
   };
 };
 
 describe('ChangeTitleService', () => {
   it('should successfully change the title to a new one', async () => {
-    const { changeTitle, gameId, userId, title, player } = await initService();
+    const {
+      changeTitle,
+      gameId,
+      userId,
+      title,
+      player,
+      playersRepository,
+    } = await initService();
+
+    const achievement = new FakeAchievement();
+    await playersRepository.addAchievement({
+      id: player.id,
+      achievement: achievement.id,
+      title: title.id,
+    });
 
     const updatedPlayer = await changeTitle.execute({
       gameId,
@@ -45,17 +66,31 @@ describe('ChangeTitleService', () => {
       titleId: title.id,
     });
 
-    expect(updatedPlayer.currentTitle).toBe(title.id);
+    expect(updatedPlayer.currentTitle?.id).toBe(title.id);
   });
 
   it('should remove the current title when sending an empty titleId', async () => {
-    const { changeTitle, gameId, userId, title, player } = await initService();
+    const {
+      changeTitle,
+      gameId,
+      userId,
+      title,
+      player,
+      playersRepository,
+    } = await initService();
+
+    const achievement = new FakeAchievement();
+    await playersRepository.addAchievement({
+      id: player.id,
+      achievement: achievement.id,
+      title: title.id,
+    });
 
     await changeTitle.execute({
       gameId,
       userId,
       playerId: player.id,
-      titleId: title.id,
+      titleId: undefined,
     });
 
     const updatedPlayer = await changeTitle.execute({
@@ -76,6 +111,19 @@ describe('ChangeTitleService', () => {
         userId,
         playerId: player.id,
         titleId: 'invalid id',
+      }),
+    ).rejects.toBeInstanceOf(RequestError);
+  });
+
+  it('should throw changing a title you dont own', async () => {
+    const { changeTitle, gameId, userId, player, title } = await initService();
+
+    await expect(
+      changeTitle.execute({
+        gameId,
+        userId,
+        playerId: player.id,
+        titleId: title.id,
       }),
     ).rejects.toBeInstanceOf(RequestError);
   });

@@ -1,11 +1,16 @@
 import { RequestError } from '@shared/infra/errors';
 import { v4 as uuid } from 'uuid';
-import { ITitle } from '../entities';
-import { FakeTitle } from '../fakes';
-import FakeAchievement from '../fakes/FakeAchievement';
-import FakeAchievementsRepository from '../repositories/fakes/FakeAchievementsRepository';
-import FakeTitlesRepository from '../repositories/fakes/FakeTitlesRepository';
 import CreateAchievementService from './CreateAchievementService';
+import { ITitle } from '@shared/domain/entities';
+import {
+  FakeAchievement,
+  FakeGame,
+  FakeTitle,
+} from '@shared/domain/entities/fakes';
+import {
+  FakeAchievementsRepository,
+  FakeTitlesRepository,
+} from '@shared/domain/repositories/fakes';
 
 describe('CreateAchievementService', () => {
   it('should create the achievement with title', async () => {
@@ -16,9 +21,9 @@ describe('CreateAchievementService', () => {
       titlesRepository,
     );
 
-    const gameId = uuid();
-    const fakeAchievement = new FakeAchievement(gameId);
-    const fakeTitle = new FakeTitle(gameId);
+    const game = new FakeGame();
+    const fakeAchievement = new FakeAchievement({ game: game.id });
+    const fakeTitle = new FakeTitle({ game: game.id });
 
     const title = await titlesRepository.create({
       name: fakeTitle.name,
@@ -26,7 +31,7 @@ describe('CreateAchievementService', () => {
     } as ITitle);
 
     const payload = {
-      gameId,
+      gameId: game.id,
       name: fakeAchievement.name,
       description: fakeAchievement.description,
       title: title.id,
@@ -37,7 +42,7 @@ describe('CreateAchievementService', () => {
     expect(achievement).toHaveProperty('id');
     expect(achievement.name).toBe(fakeAchievement.name);
     expect(achievement.description).toBe(fakeAchievement.description);
-    expect(achievement.title).toBe(title.id);
+    expect(achievement.title).toHaveProperty('id', title.id);
   });
 
   it('should create the achievement without a title', async () => {
@@ -49,7 +54,7 @@ describe('CreateAchievementService', () => {
     );
 
     const gameId = uuid();
-    const fakeAchievement = new FakeAchievement(gameId);
+    const fakeAchievement = new FakeAchievement({ game: gameId });
 
     const payload = {
       gameId,
@@ -73,7 +78,7 @@ describe('CreateAchievementService', () => {
     );
 
     const gameId = uuid();
-    const fakeAchievement = new FakeAchievement(gameId);
+    const fakeAchievement = new FakeAchievement({ game: gameId });
 
     const payload = {
       gameId,

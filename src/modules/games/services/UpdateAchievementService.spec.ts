@@ -1,9 +1,8 @@
 import { RequestError } from '@shared/infra/errors';
-import { v4 as uuid } from 'uuid';
 
-import FakeAchievement from '../fakes/FakeAchievement';
-import FakeAchievementsRepository from '../repositories/fakes/FakeAchievementsRepository';
+import { FakeAchievementsRepository } from '@shared/domain/repositories/fakes';
 import UpdateAchievementService from './UpdateAchievementService';
+import { FakeAchievement, FakeGame } from '@shared/domain/entities/fakes';
 
 describe('UpdateAchievementService', () => {
   it('should update the achievement correctly', async () => {
@@ -12,13 +11,18 @@ describe('UpdateAchievementService', () => {
       achievementsRepository,
     );
 
-    const gameId = uuid();
-    const fakeAchievement = new FakeAchievement(gameId);
+    const game = new FakeGame();
+    const fakeAchievement = new FakeAchievement({ game: game.id });
 
-    const achievement = await achievementsRepository.create(fakeAchievement);
+    const achievement = await achievementsRepository.create({
+      gameId: game.id,
+      name: fakeAchievement.name,
+      description: fakeAchievement.description,
+      title: fakeAchievement.title?.id,
+    });
 
     const updatedAchievement = await updateAchievement.execute({
-      gameId,
+      gameId: game.id,
       id: achievement.id,
       name: 'New name',
       description: 'New description',
@@ -33,15 +37,15 @@ describe('UpdateAchievementService', () => {
       achievementsRepository,
     );
 
-    const gameId = uuid();
-    const fakeAchievement = new FakeAchievement(gameId);
+    const game = new FakeGame();
+    const fakeAchievement = new FakeAchievement({ game: game.id });
 
     await expect(
       updateAchievement.execute({
-        gameId,
+        gameId: game.id,
         ...fakeAchievement,
         id: 'invalid id',
-        title: fakeAchievement.title as string | undefined,
+        title: fakeAchievement.title?.id,
       }),
     ).rejects.toBeInstanceOf(RequestError);
   });

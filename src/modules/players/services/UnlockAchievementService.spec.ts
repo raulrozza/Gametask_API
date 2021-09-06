@@ -1,18 +1,25 @@
-import { v4 as uuid } from 'uuid';
+import {
+  FakeAchievementsRepository,
+  FakeGamesRepository,
+} from '@shared/domain/repositories/fakes';
 
-import FakeAchievementsRepository from '@modules/games/repositories/fakes/FakeAchievementsRepository';
-import FakeGamesRepository from '@modules/games/repositories/fakes/FakeGamesRepository';
-import FakeFeedPostsRepository from '../repositories/fakes/FakeFeedPostsRepository';
-import FakePlayersRepository from '../repositories/fakes/FakePlayersRepository';
-import FakeUnlockAchievementRequestRepository from '../repositories/fakes/FakeUnlockAchievementRequestRepository';
+import FakeFeedPostsRepository from '@modules/players/domain/repositories/fakes/FakeFeedPostsRepository';
+import FakePlayersRepository from '@modules/players/domain/repositories/fakes/FakePlayersRepository';
+import FakeUnlockAchievementRequestRepository from '@modules/players/domain/repositories/fakes/FakeUnlockAchievementRequestRepository';
 import UnlockAchievementService from './UnlockAchievementService';
-import { FakeAchievement, FakeGame } from '@modules/games/fakes';
-import { IAchievement, IGame, ITitle } from '@modules/games/entities';
-import FakePlayer from '../fakes/FakePlayer';
-import { IPlayer, IUnlockAchievementRequest } from '../entities';
-import FakeUnlockAchievementRequest from '../fakes/FakeUnlockAchievementRequest';
+import { IPlayer } from '@modules/players/domain/entities';
 import { RequestError } from '@shared/infra/errors';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
+import { ITitle } from '@shared/domain/entities';
+import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
+import {
+  FakeAchievement,
+  FakeGame,
+  FakeUser,
+} from '@shared/domain/entities/fakes';
+import { FakeUnlockAchievementRequest } from '@modules/players/domain/entities/fakes';
+import CreatePlayerAdapter from '@modules/players/domain/adapters/CreatePlayer';
+import CreateUnlockAchievementAdapter from '@modules/players/domain/adapters/CreateUnlockAchievement';
 
 const initService = async (title?: ITitle) => {
   const playersRepository = new FakePlayersRepository();
@@ -31,30 +38,52 @@ const initService = async (title?: ITitle) => {
     transactionProvider,
   );
 
-  const userId = uuid();
+  const user = new FakeUser();
 
-  const { id: _, ...fakeGame } = new FakeGame();
-  const game = await gamesRepository.create(fakeGame as IGame);
-
-  const { id: __, ...fakeAchievement } = new FakeAchievement(game.id, title);
-  const achievement = await achievementsRepository.create(
-    fakeAchievement as IAchievement,
+  const fakeGame = new FakeGame();
+  const game = await gamesRepository.create(
+    new CreateGameAdapter({
+      name: fakeGame.name,
+      description: fakeGame.description,
+      creatorId: user.id,
+    }),
   );
 
-  const { id: ___, ...fakePlayer } = new FakePlayer(userId, game.id);
-  const player = await playersRepository.create(fakePlayer as IPlayer);
+  const fakeAchievement = new FakeAchievement({
+    game: game.id,
+    title,
+  });
+  const achievement = await achievementsRepository.create({
+    name: fakeAchievement.name,
+    description: fakeAchievement.description,
+    title: fakeAchievement.title?.id,
+    gameId: fakeAchievement.game.id,
+  });
 
-  const { id: ____, ...fakeRequest } = new FakeUnlockAchievementRequest(
-    game.id,
-    player.id,
-    achievement.id,
+  const player = await playersRepository.create(
+    new CreatePlayerAdapter({
+      gameId: game.id,
+      userId: user.id,
+      gameLevels: game.levelInfo,
+      gameRanks: game.ranks,
+    }),
   );
+
+  const fakeRequest = new FakeUnlockAchievementRequest({
+    game: game.id,
+    requester: player.id,
+    achievement: achievement.id,
+  });
   const request = await unlockAchievementRequestRepository.create(
-    fakeRequest as IUnlockAchievementRequest,
+    new CreateUnlockAchievementAdapter({
+      ...fakeRequest,
+      requester: fakeRequest.requester.id,
+      achievement: fakeRequest.achievement.id,
+    }),
   );
 
   return {
-    userId,
+    userId: user.id,
     unlockAchievement,
     game,
     achievement,
@@ -86,17 +115,20 @@ describe('UnlockAchievementService', () => {
       userId: userId,
     });
 
-    const updatedPlayer = (await playersRepository.findOne(
-      player.id,
+    const updatedPlayer = (await playersRepository.findOne({
+      id: player.id,
       userId,
-      game.id,
-    )) as IPlayer;
+      gameId: game.id,
+    })) as IPlayer;
 
-    expect(updatedPlayer.achievements).toContain(achievement.id);
-
-    const deletedRequest = await unlockAchievementRequestRepository.findOne(
-      request.id,
+    const achievementsIds = updatedPlayer.achievements.map(
+      achievement => achievement.id,
     );
+    expect(achievementsIds).toContain(achievement.id);
+
+    const deletedRequest = await unlockAchievementRequestRepository.findOne({
+      id: request.id,
+    });
 
     expect(deletedRequest).toBeUndefined();
   });

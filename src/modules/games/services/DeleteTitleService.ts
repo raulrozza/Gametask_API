@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import { ITitlesRepository } from '@modules/games/repositories';
-import { IDeleteTitleDTO } from '@modules/games/dtos/IDeleteTitleDTO';
+import { ITitlesRepository } from '@shared/domain/repositories';
+import { IDeleteTitleDTO } from '@modules/games/domain/dtos/IDeleteTitleDTO';
 
 @injectable()
 export default class DeleteTitleService {

@@ -1,13 +1,11 @@
-import { IFeedPostsRepository } from '@modules/players/repositories';
-import FeedPost, {
-  IFeedPostDocument,
-} from '@modules/players/infra/mongoose/entities/FeedPost';
-import { IFeedPost } from '@modules/players/entities';
+import FeedPost from '@modules/players/infra/mongoose/entities/FeedPost';
 import { ClientSession } from 'mongoose';
+import { IFeedPost } from '@modules/players/domain/entities';
+import { IFeedPostsRepository } from '@modules/players/domain/repositories';
+import CreateFeedPostAdapter from '@modules/players/domain/adapters/CreateFeedPost';
 
-export default class FeedPostsRepository
-  implements IFeedPostsRepository<IFeedPostDocument> {
-  public async findAllFromGame(gameId: string): Promise<IFeedPostDocument[]> {
+export default class FeedPostsRepository implements IFeedPostsRepository {
+  public async findAllFromGame(gameId: string): Promise<IFeedPost[]> {
     return FeedPost.find({ game: gameId })
       .populate({
         path: 'player',
@@ -22,14 +20,8 @@ export default class FeedPostsRepository
           },
         ],
       })
-      .populate('activity', {
-        name: 1,
-        experience: 1,
-      })
-      .populate('achievement', {
-        name: 1,
-        title: 1,
-      })
+      .populate('activity')
+      .populate('achievement')
       .sort({
         date: -1,
       });
@@ -44,16 +36,17 @@ export default class FeedPostsRepository
       activity,
       level,
       rank,
-    }: Omit<IFeedPost, 'id' | 'date'>,
+      date,
+    }: CreateFeedPostAdapter,
     session?: ClientSession,
-  ): Promise<IFeedPostDocument> {
+  ): Promise<IFeedPost> {
     const [result] = await FeedPost.create(
       [
         {
           player,
           type,
           game,
-          date: new Date(),
+          date,
           achievement,
           activity,
           level,

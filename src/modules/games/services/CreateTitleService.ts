@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import { ITitlesRepository } from '@modules/games/repositories';
-import { ITitle } from '@modules/games/entities';
-import ICreateTitleDTO from '@modules/games/dtos/ICreateTitleDTO';
+import { ITitlesRepository } from '@shared/domain/repositories';
+import ICreateTitleDTO from '@modules/games/domain/dtos/ICreateTitleDTO';
+import { ITitle } from '@shared/domain/entities';
 
 @injectable()
 export default class CreateTitleService {

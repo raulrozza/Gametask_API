@@ -3,8 +3,8 @@ import { inject, injectable } from 'tsyringe';
 
 import errorCodes from '@config/errorCodes';
 
-import { IUser } from '@modules/users/domain/entities';
-import { IUsersRepository } from '@modules/users/domain/repositories';
+import { IUser } from '@shared/domain/entities';
+import { IUsersRepository } from '@shared/domain/repositories';
 import { IUpdateUserDTO } from '@modules/users/domain/dtos';
 import { RequestError } from '@shared/infra/errors';
 
@@ -29,9 +29,6 @@ export default class UpdateUserService {
       id: foundUser.id,
       firstname,
       lastname,
-      email: foundUser.email,
-      password: foundUser.password,
-      image: foundUser.image,
     });
 
     return updatedUser;

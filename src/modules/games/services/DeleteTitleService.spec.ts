@@ -1,9 +1,9 @@
 import { v4 as uuid } from 'uuid';
 
-import { FakeTitle } from '../fakes';
-import { ITitle } from '../entities';
-import FakeTitlesRepository from '../repositories/fakes/FakeTitlesRepository';
+import { FakeTitlesRepository } from '@shared/domain/repositories/fakes';
 import DeleteTitleService from './DeleteTitleService';
+import { ITitle } from '@shared/domain/entities';
+import { FakeTitle } from '@shared/domain/entities/fakes';
 
 describe('DeleteTitleService', () => {
   it('should delete the right title', async () => {
@@ -11,7 +11,7 @@ describe('DeleteTitleService', () => {
     const deleteTitle = new DeleteTitleService(titlesRepository);
 
     const gameId = uuid();
-    const fakeTitle = new FakeTitle(gameId);
+    const fakeTitle = new FakeTitle({ game: gameId });
 
     await titlesRepository.create({
       game: fakeTitle.game,

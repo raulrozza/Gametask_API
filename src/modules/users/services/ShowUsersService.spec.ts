@@ -1,6 +1,6 @@
 import faker from 'faker';
-import { IUser } from '@modules/users/domain/entities';
-import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
+import { IUser } from '@shared/domain/entities';
+import { FakeUsersRepository } from '@shared/domain/repositories/fakes';
 import ShowUsersService from './ShowUsersService';
 
 describe('ShowUsersService', () => {

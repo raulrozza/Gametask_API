@@ -4,9 +4,10 @@ import { inject, injectable } from 'tsyringe';
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
-import IUpdateGameDTO from '@modules/games/dtos/IUpdateGameDTO';
-import { IGame } from '@modules/games/entities';
-import { IGamesRepository } from '@modules/games/repositories';
+import IUpdateGameDTO from '@modules/games/domain/dtos/IUpdateGameDTO';
+import { IGamesRepository } from '@shared/domain/repositories';
+import UpdateGameAdapter from '@modules/games/domain/adapters/UpdateGameAdapter';
+import { IGame } from '@shared/domain/entities';
 
 @injectable()
 export default class UpdateGameService {
@@ -34,17 +35,16 @@ export default class UpdateGameService {
           400,
         );
 
-      const updatedGame = await this.gamesRepository.update({
-        id: game.id,
-        name,
-        description,
-        theme,
-        levelInfo,
-        ranks,
-        administrators: game.administrators,
-        image: game.image,
-        newRegisters: game.newRegisters,
-      });
+      const updatedGame = await this.gamesRepository.update(
+        new UpdateGameAdapter({
+          id,
+          name,
+          description,
+          theme,
+          levelInfo,
+          ranks,
+        }),
+      );
 
       return updatedGame;
     } catch (error) {

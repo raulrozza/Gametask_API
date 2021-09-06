@@ -1,40 +1,56 @@
 import { v4 as uuid } from 'uuid';
 
-import FakeGamesRepository from '@modules/games/repositories/fakes/FakeGamesRepository';
-import FakeCompleteActivityRequestRepository from '../repositories/fakes/FakeCompleteActivityRequestRepository';
+import { FakeGamesRepository } from '@shared/domain/repositories/fakes';
+import FakeCompleteActivityRequestRepository from '@modules/players/domain/repositories/fakes/FakeCompleteActivityRequestRepository';
 import DeleteCompleteActivityRequestService from './DeleteCompleteActivityRequestService';
-import FakeCompleteActivityRequest from '../fakes/FakeCompleteActivityRequest';
 import { RequestError } from '@shared/infra/errors';
-import { FakeGame } from '@modules/games/fakes';
 import FakeTransactionProvider from '@shared/domain/providers/fakes/FakeTransactionProvider';
+import {
+  FakeActivity,
+  FakeGame,
+  FakeUser,
+} from '@shared/domain/entities/fakes';
+import CreateGameAdapter from '@shared/domain/adapters/CreateGame';
+import { FakeCompleteActivityRequest } from '@modules/players/domain/entities/fakes';
+import CreateCompleteActivityRequestAdapter from '@modules/players/domain/adapters/CreateCompleteActivityRequest';
 
 describe('DeleteCompleteActivityRequest', () => {
   it('should successfully delete the request', async () => {
     const completeActivityRequestRepository = new FakeCompleteActivityRequestRepository();
     const gamesRepository = new FakeGamesRepository();
     const transactionProvider = new FakeTransactionProvider();
-    const deleteUnlockAchievementRequest = new DeleteCompleteActivityRequestService(
+    const deleteUnlockActivityRequest = new DeleteCompleteActivityRequestService(
       completeActivityRequestRepository,
       gamesRepository,
       transactionProvider,
     );
 
     const fakeGame = new FakeGame();
-    const game = await gamesRepository.create(fakeGame);
-
-    const requesterId = uuid();
-    const achievementId = uuid();
-
-    const fakeActivityRequest = new FakeCompleteActivityRequest(
-      game.id,
-      requesterId,
-      achievementId,
+    const game = await gamesRepository.create(
+      new CreateGameAdapter({
+        creatorId: uuid(),
+        name: fakeGame.name,
+        description: fakeGame.description,
+      }),
     );
+
+    const requester = new FakeUser();
+    const activity = new FakeActivity();
+
+    const fakeActivityRequest = new FakeCompleteActivityRequest({
+      requester: requester.id,
+      activity: activity.id,
+      game: game.id,
+    });
     const request = await completeActivityRequestRepository.create(
-      fakeActivityRequest,
+      new CreateCompleteActivityRequestAdapter({
+        ...fakeActivityRequest,
+        requester: requester.id,
+        activity: activity.id,
+      }),
     );
 
-    await deleteUnlockAchievementRequest.execute({
+    await deleteUnlockActivityRequest.execute({
       gameId: game.id,
       requestId: request.id,
     });
@@ -56,9 +72,14 @@ describe('DeleteCompleteActivityRequest', () => {
       transactionProvider,
     );
 
-    const id = uuid();
-    const fakeRequest = new FakeCompleteActivityRequest(id, id, id);
-    const request = await completeActivityRequestRepository.create(fakeRequest);
+    const fakeRequest = new FakeCompleteActivityRequest();
+    const request = await completeActivityRequestRepository.create(
+      new CreateCompleteActivityRequestAdapter({
+        ...fakeRequest,
+        requester: fakeRequest.requester.id,
+        activity: fakeRequest.activity.id,
+      }),
+    );
 
     await expect(
       deleteUnlockAchievementRequest.execute({
@@ -79,7 +100,13 @@ describe('DeleteCompleteActivityRequest', () => {
     );
 
     const fakeGame = new FakeGame();
-    const game = await gamesRepository.create(fakeGame);
+    const game = await gamesRepository.create(
+      new CreateGameAdapter({
+        creatorId: uuid(),
+        name: fakeGame.name,
+        description: fakeGame.description,
+      }),
+    );
 
     await expect(
       deleteUnlockAchievementRequest.execute({

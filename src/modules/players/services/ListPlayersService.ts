@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import { IPlayersRepository } from '@modules/players/repositories';
-import { IPlayer } from '@modules/players/entities';
+import { IPlayersRepository } from '@modules/players/domain/repositories';
+import { IPlayer } from '@modules/players/domain/entities';
 
 @injectable()
 export default class ListPlayersService {
@@ -12,6 +12,6 @@ export default class ListPlayersService {
   ) {}
 
   public async execute(userId: string): Promise<IPlayer[]> {
-    return await this.playersRepository.findAllFromUser(userId);
+    return this.playersRepository.findAllFromUser(userId);
   }
 }

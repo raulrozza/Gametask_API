@@ -4,7 +4,8 @@ import { inject, injectable } from 'tsyringe';
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
-import { ILeaderboardsRepository } from '@modules/games/repositories';
+import CreateLeaderboardAdapter from '@shared/domain/adapters/CreateLeaderboard';
+import { ILeaderboardsRepository } from '@shared/domain/repositories';
 
 @injectable()
 export default class ResetLeaderboardsService {
@@ -15,10 +16,9 @@ export default class ResetLeaderboardsService {
 
   public async execute(gameId: string): Promise<void> {
     try {
-      await this.leaderboardsRepository.create({
-        createdAt: new Date(),
-        game: gameId,
-      });
+      await this.leaderboardsRepository.create(
+        new CreateLeaderboardAdapter({ game: gameId }),
+      );
     } catch (error) {
       if (error instanceof RequestError) throw error;
 

@@ -1,8 +1,8 @@
 import faker from 'faker';
 
 import { ListUsersService } from '.';
-import { IUser } from '@modules/users/domain/entities';
-import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
+import { IUser } from '@shared/domain/entities';
+import { FakeUsersRepository } from '@shared/domain/repositories/fakes';
 
 describe('ListUsersService', () => {
   it('should list both the users created', async () => {

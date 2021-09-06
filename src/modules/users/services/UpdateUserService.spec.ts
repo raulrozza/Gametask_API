@@ -1,5 +1,5 @@
-import FakeUsersRepository from '@modules/users/domain/repositories/fakes/FakeUsersRepository';
-import FakeUser from '@modules/users/domain/entities/fakes/FakeUser';
+import { FakeUsersRepository } from '@shared/domain/repositories/fakes';
+import { FakeUser } from '@shared/domain/entities/fakes';
 import UpdateUserService from './UpdateUserService';
 import { RequestError } from '@shared/infra/errors';
 
@@ -8,8 +8,8 @@ describe('UpdateUserService', () => {
     const usersRepository = new FakeUsersRepository();
     const updateUser = new UpdateUserService(usersRepository);
 
-    const user = new FakeUser();
-    await usersRepository.create(user);
+    const fakeUser = new FakeUser();
+    const user = await usersRepository.create(fakeUser);
 
     const payload = {
       id: user.id,

@@ -2,18 +2,20 @@ import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
 import {
-  IActivitiesRepository,
   IGamesRepository,
-} from '@modules/games/repositories';
+  IActivitiesRepository,
+} from '@shared/domain/repositories';
+
 import {
   ICompleteActivityRequestRepository,
   IPlayersRepository,
-} from '@modules/players/repositories';
-import { ICompleteActivityRequest } from '@modules/players/entities';
-import ICreateCompleteActivityRequestDTO from '@modules/players/dtos/ICreateCompleteActivityRequestDTO';
+} from '@modules/players/domain/repositories';
+import { ICompleteActivityRequest } from '@modules/players/domain/entities';
+import ICreateCompleteActivityRequestDTO from '@modules/players/domain/dtos/ICreateCompleteActivityRequestDTO';
 import { RequestError } from '@shared/infra/errors';
 import errorCodes from '@config/errorCodes';
 import ITransactionProvider from '@shared/domain/providers/ITransactionProvider';
+import CreateCompleteActivityRequestAdapter from '@modules/players/domain/adapters/CreateCompleteActivityRequest';
 
 interface IValidateInputParams {
   activity: string;
@@ -21,6 +23,8 @@ interface IValidateInputParams {
   userId: string;
   requester: string;
 }
+
+const GAME_REGISTERS_INCREASE_COUNT = 1;
 
 @injectable()
 export default class CreateCompleteActivityRequestService {
@@ -54,18 +58,22 @@ export default class CreateCompleteActivityRequestService {
 
     return await this.transactionProvider.startSession(async session => {
       const request = await this.completeActivityRequestRepository.create(
-        {
+        new CreateCompleteActivityRequestAdapter({
           activity,
           game: gameId,
           requester,
           completionDate,
           information,
           requestDate,
-        },
+        }),
         session,
       );
 
-      await this.gamesRepository.updateRegisters(gameId, 1, session);
+      await this.gamesRepository.updateRegisters(
+        gameId,
+        GAME_REGISTERS_INCREASE_COUNT,
+        session,
+      );
 
       return request;
     });
@@ -94,11 +102,11 @@ export default class CreateCompleteActivityRequestService {
         errorCodes.BAD_REQUEST_ERROR,
       );
 
-    const player = await this.playersRepository.findOne(
-      requester,
+    const player = await this.playersRepository.findOne({
+      id: requester,
       userId,
       gameId,
-    );
+    });
     if (!player)
       throw new RequestError(
         'This player does not exist',

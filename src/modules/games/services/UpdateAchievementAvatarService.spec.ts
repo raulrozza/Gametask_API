@@ -1,9 +1,8 @@
-import { v4 as uuid } from 'uuid';
 import FakeStorageProvider from '@shared/domain/providers/fakes/FakeStorageProvider';
 import { RequestError } from '@shared/infra/errors';
-import FakeAchievement from '../fakes/FakeAchievement';
-import FakeAchievementsRepository from '../repositories/fakes/FakeAchievementsRepository';
+import { FakeAchievementsRepository } from '@shared/domain/repositories/fakes';
 import UpdateAchievementAvatarService from './UpdateAchievementAvatarService';
+import { FakeAchievement, FakeGame } from '@shared/domain/entities/fakes';
 
 const getService = () => {
   const achievementsRepository = new FakeAchievementsRepository();
@@ -21,16 +20,21 @@ describe('UpdateAchievementAvatar', () => {
   it('should upload the achievement avatar', async () => {
     const { updateAchievementAvatar, achievementsRepository } = getService();
 
-    const gameId = uuid();
-    const fakeAchievement = new FakeAchievement(gameId);
+    const game = new FakeGame();
+    const fakeAchievement = new FakeAchievement({ game: game.id });
 
-    const achievement = await achievementsRepository.create(fakeAchievement);
+    const achievement = await achievementsRepository.create({
+      gameId: game.id,
+      description: fakeAchievement.description,
+      name: fakeAchievement.name,
+      title: fakeAchievement.title?.id,
+    });
     const filename = 'avatar.jpg';
 
     const updatedAchievement = await updateAchievementAvatar.execute({
       filename,
       id: achievement.id,
-      gameId,
+      gameId: game.id,
     });
 
     expect(updatedAchievement.image).toBe(filename);
@@ -44,21 +48,26 @@ describe('UpdateAchievementAvatar', () => {
     } = getService();
     const deleteFile = jest.spyOn(storageProvider, 'deleteFile');
 
-    const gameId = uuid();
-    const fakeAchievement = new FakeAchievement(gameId);
+    const game = new FakeGame();
+    const fakeAchievement = new FakeAchievement({ game: game.id });
 
-    const achievement = await achievementsRepository.create(fakeAchievement);
+    const achievement = await achievementsRepository.create({
+      gameId: game.id,
+      name: fakeAchievement.name,
+      description: fakeAchievement.description,
+      title: fakeAchievement.title?.id,
+    });
     const filename = 'avatar.jpg';
 
     await updateAchievementAvatar.execute({
       filename: 'first_file',
       id: achievement.id,
-      gameId,
+      gameId: game.id,
     });
     const updatedAchievement = await updateAchievementAvatar.execute({
       filename,
       id: achievement.id,
-      gameId,
+      gameId: game.id,
     });
 
     expect(deleteFile).toHaveBeenCalledWith('first_file', 'achievement');

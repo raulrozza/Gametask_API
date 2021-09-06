@@ -4,9 +4,9 @@ import { inject, injectable } from 'tsyringe';
 import errorCodes from '@config/errorCodes';
 import { RequestError } from '@shared/infra/errors';
 
-import IUpdateAchievementDTO from '@modules/games/dtos/IUpdateAchievementDTO';
-import { IAchievement } from '@modules/games/entities';
-import { IAchievementsRepository } from '@modules/games/repositories';
+import IUpdateAchievementDTO from '@modules/games/domain/dtos/IUpdateAchievementDTO';
+import { IAchievementsRepository } from '@shared/domain/repositories';
+import { IAchievement } from '@shared/domain/entities';
 
 @injectable()
 export default class UpdateAchievementService {
@@ -37,8 +37,7 @@ export default class UpdateAchievementService {
         name,
         description,
         title: title,
-        image: achievement.image,
-        game: achievement.game,
+        gameId,
       });
 
       return updatedAchievement;

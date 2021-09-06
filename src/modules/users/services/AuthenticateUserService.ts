@@ -8,7 +8,7 @@ import { RequestError } from '@shared/infra/errors';
 import { IAuthenticateUserDTO } from '@modules/users/domain/dtos';
 import IHashProvider from '@modules/users/domain/providers/IHashProvider';
 import ITokenProvider from '@modules/users/domain/providers/ITokenProvider';
-import { IUsersRepository } from '@modules/users/domain/repositories';
+import { IUsersRepository } from '@shared/domain/repositories';
 
 interface IExecuteResponse {
   token: string;
