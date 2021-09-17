@@ -79,9 +79,8 @@ export default class PlayersRepository implements IPlayersRepository {
       });
 
       return player;
-    } catch (error) {
-      console.error(error);
-      throw error;
+    } catch (error: any) {
+      throw new RequestError(error.message, errorCodes.INTERNAL_SERVER_ERROR);
     }
   }
 
