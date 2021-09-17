@@ -70,20 +70,15 @@ export default class PlayersRepository implements IPlayersRepository {
     rank,
     level,
   }: CreatePlayerAdapter): Promise<IPlayer> {
-    console.log({
-      user,
-      game,
-      rank,
-      level,
-    });
-
     try {
-      return Player.create({
+      const player = await Player.create({
         user,
         game,
         rank,
         level,
       });
+
+      return player;
     } catch (error) {
       console.error(error);
       throw error;
