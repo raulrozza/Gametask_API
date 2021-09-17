@@ -27,6 +27,8 @@ export default class CreatePlayerService {
   ) {}
 
   public async execute({ userId, gameId }: ICreatePlayerDTO): Promise<IPlayer> {
+    console.log('Starting player creation use case', { userId, gameId })
+
     const [user, game] = await Promise.all([
       this.usersRepository.findOne(userId),
       this.gamesRepository.findOne(gameId),
@@ -37,6 +39,9 @@ export default class CreatePlayerService {
         'Could not create player',
         errorCodes.BAD_REQUEST_ERROR,
       );
+
+
+    console.log('Starting player exist checks', {user, game})
 
     const playerAlreadyExists = await this.playersRepository.findOne({
       userId,
@@ -49,6 +54,14 @@ export default class CreatePlayerService {
         errorCodes.PLAYER_ALREADY_EXISTS,
       );
 
+
+    console.log('Starting player creation', {
+      gameId,
+      userId,
+      gameRanks: game.ranks,
+      gameLevels: game.levelInfo,
+    })
+
     const player = await this.playersRepository.create(
       new CreatePlayerAdapter({
         gameId,
@@ -57,6 +70,7 @@ export default class CreatePlayerService {
         gameLevels: game.levelInfo,
       }),
     );
+    console.log('Created player')
 
     return player;
   }
